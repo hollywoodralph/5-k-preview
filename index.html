@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IAM / PARAMOUNT 5K Fun Run Registration</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            pts: {
+              navy: '#003366',
+              blue: '#00529B',
+              accent: '#E31837',
+              light: '#F0F4F8'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans antialiased">
+
+  <!-- Header / Hero Section -->
+  <header class="bg-pts-navy text-white shadow-xl relative overflow-hidden">
+    <div class="max-w-6xl mx-auto px-6 py-8 md:py-12 relative z-10">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-6 border-b border-blue-800 pb-8">
+        <div class="flex items-center space-x-4">
+          <div class="bg-white p-3 rounded-lg shadow-md">
+            <img src="PTSLogo_LogoOverPTS_Blue.png" alt="Paramount Transportation Systems" class="h-16 md:h-20 object-contain">
+          </div>
+        </div>
+        <div class="text-center md:text-right">
+          <button onclick="toggleModal('lookupModal')" class="bg-white/10 hover:bg-white/20 text-white px-5 py-2.5 rounded-lg text-sm font-semibold border border-white/30 transition flex items-center gap-2 mx-auto md:ml-auto">
+            <i class="fa-solid fa-magnifying-glass"></i> Check-in / Edit Registration
+          </button>
+        </div>
+      </div>
+
+      <div class="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
+        <div class="lg:col-span-2">
+          <span class="inline-block bg-blue-500/30 text-blue-200 text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-3">IAM Convention Event</span>
+          <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight">IAM / PARAMOUNT 5K Fun Run</h1>
+          <p class="mt-3 text-lg text-blue-100 max-w-2xl">
+            Join us for an energetic 5K run! Complete your registration below to secure your spot and official race shirt.
+          </p>
+        </div>
+        
+        <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 text-center shadow-inner">
+          <span class="text-xs font-semibold uppercase tracking-wider text-blue-200">Registration Fee</span>
+          <div class="text-5xl font-black text-white mt-1">$75.00</div>
+          <span class="text-xs text-blue-100 block mt-1">Includes Official T-Shirt & Bib</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Key Details Bar -->
+  <section class="max-w-6xl mx-auto px-6 -mt-6 relative z-20">
+    <div class="bg-white rounded-xl shadow-lg border border-gray-100 p-6 grid grid-cols-2 md:grid-cols-4 gap-6 text-sm">
+      <div class="flex items-start space-x-3">
+        <i class="fa-solid fa-calendar-day text-pts-navy text-xl mt-0.5"></i>
+        <div>
+          <strong class="block text-gray-900">Date</strong>
+          <span class="text-gray-600">Friday, 23 Oct 2026</span>
+        </div>
+      </div>
+      <div class="flex items-start space-x-3">
+        <i class="fa-solid fa-clock text-pts-navy text-xl mt-0.5"></i>
+        <div>
+          <strong class="block text-gray-900">Times</strong>
+          <span class="text-gray-600">Check-in: 6:15–7:15 AM</span><br>
+          <span class="text-gray-600">Start: 7:30 AM</span>
+        </div>
+      </div>
+      <div class="flex items-start space-x-3">
+        <i class="fa-solid fa-shirt text-pts-navy text-xl mt-0.5"></i>
+        <div>
+          <strong class="block text-gray-900">Shirt & Bib Pickup</strong>
+          <span class="text-gray-600">Wed Oct 21 / Thu Oct 22 @ Hyatt Hotel OR at Run Check-in</span>
+        </div>
+      </div>
+      <div class="flex items-start space-x-3">
+        <i class="fa-solid fa-hourglass-half text-pts-navy text-xl mt-0.5"></i>
+        <div>
+          <strong class="block text-gray-900">Deadline</strong>
+          <span class="text-gray-600">Sunday, 01 Oct 2026</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Registration Form -->
+  <main class="max-w-4xl mx-auto px-6 py-12">
+    <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+      
+      <div class="bg-pts-light border-b border-gray-200 px-8 py-4 flex justify-between items-center">
+        <h2 id="formTitle" class="text-xl font-bold text-pts-navy">Participant Registration</h2>
+        <span class="text-xs text-gray-500">* Each participant must submit a separate form</span>
+      </div>
+
+      <form id="regForm" class="p-8 space-y-8">
+        <input type="hidden" id="regId" name="regId" value="">
+
+        <!-- Personal Info -->
+        <div>
+          <h3 class="text-lg font-semibold text-pts-navy border-b pb-2 mb-4"><i class="fa-solid fa-user mr-2"></i> Participant Details</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label class="block text-sm font-medium text-gray-700">First Name *</label>
+              <input type="text" id="firstName" name="firstName" required class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Last Name *</label>
+              <input type="text" id="lastName" name="lastName" required class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Email Address *</label>
+              <input type="email" id="email" name="email" required class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Mobile Phone (with country code) *</label>
+              <input type="tel" id="mobile" name="mobile" placeholder="+1 (555) 000-0000" required class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none">
+            </div>
+            <div class="md:col-span-2">
+              <label class="block text-sm font-medium text-gray-700">Gender * <span class="text-xs font-normal text-gray-500">(Required for prize category tracking)</span></label>
+              <div class="mt-2 flex space-x-6">
+                <label class="inline-flex items-center"><input type="radio" name="gender" value="Male" required class="text-pts-navy focus:ring-pts-navy"> <span class="ml-2">Male</span></label>
+                <label class="inline-flex items-center"><input type="radio" name="gender" value="Female" required class="text-pts-navy focus:ring-pts-navy"> <span class="ml-2">Female</span></label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Company Info -->
+        <div>
+          <h3 class="text-lg font-semibold text-pts-navy border-b pb-2 mb-4"><i class="fa-solid fa-building mr-2"></i> Company Information</h3>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="md:col-span-3">
+              <label class="block text-sm font-medium text-gray-700">Company Name *</label>
+              <input type="text" id="company" name="company" required class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">City *</label>
+              <input type="text" id="city" name="city" required class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">State / Province</label>
+              <input type="text" id="state" name="state" class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Country *</label>
+              <input type="text" id="country" name="country" required class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none">
+            </div>
+          </div>
+        </div>
+
+        <!-- Emergency Contact & Shirt -->
+        <div>
+          <h3 class="text-lg font-semibold text-pts-navy border-b pb-2 mb-4"><i class="fa-solid fa-heart-pulse mr-2"></i> Logistics & Emergency Contact</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Emergency Contact Name *</label>
+              <input type="text" id="emergencyName" name="emergencyName" required class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Emergency Contact Phone *</label>
+              <input type="tel" id="emergencyPhone" name="emergencyPhone" placeholder="+1 (555) 000-0000" required class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">T-Shirt Size *</label>
+              <select id="tshirtSize" name="tshirtSize" required class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none">
+                <option value="">Select Size...</option>
+                <option value="Mens XS">Mens XS</option>
+                <option value="Mens S">Mens S</option>
+                <option value="Mens M">Mens M</option>
+                <option value="Mens L">Mens L</option>
+                <option value="Mens XL">Mens XL</option>
+                <option value="Mens XXL">Mens XXL</option>
+                <option value="Mens 3XL">Mens 3XL</option>
+                <option value="Mens 4XL">Mens 4XL</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Special Accommodations</label>
+              <input type="text" id="specialAccommodations" name="specialAccommodations" placeholder="e.g. Accessibility needs" class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none">
+            </div>
+          </div>
+        </div>
+
+        <!-- Waivers -->
+        <div class="space-y-4">
+          <h3 class="text-lg font-semibold text-pts-navy border-b pb-2"><i class="fa-solid fa-file-contract mr-2"></i> Terms & Waivers</h3>
+          
+          <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 text-xs text-gray-600 leading-relaxed">
+            <strong>Photo/Video Release:</strong> I certify that I am over 18 years old and agree to this Photo & Video Release. I authorize Paramount Transportation Systems to photograph and record me during the Charity 5K Fun Run and allow both the International Association of Movers and/or Paramount to place my picture/video on their website/in their newsletters and use my image for any promotional purposes without compensation.
+          </div>
+          <label class="flex items-center text-sm font-medium text-gray-700">
+            <input type="checkbox" id="photoRelease" name="photoRelease" required class="rounded text-pts-navy focus:ring-pts-navy h-4 w-4">
+            <span class="ml-2">I certify that I am over 18 years old and agree to the Photo & Video Release. *</span>
+          </label>
+
+          <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 text-xs text-gray-600 leading-relaxed mt-4">
+            <strong>Liability Statement:</strong> I certify that I am over 18 years old and I acknowledge that participating in a 5K involves physical activity and assume all risks associated with participation. I release and hold harmless the event organizers, sponsors, the property owners, their employees and my employer from liability for injuries or damages arising from my participation.
+          </div>
+          <label class="flex items-center text-sm font-medium text-gray-700">
+            <input type="checkbox" id="liabilityWaiver" name="liabilityWaiver" required class="rounded text-pts-navy focus:ring-pts-navy h-4 w-4">
+            <span class="ml-2">I have read and agree to the Liability Waiver above. *</span>
+          </label>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Participant Electronic Signature (Full Name) *</label>
+              <input type="text" id="signature" name="signature" placeholder="Type Full Name" required class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Date *</label>
+              <input type="date" id="sigDate" name="sigDate" required class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none">
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-4 border-t border-gray-200">
+          <button type="submit" id="submitBtn" class="w-full bg-pts-navy hover:bg-pts-blue text-white font-bold py-4 px-6 rounded-xl shadow-lg transition duration-200 flex items-center justify-center text-lg">
+            <span id="btnText">Proceed to $75.00 Payment</span>
+            <i class="fa-solid fa-arrow-right ml-2"></i>
+          </button>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <!-- Modal for Checking / Modifying details -->
+  <div id="lookupModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl relative">
+      <button onclick="toggleModal('lookupModal')" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark text-xl"></i></button>
+      <h3 class="text-xl font-bold text-pts-navy mb-2">Check-in or Update Details</h3>
+      <p class="text-sm text-gray-600 mb-4">Enter your Registration ID (e.g. PTS-123456) or Email Address to look up your details.</p>
+      
+      <div class="space-y-4">
+        <input type="text" id="lookupQuery" placeholder="Registration ID or Email" class="w-full rounded-lg border border-gray-300 p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none">
+        <button onclick="performLookup()" class="w-full bg-pts-navy text-white font-semibold py-2.5 rounded-lg hover:bg-pts-blue transition">Lookup Registration</button>
+      </div>
+      <div id="lookupMessage" class="mt-4 text-sm text-center"></div>
+    </div>
+  </div>
+
+  <script>
+    // Configuration Settings
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyBho9QviGtmrEp4y58P-iXQXlcO3uUj7x3dZ6Fq5A6Ctqv35l5gHqXOH2DexwEgVpk6A/exec";
+    const STRIPE_PAYMENT_LINK = "https://buy.stripe.com/6oU14ffDuemrfOM11h3gk01";
+
+    function toggleModal(id) {
+      document.getElementById(id).classList.toggle('hidden');
+    }
+
+    document.getElementById('regForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const btnText = document.getElementById('btnText');
+      btnText.innerText = "Processing...";
+
+      const formData = new FormData(this);
+      const data = Object.fromEntries(formData.entries());
+      data.photoRelease = document.getElementById('photoRelease').checked;
+      data.liabilityWaiver = document.getElementById('liabilityWaiver').checked;
+
+      try {
+        const response = await fetch(SCRIPT_URL, {
+          method: 'POST',
+          body: JSON.stringify(data)
+        });
+        const result = await response.json();
+
+        if (result.status === 'success') {
+          if (data.regId) {
+            alert('Your details have been successfully updated!');
+            btnText.innerText = "Proceed to $75.00 Payment";
+          } else {
+            window.location.href = `${STRIPE_PAYMENT_LINK}?client_reference_id=${result.regId}`;
+          }
+        } else {
+          alert('Error saving details: ' + result.message);
+          btnText.innerText = "Proceed to $75.00 Payment";
+        }
+      } catch (err) {
+        window.location.href = `${STRIPE_PAYMENT_LINK}`;
+      }
+    });
+
+    async function performLookup() {
+      const q = document.getElementById('lookupQuery').value;
+      const msg = document.getElementById('lookupMessage');
+      if (!q) return;
+
+      msg.className = "mt-4 text-sm text-center text-gray-500";
+      msg.innerText = "Searching...";
+
+      try {
+        const res = await fetch(`${SCRIPT_URL}?action=lookup&query=${encodeURIComponent(q)}`);
+        const json = await res.json();
+
+        if (json.status === 'found') {
+          const d = json.data;
+          document.getElementById('regId').value = d.regId;
+          document.getElementById('firstName').value = d.firstName;
+          document.getElementById('lastName').value = d.lastName;
+          document.getElementById('email').value = d.email;
+          document.getElementById('mobile').value = d.mobile;
+          document.getElementById('company').value = d.company;
+          document.getElementById('city').value = d.city;
+          document.getElementById('state').value = d.state;
+          document.getElementById('country').value = d.country;
+          document.getElementById('emergencyName').value = d.emergencyName;
+          document.getElementById('emergencyPhone').value = d.emergencyPhone;
+          document.getElementById('tshirtSize').value = d.tshirtSize;
+          document.getElementById('specialAccommodations').value = d.specialAccommodations || '';
+          document.getElementById('signature').value = d.signature;
+          document.getElementById('sigDate').value = d.sigDate;
+          document.getElementById('photoRelease').checked = d.photoRelease;
+          document.getElementById('liabilityWaiver').checked = d.liabilityWaiver;
+
+          const radios = document.getElementsByName('gender');
+          for (let r of radios) {
+            if (r.value === d.gender) r.checked = true;
+          }
+
+          document.getElementById('formTitle').innerText = `Editing Registration (${d.regId})`;
+          document.getElementById('btnText').innerText = "Update Details";
+          toggleModal('lookupModal');
+          msg.innerText = "";
+        } else {
+          msg.className = "mt-4 text-sm text-center text-red-500";
+          msg.innerText = "No matching registration found. Please check and try again.";
+        }
+      } catch (e) {
+        msg.className = "mt-4 text-sm text-center text-red-500";
+        msg.innerText = "Error looking up registration.";
+      }
+    }
+  </script>
+</body>
+</html>
