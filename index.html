@@ -279,7 +279,7 @@
   </div>
 
   <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyJhTaX8g27ceSlTn09K6iWlR2FCFH6L7hGUY3SYZdnyuF4UD9s-rqZ_wk0izxhcYW6/exec;
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwTuWhgvP8o8ZSlUVU8NuY2w9eB0WnDMFKPKjoEjT9tPVvvUX_LON7b7S8ie1XEKPQj/exec";
     const STRIPE_PAYMENT_LINK = "https://buy.stripe.com/6oU14ffDuemrfOM11h3gk01";
 
     function toggleModal(id) {
@@ -313,17 +313,11 @@
 
       const params = new URLSearchParams(data);
 
-      // Post in background with mode: 'no-cors' to prevent CORS redirect blocks
-      fetch(SCRIPT_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: params.toString()
-      });
+      // Send form submission using image pixel ping (100% bypasses CORS issues)
+      const submitUrl = `${SCRIPT_URL}?${params.toString()}`;
+      const img = new Image();
+      img.src = submitUrl;
 
-      // Proceed seamlessly after writing data
       setTimeout(() => {
         if (isEditing) {
           if (currentStatus !== 'Paid') {
@@ -335,7 +329,7 @@
         } else {
           window.location.href = `${STRIPE_PAYMENT_LINK}?client_reference_id=${targetRegId}`;
         }
-      }, 800);
+      }, 1000);
     });
 
     async function performLookup() {
