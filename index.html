@@ -286,8 +286,18 @@
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwmD1V84u2_AQxhJyIZNqp8oT-ro37CrsUGLfZpCeYtzUwDOWqO6U6FE3mGojv7H1Ea/exec";
     const STRIPE_PAYMENT_LINK = "https://buy.stripe.com/6oU14ffDuemrfOM11h3gk01";
 
-    // Wire form action URL directly
+    let pendingRedirectUrl = "";
+    const hiddenIframe = document.getElementById('hidden_iframe');
+
+    // Set action URL on form
     document.getElementById('regForm').action = SCRIPT_URL;
+
+    // Wait for Google Apps Script to confirm data was saved before redirecting to Stripe
+    hiddenIframe.addEventListener('load', function() {
+      if (pendingRedirectUrl) {
+        window.location.href = pendingRedirectUrl;
+      }
+    });
 
     function toggleModal(id) {
       document.getElementById(id).classList.toggle('hidden');
@@ -307,24 +317,24 @@
       }
 
       const btnText = document.getElementById('btnText');
-      btnText.innerText = "Processing...";
+      btnText.innerText = "Saving & Redirecting...";
 
       const targetRegId = isEditing ? existingRegId : ('PTS-' + Math.floor(100000 + Math.random() * 900000));
       document.getElementById('generatedRegId').value = targetRegId;
 
-      // Allow native submit to hidden iframe, then redirect user seamlessly to Stripe
-      setTimeout(() => {
-        if (isEditing) {
-          if (currentStatus !== 'Paid') {
-            window.location.href = `${STRIPE_PAYMENT_LINK}?client_reference_id=${targetRegId}`;
-          } else {
+      if (isEditing) {
+        if (currentStatus !== 'Paid') {
+          pendingRedirectUrl = `${STRIPE_PAYMENT_LINK}?client_reference_id=${targetRegId}`;
+        } else {
+          pendingRedirectUrl = ""; // No redirect needed if already paid
+          setTimeout(() => {
             alert('Your registration details have been updated successfully!');
             btnText.innerText = "Save Changes";
-          }
-        } else {
-          window.location.href = `${STRIPE_PAYMENT_LINK}?client_reference_id=${targetRegId}`;
+          }, 1000);
         }
-      }, 500);
+      } else {
+        pendingRedirectUrl = `${STRIPE_PAYMENT_LINK}?client_reference_id=${targetRegId}`;
+      }
     });
 
     async function performLookup() {
@@ -404,5 +414,6 @@
       }
     }
   </script>
+  
 </body>
 </html>
