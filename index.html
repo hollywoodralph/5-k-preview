@@ -178,7 +178,7 @@
         <div id="paymentBadge" class="hidden"></div>
       </div>
 
-      <form id="regForm" method="POST" target="hidden_iframe" class="p-6 sm:p-8 space-y-8">
+      <form id="regForm" method="POST" target="hidden_iframe" class="p-6 sm:p-8 space-y-8" novalidate>
         <input type="hidden" id="regId" name="regId" value="">
         <input type="hidden" id="generatedRegId" name="generatedRegId" value="">
         <input type="hidden" id="currentPaymentStatus" value="Pending Payment">
@@ -189,19 +189,23 @@
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label class="block text-sm font-medium text-gray-700">First Name *</label>
-              <input type="text" id="firstName" name="firstName" required pattern="^[a-zA-Z\-'\s]+$" title="First name should only contain letters" class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none">
+              <input type="text" id="firstName" name="firstName" required class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
+              <span id="firstNameErr" class="text-xs text-red-500 hidden mt-1"><i class="fa-solid fa-circle-exclamation mr-1"></i> First name must contain only letters.</span>
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700">Last Name *</label>
-              <input type="text" id="lastName" name="lastName" required pattern="^[a-zA-Z\-'\s]+$" title="Last name should only contain letters" class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none">
+              <input type="text" id="lastName" name="lastName" required class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
+              <span id="lastNameErr" class="text-xs text-red-500 hidden mt-1"><i class="fa-solid fa-circle-exclamation mr-1"></i> Last name must contain only letters.</span>
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700">Email Address *</label>
-              <input type="email" id="email" name="email" required placeholder="name@company.com" class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none">
+              <input type="email" id="email" name="email" required placeholder="name@company.com" class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
+              <span id="emailErr" class="text-xs text-red-500 hidden mt-1"><i class="fa-solid fa-circle-exclamation mr-1"></i> Please enter a valid email address.</span>
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700">Mobile Phone (with country code) *</label>
-              <input type="tel" id="mobile" name="mobile" placeholder="+1 (555) 000-0000" required pattern="^\+?[0-9\s\-\(\)]{7,20}$" title="Please enter a valid phone number with digits and optional country code" class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none">
+              <input type="tel" id="mobile" name="mobile" placeholder="+1 (555) 000-0000" required class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
+              <span id="mobileErr" class="text-xs text-red-500 hidden mt-1"><i class="fa-solid fa-circle-exclamation mr-1"></i> Enter a valid phone number (at least 7 digits).</span>
             </div>
             <div class="md:col-span-2">
               <label class="block text-sm font-medium text-gray-700">Gender * <span class="text-xs font-normal text-gray-500">(Required for prize category tracking)</span></label>
@@ -221,11 +225,12 @@
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label class="block text-xs font-semibold text-gray-700 uppercase">Choose Security PIN</label>
-              <input type="password" id="userPin" name="userPin" maxlength="6" placeholder="••••" required class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 text-center text-lg font-mono tracking-widest focus:ring-2 focus:ring-pts-navy focus:outline-none">
+              <input type="password" id="userPin" name="userPin" maxlength="6" placeholder="••••" required class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 text-center text-lg font-mono tracking-widest focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
             </div>
             <div>
               <label class="block text-xs font-semibold text-gray-700 uppercase">Confirm Security PIN</label>
-              <input type="password" id="confirmPin" maxlength="6" placeholder="••••" required class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 text-center text-lg font-mono tracking-widest focus:ring-2 focus:ring-pts-navy focus:outline-none">
+              <input type="password" id="confirmPin" maxlength="6" placeholder="••••" required class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 text-center text-lg font-mono tracking-widest focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
+              <span id="pinErr" class="text-xs text-red-500 hidden mt-1"><i class="fa-solid fa-circle-exclamation mr-1"></i> Security PINs do not match.</span>
             </div>
           </div>
         </div>
@@ -236,23 +241,24 @@
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <div class="md:col-span-2 lg:col-span-4">
               <label class="block text-sm font-medium text-gray-700">Company Name *</label>
-              <input type="text" id="company" name="company" required class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none">
+              <input type="text" id="company" name="company" required class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700">City *</label>
-              <input type="text" id="city" name="city" required pattern="^[a-zA-Z\-'\s]+$" title="City name should not contain numbers" class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none">
+              <input type="text" id="city" name="city" required class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
+              <span id="cityErr" class="text-xs text-red-500 hidden mt-1"><i class="fa-solid fa-circle-exclamation mr-1"></i> City should not contain numbers.</span>
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700">State / Province</label>
-              <input type="text" id="state" name="state" class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none">
+              <input type="text" id="state" name="state" class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700">Country * <span class="text-xs font-normal text-gray-500">(Type to search)</span></label>
-              <input type="text" id="country" name="country" list="countryList" placeholder="Start typing country..." required class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none">
+              <input type="text" id="country" name="country" list="countryList" placeholder="Start typing country..." required class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700">Postal / ZIP Code <span class="text-xs font-normal text-gray-500">(Optional)</span></label>
-              <input type="text" id="postalCode" name="postalCode" placeholder="e.g. 90210" class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none">
+              <input type="text" id="postalCode" name="postalCode" placeholder="e.g. 90210" class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
             </div>
           </div>
         </div>
@@ -263,15 +269,17 @@
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label class="block text-sm font-medium text-gray-700">Emergency Contact Name *</label>
-              <input type="text" id="emergencyName" name="emergencyName" required pattern="^[a-zA-Z\-'\s]+$" title="Emergency contact name should only contain letters" class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none">
+              <input type="text" id="emergencyName" name="emergencyName" required class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
+              <span id="emergencyNameErr" class="text-xs text-red-500 hidden mt-1"><i class="fa-solid fa-circle-exclamation mr-1"></i> Name should contain only letters.</span>
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700">Emergency Contact Phone *</label>
-              <input type="tel" id="emergencyPhone" name="emergencyPhone" placeholder="+1 (555) 000-0000" required pattern="^\+?[0-9\s\-\(\)]{7,20}$" title="Please enter a valid emergency phone number" class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none">
+              <input type="tel" id="emergencyPhone" name="emergencyPhone" placeholder="+1 (555) 000-0000" required class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
+              <span id="emergencyPhoneErr" class="text-xs text-red-500 hidden mt-1"><i class="fa-solid fa-circle-exclamation mr-1"></i> Enter a valid phone number.</span>
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700">T-Shirt Size *</label>
-              <select id="tshirtSize" name="tshirtSize" required class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none">
+              <select id="tshirtSize" name="tshirtSize" required class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
                 <option value="">Select Size...</option>
                 <option value="Mens XS">Mens XS</option>
                 <option value="Mens S">Mens S</option>
@@ -285,7 +293,7 @@
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700">Special Accommodations</label>
-              <input type="text" id="specialAccommodations" name="specialAccommodations" placeholder="e.g. Accessibility needs" class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none">
+              <input type="text" id="specialAccommodations" name="specialAccommodations" placeholder="e.g. Accessibility needs" class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
             </div>
           </div>
         </div>
@@ -313,12 +321,12 @@
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
             <div>
               <label class="block text-sm font-medium text-gray-700">Participant Electronic Signature (Full Name) *</label>
-              <input type="text" id="signature" name="signature" placeholder="Must match First + Last Name above" required class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none">
-              <span id="sigMatchError" class="text-xs text-red-500 hidden mt-1 block"><i class="fa-solid fa-triangle-exclamation mr-1"></i> Signature must match First Name + Last Name</span>
+              <input type="text" id="signature" name="signature" placeholder="Must match First + Last Name above" required class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
+              <span id="sigMatchError" class="text-xs text-red-500 hidden mt-1"><i class="fa-solid fa-triangle-exclamation mr-1"></i> Signature must match First Name + Last Name</span>
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700">Date *</label>
-              <input type="date" id="sigDate" name="sigDate" required class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none">
+              <input type="date" id="sigDate" name="sigDate" required class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
             </div>
           </div>
         </div>
@@ -374,23 +382,105 @@
       document.getElementById(id).classList.toggle('hidden');
     }
 
-    // Set default signature date to today
     document.getElementById('sigDate').valueAsDate = new Date();
 
+    // --- REAL-TIME FIELD VALIDATORS ---
+    const nameRegex = /^[a-zA-Z\s\-']+$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const phoneRegex = /^\+?[0-9\s\-\(\)]{7,20}$/;
+
+    function validateField(inputEl, regex, errEl) {
+      const val = inputEl.value.trim();
+      if (!val) {
+        // Clear warning if empty so default 'required' takes over on submit
+        inputEl.classList.remove('border-red-500', 'ring-red-200');
+        if (errEl) errEl.classList.add('hidden');
+        return true;
+      }
+      
+      const isValid = regex.test(val);
+      if (!isValid) {
+        inputEl.classList.add('border-red-500', 'ring-2', 'ring-red-200');
+        if (errEl) errEl.classList.remove('hidden');
+      } else {
+        inputEl.classList.remove('border-red-500', 'ring-2', 'ring-red-200');
+        if (errEl) errEl.classList.add('hidden');
+      }
+      return isValid;
+    }
+
+    // Attach real-time 'blur' and 'input' event listeners
+    function attachFieldValidator(id, regex, errId) {
+      const el = document.getElementById(id);
+      const errEl = document.getElementById(errId);
+      el.addEventListener('blur', () => validateField(el, regex, errEl));
+      el.addEventListener('input', () => validateField(el, regex, errEl));
+    }
+
+    attachFieldValidator('firstName', nameRegex, 'firstNameErr');
+    attachFieldValidator('lastName', nameRegex, 'lastNameErr');
+    attachFieldValidator('email', emailRegex, 'emailErr');
+    attachFieldValidator('mobile', phoneRegex, 'mobileErr');
+    attachFieldValidator('city', nameRegex, 'cityErr');
+    attachFieldValidator('emergencyName', nameRegex, 'emergencyNameErr');
+    attachFieldValidator('emergencyPhone', phoneRegex, 'emergencyPhoneErr');
+
+    // Real-Time PIN Match Verification
+    function checkPinMatch() {
+      const pin = document.getElementById('userPin').value;
+      const confirm = document.getElementById('confirmPin').value;
+      const pinErr = document.getElementById('pinErr');
+      
+      if (confirm && pin !== confirm) {
+        document.getElementById('confirmPin').classList.add('border-red-500', 'ring-2', 'ring-red-200');
+        pinErr.classList.remove('hidden');
+      } else {
+        document.getElementById('confirmPin').classList.remove('border-red-500', 'ring-2', 'ring-red-200');
+        pinErr.classList.add('hidden');
+      }
+    }
+    document.getElementById('confirmPin').addEventListener('blur', checkPinMatch);
+    document.getElementById('confirmPin').addEventListener('input', checkPinMatch);
+
+    // Real-Time Signature Verification against First Name + Last Name
+    function checkSignatureMatch() {
+      const fn = document.getElementById('firstName').value.trim();
+      const ln = document.getElementById('lastName').value.trim();
+      const sig = document.getElementById('signature').value.trim();
+      const sigErr = document.getElementById('sigMatchError');
+      const sigEl = document.getElementById('signature');
+
+      if (!sig) {
+        sigEl.classList.remove('border-red-500', 'ring-2', 'ring-red-200');
+        sigErr.classList.add('hidden');
+        return;
+      }
+
+      const expected = `${fn} ${ln}`.toLowerCase();
+      if (sig.toLowerCase() !== expected) {
+        sigEl.classList.add('border-red-500', 'ring-2', 'ring-red-200');
+        sigErr.classList.remove('hidden');
+      } else {
+        sigEl.classList.remove('border-red-500', 'ring-2', 'ring-red-200');
+        sigErr.classList.add('hidden');
+      }
+    }
+    document.getElementById('signature').addEventListener('blur', checkSignatureMatch);
+    document.getElementById('signature').addEventListener('input', checkSignatureMatch);
+
+    // --- FORM SUBMIT HANDLER ---
     document.getElementById('regForm').addEventListener('submit', function(e) {
       const firstName = document.getElementById('firstName').value.trim();
       const lastName = document.getElementById('lastName').value.trim();
       const signature = document.getElementById('signature').value.trim();
       const expectedFullName = `${firstName} ${lastName}`.toLowerCase();
 
-      // Signature Match Verification
+      // Signature Mismatch Guard
       if (signature.toLowerCase() !== expectedFullName) {
         e.preventDefault();
         document.getElementById('sigMatchError').classList.remove('hidden');
-        alert(`Electronic Signature Mismatch!\n\nYour signature ("${signature}") does not match First Name + Last Name ("${firstName} ${lastName}"). Please check your entry.`);
+        document.getElementById('signature').focus();
         return;
-      } else {
-        document.getElementById('sigMatchError').classList.add('hidden');
       }
 
       const existingRegId = document.getElementById('regId').value;
@@ -401,7 +491,8 @@
 
       if (!isEditing && userPin !== confirmPin) {
         e.preventDefault();
-        alert("Security PINs do not match. Please verify and try again.");
+        document.getElementById('pinErr').classList.remove('hidden');
+        document.getElementById('confirmPin').focus();
         return;
       }
 
