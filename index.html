@@ -109,7 +109,6 @@
 
       <form id="regForm" class="p-6 sm:p-8 space-y-8">
         <input type="hidden" id="regId" name="regId" value="">
-        <input type="hidden" id="pin" name="pin" value="">
 
         <!-- Personal Info -->
         <div>
@@ -137,6 +136,23 @@
                 <label class="inline-flex items-center"><input type="radio" name="gender" value="Male" required class="text-pts-navy focus:ring-pts-navy"> <span class="ml-2">Male</span></label>
                 <label class="inline-flex items-center"><input type="radio" name="gender" value="Female" required class="text-pts-navy focus:ring-pts-navy"> <span class="ml-2">Female</span></label>
               </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Custom Security PIN Setup Section -->
+        <div id="pinSection" class="bg-blue-50/60 p-5 rounded-xl border border-blue-200">
+          <h3 class="text-sm font-bold text-pts-navy uppercase tracking-wider mb-1"><i class="fa-solid fa-key mr-2"></i> Create Your Security PIN *</h3>
+          <p class="text-xs text-gray-600 mb-4">Choose a 4-digit PIN so you can access and update your details later.</p>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label class="block text-xs font-semibold text-gray-700 uppercase">Choose Security PIN (4 Digits)</label>
+              <input type="password" id="userPin" name="userPin" maxlength="6" placeholder="••••" required class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 text-center text-lg font-mono tracking-widest focus:ring-2 focus:ring-pts-navy focus:outline-none">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-gray-700 uppercase">Confirm Security PIN</label>
+              <input type="password" id="confirmPin" maxlength="6" placeholder="••••" required class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 text-center text-lg font-mono tracking-widest focus:ring-2 focus:ring-pts-navy focus:outline-none">
             </div>
           </div>
         </div>
@@ -244,7 +260,7 @@
     <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl relative">
       <button onclick="toggleModal('lookupModal')" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark text-xl"></i></button>
       <h3 class="text-xl font-bold text-pts-navy mb-2"><i class="fa-solid fa-shield-halved mr-2"></i> Secure Registration Lookup</h3>
-      <p class="text-sm text-gray-600 mb-4">Enter your Registration ID or Email along with your 4-digit Security PIN.</p>
+      <p class="text-sm text-gray-600 mb-4">Enter your Registration ID or Email along with your custom Security PIN.</p>
       
       <div class="space-y-4">
         <div>
@@ -252,8 +268,8 @@
           <input type="text" id="lookupQuery" placeholder="e.g. PTS-123456 or name@company.com" class="w-full rounded-lg border border-gray-300 p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none">
         </div>
         <div>
-          <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">4-Digit Security PIN</label>
-          <input type="password" maxlength="4" id="lookupPin" placeholder="••••" class="w-full rounded-lg border border-gray-300 p-2.5 text-center text-lg tracking-widest focus:ring-2 focus:ring-pts-navy focus:outline-none">
+          <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">Your Security PIN</label>
+          <input type="password" id="lookupPin" placeholder="••••" class="w-full rounded-lg border border-gray-300 p-2.5 text-center text-lg tracking-widest focus:ring-2 focus:ring-pts-navy focus:outline-none">
         </div>
         <button onclick="performLookup()" class="w-full bg-pts-navy text-white font-semibold py-2.5 rounded-lg hover:bg-pts-blue transition">Verify & Access Details</button>
       </div>
@@ -271,6 +287,16 @@
 
     document.getElementById('regForm').addEventListener('submit', async function(e) {
       e.preventDefault();
+      
+      const isEditing = Boolean(document.getElementById('regId').value);
+      const userPin = document.getElementById('userPin').value;
+      const confirmPin = document.getElementById('confirmPin').value;
+
+      if (!isEditing && userPin !== confirmPin) {
+        alert("Security PINs do not match. Please verify and try again.");
+        return;
+      }
+
       const btnText = document.getElementById('btnText');
       btnText.innerText = "Processing...";
 
@@ -287,11 +313,10 @@
         const result = await response.json();
 
         if (result.status === 'success') {
-          if (data.regId) {
+          if (isEditing) {
             alert('Your details have been successfully updated!');
             btnText.innerText = "Update Details";
           } else {
-            alert(`Registration Saved!\n\nYour Registration ID: ${result.regId}\nYour 4-Digit Security PIN: ${result.pin}\n\nPlease save this PIN to update your details later.`);
             window.location.href = `${STRIPE_PAYMENT_LINK}?client_reference_id=${result.regId}`;
           }
         } else {
@@ -324,7 +349,12 @@
         if (json.status === 'found') {
           const d = json.data;
           document.getElementById('regId').value = d.regId;
-          document.getElementById('pin').value = d.pin;
+          document.getElementById('userPin').value = d.pin;
+          document.getElementById('confirmPin').value = d.pin;
+          
+          // Hide PIN box when editing
+          document.getElementById('pinSection').classList.add('hidden');
+
           document.getElementById('firstName').value = d.firstName;
           document.getElementById('lastName').value = d.lastName;
           document.getElementById('email').value = d.email;
