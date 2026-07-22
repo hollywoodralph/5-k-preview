@@ -23,44 +23,40 @@
   </script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
-<body class="bg-gray-50 text-gray-800 font-sans antialiased">
+<body class="bg-gray-50 text-gray-800 font-sans antialiased min-h-screen flex flex-col">
 
   <!-- Header / Hero Section -->
   <header class="bg-pts-navy text-white shadow-xl relative overflow-hidden">
-    <div class="max-w-6xl mx-auto px-6 py-8 md:py-12 relative z-10">
-      <div class="flex flex-col md:flex-row items-center justify-between gap-6 border-b border-blue-800 pb-8">
-        <!-- Dual Logos Container -->
-        <div class="flex items-center space-x-4">
-          <div class="bg-white p-3 rounded-lg shadow-md flex items-center space-x-4">
-            <!-- Paramount Logo -->
-            <img src="PTSLogo_LogoOverPTS_Blue.png" alt="Paramount Transportation Systems" class="h-12 md:h-16 object-contain">
-            
-            <!-- Subtle Vertical Divider -->
-            <div class="h-10 w-px bg-gray-300"></div>
-            
-            <!-- IAM Logo -->
-            <img src="IAM_Logo.png" alt="International Association of Movers" class="h-12 md:h-16 object-contain">
-          </div>
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-8 md:py-12 relative z-10">
+      
+      <!-- Top Navigation & Logos -->
+      <div class="flex flex-col md:flex-row items-center justify-between gap-6 border-b border-blue-800/60 pb-8">
+        <div class="bg-white px-5 py-3 rounded-xl shadow-md flex items-center space-x-4 md:space-x-6">
+          <img src="PTSLogo_LogoOverPTS_Blue.png" alt="Paramount Transportation Systems" class="h-10 sm:h-12 md:h-14 object-contain">
+          <div class="h-8 sm:h-10 w-px bg-gray-300"></div>
+          <img src="IAM_Logo.png" alt="International Association of Movers" class="h-10 sm:h-12 md:h-14 object-contain" onError="this.onerror=null;this.src='https://iamovers.org/wp-content/uploads/2025/01/IAM-Logo.png';">
         </div>
+
         <div class="text-center md:text-right">
           <button onclick="toggleModal('lookupModal')" class="bg-white/10 hover:bg-white/20 text-white px-5 py-2.5 rounded-lg text-sm font-semibold border border-white/30 transition flex items-center gap-2 mx-auto md:ml-auto">
-            <i class="fa-solid fa-magnifying-glass"></i> Check-in / Edit Registration
+            <i class="fa-solid fa-lock"></i> Secure Check-in / Edit Registration
           </button>
         </div>
       </div>
 
+      <!-- Hero Content -->
       <div class="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
-        <div class="lg:col-span-2">
+        <div class="lg:col-span-2 text-center lg:text-left">
           <span class="inline-block bg-blue-500/30 text-blue-200 text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-3">IAM Convention Event</span>
-          <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight">IAM / PARAMOUNT 5K Fun Run</h1>
-          <p class="mt-3 text-lg text-blue-100 max-w-2xl">
+          <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight">IAM / PARAMOUNT 5K Fun Run</h1>
+          <p class="mt-3 text-base sm:text-lg text-blue-100 max-w-2xl mx-auto lg:mx-0">
             Join us for an energetic 5K run! Complete your registration below to secure your spot and official race shirt.
           </p>
         </div>
         
-        <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 text-center shadow-inner">
+        <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 text-center shadow-inner max-w-xs mx-auto lg:max-w-none w-full">
           <span class="text-xs font-semibold uppercase tracking-wider text-blue-200">Registration Fee</span>
-          <div class="text-5xl font-black text-white mt-1">$75.00</div>
+          <div class="text-4xl sm:text-5xl font-black text-white mt-1">$75.00</div>
           <span class="text-xs text-blue-100 block mt-1">Includes Official T-Shirt & Bib</span>
         </div>
       </div>
@@ -68,8 +64,8 @@
   </header>
 
   <!-- Key Details Bar -->
-  <section class="max-w-6xl mx-auto px-6 -mt-6 relative z-20">
-    <div class="bg-white rounded-xl shadow-lg border border-gray-100 p-6 grid grid-cols-2 md:grid-cols-4 gap-6 text-sm">
+  <section class="max-w-6xl mx-auto px-4 sm:px-6 -mt-6 relative z-20 w-full">
+    <div class="bg-white rounded-xl shadow-lg border border-gray-100 p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 text-sm">
       <div class="flex items-start space-x-3">
         <i class="fa-solid fa-calendar-day text-pts-navy text-xl mt-0.5"></i>
         <div>
@@ -102,17 +98,18 @@
     </div>
   </section>
 
-  <!-- Main Registration Form -->
-  <main class="max-w-4xl mx-auto px-6 py-12">
+  <!-- Main Registration Form Container -->
+  <main class="max-w-4xl mx-auto px-4 sm:px-6 py-12 w-full flex-grow">
     <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
       
-      <div class="bg-pts-light border-b border-gray-200 px-8 py-4 flex justify-between items-center">
+      <div class="bg-pts-light border-b border-gray-200 px-6 sm:px-8 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
         <h2 id="formTitle" class="text-xl font-bold text-pts-navy">Participant Registration</h2>
         <span class="text-xs text-gray-500">* Each participant must submit a separate form</span>
       </div>
 
-      <form id="regForm" class="p-8 space-y-8">
+      <form id="regForm" class="p-6 sm:p-8 space-y-8">
         <input type="hidden" id="regId" name="regId" value="">
+        <input type="hidden" id="pin" name="pin" value="">
 
         <!-- Personal Info -->
         <div>
@@ -242,24 +239,30 @@
     </div>
   </main>
 
-  <!-- Modal for Checking / Modifying details -->
+  <!-- Modal for Secure Lookup / Verification -->
   <div id="lookupModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
     <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl relative">
       <button onclick="toggleModal('lookupModal')" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark text-xl"></i></button>
-      <h3 class="text-xl font-bold text-pts-navy mb-2">Check-in or Update Details</h3>
-      <p class="text-sm text-gray-600 mb-4">Enter your Registration ID (e.g. PTS-123456) or Email Address to look up your details.</p>
+      <h3 class="text-xl font-bold text-pts-navy mb-2"><i class="fa-solid fa-shield-halved mr-2"></i> Secure Registration Lookup</h3>
+      <p class="text-sm text-gray-600 mb-4">Enter your Registration ID or Email along with your 4-digit Security PIN.</p>
       
       <div class="space-y-4">
-        <input type="text" id="lookupQuery" placeholder="Registration ID or Email" class="w-full rounded-lg border border-gray-300 p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none">
-        <button onclick="performLookup()" class="w-full bg-pts-navy text-white font-semibold py-2.5 rounded-lg hover:bg-pts-blue transition">Lookup Registration</button>
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">Registration ID or Email</label>
+          <input type="text" id="lookupQuery" placeholder="e.g. PTS-123456 or name@company.com" class="w-full rounded-lg border border-gray-300 p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">4-Digit Security PIN</label>
+          <input type="password" maxlength="4" id="lookupPin" placeholder="••••" class="w-full rounded-lg border border-gray-300 p-2.5 text-center text-lg tracking-widest focus:ring-2 focus:ring-pts-navy focus:outline-none">
+        </div>
+        <button onclick="performLookup()" class="w-full bg-pts-navy text-white font-semibold py-2.5 rounded-lg hover:bg-pts-blue transition">Verify & Access Details</button>
       </div>
       <div id="lookupMessage" class="mt-4 text-sm text-center"></div>
     </div>
   </div>
 
   <script>
-    // Configuration Settings
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyBho9QviGtmrEp4y58P-iXQXlcO3uUj7x3dZ6Fq5A6Ctqv35l5gHqXOH2DexwEgVpk6A/exec";
+    const SCRIPT_URL = "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL";
     const STRIPE_PAYMENT_LINK = "https://buy.stripe.com/6oU14ffDuemrfOM11h3gk01";
 
     function toggleModal(id) {
@@ -286,12 +289,13 @@
         if (result.status === 'success') {
           if (data.regId) {
             alert('Your details have been successfully updated!');
-            btnText.innerText = "Proceed to $75.00 Payment";
+            btnText.innerText = "Update Details";
           } else {
+            alert(`Registration Saved!\n\nYour Registration ID: ${result.regId}\nYour 4-Digit Security PIN: ${result.pin}\n\nPlease save this PIN to update your details later.`);
             window.location.href = `${STRIPE_PAYMENT_LINK}?client_reference_id=${result.regId}`;
           }
         } else {
-          alert('Error saving details: ' + result.message);
+          alert('Error: ' + result.message);
           btnText.innerText = "Proceed to $75.00 Payment";
         }
       } catch (err) {
@@ -301,19 +305,26 @@
 
     async function performLookup() {
       const q = document.getElementById('lookupQuery').value;
+      const pin = document.getElementById('lookupPin').value;
       const msg = document.getElementById('lookupMessage');
-      if (!q) return;
+      
+      if (!q || !pin) {
+        msg.className = "mt-4 text-sm text-center text-red-500";
+        msg.innerText = "Please enter both Email/ID and Security PIN.";
+        return;
+      }
 
       msg.className = "mt-4 text-sm text-center text-gray-500";
-      msg.innerText = "Searching...";
+      msg.innerText = "Verifying...";
 
       try {
-        const res = await fetch(`${SCRIPT_URL}?action=lookup&query=${encodeURIComponent(q)}`);
+        const res = await fetch(`${SCRIPT_URL}?action=lookup&query=${encodeURIComponent(q)}&pin=${encodeURIComponent(pin)}`);
         const json = await res.json();
 
         if (json.status === 'found') {
           const d = json.data;
           document.getElementById('regId').value = d.regId;
+          document.getElementById('pin').value = d.pin;
           document.getElementById('firstName').value = d.firstName;
           document.getElementById('lastName').value = d.lastName;
           document.getElementById('email').value = d.email;
@@ -340,13 +351,16 @@
           document.getElementById('btnText').innerText = "Update Details";
           toggleModal('lookupModal');
           msg.innerText = "";
+        } else if (json.status === 'denied') {
+          msg.className = "mt-4 text-sm text-center text-red-600 font-semibold";
+          msg.innerText = "Access Denied: Incorrect Security PIN.";
         } else {
           msg.className = "mt-4 text-sm text-center text-red-500";
-          msg.innerText = "No matching registration found. Please check and try again.";
+          msg.innerText = "No matching registration found.";
         }
       } catch (e) {
         msg.className = "mt-4 text-sm text-center text-red-500";
-        msg.innerText = "Error looking up registration.";
+        msg.innerText = "Error searching registration.";
       }
     }
   </script>
