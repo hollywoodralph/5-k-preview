@@ -104,11 +104,12 @@
       
       <div class="bg-pts-light border-b border-gray-200 px-6 sm:px-8 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
         <h2 id="formTitle" class="text-xl font-bold text-pts-navy">Participant Registration</h2>
-        <span class="text-xs text-gray-500">* Each participant must submit a separate form</span>
+        <div id="paymentBadge" class="hidden"></div>
       </div>
 
       <form id="regForm" class="p-6 sm:p-8 space-y-8">
         <input type="hidden" id="regId" name="regId" value="">
+        <input type="hidden" id="currentPaymentStatus" value="Pending Payment">
 
         <!-- Personal Info -->
         <div>
@@ -143,11 +144,11 @@
         <!-- Custom Security PIN Setup Section -->
         <div id="pinSection" class="bg-blue-50/60 p-5 rounded-xl border border-blue-200">
           <h3 class="text-sm font-bold text-pts-navy uppercase tracking-wider mb-1"><i class="fa-solid fa-key mr-2"></i> Create Your Security PIN *</h3>
-          <p class="text-xs text-gray-600 mb-4">Choose a 4-digit PIN so you can access and update your details later.</p>
+          <p class="text-xs text-gray-600 mb-4">Choose a PIN so you can access and update your details later.</p>
           
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label class="block text-xs font-semibold text-gray-700 uppercase">Choose Security PIN (4 Digits)</label>
+              <label class="block text-xs font-semibold text-gray-700 uppercase">Choose Security PIN</label>
               <input type="password" id="userPin" name="userPin" maxlength="6" placeholder="••••" required class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 text-center text-lg font-mono tracking-widest focus:ring-2 focus:ring-pts-navy focus:outline-none">
             </div>
             <div>
@@ -288,9 +289,11 @@
     document.getElementById('regForm').addEventListener('submit', async function(e) {
       e.preventDefault();
       
-      const isEditing = Boolean(document.getElementById('regId').value);
+      const regId = document.getElementById('regId').value;
+      const isEditing = Boolean(regId);
       const userPin = document.getElementById('userPin').value;
       const confirmPin = document.getElementById('confirmPin').value;
+      const currentStatus = document.getElementById('currentPaymentStatus').value;
 
       if (!isEditing && userPin !== confirmPin) {
         alert("Security PINs do not match. Please verify and try again.");
@@ -314,14 +317,20 @@
 
         if (result.status === 'success') {
           if (isEditing) {
-            alert('Your details have been successfully updated!');
-            btnText.innerText = "Update Details";
+            // If editing and payment is pending, send to Stripe
+            if (currentStatus !== 'Paid') {
+              window.location.href = `${STRIPE_PAYMENT_LINK}?client_reference_id=${regId}`;
+            } else {
+              alert('Your registration details have been updated successfully!');
+              btnText.innerText = "Save Changes";
+            }
           } else {
+            // New Registration -> Go to Stripe
             window.location.href = `${STRIPE_PAYMENT_LINK}?client_reference_id=${result.regId}`;
           }
         } else {
           alert('Error: ' + result.message);
-          btnText.innerText = "Proceed to $75.00 Payment";
+          btnText.innerText = isEditing ? "Save Changes" : "Proceed to $75.00 Payment";
         }
       } catch (err) {
         window.location.href = `${STRIPE_PAYMENT_LINK}`;
@@ -351,8 +360,8 @@
           document.getElementById('regId').value = d.regId;
           document.getElementById('userPin').value = d.pin;
           document.getElementById('confirmPin').value = d.pin;
+          document.getElementById('currentPaymentStatus').value = d.paymentStatus;
           
-          // Hide PIN box when editing
           document.getElementById('pinSection').classList.add('hidden');
 
           document.getElementById('firstName').value = d.firstName;
@@ -378,7 +387,19 @@
           }
 
           document.getElementById('formTitle').innerText = `Editing Registration (${d.regId})`;
-          document.getElementById('btnText').innerText = "Update Details";
+          
+          // Dynamic Payment Badge & Button Configuration
+          const badgeContainer = document.getElementById('paymentBadge');
+          badgeContainer.classList.remove('hidden');
+
+          if (d.paymentStatus === 'Paid') {
+            badgeContainer.innerHTML = `<span class="bg-green-100 text-green-800 text-xs font-bold px-3 py-1 rounded-full"><i class="fa-solid fa-check mr-1"></i> Payment Complete</span>`;
+            document.getElementById('btnText').innerText = "Save Updated Details";
+          } else {
+            badgeContainer.innerHTML = `<span class="bg-amber-100 text-amber-800 text-xs font-bold px-3 py-1 rounded-full"><i class="fa-solid fa-clock mr-1"></i> Payment Pending</span>`;
+            document.getElementById('btnText').innerText = "Save & Complete $75.00 Payment Now";
+          }
+
           toggleModal('lookupModal');
           msg.innerText = "";
         } else if (json.status === 'denied') {
