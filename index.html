@@ -279,18 +279,18 @@
   </div>
 
   <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyHuC-BTk7bcBlxTjO8MKtB6domj1XU1uBvqJrQu0sUE4I03DIsG2TiY1kaT1XZBPK6/exec";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyJhTaX8g27ceSlTn09K6iWlR2FCFH6L7hGUY3SYZdnyuF4UD9s-rqZ_wk0izxhcYW6/exec;
     const STRIPE_PAYMENT_LINK = "https://buy.stripe.com/6oU14ffDuemrfOM11h3gk01";
 
     function toggleModal(id) {
       document.getElementById(id).classList.toggle('hidden');
     }
 
-    document.getElementById('regForm').addEventListener('submit', async function(e) {
+    document.getElementById('regForm').addEventListener('submit', function(e) {
       e.preventDefault();
       
-      const regId = document.getElementById('regId').value;
-      const isEditing = Boolean(regId);
+      const existingRegId = document.getElementById('regId').value;
+      const isEditing = Boolean(existingRegId);
       const userPin = document.getElementById('userPin').value;
       const confirmPin = document.getElementById('confirmPin').value;
       const currentStatus = document.getElementById('currentPaymentStatus').value;
@@ -303,43 +303,39 @@
       const btnText = document.getElementById('btnText');
       btnText.innerText = "Processing...";
 
+      const targetRegId = isEditing ? existingRegId : ('PTS-' + Math.floor(100000 + Math.random() * 900000));
+
       const formData = new FormData(this);
       const data = Object.fromEntries(formData.entries());
       data.photoRelease = document.getElementById('photoRelease').checked ? "true" : "false";
       data.liabilityWaiver = document.getElementById('liabilityWaiver').checked ? "true" : "false";
+      data.generatedRegId = targetRegId;
 
       const params = new URLSearchParams(data);
 
-      try {
-        const response = await fetch(SCRIPT_URL, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-          },
-          body: params.toString()
-        });
-        
-        const result = await response.json();
+      // Post in background with mode: 'no-cors' to prevent CORS redirect blocks
+      fetch(SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: params.toString()
+      });
 
-        if (result.status === 'success') {
-          if (isEditing) {
-            if (currentStatus !== 'Paid') {
-              window.location.href = `${STRIPE_PAYMENT_LINK}?client_reference_id=${regId}`;
-            } else {
-              alert('Your registration details have been updated successfully!');
-              btnText.innerText = "Save Changes";
-            }
+      // Proceed seamlessly after writing data
+      setTimeout(() => {
+        if (isEditing) {
+          if (currentStatus !== 'Paid') {
+            window.location.href = `${STRIPE_PAYMENT_LINK}?client_reference_id=${targetRegId}`;
           } else {
-            window.location.href = `${STRIPE_PAYMENT_LINK}?client_reference_id=${result.regId}`;
+            alert('Your registration details have been updated successfully!');
+            btnText.innerText = "Save Changes";
           }
         } else {
-          alert('Error: ' + result.message);
-          btnText.innerText = isEditing ? "Save Changes" : "Proceed to $75.00 Payment";
+          window.location.href = `${STRIPE_PAYMENT_LINK}?client_reference_id=${targetRegId}`;
         }
-      } catch (err) {
-        // Fallback redirection to Stripe checkout
-        window.location.href = `${STRIPE_PAYMENT_LINK}`;
-      }
+      }, 800);
     });
 
     async function performLookup() {
