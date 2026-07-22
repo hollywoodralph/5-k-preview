@@ -279,7 +279,7 @@
   </div>
 
   <script>
-    const SCRIPT_URL = "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzYsPj4WzwrAvdIvqnNaZ4ddYh6ZqATOEK9DpgFA3Q4NBUt8VwN6u6_n59hpJoRJqaZoA/exec";
     const STRIPE_PAYMENT_LINK = "https://buy.stripe.com/6oU14ffDuemrfOM11h3gk01";
 
     function toggleModal(id) {
@@ -305,19 +305,24 @@
 
       const formData = new FormData(this);
       const data = Object.fromEntries(formData.entries());
-      data.photoRelease = document.getElementById('photoRelease').checked;
-      data.liabilityWaiver = document.getElementById('liabilityWaiver').checked;
+      data.photoRelease = document.getElementById('photoRelease').checked ? "true" : "false";
+      data.liabilityWaiver = document.getElementById('liabilityWaiver').checked ? "true" : "false";
+
+      const params = new URLSearchParams(data);
 
       try {
         const response = await fetch(SCRIPT_URL, {
           method: 'POST',
-          body: JSON.stringify(data)
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          body: params.toString()
         });
+        
         const result = await response.json();
 
         if (result.status === 'success') {
           if (isEditing) {
-            // If editing and payment is pending, send to Stripe
             if (currentStatus !== 'Paid') {
               window.location.href = `${STRIPE_PAYMENT_LINK}?client_reference_id=${regId}`;
             } else {
@@ -325,7 +330,6 @@
               btnText.innerText = "Save Changes";
             }
           } else {
-            // New Registration -> Go to Stripe
             window.location.href = `${STRIPE_PAYMENT_LINK}?client_reference_id=${result.regId}`;
           }
         } else {
@@ -333,6 +337,7 @@
           btnText.innerText = isEditing ? "Save Changes" : "Proceed to $75.00 Payment";
         }
       } catch (err) {
+        // Fallback redirection to Stripe checkout
         window.location.href = `${STRIPE_PAYMENT_LINK}`;
       }
     });
@@ -388,13 +393,12 @@
 
           document.getElementById('formTitle').innerText = `Editing Registration (${d.regId})`;
           
-          // Dynamic Payment Badge & Button Configuration
           const badgeContainer = document.getElementById('paymentBadge');
           badgeContainer.classList.remove('hidden');
 
           if (d.paymentStatus === 'Paid') {
             badgeContainer.innerHTML = `<span class="bg-green-100 text-green-800 text-xs font-bold px-3 py-1 rounded-full"><i class="fa-solid fa-check mr-1"></i> Payment Complete</span>`;
-            document.getElementById('btnText').innerText = "Save Updated Details";
+            document.getElementById('btnText').innerText = "Save Changes";
           } else {
             badgeContainer.innerHTML = `<span class="bg-amber-100 text-amber-800 text-xs font-bold px-3 py-1 rounded-full"><i class="fa-solid fa-clock mr-1"></i> Payment Pending</span>`;
             document.getElementById('btnText').innerText = "Save & Complete $75.00 Payment Now";
