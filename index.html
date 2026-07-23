@@ -51,11 +51,11 @@
 
       <!-- Hero Content Grid -->
       <div class="mt-6 grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
-        <!-- Title & Subtitle (Always Split into 2 Lines) -->
+        <!-- Title & Subtitle (Uniform Font & Color for Both Lines) -->
         <div class="md:col-span-6 text-center md:text-left">
           <span class="inline-block bg-blue-500/30 text-blue-200 text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-3">IAM Convention Event</span>
           <h1 class="leading-tight">
-            <span class="block text-2xl sm:text-3xl md:text-3xl lg:text-4xl font-bold tracking-wider text-blue-200 uppercase mb-1">IAM / PARAMOUNT</span>
+            <span class="block text-3xl sm:text-4xl md:text-4xl lg:text-5xl font-black tracking-tight text-white">IAM / PARAMOUNT</span>
             <span class="block text-3xl sm:text-4xl md:text-4xl lg:text-5xl font-black tracking-tight text-white">Charity 5K Fun Run</span>
           </h1>
           <p class="mt-3 text-sm sm:text-base text-blue-100 max-w-xl mx-auto md:mx-0">
@@ -449,12 +449,12 @@
             <div>
               <label class="block text-sm font-medium text-gray-700">Emergency Contact Name *</label>
               <input type="text" id="emergencyName" name="emergencyName" required class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
-              <span id="emergencyNameErr" class="text-xs text-red-500 hidden mt-1"><i class="fa-solid fa-circle-exclamation mr-1"></i> Name should contain only letters.</span>
+              <span id="emergencyNameErr" class="text-xs text-red-500 hidden mt-1"><i class="fa-solid fa-circle-exclamation mr-1"></i> Emergency contact cannot be yourself.</span>
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700">Emergency Contact Phone *</label>
               <input type="tel" id="emergencyPhone" name="emergencyPhone" placeholder="+1 555 000 0000" required class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
-              <span id="emergencyPhoneErr" class="text-xs text-red-500 hidden mt-1"><i class="fa-solid fa-circle-exclamation mr-1"></i> Enter a valid phone number.</span>
+              <span id="emergencyPhoneErr" class="text-xs text-red-500 hidden mt-1"><i class="fa-solid fa-circle-exclamation mr-1"></i> Emergency phone cannot be your own phone number.</span>
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700">T-Shirt Size *</label>
@@ -704,8 +704,69 @@
     attachFieldValidator('email', emailRegex, 'emailErr');
     attachFieldValidator('mobile', phoneRegex, 'mobileErr');
     attachFieldValidator('city', nameRegex, 'cityErr');
-    attachFieldValidator('emergencyName', nameRegex, 'emergencyNameErr');
-    attachFieldValidator('emergencyPhone', phoneRegex, 'emergencyPhoneErr');
+
+    // --- EMERGENCY CONTACT SELF-ENTRY PREVENTION ---
+    function checkEmergencyContact() {
+      const fn = document.getElementById('firstName').value.trim().toLowerCase();
+      const ln = document.getElementById('lastName').value.trim().toLowerCase();
+      const emName = document.getElementById('emergencyName').value.trim().toLowerCase();
+      const mobileDigits = document.getElementById('mobile').value.replace(/\D/g, '');
+      const emPhoneDigits = document.getElementById('emergencyPhone').value.replace(/\D/g, '');
+
+      const emNameEl = document.getElementById('emergencyName');
+      const emNameErr = document.getElementById('emergencyNameErr');
+      const emPhoneEl = document.getElementById('emergencyPhone');
+      const emPhoneErr = document.getElementById('emergencyPhoneErr');
+
+      let isValid = true;
+
+      // Check Emergency Name
+      if (emName) {
+        const fullName = `${fn} ${ln}`.trim();
+        if (fullName && (emName === fullName || (fn && emName === fn) || (ln && emName === ln))) {
+          emNameEl.classList.add('border-red-500', 'ring-2', 'ring-red-200');
+          emNameErr.innerText = "Emergency contact cannot be yourself. Please enter someone else.";
+          emNameErr.classList.remove('hidden');
+          isValid = false;
+        } else if (!nameRegex.test(emName)) {
+          emNameEl.classList.add('border-red-500', 'ring-2', 'ring-red-200');
+          emNameErr.innerText = "Name should contain only letters.";
+          emNameErr.classList.remove('hidden');
+          isValid = false;
+        } else {
+          emNameEl.classList.remove('border-red-500', 'ring-2', 'ring-red-200');
+          emNameErr.classList.add('hidden');
+        }
+      }
+
+      // Check Emergency Phone
+      if (emPhoneDigits) {
+        if (mobileDigits && emPhoneDigits === mobileDigits) {
+          emPhoneEl.classList.add('border-red-500', 'ring-2', 'ring-red-200');
+          emPhoneErr.innerText = "Emergency phone cannot be your own phone number.";
+          emPhoneErr.classList.remove('hidden');
+          isValid = false;
+        } else if (!phoneRegex.test(document.getElementById('emergencyPhone').value.trim())) {
+          emPhoneEl.classList.add('border-red-500', 'ring-2', 'ring-red-200');
+          emPhoneErr.innerText = "Enter a valid phone number.";
+          emPhoneErr.classList.remove('hidden');
+          isValid = false;
+        } else {
+          emPhoneEl.classList.remove('border-red-500', 'ring-2', 'ring-red-200');
+          emPhoneErr.classList.add('hidden');
+        }
+      }
+
+      return isValid;
+    }
+
+    document.getElementById('emergencyName').addEventListener('blur', checkEmergencyContact);
+    document.getElementById('emergencyName').addEventListener('input', checkEmergencyContact);
+    document.getElementById('emergencyPhone').addEventListener('blur', checkEmergencyContact);
+    document.getElementById('emergencyPhone').addEventListener('input', checkEmergencyContact);
+    document.getElementById('firstName').addEventListener('blur', checkEmergencyContact);
+    document.getElementById('lastName').addEventListener('blur', checkEmergencyContact);
+    document.getElementById('mobile').addEventListener('blur', checkEmergencyContact);
 
     // Real-Time PIN Match Verification
     function checkPinMatch() {
@@ -769,6 +830,14 @@
 
     // --- FORM SUBMIT HANDLER ---
     document.getElementById('regForm').addEventListener('submit', function(e) {
+      // Validate Emergency Contact Guard Clause
+      if (!checkEmergencyContact()) {
+        e.preventDefault();
+        alert("Invalid Emergency Contact Details!\n\nYour emergency contact name and phone number cannot be your own details. Please provide someone else's contact info.");
+        document.getElementById('emergencyName').focus();
+        return;
+      }
+
       const firstName = document.getElementById('firstName').value.trim();
       const lastName = document.getElementById('lastName').value.trim();
       const signature = document.getElementById('signature').value.trim();
