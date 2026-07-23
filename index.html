@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>IAM / PARAMOUNT 5K Fun Run Registration</title>
+  <title>IAM / PARAMOUNT Charity 5K Fun Run Registration</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -51,11 +51,14 @@
 
       <!-- Hero Content Grid -->
       <div class="mt-6 grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
-        <!-- Title & Subtitle -->
+        <!-- Title & Subtitle (Always Split into 2 Lines) -->
         <div class="md:col-span-6 text-center md:text-left">
-          <span class="inline-block bg-blue-500/30 text-blue-200 text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-2">IAM Convention Event</span>
-          <h1 class="text-3xl sm:text-4xl md:text-4xl lg:text-5xl font-extrabold tracking-tight leading-tight">IAM / PARAMOUNT 5K Fun Run</h1>
-          <p class="mt-2 text-sm sm:text-base text-blue-100 max-w-xl mx-auto md:mx-0">
+          <span class="inline-block bg-blue-500/30 text-blue-200 text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-3">IAM Convention Event</span>
+          <h1 class="leading-tight">
+            <span class="block text-2xl sm:text-3xl md:text-3xl lg:text-4xl font-bold tracking-wider text-blue-200 uppercase mb-1">IAM / PARAMOUNT</span>
+            <span class="block text-3xl sm:text-4xl md:text-4xl lg:text-5xl font-black tracking-tight text-white">Charity 5K Fun Run</span>
+          </h1>
+          <p class="mt-3 text-sm sm:text-base text-blue-100 max-w-xl mx-auto md:mx-0">
             Join us for an energetic 5K run! Complete your registration below to secure your spot and official race shirt.
           </p>
         </div>
@@ -99,7 +102,7 @@
               <i class="fa-regular fa-calendar-plus"></i> Add to Calendar
             </button>
             <div id="calMenu" class="hidden absolute top-7 left-0 bg-white border border-gray-200 rounded-lg shadow-xl z-30 py-1.5 w-44 text-xs">
-              <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=IAM+%2F+PARAMOUNT+5K+Fun+Run&dates=20261023T133000Z/20261023T160000Z&details=IAM+%2F+Paramount+5K+Fun+Run.+Check-in+starts+at+6%3A15+AM.+Race+starts+at+7%3A30+AM.&location=Hyatt+Hotel" target="_blank" class="block px-3 py-1.5 hover:bg-blue-50 text-gray-700 flex items-center gap-2"><i class="fa-brands fa-google text-blue-500"></i> Google Calendar</a>
+              <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=IAM+%2F+PARAMOUNT+Charity+5K+Fun+Run&dates=20261023T133000Z/20261023T160000Z&details=IAM+%2F+Paramount+Charity+5K+Fun+Run.+Check-in+starts+at+6%3A15+AM.+Race+starts+at+7%3A30+AM.&location=Hyatt+Hotel" target="_blank" class="block px-3 py-1.5 hover:bg-blue-50 text-gray-700 flex items-center gap-2"><i class="fa-brands fa-google text-blue-500"></i> Google Calendar</a>
               <a href="javascript:downloadICS()" class="block px-3 py-1.5 hover:bg-blue-50 text-gray-700 flex items-center gap-2"><i class="fa-brands fa-apple text-gray-800"></i> Apple / Outlook (.ics)</a>
             </div>
           </div>
@@ -544,7 +547,7 @@
     <div id="pdfPassTemplate" class="p-8 bg-white text-gray-800 font-sans max-w-xl">
       <div class="border-b-2 border-blue-900 pb-4 mb-6 flex justify-between items-center">
         <div>
-          <h1 class="text-2xl font-extrabold text-blue-900">IAM / PARAMOUNT 5K RUN</h1>
+          <h1 class="text-2xl font-extrabold text-blue-900">IAM / PARAMOUNT Charity 5K RUN</h1>
           <p class="text-xs text-gray-500 font-semibold uppercase">Official Registration Confirmation Pass</p>
         </div>
         <div class="text-right">
@@ -594,7 +597,7 @@
     }
 
     function downloadICS() {
-      const icsData = "BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nSUMMARY:IAM / PARAMOUNT 5K Fun Run\nDESCRIPTION:IAM / Paramount 5K Fun Run Event. Check-in starts at 6:15 AM.\nLOCATION:Hyatt Hotel\nDTSTART:20261023T133000Z\nDTEND:20261023T160000Z\nEND:VEVENT\nEND:VCALENDAR";
+      const icsData = "BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nSUMMARY:IAM / PARAMOUNT Charity 5K Fun Run\nDESCRIPTION:IAM / Paramount Charity 5K Fun Run Event. Check-in starts at 6:15 AM.\nLOCATION:Hyatt Hotel\nDTSTART:20261023T133000Z\nDTEND:20261023T160000Z\nEND:VEVENT\nEND:VCALENDAR";
       const blob = new Blob([icsData], { type: 'text/calendar;charset=utf-8' });
       const link = document.createElement('a');
       link.href = window.URL.createObjectURL(blob);
@@ -643,7 +646,6 @@
       const domain = email.split('@')[1].toLowerCase();
       if (IGNORED_DOMAINS.includes(domain)) return;
 
-      // Only attempt autofill if company name is currently empty
       if (document.getElementById('company').value.trim()) return;
 
       try {
