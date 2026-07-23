@@ -705,11 +705,43 @@
     attachFieldValidator('mobile', phoneRegex, 'mobileErr');
     attachFieldValidator('city', nameRegex, 'cityErr');
 
-    // --- EMERGENCY CONTACT SELF-ENTRY PREVENTION ---
+    // Helper: Levenshtein Distance for fuzzy name match detection
+    function levenshteinDistance(a, b) {
+      if (a.length === 0) return b.length;
+      if (b.length === 0) return a.length;
+
+      const matrix = [];
+      for (let i = 0; i <= b.length; i++) matrix[i] = [i];
+      for (let j = 0; j <= a.length; j++) matrix[0][j] = j;
+
+      for (let i = 1; i <= b.length; i++) {
+        for (let j = 1; j <= a.length; j++) {
+          if (b.charAt(i - 1) === a.charAt(j - 1)) {
+            matrix[i][j] = matrix[i - 1][j - 1];
+          } else {
+            matrix[i][j] = Math.min(
+              matrix[i - 1][j - 1] + 1,
+              matrix[i][j - 1] + 1,
+              matrix[i - 1][j] + 1
+            );
+          }
+        }
+      }
+      return matrix[b.length][a.length];
+    }
+
+    // --- ADVANCED EMERGENCY CONTACT SELF-ENTRY GUARD ---
     function checkEmergencyContact() {
-      const fn = document.getElementById('firstName').value.trim().toLowerCase();
-      const ln = document.getElementById('lastName').value.trim().toLowerCase();
-      const emName = document.getElementById('emergencyName').value.trim().toLowerCase();
+      const fnRaw = document.getElementById('firstName').value.trim();
+      const lnRaw = document.getElementById('lastName').value.trim();
+      const emNameRaw = document.getElementById('emergencyName').value.trim();
+
+      // Clean non-alphanumeric chars (spaces, hyphens, apostrophes) for comparison
+      const fnClean = fnRaw.toLowerCase().replace(/[^a-z0-9]/g, '');
+      const lnClean = lnRaw.toLowerCase().replace(/[^a-z0-9]/g, '');
+      const emNameClean = emNameRaw.toLowerCase().replace(/[^a-z0-9]/g, '');
+
+      // Strip non-digits for phone comparison
       const mobileDigits = document.getElementById('mobile').value.replace(/\D/g, '');
       const emPhoneDigits = document.getElementById('emergencyPhone').value.replace(/\D/g, '');
 
@@ -720,15 +752,33 @@
 
       let isValid = true;
 
-      // Check Emergency Name
-      if (emName) {
-        const fullName = `${fn} ${ln}`.trim();
-        if (fullName && (emName === fullName || (fn && emName === fn) || (ln && emName === ln))) {
+      if (emNameClean) {
+        const normalFullName = fnClean + lnClean;
+        const reverseFullName = lnClean + fnClean;
+
+        let isSelfMatch = false;
+
+        if (normalFullName && reverseFullName) {
+          if (emNameClean === normalFullName || emNameClean === reverseFullName) {
+            isSelfMatch = true;
+          }
+          else if ((fnClean && emNameClean === fnClean) || (lnClean && emNameClean === lnClean)) {
+            isSelfMatch = true;
+          }
+          else if (
+            levenshteinDistance(emNameClean, normalFullName) <= 2 ||
+            levenshteinDistance(emNameClean, reverseFullName) <= 2
+          ) {
+            isSelfMatch = true;
+          }
+        }
+
+        if (isSelfMatch) {
           emNameEl.classList.add('border-red-500', 'ring-2', 'ring-red-200');
-          emNameErr.innerText = "Emergency contact cannot be yourself. Please enter someone else.";
+          emNameErr.innerText = "Emergency contact cannot be yourself or a variation of your name.";
           emNameErr.classList.remove('hidden');
           isValid = false;
-        } else if (!nameRegex.test(emName)) {
+        } else if (!nameRegex.test(emNameRaw)) {
           emNameEl.classList.add('border-red-500', 'ring-2', 'ring-red-200');
           emNameErr.innerText = "Name should contain only letters.";
           emNameErr.classList.remove('hidden');
@@ -739,7 +789,6 @@
         }
       }
 
-      // Check Emergency Phone
       if (emPhoneDigits) {
         if (mobileDigits && emPhoneDigits === mobileDigits) {
           emPhoneEl.classList.add('border-red-500', 'ring-2', 'ring-red-200');
@@ -830,10 +879,9 @@
 
     // --- FORM SUBMIT HANDLER ---
     document.getElementById('regForm').addEventListener('submit', function(e) {
-      // Validate Emergency Contact Guard Clause
       if (!checkEmergencyContact()) {
         e.preventDefault();
-        alert("Invalid Emergency Contact Details!\n\nYour emergency contact name and phone number cannot be your own details. Please provide someone else's contact info.");
+        alert("Invalid Emergency Contact Details!\n\nYour emergency contact name and phone number cannot be your own details or a variation. Please provide someone else's contact info.");
         document.getElementById('emergencyName').focus();
         return;
       }
