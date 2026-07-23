@@ -213,7 +213,11 @@
 
         <!-- Company Info -->
         <div>
-          <h3 class="text-lg font-semibold text-pts-navy border-b pb-2 mb-4"><i class="fa-solid fa-building mr-2"></i> Company Information</h3>
+          <div class="flex items-center justify-between border-b pb-2 mb-4">
+            <h3 class="text-lg font-semibold text-pts-navy"><i class="fa-solid fa-building mr-2"></i> Company Information</h3>
+            <span id="autofillBadge" class="hidden text-xs bg-blue-100 text-blue-800 font-semibold px-2.5 py-1 rounded-full"><i class="fa-solid fa-magic mr-1"></i> Auto-filled from colleague</span>
+          </div>
+
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <div class="md:col-span-2 lg:col-span-4">
               <label class="block text-sm font-medium text-gray-700">Company Name *</label>
@@ -628,6 +632,39 @@
         document.getElementById('confirmPin').focus();
       }
     });
+
+    // --- DOMAIN AUTO-FILL FOR CORPORATE TEAMS ---
+    const IGNORED_DOMAINS = ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com', 'icloud.com', 'aol.com', 'protonmail.com', 'me.com', 'live.com', 'msn.com'];
+
+    async function checkCompanyDomainAutoFill() {
+      const email = document.getElementById('email').value.trim();
+      if (!email || !email.includes('@')) return;
+
+      const domain = email.split('@')[1].toLowerCase();
+      if (IGNORED_DOMAINS.includes(domain)) return;
+
+      // Only attempt autofill if company name is currently empty
+      if (document.getElementById('company').value.trim()) return;
+
+      try {
+        const res = await fetch(`${SCRIPT_URL}?action=getCompanyByDomain&domain=${encodeURIComponent(domain)}`);
+        const json = await res.json();
+
+        if (json.status === 'found') {
+          if (json.company) document.getElementById('company').value = json.company;
+          if (json.city) document.getElementById('city').value = json.city;
+          if (json.state) document.getElementById('state').value = json.state;
+          if (json.country) document.getElementById('country').value = json.country;
+          if (json.postalCode) document.getElementById('postalCode').value = json.postalCode;
+
+          document.getElementById('autofillBadge').classList.remove('hidden');
+        }
+      } catch (e) {
+        // Silent catch if offline or error
+      }
+    }
+
+    document.getElementById('email').addEventListener('blur', checkCompanyDomainAutoFill);
 
     // --- REAL-TIME FIELD VALIDATORS ---
     const nameRegex = /^[a-zA-Z\s\-']+$/;
