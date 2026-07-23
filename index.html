@@ -85,68 +85,73 @@
 
   <!-- Header / Hero Section -->
   <header class="bg-pts-navy text-white shadow-xl relative overflow-hidden">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-8 md:py-12 relative z-10">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-6 md:py-8 relative z-10">
       
-      <!-- Top Navigation & Logos -->
-      <div class="flex flex-col md:flex-row items-center justify-between gap-6 border-b border-blue-800/60 pb-8">
-        <div class="bg-white px-8 py-5 rounded-2xl shadow-lg flex items-center space-x-6 sm:space-x-8 md:space-x-10">
-          <img src="PTSLogo_LogoOverPTS_Blue.png" alt="Paramount Transportation Systems" class="h-24 sm:h-32 md:h-40 object-contain">
-          <div class="h-20 sm:h-28 w-px bg-gray-300"></div>
-          <img src="IAM_Logo.png" alt="International Association of Movers" class="h-24 sm:h-32 md:h-40 object-contain" onError="this.onerror=null;this.src='https://iamovers.org/wp-content/uploads/2025/01/IAM-Logo.png';">
+      <!-- Balanced Navigation Header: Logos Left, Check-in Right -->
+      <div class="flex flex-col md:flex-row items-center justify-between gap-4 border-b border-blue-800/60 pb-6">
+        <div class="bg-white px-5 py-3 rounded-xl shadow-md flex items-center space-x-4 sm:space-x-6 max-w-md w-full md:w-auto justify-center">
+          <img src="PTSLogo_LogoOverPTS_Blue.png" alt="Paramount Transportation Systems" class="h-12 sm:h-14 md:h-16 object-contain">
+          <div class="h-10 sm:h-12 w-px bg-gray-300"></div>
+          <img src="IAM_Logo.png" alt="International Association of Movers" class="h-12 sm:h-14 md:h-16 object-contain" onError="this.onerror=null;this.src='https://iamovers.org/wp-content/uploads/2025/01/IAM-Logo.png';">
         </div>
 
-        <div class="text-center md:text-right">
+        <div class="w-full md:w-auto text-center md:text-right">
           <button type="button" onclick="toggleModal('lookupModal')" class="bg-white/10 hover:bg-white/20 text-white px-5 py-2.5 rounded-lg text-sm font-semibold border border-white/30 transition flex items-center gap-2 mx-auto md:ml-auto">
             <i class="fa-solid fa-lock"></i> Secure Check-in / Edit Registration
           </button>
         </div>
       </div>
 
-      <!-- Hero Content & Live Countdown Timer -->
-      <div class="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
-        <div class="lg:col-span-2 text-center lg:text-left">
-          <span class="inline-block bg-blue-500/30 text-blue-200 text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-3">IAM Convention Event</span>
-          <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight">IAM / PARAMOUNT 5K Fun Run</h1>
-          <p class="mt-3 text-base sm:text-lg text-blue-100 max-w-2xl mx-auto lg:mx-0">
+      <!-- Hero Content Grid -->
+      <div class="mt-6 grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+        <!-- Title & Subtitle -->
+        <div class="md:col-span-6 text-center md:text-left">
+          <span class="inline-block bg-blue-500/30 text-blue-200 text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-2">IAM Convention Event</span>
+          <h1 class="text-3xl sm:text-4xl md:text-4xl lg:text-5xl font-extrabold tracking-tight leading-tight">IAM / PARAMOUNT 5K Fun Run</h1>
+          <p class="mt-2 text-sm sm:text-base text-blue-100 max-w-xl mx-auto md:mx-0">
             Join us for an energetic 5K run! Complete your registration below to secure your spot and official race shirt.
           </p>
+        </div>
 
-          <!-- LIVE COUNTDOWN TIMER -->
-          <div class="mt-6 bg-blue-900/50 backdrop-blur-md rounded-xl p-4 border border-blue-400/30 max-w-lg mx-auto lg:mx-0">
-            <span class="text-xs uppercase tracking-wider text-blue-200 block font-semibold mb-2"><i class="fa-solid fa-stopwatch mr-1.5"></i> Race Day Countdown</span>
-            <div id="countdownClock" class="grid grid-cols-4 gap-2 text-center">
-              <div class="bg-pts-navy p-2 rounded-lg border border-blue-400/20"><span id="cdDays" class="text-xl sm:text-2xl font-black text-white block">00</span><span class="text-[10px] text-blue-200 uppercase">Days</span></div>
-              <div class="bg-pts-navy p-2 rounded-lg border border-blue-400/20"><span id="cdHours" class="text-xl sm:text-2xl font-black text-white block">00</span><span class="text-[10px] text-blue-200 uppercase">Hours</span></div>
-              <div class="bg-pts-navy p-2 rounded-lg border border-blue-400/20"><span id="cdMins" class="text-xl sm:text-2xl font-black text-white block">00</span><span class="text-[10px] text-blue-200 uppercase">Mins</span></div>
-              <div class="bg-pts-navy p-2 rounded-lg border border-blue-400/20"><span id="cdSecs" class="text-xl sm:text-2xl font-black text-white block">00</span><span class="text-[10px] text-blue-200 uppercase">Secs</span></div>
+        <!-- Live Countdown Timer -->
+        <div class="md:col-span-3">
+          <div class="bg-blue-900/50 backdrop-blur-md rounded-xl p-3.5 border border-blue-400/30 text-center">
+            <span class="text-[11px] uppercase tracking-wider text-blue-200 block font-semibold mb-1.5"><i class="fa-solid fa-stopwatch mr-1"></i> Race Countdown</span>
+            <div id="countdownClock" class="grid grid-cols-4 gap-1.5 text-center">
+              <div class="bg-pts-navy p-1.5 rounded-lg border border-blue-400/20"><span id="cdDays" class="text-lg font-black text-white block">00</span><span class="text-[9px] text-blue-200 uppercase">Days</span></div>
+              <div class="bg-pts-navy p-1.5 rounded-lg border border-blue-400/20"><span id="cdHours" class="text-lg font-black text-white block">00</span><span class="text-[9px] text-blue-200 uppercase">Hrs</span></div>
+              <div class="bg-pts-navy p-1.5 rounded-lg border border-blue-400/20"><span id="cdMins" class="text-lg font-black text-white block">00</span><span class="text-[9px] text-blue-200 uppercase">Mins</span></div>
+              <div class="bg-pts-navy p-1.5 rounded-lg border border-blue-400/20"><span id="cdSecs" class="text-lg font-black text-white block">00</span><span class="text-[9px] text-blue-200 uppercase">Secs</span></div>
             </div>
           </div>
         </div>
-        
-        <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 text-center shadow-inner max-w-xs mx-auto lg:max-w-none w-full">
-          <span class="text-xs font-semibold uppercase tracking-wider text-blue-200">Registration Fee</span>
-          <div class="text-4xl sm:text-5xl font-black text-white mt-1">$75.00</div>
-          <span class="text-xs text-blue-100 block mt-1">Includes Official T-Shirt & Bib</span>
+
+        <!-- Fee Badge -->
+        <div class="md:col-span-3">
+          <div class="bg-white/10 backdrop-blur-md rounded-xl p-4 border border-white/20 text-center shadow-inner">
+            <span class="text-xs font-semibold uppercase tracking-wider text-blue-200 block">Registration Fee</span>
+            <div class="text-3xl sm:text-4xl font-black text-white mt-0.5">$75.00</div>
+            <span class="text-[11px] text-blue-100 block mt-0.5">Includes Shirt & Bib</span>
+          </div>
         </div>
       </div>
     </div>
   </header>
 
   <!-- Key Details Bar + Add to Calendar -->
-  <section class="max-w-6xl mx-auto px-4 sm:px-6 -mt-6 relative z-20 w-full">
-    <div class="bg-white rounded-xl shadow-lg border border-gray-100 p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-6 text-sm">
+  <section class="max-w-6xl mx-auto px-4 sm:px-6 -mt-5 relative z-20 w-full">
+    <div class="bg-white rounded-xl shadow-lg border border-gray-100 p-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4 text-xs sm:text-sm">
       <div class="flex items-start space-x-3">
-        <i class="fa-solid fa-calendar-day text-pts-navy text-xl mt-0.5"></i>
+        <i class="fa-solid fa-calendar-day text-pts-navy text-lg mt-0.5"></i>
         <div>
           <strong class="block text-gray-900">Date</strong>
           <span class="text-gray-600">Friday, 23 Oct 2026</span>
           
-          <!-- SMART ADD TO CALENDAR DROPDOWN -->
-          <div class="relative mt-2">
-            <button type="button" onclick="toggleCalDropdown()" class="text-xs bg-pts-light hover:bg-blue-100 text-pts-navy font-semibold px-2.5 py-1 rounded-md border border-blue-200 flex items-center gap-1.5 transition">
+          <div class="relative mt-1.5">
+            <button type="button" onclick="toggleCalDropdown()" class="text-[11px] bg-pts-light hover:bg-blue-100 text-pts-navy font-semibold px-2 py-0.5 rounded border border-blue-200 flex items-center gap-1 transition">
               <i class="fa-regular fa-calendar-plus"></i> Add to Calendar
             </button>
-            <div id="calMenu" class="hidden absolute top-8 left-0 bg-white border border-gray-200 rounded-lg shadow-xl z-30 py-1.5 w-44 text-xs">
+            <div id="calMenu" class="hidden absolute top-7 left-0 bg-white border border-gray-200 rounded-lg shadow-xl z-30 py-1.5 w-44 text-xs">
               <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=IAM+%2F+PARAMOUNT+5K+Fun+Run&dates=20261023T133000Z/20261023T160000Z&details=IAM+%2F+Paramount+5K+Fun+Run.+Check-in+starts+at+6%3A15+AM.+Race+starts+at+7%3A30+AM.&location=Hyatt+Hotel" target="_blank" class="block px-3 py-1.5 hover:bg-blue-50 text-gray-700 flex items-center gap-2"><i class="fa-brands fa-google text-blue-500"></i> Google Calendar</a>
               <a href="javascript:downloadICS()" class="block px-3 py-1.5 hover:bg-blue-50 text-gray-700 flex items-center gap-2"><i class="fa-brands fa-apple text-gray-800"></i> Apple / Outlook (.ics)</a>
             </div>
@@ -154,7 +159,7 @@
         </div>
       </div>
       <div class="flex items-start space-x-3">
-        <i class="fa-solid fa-clock text-pts-navy text-xl mt-0.5"></i>
+        <i class="fa-solid fa-clock text-pts-navy text-lg mt-0.5"></i>
         <div>
           <strong class="block text-gray-900">Times</strong>
           <span class="text-gray-600">Check-in: 6:15–7:15 AM</span><br>
@@ -162,21 +167,21 @@
         </div>
       </div>
       <div class="flex items-start space-x-3">
-        <i class="fa-solid fa-shirt text-pts-navy text-xl mt-0.5"></i>
+        <i class="fa-solid fa-shirt text-pts-navy text-lg mt-0.5"></i>
         <div>
           <strong class="block text-gray-900">Shirt & Bib Pickup</strong>
           <span class="text-gray-600">Wed Oct 21 / Thu Oct 22 @ Hyatt Hotel OR at Run Check-in</span>
         </div>
       </div>
       <div class="flex items-start space-x-3">
-        <i class="fa-solid fa-hourglass-half text-pts-navy text-xl mt-0.5"></i>
+        <i class="fa-solid fa-hourglass-half text-pts-navy text-lg mt-0.5"></i>
         <div>
           <strong class="block text-gray-900">Deadline</strong>
           <span class="text-gray-600">Sunday, 01 Oct 2026</span>
         </div>
       </div>
       <div class="flex items-start space-x-3">
-        <i class="fa-solid fa-envelope text-pts-navy text-xl mt-0.5"></i>
+        <i class="fa-solid fa-envelope text-pts-navy text-lg mt-0.5"></i>
         <div>
           <strong class="block text-gray-900">Contact Host</strong>
           <a href="mailto:convention@pts-moves.com" class="text-pts-blue font-medium hover:underline break-all">convention@pts-moves.com</a>
@@ -186,18 +191,18 @@
   </section>
 
   <!-- Late Registration Deadline Notice Banner -->
-  <div class="max-w-6xl mx-auto px-4 sm:px-6 mt-4 w-full">
-    <div class="bg-blue-50 border border-blue-200 text-blue-900 px-4 py-3 rounded-lg text-xs sm:text-sm flex items-center gap-3">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 mt-3 w-full">
+    <div class="bg-blue-50 border border-blue-200 text-blue-900 px-4 py-2.5 rounded-lg text-xs sm:text-sm flex items-center gap-3">
       <i class="fa-solid fa-circle-info text-pts-blue text-base flex-shrink-0"></i>
       <span><strong>Missed the Oct 1 deadline?</strong> Contact us at <a href="mailto:convention@pts-moves.com" class="underline font-semibold">convention@pts-moves.com</a> to check if extra space is available for last-minute registration.</span>
     </div>
   </div>
 
   <!-- Main Registration Form Container -->
-  <main class="max-w-4xl mx-auto px-4 sm:px-6 py-8 w-full flex-grow">
+  <main class="max-w-4xl mx-auto px-4 sm:px-6 py-6 w-full flex-grow">
     <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
       
-      <div class="bg-pts-light border-b border-gray-200 px-6 sm:px-8 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+      <div class="bg-pts-light border-b border-gray-200 px-6 sm:px-8 py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
         <h2 id="formTitle" class="text-xl font-bold text-pts-navy">Participant Registration</h2>
         <div id="paymentBadge" class="hidden flex items-center gap-3"></div>
       </div>
@@ -683,7 +688,6 @@
           const badgeContainer = document.getElementById('paymentBadge');
           badgeContainer.classList.remove('hidden');
 
-          // STRICT ENFORCEMENT: ONLY ALLOW PDF DOWNLOAD IF PAID
           if (d.paymentStatus === 'Paid') {
             badgeContainer.innerHTML = `
               <span class="bg-green-100 text-green-800 text-xs font-bold px-3 py-1.5 rounded-full"><i class="fa-solid fa-check mr-1"></i> Payment Complete</span>
