@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>IAM / PARAMOUNT Charity 5K Fun Run Registration</title>
+  <title>IAM & PARAMOUNT Charity 5K Fun Run Registration</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -55,7 +55,7 @@
         <div class="md:col-span-6 text-center md:text-left">
           <span class="inline-block bg-blue-500/30 text-blue-200 text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-3">IAM Convention Event</span>
           <h1 class="leading-tight">
-            <span class="block text-3xl sm:text-4xl md:text-4xl lg:text-5xl font-black tracking-tight text-white">IAM / PARAMOUNT</span>
+            <span class="block text-3xl sm:text-4xl md:text-4xl lg:text-5xl font-black tracking-tight text-white">IAM & PARAMOUNT</span>
             <span class="block text-3xl sm:text-4xl md:text-4xl lg:text-5xl font-black tracking-tight text-white">Charity 5K Fun Run</span>
           </h1>
           <p class="mt-3 text-sm sm:text-base text-blue-100 max-w-xl mx-auto md:mx-0">
@@ -102,7 +102,7 @@
               <i class="fa-regular fa-calendar-plus"></i> Add to Calendar
             </button>
             <div id="calMenu" class="hidden absolute top-7 left-0 bg-white border border-gray-200 rounded-lg shadow-xl z-30 py-1.5 w-44 text-xs">
-              <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=IAM+%2F+PARAMOUNT+Charity+5K+Fun+Run&dates=20261023T133000Z/20261023T160000Z&details=IAM+%2F+Paramount+Charity+5K+Fun+Run.+Check-in+starts+at+6%3A15+AM.+Race+starts+at+7%3A30+AM.&location=Hyatt+Hotel" target="_blank" class="block px-3 py-1.5 hover:bg-blue-50 text-gray-700 flex items-center gap-2"><i class="fa-brands fa-google text-blue-500"></i> Google Calendar</a>
+              <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=IAM+%26+PARAMOUNT+Charity+5K+Fun+Run&dates=20261023T133000Z/20261023T160000Z&details=IAM+%26+Paramount+Charity+5K+Fun+Run.+Check-in+starts+at+6%3A30+AM.+Race+starts+at+7%3A30+AM.&location=Hyatt+Hotel" target="_blank" class="block px-3 py-1.5 hover:bg-blue-50 text-gray-700 flex items-center gap-2"><i class="fa-brands fa-google text-blue-500"></i> Google Calendar</a>
               <a href="javascript:downloadICS()" class="block px-3 py-1.5 hover:bg-blue-50 text-gray-700 flex items-center gap-2"><i class="fa-brands fa-apple text-gray-800"></i> Apple / Outlook (.ics)</a>
             </div>
           </div>
@@ -112,15 +112,17 @@
         <i class="fa-solid fa-clock text-pts-navy text-lg mt-0.5"></i>
         <div>
           <strong class="block text-gray-900">Times</strong>
-          <span class="text-gray-600">Check-in: 6:15–7:15 AM</span><br>
+          <span class="text-gray-600">Check-in: 6:30–7:15 AM</span><br>
           <span class="text-gray-600">Start: 7:30 AM</span>
         </div>
       </div>
       <div class="flex items-start space-x-3">
         <i class="fa-solid fa-shirt text-pts-navy text-lg mt-0.5"></i>
         <div>
-          <strong class="block text-gray-900">Shirt & Bib Pickup</strong>
-          <span class="text-gray-600">Wed Oct 21 / Thu Oct 22 @ Hyatt Hotel OR at Run Check-in</span>
+          <strong class="block text-gray-900">Shirt & Bib Pick Up</strong>
+          <span class="text-gray-600 block">Wednesday, 21 Oct - Time and Hyatt location TBA</span>
+          <span class="text-gray-600 block">Thursday, 22 Oct - Time and Hyatt location TBA</span>
+          <span class="text-gray-500 text-[11px] block mt-0.5">OR at Run Check-in</span>
         </div>
       </div>
       <div class="flex items-start space-x-3">
@@ -144,7 +146,7 @@
   <div class="max-w-6xl mx-auto px-4 sm:px-6 mt-3 w-full">
     <div class="bg-blue-50 border border-blue-200 text-blue-900 px-4 py-2.5 rounded-lg text-xs sm:text-sm flex items-center gap-3">
       <i class="fa-solid fa-circle-info text-pts-blue text-base flex-shrink-0"></i>
-      <span><strong>Missed the Oct 1 deadline?</strong> Contact us at <a href="mailto:convention@pts-moves.com" class="underline font-semibold">convention@pts-moves.com</a> to check if extra space is available for last-minute registration.</span>
+      <span><strong>Late registration needed?</strong> Contact us at <a href="mailto:convention@pts-moves.com" class="underline font-semibold">convention@pts-moves.com</a> to check if extra space is available for last-minute registrations.</span>
     </div>
   </div>
 
@@ -167,38 +169,31 @@
           <h3 class="text-lg font-semibold text-pts-navy border-b pb-2 mb-4"><i class="fa-solid fa-user mr-2"></i> Participant Details</h3>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label class="block text-sm font-medium text-gray-700">First Name *</label>
+              <label class="block text-sm font-medium text-gray-700">First Name <span class="text-red-500 font-bold">*</span></label>
               <input type="text" id="firstName" name="firstName" required class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
               <span id="firstNameErr" class="text-xs text-red-500 hidden mt-1"><i class="fa-solid fa-circle-exclamation mr-1"></i> First name must contain only letters.</span>
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700">Last Name *</label>
+              <label class="block text-sm font-medium text-gray-700">Last Name <span class="text-red-500 font-bold">*</span></label>
               <input type="text" id="lastName" name="lastName" required class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
               <span id="lastNameErr" class="text-xs text-red-500 hidden mt-1"><i class="fa-solid fa-circle-exclamation mr-1"></i> Last name must contain only letters.</span>
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700">Email Address *</label>
+              <label class="block text-sm font-medium text-gray-700">Email Address <span class="text-red-500 font-bold">*</span></label>
               <input type="email" id="email" name="email" required placeholder="name@company.com" class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
               <span id="emailErr" class="text-xs text-red-500 hidden mt-1"><i class="fa-solid fa-circle-exclamation mr-1"></i> Please enter a valid email address.</span>
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700">Mobile Phone (International) *</label>
+              <label class="block text-sm font-medium text-gray-700">Mobile Phone (International) <span class="text-red-500 font-bold">*</span></label>
               <input type="tel" id="mobile" name="mobile" placeholder="+1 555 000 0000" required class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
               <span id="mobileErr" class="text-xs text-red-500 hidden mt-1"><i class="fa-solid fa-circle-exclamation mr-1"></i> Enter a valid phone number (digits and optional +).</span>
-            </div>
-            <div class="md:col-span-2">
-              <label class="block text-sm font-medium text-gray-700">Gender * <span class="text-xs font-normal text-gray-500">(Required for prize category tracking)</span></label>
-              <div class="mt-2 flex space-x-6">
-                <label class="inline-flex items-center"><input type="radio" name="gender" value="Male" required class="text-pts-navy focus:ring-pts-navy"> <span class="ml-2">Male</span></label>
-                <label class="inline-flex items-center"><input type="radio" name="gender" value="Female" required class="text-pts-navy focus:ring-pts-navy"> <span class="ml-2">Female</span></label>
-              </div>
             </div>
           </div>
         </div>
 
         <!-- Custom Security PIN Setup Section -->
         <div id="pinSection" class="bg-blue-50/60 p-5 rounded-xl border border-blue-200">
-          <h3 class="text-sm font-bold text-pts-navy uppercase tracking-wider mb-1"><i class="fa-solid fa-key mr-2"></i> Create Your Security PIN *</h3>
+          <h3 class="text-sm font-bold text-pts-navy uppercase tracking-wider mb-1"><i class="fa-solid fa-key mr-2"></i> Create Your Security PIN <span class="text-red-500 font-bold">*</span></h3>
           <p class="text-xs text-gray-600 mb-4">Choose a PIN so you can access and update your details later.</p>
           
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -223,11 +218,11 @@
 
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <div class="md:col-span-2 lg:col-span-4">
-              <label class="block text-sm font-medium text-gray-700">Company Name *</label>
+              <label class="block text-sm font-medium text-gray-700">Company Name <span class="text-red-500 font-bold">*</span></label>
               <input type="text" id="company" name="company" required class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700">City *</label>
+              <label class="block text-sm font-medium text-gray-700">City <span class="text-red-500 font-bold">*</span></label>
               <input type="text" id="city" name="city" required class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
               <span id="cityErr" class="text-xs text-red-500 hidden mt-1"><i class="fa-solid fa-circle-exclamation mr-1"></i> City should not contain numbers.</span>
             </div>
@@ -236,7 +231,7 @@
               <input type="text" id="state" name="state" class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700">Country *</label>
+              <label class="block text-sm font-medium text-gray-700">Country <span class="text-red-500 font-bold">*</span></label>
               <select id="country" name="country" required class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none bg-white transition">
                 <option value="">Select Country / Territory...</option>
                 <option value="United States">United States</option>
@@ -509,17 +504,17 @@
           <h3 class="text-lg font-semibold text-pts-navy border-b pb-2 mb-4"><i class="fa-solid fa-heart-pulse mr-2"></i> Logistics & Emergency Contact</h3>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label class="block text-sm font-medium text-gray-700">Emergency Contact Name *</label>
+              <label class="block text-sm font-medium text-gray-700">Emergency Contact Name <span class="text-red-500 font-bold">*</span></label>
               <input type="text" id="emergencyName" name="emergencyName" required class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
               <span id="emergencyNameErr" class="text-xs text-red-500 hidden mt-1"><i class="fa-solid fa-circle-exclamation mr-1"></i> Emergency contact cannot be yourself.</span>
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700">Emergency Contact Phone *</label>
+              <label class="block text-sm font-medium text-gray-700">Emergency Contact Phone <span class="text-red-500 font-bold">*</span></label>
               <input type="tel" id="emergencyPhone" name="emergencyPhone" placeholder="+1 555 000 0000" required class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
               <span id="emergencyPhoneErr" class="text-xs text-red-500 hidden mt-1"><i class="fa-solid fa-circle-exclamation mr-1"></i> Emergency phone cannot be your own phone number.</span>
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700">T-Shirt Size *</label>
+              <label class="block text-sm font-medium text-gray-700">T-Shirt Size <span class="text-red-500 font-bold">*</span></label>
               <select id="tshirtSize" name="tshirtSize" required class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
                 <option value="">Select Size...</option>
                 <option value="Mens XS">Mens XS</option>
@@ -548,7 +543,7 @@
           </div>
           <label class="flex items-center text-sm font-medium text-gray-700">
             <input type="checkbox" id="photoRelease" name="photoRelease" value="true" required class="rounded text-pts-navy focus:ring-pts-navy h-4 w-4">
-            <span class="ml-2">I certify that I am over 18 years old and agree to the Photo & Video Release. *</span>
+            <span class="ml-2">I certify that I am over 18 years old and agree to the Photo & Video Release. <span class="text-red-500 font-bold">*</span></span>
           </label>
 
           <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 text-xs text-gray-600 leading-relaxed mt-4">
@@ -556,24 +551,24 @@
           </div>
           <label class="flex items-center text-sm font-medium text-gray-700">
             <input type="checkbox" id="liabilityWaiver" name="liabilityWaiver" value="true" required class="rounded text-pts-navy focus:ring-pts-navy h-4 w-4">
-            <span class="ml-2">I have read and agree to the Liability Waiver above. *</span>
+            <span class="ml-2">I have read and agree to the Liability Waiver above. <span class="text-red-500 font-bold">*</span></span>
           </label>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
             <div>
-              <label class="block text-sm font-medium text-gray-700">Participant Electronic Signature (Full Name) *</label>
+              <label class="block text-sm font-medium text-gray-700">Participant Electronic Signature (Full Name) <span class="text-red-500 font-bold">*</span></label>
               <input type="text" id="signature" name="signature" placeholder="Must match First + Last Name above" required class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
               <span id="sigMatchError" class="text-xs text-red-500 hidden mt-1"><i class="fa-solid fa-triangle-exclamation mr-1"></i> Signature must match First Name + Last Name</span>
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700">Date *</label>
-              <input type="date" id="sigDate" name="sigDate" required class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
+              <label class="block text-sm font-medium text-gray-700">Date <span class="text-red-500 font-bold">*</span></label>
+              <input type="date" id="sigDate" name="sigDate" readonly required class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 bg-gray-100 cursor-not-allowed focus:outline-none text-gray-600 transition">
             </div>
           </div>
         </div>
 
         <div class="pt-4 border-t border-gray-200">
-          <button type="submit" id="submitBtn" class="w-full bg-pts-navy hover:bg-pts-blue text-white font-bold py-4 px-6 rounded-xl shadow-lg transition duration-200 flex items-center justify-center text-lg">
+          <button type="submit" id="submitBtn" disabled class="w-full bg-gray-300 text-gray-500 font-bold py-4 px-6 rounded-xl shadow transition duration-200 flex items-center justify-center text-lg cursor-not-allowed">
             <span id="btnText">Proceed to $75.00 Payment</span>
             <i class="fa-solid fa-arrow-right ml-2"></i>
           </button>
@@ -609,7 +604,7 @@
     <div id="pdfPassTemplate" class="p-8 bg-white text-gray-800 font-sans max-w-xl">
       <div class="border-b-2 border-blue-900 pb-4 mb-6 flex justify-between items-center">
         <div>
-          <h1 class="text-2xl font-extrabold text-blue-900">IAM / PARAMOUNT Charity 5K RUN</h1>
+          <h1 class="text-2xl font-extrabold text-blue-900">IAM & PARAMOUNT Charity 5K RUN</h1>
           <p class="text-xs text-gray-500 font-semibold uppercase">Official Registration Confirmation Pass</p>
         </div>
         <div class="text-right">
@@ -628,8 +623,8 @@
 
       <div class="border-t border-gray-200 pt-4 text-xs text-gray-600 space-y-1">
         <p><strong>Race Date:</strong> Friday, 23 October 2026</p>
-        <p><strong>Check-In:</strong> 6:15 AM – 7:15 AM | <strong>Start:</strong> 7:30 AM</p>
-        <p><strong>Packet Pickup:</strong> Oct 21 & 22 @ Hyatt Hotel OR at Run Check-in.</p>
+        <p><strong>Check-In:</strong> 6:30 AM – 7:15 AM | <strong>Start:</strong> 7:30 AM</p>
+        <p><strong>Packet Pick Up:</strong> Oct 21 & 22 @ Hyatt Hotel OR at Run Check-in.</p>
         <p class="mt-4 text-[10px] text-gray-400">Present this digital or printed pass at race check-in to collect your bib and T-shirt.</p>
       </div>
     </div>
@@ -643,6 +638,10 @@
     const hiddenIframe = document.getElementById('hidden_iframe');
 
     document.getElementById('regForm').action = SCRIPT_URL;
+
+    // Set today's date on initial load
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('sigDate').value = today;
 
     hiddenIframe.addEventListener('load', function() {
       if (pendingRedirectUrl) {
@@ -659,7 +658,7 @@
     }
 
     function downloadICS() {
-      const icsData = "BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nSUMMARY:IAM / PARAMOUNT Charity 5K Fun Run\nDESCRIPTION:IAM / Paramount Charity 5K Fun Run Event. Check-in starts at 6:15 AM.\nLOCATION:Hyatt Hotel\nDTSTART:20261023T133000Z\nDTEND:20261023T160000Z\nEND:VEVENT\nEND:VCALENDAR";
+      const icsData = "BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nSUMMARY:IAM & PARAMOUNT Charity 5K Fun Run\nDESCRIPTION:IAM & Paramount Charity 5K Fun Run Event. Check-in starts at 6:30 AM.\nLOCATION:Hyatt Hotel\nDTSTART:20261023T133000Z\nDTEND:20261023T160000Z\nEND:VEVENT\nEND:VCALENDAR";
       const blob = new Blob([icsData], { type: 'text/calendar;charset=utf-8' });
       const link = document.createElement('a');
       link.href = window.URL.createObjectURL(blob);
@@ -722,6 +721,7 @@
           if (json.postalCode) document.getElementById('postalCode').value = json.postalCode;
 
           document.getElementById('autofillBadge').classList.remove('hidden');
+          checkFormValidity();
         }
       } catch (e) {
         // Silent catch if offline or error
@@ -757,8 +757,8 @@
     function attachFieldValidator(id, regex, errId) {
       const el = document.getElementById(id);
       const errEl = document.getElementById(errId);
-      el.addEventListener('blur', () => validateField(el, regex, errEl));
-      el.addEventListener('input', () => validateField(el, regex, errEl));
+      el.addEventListener('blur', () => { validateField(el, regex, errEl); checkFormValidity(); });
+      el.addEventListener('input', () => { validateField(el, regex, errEl); checkFormValidity(); });
     }
 
     attachFieldValidator('firstName', nameRegex, 'firstNameErr');
@@ -798,12 +798,10 @@
       const lnRaw = document.getElementById('lastName').value.trim();
       const emNameRaw = document.getElementById('emergencyName').value.trim();
 
-      // Clean non-alphanumeric chars (spaces, hyphens, apostrophes) for comparison
       const fnClean = fnRaw.toLowerCase().replace(/[^a-z0-9]/g, '');
       const lnClean = lnRaw.toLowerCase().replace(/[^a-z0-9]/g, '');
       const emNameClean = emNameRaw.toLowerCase().replace(/[^a-z0-9]/g, '');
 
-      // Strip non-digits for phone comparison
       const mobileDigits = document.getElementById('mobile').value.replace(/\D/g, '');
       const emPhoneDigits = document.getElementById('emergencyPhone').value.replace(/\D/g, '');
 
@@ -871,13 +869,13 @@
       return isValid;
     }
 
-    document.getElementById('emergencyName').addEventListener('blur', checkEmergencyContact);
-    document.getElementById('emergencyName').addEventListener('input', checkEmergencyContact);
-    document.getElementById('emergencyPhone').addEventListener('blur', checkEmergencyContact);
-    document.getElementById('emergencyPhone').addEventListener('input', checkEmergencyContact);
-    document.getElementById('firstName').addEventListener('blur', checkEmergencyContact);
-    document.getElementById('lastName').addEventListener('blur', checkEmergencyContact);
-    document.getElementById('mobile').addEventListener('blur', checkEmergencyContact);
+    document.getElementById('emergencyName').addEventListener('blur', () => { checkEmergencyContact(); checkFormValidity(); });
+    document.getElementById('emergencyName').addEventListener('input', () => { checkEmergencyContact(); checkFormValidity(); });
+    document.getElementById('emergencyPhone').addEventListener('blur', () => { checkEmergencyContact(); checkFormValidity(); });
+    document.getElementById('emergencyPhone').addEventListener('input', () => { checkEmergencyContact(); checkFormValidity(); });
+    document.getElementById('firstName').addEventListener('blur', () => { checkEmergencyContact(); checkFormValidity(); });
+    document.getElementById('lastName').addEventListener('blur', () => { checkEmergencyContact(); checkFormValidity(); });
+    document.getElementById('mobile').addEventListener('blur', () => { checkEmergencyContact(); checkFormValidity(); });
 
     // Real-Time PIN Match Verification
     function checkPinMatch() {
@@ -888,13 +886,16 @@
       if (confirm && pin !== confirm) {
         document.getElementById('confirmPin').classList.add('border-red-500', 'ring-2', 'ring-red-200');
         pinErr.classList.remove('hidden');
+        return false;
       } else {
         document.getElementById('confirmPin').classList.remove('border-red-500', 'ring-2', 'ring-red-200');
         pinErr.classList.add('hidden');
+        return true;
       }
     }
-    document.getElementById('confirmPin').addEventListener('blur', checkPinMatch);
-    document.getElementById('confirmPin').addEventListener('input', checkPinMatch);
+    document.getElementById('confirmPin').addEventListener('blur', () => { checkPinMatch(); checkFormValidity(); });
+    document.getElementById('confirmPin').addEventListener('input', () => { checkPinMatch(); checkFormValidity(); });
+    document.getElementById('userPin').addEventListener('input', () => { checkPinMatch(); checkFormValidity(); });
 
     // Real-Time Signature Verification
     function checkSignatureMatch() {
@@ -907,20 +908,68 @@
       if (!sig) {
         sigEl.classList.remove('border-red-500', 'ring-2', 'ring-red-200');
         sigErr.classList.add('hidden');
-        return;
+        return false;
       }
 
       const expected = `${fn} ${ln}`.toLowerCase();
       if (sig.toLowerCase() !== expected) {
         sigEl.classList.add('border-red-500', 'ring-2', 'ring-red-200');
         sigErr.classList.remove('hidden');
+        return false;
       } else {
         sigEl.classList.remove('border-red-500', 'ring-2', 'ring-red-200');
         sigErr.classList.add('hidden');
+        return true;
       }
     }
-    document.getElementById('signature').addEventListener('blur', checkSignatureMatch);
-    document.getElementById('signature').addEventListener('input', checkSignatureMatch);
+    document.getElementById('signature').addEventListener('blur', () => { checkSignatureMatch(); checkFormValidity(); });
+    document.getElementById('signature').addEventListener('input', () => { checkSignatureMatch(); checkFormValidity(); });
+
+    // --- FORM COMPLETION & BUTTON ENABLING GUARD ---
+    function checkFormValidity() {
+      const fn = document.getElementById('firstName').value.trim();
+      const ln = document.getElementById('lastName').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const mobile = document.getElementById('mobile').value.trim();
+      const company = document.getElementById('company').value.trim();
+      const city = document.getElementById('city').value.trim();
+      const country = document.getElementById('country').value.trim();
+      const emName = document.getElementById('emergencyName').value.trim();
+      const emPhone = document.getElementById('emergencyPhone').value.trim();
+      const shirt = document.getElementById('tshirtSize').value.trim();
+      const photo = document.getElementById('photoRelease').checked;
+      const waiver = document.getElementById('liabilityWaiver').checked;
+      const sig = document.getElementById('signature').value.trim();
+      const userPin = document.getElementById('userPin').value.trim();
+      const confirmPin = document.getElementById('confirmPin').value.trim();
+      const isEditing = Boolean(document.getElementById('regId').value);
+
+      const submitBtn = document.getElementById('submitBtn');
+
+      const isBaseValid = fn && ln && emailRegex.test(email) && phoneRegex.test(mobile) &&
+                          company && city && country && emName && phoneRegex.test(emPhone) &&
+                          shirt && photo && waiver && sig && (sig.toLowerCase() === `${fn} ${ln}`.toLowerCase()) &&
+                          checkEmergencyContact();
+
+      const isPinValid = isEditing || (userPin && confirmPin && userPin === confirmPin);
+
+      if (isBaseValid && isPinValid) {
+        submitBtn.disabled = false;
+        submitBtn.classList.remove('bg-gray-300', 'text-gray-500', 'cursor-not-allowed');
+        submitBtn.classList.add('bg-pts-navy', 'hover:bg-pts-blue', 'text-white', 'shadow-lg', 'cursor-pointer');
+      } else {
+        submitBtn.disabled = true;
+        submitBtn.classList.add('bg-gray-300', 'text-gray-500', 'cursor-not-allowed');
+        submitBtn.classList.remove('bg-pts-navy', 'hover:bg-pts-blue', 'text-white', 'shadow-lg', 'cursor-pointer');
+      }
+    }
+
+    // Attach form validity checks to remaining controls
+    document.getElementById('regForm').addEventListener('input', checkFormValidity);
+    document.getElementById('country').addEventListener('change', checkFormValidity);
+    document.getElementById('tshirtSize').addEventListener('change', checkFormValidity);
+    document.getElementById('photoRelease').addEventListener('change', checkFormValidity);
+    document.getElementById('liabilityWaiver').addEventListener('change', checkFormValidity);
 
     // --- PDF PASS DOWNLOAD (PAID USERS ONLY) ---
     function generatePDFPass() {
@@ -1035,14 +1084,14 @@
           document.getElementById('tshirtSize').value = d.tshirtSize;
           document.getElementById('specialAccommodations').value = d.specialAccommodations || '';
           document.getElementById('signature').value = d.signature;
-          document.getElementById('sigDate').value = d.sigDate;
+          
+          // Preserve original signature date from record
+          if (d.sigDate) {
+            document.getElementById('sigDate').value = d.sigDate.split('T')[0];
+          }
+
           document.getElementById('photoRelease').checked = d.photoRelease;
           document.getElementById('liabilityWaiver').checked = d.liabilityWaiver;
-
-          const radios = document.getElementsByName('gender');
-          for (let r of radios) {
-            if (r.value === d.gender) r.checked = true;
-          }
 
           document.getElementById('formTitle').innerText = `Editing Registration (${d.regId})`;
           
@@ -1062,6 +1111,7 @@
 
           toggleModal('lookupModal');
           msg.innerText = "";
+          checkFormValidity();
         } else if (json.status === 'denied') {
           msg.className = "mt-4 text-sm text-center text-red-600 font-semibold";
           msg.innerText = "Access Denied: Incorrect Security PIN.";
