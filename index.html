@@ -31,15 +31,24 @@
   <header class="bg-pts-navy text-white shadow-xl relative overflow-hidden">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 py-6 md:py-8 relative z-10">
       
-      <div class="flex flex-col md:flex-row items-center justify-between gap-4 border-b border-blue-800/60 pb-6">
-        <div class="bg-white px-5 py-3 rounded-xl shadow-md flex items-center space-x-4 sm:space-x-6 max-w-md w-full md:w-auto justify-center">
-          <img src="PTSLogo_LogoOverPTS_Blue.png" alt="Paramount Transportation Systems" class="h-14 sm:h-16 md:h-20 object-contain">
-          <div class="h-10 sm:h-12 w-px bg-gray-300"></div>
-          <img src="IAM_Logo.png" alt="International Association of Movers" class="h-12 sm:h-14 md:h-16 object-contain" onError="this.onerror=null;this.src='https://iamovers.org/wp-content/uploads/2025/01/IAM-Logo.png';">
+      <div class="flex flex-col lg:flex-row items-center justify-between gap-4 border-b border-blue-800/60 pb-6">
+        
+        <div class="flex flex-wrap items-center justify-center gap-4">
+          <div class="bg-white px-5 py-3 rounded-xl shadow-md flex items-center space-x-4 sm:space-x-6">
+            <img src="Paramount30thLogo.jfif" alt="Paramount Transportation Systems - 30th Anniversary" class="h-14 sm:h-16 md:h-20 object-contain">
+            <div class="h-10 sm:h-12 w-px bg-gray-300"></div>
+            <img src="IAM_logo(1500px).png" alt="International Association of Movers" class="h-12 sm:h-14 md:h-16 object-contain" onError="this.onerror=null;this.src='https://iamovers.org/wp-content/uploads/2025/01/IAM-Logo.png';">
+          </div>
+
+          <div class="bg-white px-5 py-3 rounded-xl shadow-md flex items-center space-x-4 sm:space-x-6">
+            <img src="GlobalMovingFoundationLogo.webp" alt="Global Moving Foundation" class="h-12 sm:h-14 md:h-16 object-contain">
+            <div class="h-10 sm:h-12 w-px bg-gray-300"></div>
+            <img src="CoastalK9Logo.jfif" alt="Coastal K9 German Shepherd Rescue" class="h-12 sm:h-14 md:h-16 object-contain">
+          </div>
         </div>
 
-        <div class="w-full md:w-auto text-center md:text-right">
-          <button type="button" onclick="toggleModal('lookupModal')" class="bg-white/10 hover:bg-white/20 text-white px-5 py-2.5 rounded-lg text-sm font-semibold border border-white/30 transition flex items-center gap-2 mx-auto md:ml-auto">
+        <div class="w-full lg:w-auto text-center lg:text-right mt-2 lg:mt-0">
+          <button type="button" onclick="toggleModal('lookupModal')" class="bg-white/10 hover:bg-white/20 text-white px-5 py-2.5 rounded-lg text-sm font-semibold border border-white/30 transition flex items-center gap-2 mx-auto lg:ml-auto">
             <i class="fa-solid fa-lock"></i> Secure Check-in / Edit Registration
           </button>
         </div>
@@ -53,6 +62,9 @@
           </h1>
           <p class="mt-3 text-sm sm:text-base text-blue-100 max-w-xl mx-auto md:mx-0">
             Join us for an energetic 5K run! Complete your registration below to secure your spot and official race shirt.
+          </p>
+          <p class="mt-2 text-xs sm:text-sm text-blue-200 max-w-xl mx-auto md:mx-0 leading-relaxed">
+            Proceeds from this year’s 5K will support two worthy charities: the <strong>Global Moving Foundation</strong>, an international organization, and <strong>Coastal K9 German Shepherd Rescue</strong>, a local nonprofit in San Diego.
           </p>
         </div>
 
@@ -337,7 +349,7 @@
                 <option value="Guadeloupe">Guadeloupe</option>
                 <option value="Guam">Guam</option>
                 <option value="Guatemala">Guatemala</option>
-                <option value="Guernsey">Guernsey</option>
+                <option border-blue-200 value="Guernsey">Guernsey</option>
                 <option value="Guinea">Guinea</option>
                 <option value="Guinea-Bissau">Guinea-Bissau</option>
                 <option value="Guyana">Guyana</option>
@@ -441,7 +453,7 @@
                 <option value="Saudi Arabia">Saudi Arabia</option>
                 <option value="Senegal">Senegal</option>
                 <option value="Serbia">Serbia</option>
-                <option border-blue-200 value="Seychelles">Seychelles</option>
+                <option value="Seychelles">Seychelles</option>
                 <option value="Sierra Leone">Sierra Leone</option>
                 <option value="Singapore">Singapore</option>
                 <option value="Sint Maarten">Sint Maarten</option>
@@ -765,7 +777,7 @@
             matrix[i][j] = Math.min(
               matrix[i - 1][j - 1] + 1,
               matrix[i][j - 1] + 1,
-              matrix[i - 1][j] + 1
+              matrix[i - 1][j + 1]
             );
           }
         }
