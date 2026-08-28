@@ -88,4 +88,1023 @@
           <span class="text-gray-600">Friday, 23 Oct 2026</span>
           
           <div class="relative mt-1.5">
-            <button type="
+            <button type="button" onclick="toggleCalDropdown()" class="text-[11px] bg-pts-light hover:bg-blue-100 text-pts-navy font-semibold px-2 py-0.5 rounded border border-blue-200 flex items-center gap-1 transition">
+              <i class="fa-regular fa-calendar-plus"></i> Add to Calendar
+            </button>
+            <div id="calMenu" class="hidden absolute top-7 left-0 bg-white border border-gray-200 rounded-lg shadow-xl z-30 py-1.5 w-44 text-xs">
+              <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=IAM+%26+PARAMOUNT+Charity+5K+Fun+Run&dates=20261023T133000Z/20261023T160000Z&details=IAM+%26+Paramount+Charity+5K+Fun+Run.+Check-in+starts+at+6%3A30+AM.+Race+starts+at+7%3A30+AM.&location=Hyatt+Hotel" target="_blank" class="block px-3 py-1.5 hover:bg-blue-50 text-gray-700 flex items-center gap-2"><i class="fa-brands fa-google text-blue-500"></i> Google Calendar</a>
+              <a href="javascript:downloadICS()" class="block px-3 py-1.5 hover:bg-blue-50 text-gray-700 flex items-center gap-2"><i class="fa-brands fa-apple text-gray-800"></i> Apple / Outlook (.ics)</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flex items-start space-x-3">
+        <i class="fa-solid fa-clock text-pts-navy text-lg mt-0.5"></i>
+        <div>
+          <strong class="block text-gray-900">Times</strong>
+          <span class="text-gray-600">Check-in: 6:30–7:15 AM</span><br>
+          <span class="text-gray-600">Start: 7:30 AM</span>
+        </div>
+      </div>
+      <div class="flex items-start space-x-3">
+        <i class="fa-solid fa-shirt text-pts-navy text-lg mt-0.5"></i>
+        <div>
+          <strong class="block text-gray-900">Shirt & Bib Pick Up</strong>
+          <span class="text-gray-600 block">Wednesday, 21 Oct -</span>
+          <span class="text-gray-600 block">Thursday, 22 Oct -</span>
+          <span class="text-gray-600 block">Times and location at Hyatt are TBA</span>
+        </div>
+      </div>
+      <div class="flex items-start space-x-3">
+        <i class="fa-solid fa-hourglass-half text-pts-navy text-lg mt-0.5"></i>
+        <div>
+          <strong class="block text-gray-900">Register By</strong>
+          <span class="text-gray-600">Sunday, 01 Oct 2026</span>
+        </div>
+      </div>
+      <div class="flex items-start space-x-3">
+        <i class="fa-solid fa-envelope text-pts-navy text-lg mt-0.5"></i>
+        <div>
+          <strong class="block text-gray-900">Contact Host</strong>
+          <a href="mailto:convention@pts-moves.com" class="text-pts-blue font-medium hover:underline whitespace-nowrap">convention@pts-moves.com</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 mt-3 w-full">
+    <div class="bg-blue-50 border border-blue-200 text-blue-900 px-4 py-2.5 rounded-lg text-xs sm:text-sm flex items-center gap-3">
+      <i class="fa-solid fa-circle-info text-pts-blue text-base flex-shrink-0"></i>
+      <span><strong>Late registration needed?</strong> Contact us at <a href="mailto:convention@pts-moves.com" class="underline font-semibold whitespace-nowrap">convention@pts-moves.com</a> to check if extra space is available for last-minute registrations.</span>
+    </div>
+  </div>
+
+  <main class="max-w-4xl mx-auto px-4 sm:px-6 py-6 w-full flex-grow">
+    <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+      
+      <div class="bg-pts-light border-b border-gray-200 px-6 sm:px-8 py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+        <h2 id="formTitle" class="text-xl font-bold text-pts-navy">Participant Registration</h2>
+        <div id="paymentBadge" class="hidden flex items-center gap-3"></div>
+      </div>
+
+      <form id="regForm" method="POST" target="hidden_iframe" class="p-6 sm:p-8 space-y-8" novalidate>
+        <input type="hidden" id="regId" name="regId" value="">
+        <input type="hidden" id="generatedRegId" name="generatedRegId" value="">
+        <input type="hidden" id="currentPaymentStatus" value="Pending Payment">
+
+        <div>
+          <h3 class="text-lg font-semibold text-pts-navy border-b pb-2 mb-4"><i class="fa-solid fa-user mr-2"></i> Participant Details</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label class="block text-sm font-medium text-gray-700">First Name <span class="text-red-500 font-bold">*</span></label>
+              <input type="text" id="firstName" name="firstName" required class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
+              <span id="firstNameErr" class="text-xs text-red-500 hidden mt-1"><i class="fa-solid fa-circle-exclamation mr-1"></i> First name must contain only letters.</span>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Last Name <span class="text-red-500 font-bold">*</span></label>
+              <input type="text" id="lastName" name="lastName" required class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
+              <span id="lastNameErr" class="text-xs text-red-500 hidden mt-1"><i class="fa-solid fa-circle-exclamation mr-1"></i> Last name must contain only letters.</span>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Email Address <span class="text-red-500 font-bold">*</span></label>
+              <input type="email" id="email" name="email" required placeholder="name@company.com" class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
+              <span id="emailErr" class="text-xs text-red-500 hidden mt-1"><i class="fa-solid fa-circle-exclamation mr-1"></i> Please enter a valid email address.</span>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">T-Shirt Size <span class="text-red-500 font-bold">*</span></label>
+              <select id="tshirtSize" name="tshirtSize" required class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
+                <option value="">Select Size...</option>
+                <option value="Mens XS">Mens XS</option>
+                <option value="Mens S">Mens S</option>
+                <option value="Mens M">Mens M</option>
+                <option value="Mens L">Mens L</option>
+                <option value="Mens XL">Mens XL</option>
+                <option value="Mens XXL">Mens XXL</option>
+                <option value="Mens 3XL">Mens 3XL</option>
+                <option value="Mens 4XL">Mens 4XL</option>
+              </select>
+            </div>
+            <div class="md:col-span-2">
+              <label class="block text-sm font-medium text-gray-700">Mobile Phone (International) <span class="text-red-500 font-bold">*</span></label>
+              <input type="tel" id="mobile" name="mobile" placeholder="+1 555 000 0000" required class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
+              <span id="mobileErr" class="text-xs text-red-500 hidden mt-1"><i class="fa-solid fa-circle-exclamation mr-1"></i> Enter a valid phone number (digits and optional +).</span>
+            </div>
+          </div>
+        </div>
+
+        <div id="pinSection" class="bg-blue-50/60 p-5 rounded-xl border border-blue-200">
+          <h3 class="text-sm font-bold text-pts-navy uppercase tracking-wider mb-1"><i class="fa-solid fa-key mr-2"></i> Create Your Security PIN <span class="text-red-500 font-bold">*</span></h3>
+          <p class="text-xs text-gray-600 mb-4">Choose a PIN so you can access and update your details later.</p>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label class="block text-xs font-semibold text-gray-700 uppercase">Choose Security PIN</label>
+              <input type="password" id="userPin" name="userPin" maxlength="6" placeholder="••••" required class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 text-center text-lg font-mono tracking-widest focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-gray-700 uppercase">Confirm Security PIN</label>
+              <input type="password" id="confirmPin" maxlength="6" placeholder="••••" required class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 text-center text-lg font-mono tracking-widest focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
+              <span id="pinErr" class="text-xs text-red-500 hidden mt-1"><i class="fa-solid fa-circle-exclamation mr-1"></i> Security PINs do not match.</span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="flex items-center justify-between border-b pb-2 mb-4">
+            <h3 class="text-lg font-semibold text-pts-navy"><i class="fa-solid fa-building mr-2"></i> Company Information</h3>
+            <span id="autofillBadge" class="hidden text-xs bg-blue-100 text-blue-800 font-semibold px-2.5 py-1 rounded-full"><i class="fa-solid fa-magic mr-1"></i> Auto-filled from colleague</span>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="md:col-span-2 lg:col-span-4">
+              <label class="block text-sm font-medium text-gray-700">Company Name <span class="text-red-500 font-bold">*</span></label>
+              <input type="text" id="company" name="company" required class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">City <span class="text-red-500 font-bold">*</span></label>
+              <input type="text" id="city" name="city" required class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
+              <span id="cityErr" class="text-xs text-red-500 hidden mt-1"><i class="fa-solid fa-circle-exclamation mr-1"></i> City should not contain numbers.</span>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">State / Province</label>
+              <input type="text" id="state" name="state" class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Country <span class="text-red-500 font-bold">*</span></label>
+              <select id="country" name="country" required class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none bg-white transition">
+                <option value="">Select Country / Territory...</option>
+                <option value="United States">United States</option>
+                <option value="United Kingdom">United Kingdom</option>
+                <option value="Canada">Canada</option>
+                <option value="Germany">Germany</option>
+                <option value="France">France</option>
+                <option value="Australia">Australia</option>
+                <option value="Netherlands">Netherlands</option>
+                <option value="United Arab Emirates">United Arab Emirates</option>
+                <option value="China">China</option>
+                <option value="India">India</option>
+                <option value="Brazil">Brazil</option>
+                <option value="Belgium">Belgium</option>
+                <option value="Spain">Spain</option>
+                <option value="Japan">Japan</option>
+                <option value="Singapore">Singapore</option>
+                <option value="" disabled>------------------------------------</option>
+                <option value="Afghanistan">Afghanistan</option>
+                <option value="Albania">Albania</option>
+                <option value="Algeria">Algeria</option>
+                <option value="American Samoa">American Samoa</option>
+                <option value="Andorra">Andorra</option>
+                <option value="Angola">Angola</option>
+                <option value="Anguilla">Anguilla</option>
+                <option value="Antarctica">Antarctica</option>
+                <option value="Antigua and Barbuda">Antigua and Barbuda</option>
+                <option value="Argentina">Argentina</option>
+                <option value="Armenia">Armenia</option>
+                <option value="Aruba">Aruba</option>
+                <option value="Australia">Australia</option>
+                <option value="Austria">Austria</option>
+                <option value="Azerbaijan">Azerbaijan</option>
+                <option value="Bahamas">Bahamas</option>
+                <option value="Bahrain">Bahrain</option>
+                <option value="Bangladesh">Bangladesh</option>
+                <option value="Barbados">Barbados</option>
+                <option value="Belarus">Belarus</option>
+                <option value="Belgium">Belgium</option>
+                <option value="Belize">Belize</option>
+                <option value="Benin">Benin</option>
+                <option value="Bermuda">Bermuda</option>
+                <option value="Bhutan">Bhutan</option>
+                <option value="Bolivia">Bolivia</option>
+                <option value="Bonaire, Sint Eustatius and Saba">Bonaire, Sint Eustatius and Saba</option>
+                <option value="Bosnia and Herzegovina">Bosnia and Herzegovina</option>
+                <option value="Botswana">Botswana</option>
+                <option value="Brazil">Brazil</option>
+                <option value="British Virgin Islands">British Virgin Islands</option>
+                <option value="Brunei">Brunei</option>
+                <option value="Bulgaria">Bulgaria</option>
+                <option value="Burkina Faso">Burkina Faso</option>
+                <option value="Burundi">Burundi</option>
+                <option value="Cabo Verde">Cabo Verde</option>
+                <option value="Cambodia">Cambodia</option>
+                <option value="Cameroon">Cameroon</option>
+                <option value="Canada">Canada</option>
+                <option value="Cayman Islands">Cayman Islands</option>
+                <option value="Central African Republic">Central African Republic</option>
+                <option value="Chad">Chad</option>
+                <option value="Chile">Chile</option>
+                <option value="China">China</option>
+                <option value="Christmas Island">Christmas Island</option>
+                <option value="Cocos (Keeling) Islands">Cocos (Keeling) Islands</option>
+                <option value="Colombia">Colombia</option>
+                <option value="Comoros">Comoros</option>
+                <option value="Congo">Congo</option>
+                <option value="Congo (Democratic Republic)">Congo (Democratic Republic)</option>
+                <option value="Cook Islands">Cook Islands</option>
+                <option value="Costa Rica">Costa Rica</option>
+                <option value="Croatia">Croatia</option>
+                <option value="Cuba">Cuba</option>
+                <option value="Curaçao">Curaçao</option>
+                <option value="Cyprus">Cyprus</option>
+                <option value="Czech Republic">Czech Republic</option>
+                <option value="Denmark">Denmark</option>
+                <option value="Djibouti">Djibouti</option>
+                <option value="Dominica">Dominica</option>
+                <option value="Dominican Republic">Dominican Republic</option>
+                <option value="Ecuador">Ecuador</option>
+                <option value="Egypt">Egypt</option>
+                <option value="El Salvador">El Salvador</option>
+                <option value="Equatorial Guinea">Equatorial Guinea</option>
+                <option value="Eritrea">Eritrea</option>
+                <option value="Estonia">Estonia</option>
+                <option value="Eswatini">Eswatini</option>
+                <option value="Ethiopia">Ethiopia</option>
+                <option value="Falkland Islands">Falkland Islands</option>
+                <option value="Faroe Islands">Faroe Islands</option>
+                <option value="Fiji">Fiji</option>
+                <option value="Finland">Finland</option>
+                <option value="France">France</option>
+                <option value="French Guiana">French Guiana</option>
+                <option value="French Polynesia">French Polynesia</option>
+                <option value="Gabon">Gabon</option>
+                <option value="Gambia">Gambia</option>
+                <option value="Georgia">Georgia</option>
+                <option value="Germany">Germany</option>
+                <option value="Ghana">Ghana</option>
+                <option value="Gibraltar">Gibraltar</option>
+                <option value="Greece">Greece</option>
+                <option value="Greenland">Greenland</option>
+                <option value="Grenada">Grenada</option>
+                <option value="Guadeloupe">Guadeloupe</option>
+                <option value="Guam">Guam</option>
+                <option value="Guatemala">Guatemala</option>
+                <option value="Guernsey">Guernsey</option>
+                <option value="Guinea">Guinea</option>
+                <option value="Guinea-Bissau">Guinea-Bissau</option>
+                <option value="Guyana">Guyana</option>
+                <option value="Haiti">Haiti</option>
+                <option value="Honduras">Honduras</option>
+                <option value="Hong Kong">Hong Kong</option>
+                <option value="Hungary">Hungary</option>
+                <option value="Iceland">Iceland</option>
+                <option value="India">India</option>
+                <option value="Indonesia">Indonesia</option>
+                <option value="Iran">Iran</option>
+                <option value="Iraq">Iraq</option>
+                <option value="Ireland">Ireland</option>
+                <option value="Isle of Man">Isle of Man</option>
+                <option value="Israel">Israel</option>
+                <option value="Italy">Italy</option>
+                <option value="Ivory Coast">Ivory Coast</option>
+                <option value="Jamaica">Jamaica</option>
+                <option value="Japan">Japan</option>
+                <option value="Jersey">Jersey</option>
+                <option value="Jordan">Jordan</option>
+                <option value="Kazakhstan">Kazakhstan</option>
+                <option value="Kenya">Kenya</option>
+                <option value="Kiribati">Kiribati</option>
+                <option value="Kosovo">Kosovo</option>
+                <option value="Kuwait">Kuwait</option>
+                <option value="Kyrgyzstan">Kyrgyzstan</option>
+                <option value="Laos">Laos</option>
+                <option value="Latvia">Latvia</option>
+                <option value="Lebanon">Lebanon</option>
+                <option value="Lesotho">Lesotho</option>
+                <option value="Liberia">Liberia</option>
+                <option value="Libya">Libya</option>
+                <option value="Liechtenstein">Liechtenstein</option>
+                <option value="Lithuania">Lithuania</option>
+                <option value="Luxembourg">Luxembourg</option>
+                <option value="Macau">Macau</option>
+                <option value="Madagascar">Madagascar</option>
+                <option value="Malawi">Malawi</option>
+                <option value="Malaysia">Malaysia</option>
+                <option value="Maldives">Maldives</option>
+                <option value="Mali">Mali</option>
+                <option value="Malta">Malta</option>
+                <option value="Marshall Islands">Marshall Islands</option>
+                <option value="Martinique">Martinique</option>
+                <option value="Mauritania">Mauritania</option>
+                <option value="Mauritius">Mauritius</option>
+                <option value="Mayotte">Mayotte</option>
+                <option value="Mexico">Mexico</option>
+                <option value="Micronesia">Micronesia</option>
+                <option value="Moldova">Moldova</option>
+                <option value="Monaco">Monaco</option>
+                <option value="Mongolia">Mongolia</option>
+                <option value="Montenegro">Montenegro</option>
+                <option value="Montserrat">Montserrat</option>
+                <option value="Morocco">Morocco</option>
+                <option value="Mozambique">Mozambique</option>
+                <option value="Myanmar">Myanmar</option>
+                <option value="Namibia">Namibia</option>
+                <option value="Nauru">Nauru</option>
+                <option value="Nepal">Nepal</option>
+                <option value="Netherlands">Netherlands</option>
+                <option value="New Caledonia">New Caledonia</option>
+                <option value="New Zealand">New Zealand</option>
+                <option value="Nicaragua">Nicaragua</option>
+                <option value="Niger">Niger</option>
+                <option value="Nigeria">Nigeria</option>
+                <option value="Niue">Niue</option>
+                <option value="Norfolk Island">Norfolk Island</option>
+                <option value="North Korea">North Korea</option>
+                <option value="North Macedonia">North Macedonia</option>
+                <option value="Northern Mariana Islands">Northern Mariana Islands</option>
+                <option value="Norway">Norway</option>
+                <option value="Oman">Oman</option>
+                <option value="Pakistan">Pakistan</option>
+                <option value="Palau">Palau</option>
+                <option value="Palestine">Palestine</option>
+                <option value="Panama">Panama</option>
+                <option value="Papua New Guinea">Papua New Guinea</option>
+                <option value="Paraguay">Paraguay</option>
+                <option value="Peru">Peru</option>
+                <option value="Philippines">Philippines</option>
+                <option value="Poland">Poland</option>
+                <option value="Portugal">Portugal</option>
+                <option value="Puerto Rico">Puerto Rico</option>
+                <option value="Qatar">Qatar</option>
+                <option value="Réunion">Réunion</option>
+                <option value="Romania">Romania</option>
+                <option value="Russia">Russia</option>
+                <option value="Rwanda">Rwanda</option>
+                <option value="Saint Barthélemy">Saint Barthélemy</option>
+                <option value="Saint Helena">Saint Helena</option>
+                <option value="Saint Kitts and Nevis">Saint Kitts and Nevis</option>
+                <option value="Saint Lucia">Saint Lucia</option>
+                <option value="Saint Martin">Saint Martin</option>
+                <option value="Saint Pierre and Miquelon">Saint Pierre and Miquelon</option>
+                <option value="Saint Vincent and the Grenadines">Saint Vincent and the Grenadines</option>
+                <option value="Samoa">Samoa</option>
+                <option value="San Marino">San Marino</option>
+                <option value="Sao Tome and Principe">Sao Tome and Principe</option>
+                <option value="Saudi Arabia">Saudi Arabia</option>
+                <option value="Senegal">Senegal</option>
+                <option value="Serbia">Serbia</option>
+                <option border-blue-200 value="Seychelles">Seychelles</option>
+                <option value="Sierra Leone">Sierra Leone</option>
+                <option value="Singapore">Singapore</option>
+                <option value="Sint Maarten">Sint Maarten</option>
+                <option value="Slovakia">Slovakia</option>
+                <option value="Slovenia">Slovenia</option>
+                <option value="Solomon Islands">Solomon Islands</option>
+                <option value="Somalia">Somalia</option>
+                <option value="South Africa">South Africa</option>
+                <option value="South Korea">South Korea</option>
+                <option value="South Sudan">South Sudan</option>
+                <option value="Spain">Spain</option>
+                <option value="Sri Lanka">Sri Lanka</option>
+                <option value="Sudan">Sudan</option>
+                <option value="Suriname">Suriname</option>
+                <option value="Sweden">Sweden</option>
+                <option value="Switzerland">Switzerland</option>
+                <option value="Syria">Syria</option>
+                <option value="Taiwan">Taiwan</option>
+                <option value="Tajikistan">Tajikistan</option>
+                <option value="Tanzania">Tanzania</option>
+                <option value="Thailand">Thailand</option>
+                <option value="Timor-Leste">Timor-Leste</option>
+                <option value="Togo">Togo</option>
+                <option value="Tokelau">Tokelau</option>
+                <option value="Tonga">Tonga</option>
+                <option value="Trinidad and Tobago">Trinidad and Tobago</option>
+                <option value="Tunisia">Tunisia</option>
+                <option value="Turkey">Turkey</option>
+                <option value="Turkmenistan">Turkmenistan</option>
+                <option value="Turks and Caicos Islands">Turks and Caicos Islands</option>
+                <option value="Tuvalu">Tuvalu</option>
+                <option value="U.S. Virgin Islands">U.S. Virgin Islands</option>
+                <option value="Uganda">Uganda</option>
+                <option value="Ukraine">Ukraine</option>
+                <option value="United Arab Emirates">United Arab Emirates</option>
+                <option value="United Kingdom">United Kingdom</option>
+                <option value="United States">United States</option>
+                <option value="Uruguay">Uruguay</option>
+                <option value="Uzbekistan">Uzbekistan</option>
+                <option value="Vanuatu">Vanuatu</option>
+                <option value="Vatican City">Vatican City</option>
+                <option value="Venezuela">Venezuela</option>
+                <option value="Vietnam">Vietnam</option>
+                <option value="Wallis and Futuna">Wallis and Futuna</option>
+                <option value="Yemen">Yemen</option>
+                <option value="Zambia">Zambia</option>
+                <option value="Zimbabwe">Zimbabwe</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Postal / ZIP Code</label>
+              <input type="text" id="postalCode" name="postalCode" placeholder="e.g. 90210" class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="text-lg font-semibold text-pts-navy border-b pb-2 mb-4"><i class="fa-solid fa-heart-pulse mr-2"></i> Logistics & Emergency Contact</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Emergency Contact Name <span class="text-red-500 font-bold">*</span></label>
+              <input type="text" id="emergencyName" name="emergencyName" required class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
+              <span id="emergencyNameErr" class="text-xs text-red-500 hidden mt-1"><i class="fa-solid fa-circle-exclamation mr-1"></i> Emergency contact cannot be yourself.</span>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Emergency Contact Phone <span class="text-red-500 font-bold">*</span></label>
+              <input type="tel" id="emergencyPhone" name="emergencyPhone" placeholder="+1 555 000 0000" required class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
+              <span id="emergencyPhoneErr" class="text-xs text-red-500 hidden mt-1"><i class="fa-solid fa-circle-exclamation mr-1"></i> Emergency phone cannot be your own phone number.</span>
+            </div>
+            <div class="md:col-span-2">
+              <label class="block text-sm font-medium text-gray-700">Special Accommodations</label>
+              <input type="text" id="specialAccommodations" name="specialAccommodations" placeholder="e.g. Accessibility needs" class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-4">
+          <h3 class="text-lg font-semibold text-pts-navy border-b pb-2"><i class="fa-solid fa-file-contract mr-2"></i> Terms & Waivers</h3>
+          
+          <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 text-xs text-gray-600 leading-relaxed">
+            <strong>Photo/Video Release:</strong> I certify that I am over 18 years old and agree to this Photo & Video Release. I authorize Paramount Transportation Systems to photograph and record me during the Charity 5K Fun Run and allow both the International Association of Movers and/or Paramount to place my picture/video on their website/in their newsletters and use my image for any promotional purposes without compensation.
+          </div>
+          <label class="flex items-center text-sm font-medium text-gray-700">
+            <input type="checkbox" id="photoRelease" name="photoRelease" value="true" required class="rounded text-pts-navy focus:ring-pts-navy h-4 w-4">
+            <span class="ml-2">I certify that I am over 18 years old and agree to the Photo & Video Release. <span class="text-red-500 font-bold">*</span></span>
+          </label>
+
+          <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 text-xs text-gray-600 leading-relaxed mt-4">
+            <strong>Liability Statement:</strong> I certify that I am over 18 years old and I acknowledge that participating in a 5K involves physical activity and assume all risks associated with participation. I release and hold harmless the event organizers, sponsors, the property owners, their employees and my employer from liability for injuries or damages arising from my participation.
+          </div>
+          <label class="flex items-center text-sm font-medium text-gray-700">
+            <input type="checkbox" id="liabilityWaiver" name="liabilityWaiver" value="true" required class="rounded text-pts-navy focus:ring-pts-navy h-4 w-4">
+            <span class="ml-2">I have read and agree to the Liability Waiver above. <span class="text-red-500 font-bold">*</span></span>
+          </label>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Participant Electronic Signature (Full Name) <span class="text-red-500 font-bold">*</span></label>
+              <input type="text" id="signature" name="signature" placeholder="Must match First + Last Name above" required class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
+              <span id="sigMatchError" class="text-xs text-red-500 hidden mt-1"><i class="fa-solid fa-triangle-exclamation mr-1"></i> Signature must match First Name + Last Name</span>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Date <span class="text-red-500 font-bold">*</span></label>
+              <input type="date" id="sigDate" name="sigDate" readonly required class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 bg-gray-100 cursor-not-allowed focus:outline-none text-gray-600 transition">
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-4 border-t border-gray-200">
+          <button type="submit" id="submitBtn" disabled class="w-full bg-gray-300 text-gray-500 font-bold py-4 px-6 rounded-xl shadow transition duration-200 flex items-center justify-center text-lg cursor-not-allowed">
+            <span id="btnText">Proceed to $75.00 Payment</span>
+            <i class="fa-solid fa-arrow-right ml-2"></i>
+          </button>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <div id="lookupModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl relative">
+      <button type="button" onclick="toggleModal('lookupModal')" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark text-xl"></i></button>
+      <h3 class="text-xl font-bold text-pts-navy mb-2"><i class="fa-solid fa-shield-halved mr-2"></i> Secure Registration Lookup</h3>
+      <p class="text-sm text-gray-600 mb-4">Enter your Registration ID or Email along with your custom Security PIN.</p>
+      
+      <div class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">Registration ID or Email</label>
+          <input type="text" id="lookupQuery" placeholder="e.g. PTS-123456 or name@company.com" class="w-full rounded-lg border border-gray-300 p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">Your Security PIN</label>
+          <input type="password" id="lookupPin" placeholder="••••" class="w-full rounded-lg border border-gray-300 p-2.5 text-center text-lg tracking-widest focus:ring-2 focus:ring-pts-navy focus:outline-none">
+        </div>
+        <button type="button" onclick="performLookup()" class="w-full bg-pts-navy text-white font-semibold py-2.5 rounded-lg hover:bg-pts-blue transition">Verify & Access Details</button>
+      </div>
+      <div id="lookupMessage" class="mt-4 text-sm text-center"></div>
+    </div>
+  </div>
+
+  <div class="hidden">
+    <div id="pdfPassTemplate" class="p-8 bg-white text-gray-800 font-sans max-w-xl">
+      <div class="border-b-2 border-blue-900 pb-4 mb-6 flex justify-between items-center">
+        <div>
+          <h1 class="text-2xl font-extrabold text-blue-900">IAM & PARAMOUNT Charity 5K RUN</h1>
+          <p class="text-xs text-gray-500 font-semibold uppercase">Official Registration Confirmation Pass</p>
+        </div>
+        <div class="text-right">
+          <span class="bg-green-100 text-green-800 text-xs font-bold px-3 py-1 rounded-full inline-block">PAID & CONFIRMED</span>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4 text-sm mb-6 bg-gray-50 p-4 rounded-xl border border-gray-200">
+        <div><strong class="text-gray-500 text-xs uppercase block">Registration ID:</strong> <span id="pdfRegId" class="font-bold text-blue-900 text-lg"></span></div>
+        <div><strong class="text-gray-500 text-xs uppercase block">Runner Name:</strong> <span id="pdfName" class="font-bold"></span></div>
+        <div><strong class="text-gray-500 text-xs uppercase block">Email:</strong> <span id="pdfEmail"></span></div>
+        <div><strong class="text-gray-500 text-xs uppercase block">Company:</strong> <span id="pdfCompany"></span></div>
+        <div><strong class="text-gray-500 text-xs uppercase block">T-Shirt Size:</strong> <span id="pdfShirt" class="font-bold text-blue-900"></span></div>
+        <div><strong class="text-gray-500 text-xs uppercase block">Emergency Phone:</strong> <span id="pdfEmergPhone"></span></div>
+      </div>
+
+      <div class="border-t border-gray-200 pt-4 text-xs text-gray-600 space-y-1">
+        <p><strong>Race Date:</strong> Friday, 23 October 2026</p>
+        <p><strong>Check-In:</strong> 6:30 AM – 7:15 AM | <strong>Start:</strong> 7:30 AM</p>
+        <p><strong>Packet Pick Up:</strong> Oct 21 & 22 @ Hyatt Hotel</p>
+        <p class="mt-4 text-[10px] text-gray-400">Present this digital or printed pass at race check-in to collect your bib and T-shirt.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyCl3GvVDj-l5V3Fx2NDpXb6LePkgUJtl2K2kPl9fGs8yTrsNSkZlF89hFF8DompNmV/exec";
+    const STRIPE_PAYMENT_LINK = "https://buy.stripe.com/6oU14ffDuemrfOM11h3gk01";
+
+    let pendingRedirectUrl = "";
+    const hiddenIframe = document.getElementById('hidden_iframe');
+
+    document.getElementById('regForm').action = SCRIPT_URL;
+
+    // Set today's date on initial load
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('sigDate').value = today;
+
+    hiddenIframe.addEventListener('load', function() {
+      if (pendingRedirectUrl) {
+        window.location.href = pendingRedirectUrl;
+      }
+    });
+
+    function toggleModal(id) {
+      document.getElementById(id).classList.toggle('hidden');
+    }
+
+    function toggleCalDropdown() {
+      document.getElementById('calMenu').classList.toggle('hidden');
+    }
+
+    function downloadICS() {
+      const icsData = "BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nSUMMARY:IAM & PARAMOUNT Charity 5K Fun Run\nDESCRIPTION:IAM & Paramount Charity 5K Fun Run Event. Check-in starts at 6:30 AM.\nLOCATION:Hyatt Hotel\nDTSTART:20261023T133000Z\nDTEND:20261023T160000Z\nEND:VEVENT\nEND:VCALENDAR";
+      const blob = new Blob([icsData], { type: 'text/calendar;charset=utf-8' });
+      const link = document.createElement('a');
+      link.href = window.URL.createObjectURL(blob);
+      link.setAttribute('download', 'IAM_Paramount_5K.ics');
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    // --- LIVE COUNTDOWN TIMER ---
+    const raceDate = new Date("October 23, 2026 07:30:00").getTime();
+    setInterval(function() {
+      const now = new Date().getTime();
+      const distance = raceDate - now;
+      if (distance > 0) {
+        document.getElementById("cdDays").innerText = String(Math.floor(distance / (1000 * 60 * 60 * 24))).padStart(2, '0');
+        document.getElementById("cdHours").innerText = String(Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
+        document.getElementById("cdMins").innerText = String(Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
+        document.getElementById("cdSecs").innerText = String(Math.floor((distance % (1000 * 60)) / 1000)).padStart(2, '0');
+      }
+    }, 1000);
+
+    // --- AUTO-FORMATTING & CAPITALIZATION MASKS ---
+    function autoCapitalize(e) {
+      const words = e.target.value.split(' ');
+      e.target.value = words.map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+    }
+    document.getElementById('firstName').addEventListener('keyup', autoCapitalize);
+    document.getElementById('lastName').addEventListener('keyup', autoCapitalize);
+    document.getElementById('city').addEventListener('keyup', autoCapitalize);
+
+    // AUTO-JUMP PIN BOXES
+    document.getElementById('userPin').addEventListener('input', function(e) {
+      if (e.target.value.length === 4 || e.target.value.length === 6) {
+        document.getElementById('confirmPin').focus();
+      }
+    });
+
+    // --- DOMAIN AUTO-FILL FOR CORPORATE TEAMS ---
+    const IGNORED_DOMAINS = ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com', 'icloud.com', 'aol.com', 'protonmail.com', 'me.com', 'live.com', 'msn.com'];
+
+    async function checkCompanyDomainAutoFill() {
+      const email = document.getElementById('email').value.trim();
+      if (!email || !email.includes('@')) return;
+
+      const domain = email.split('@')[1].toLowerCase();
+      if (IGNORED_DOMAINS.includes(domain)) return;
+
+      if (document.getElementById('company').value.trim()) return;
+
+      try {
+        const res = await fetch(`${SCRIPT_URL}?action=getCompanyByDomain&domain=${encodeURIComponent(domain)}`);
+        const json = await res.json();
+
+        if (json.status === 'found') {
+          if (json.company) document.getElementById('company').value = json.company;
+          if (json.city) document.getElementById('city').value = json.city;
+          if (json.state) document.getElementById('state').value = json.state;
+          if (json.country) document.getElementById('country').value = json.country;
+          if (json.postalCode) document.getElementById('postalCode').value = json.postalCode;
+
+          document.getElementById('autofillBadge').classList.remove('hidden');
+          checkFormValidity();
+        }
+      } catch (e) {
+        // Silent catch if offline or error
+      }
+    }
+
+    document.getElementById('email').addEventListener('blur', checkCompanyDomainAutoFill);
+
+    // --- REAL-TIME FIELD VALIDATORS ---
+    const nameRegex = /^[a-zA-Z\s\-']+$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const phoneRegex = /^\+?[0-9\s\-\(\)]{7,20}$/;
+
+    function validateField(inputEl, regex, errEl) {
+      const val = inputEl.value.trim();
+      if (!val) {
+        inputEl.classList.remove('border-red-500', 'ring-red-200');
+        if (errEl) errEl.classList.add('hidden');
+        return true;
+      }
+      
+      const isValid = regex.test(val);
+      if (!isValid) {
+        inputEl.classList.add('border-red-500', 'ring-2', 'ring-red-200');
+        if (errEl) errEl.classList.remove('hidden');
+      } else {
+        inputEl.classList.remove('border-red-500', 'ring-2', 'ring-red-200');
+        if (errEl) errEl.classList.add('hidden');
+      }
+      return isValid;
+    }
+
+    function attachFieldValidator(id, regex, errId) {
+      const el = document.getElementById(id);
+      const errEl = document.getElementById(errId);
+      el.addEventListener('blur', () => { validateField(el, regex, errEl); checkFormValidity(); });
+      el.addEventListener('input', () => { validateField(el, regex, errEl); checkFormValidity(); });
+    }
+
+    attachFieldValidator('firstName', nameRegex, 'firstNameErr');
+    attachFieldValidator('lastName', nameRegex, 'lastNameErr');
+    attachFieldValidator('email', emailRegex, 'emailErr');
+    attachFieldValidator('mobile', phoneRegex, 'mobileErr');
+    attachFieldValidator('city', nameRegex, 'cityErr');
+
+    // Helper: Levenshtein Distance for fuzzy name match detection
+    function levenshteinDistance(a, b) {
+      if (a.length === 0) return b.length;
+      if (b.length === 0) return a.length;
+
+      const matrix = [];
+      for (let i = 0; i <= b.length; i++) matrix[i] = [i];
+      for (let j = 0; j <= a.length; j++) matrix[0][j] = j;
+
+      for (let i = 1; i <= b.length; i++) {
+        for (let j = 1; j <= a.length; j++) {
+          if (b.charAt(i - 1) === a.charAt(j - 1)) {
+            matrix[i][j] = matrix[i - 1][j - 1];
+          } else {
+            matrix[i][j] = Math.min(
+              matrix[i - 1][j - 1] + 1,
+              matrix[i][j - 1] + 1,
+              matrix[i - 1][j] + 1
+            );
+          }
+        }
+      }
+      return matrix[b.length][a.length];
+    }
+
+    // --- ADVANCED EMERGENCY CONTACT SELF-ENTRY GUARD ---
+    function checkEmergencyContact() {
+      const fnRaw = document.getElementById('firstName').value.trim();
+      const lnRaw = document.getElementById('lastName').value.trim();
+      const emNameRaw = document.getElementById('emergencyName').value.trim();
+
+      const fnClean = fnRaw.toLowerCase().replace(/[^a-z0-9]/g, '');
+      const lnClean = lnRaw.toLowerCase().replace(/[^a-z0-9]/g, '');
+      const emNameClean = emNameRaw.toLowerCase().replace(/[^a-z0-9]/g, '');
+
+      const mobileDigits = document.getElementById('mobile').value.replace(/\D/g, '');
+      const emPhoneDigits = document.getElementById('emergencyPhone').value.replace(/\D/g, '');
+
+      const emNameEl = document.getElementById('emergencyName');
+      const emNameErr = document.getElementById('emergencyNameErr');
+      const emPhoneEl = document.getElementById('emergencyPhone');
+      const emPhoneErr = document.getElementById('emergencyPhoneErr');
+
+      let isValid = true;
+
+      if (emNameClean) {
+        const normalFullName = fnClean + lnClean;
+        const reverseFullName = lnClean + fnClean;
+
+        let isSelfMatch = false;
+
+        if (normalFullName && reverseFullName) {
+          if (emNameClean === normalFullName || emNameClean === reverseFullName) {
+            isSelfMatch = true;
+          }
+          else if ((fnClean && emNameClean === fnClean) || (lnClean && emNameClean === lnClean)) {
+            isSelfMatch = true;
+          }
+          else if (
+            levenshteinDistance(emNameClean, normalFullName) <= 2 ||
+            levenshteinDistance(emNameClean, reverseFullName) <= 2
+          ) {
+            isSelfMatch = true;
+          }
+        }
+
+        if (isSelfMatch) {
+          emNameEl.classList.add('border-red-500', 'ring-2', 'ring-red-200');
+          emNameErr.innerText = "Emergency contact cannot be yourself or a variation of your name.";
+          emNameErr.classList.remove('hidden');
+          isValid = false;
+        } else if (!nameRegex.test(emNameRaw)) {
+          emNameEl.classList.add('border-red-500', 'ring-2', 'ring-red-200');
+          emNameErr.innerText = "Name should contain only letters.";
+          emNameErr.classList.remove('hidden');
+          isValid = false;
+        } else {
+          emNameEl.classList.remove('border-red-500', 'ring-2', 'ring-red-200');
+          emNameErr.classList.add('hidden');
+        }
+      }
+
+      if (emPhoneDigits) {
+        if (mobileDigits && emPhoneDigits === mobileDigits) {
+          emPhoneEl.classList.add('border-red-500', 'ring-2', 'ring-red-200');
+          emPhoneErr.innerText = "Emergency phone cannot be your own phone number.";
+          emPhoneErr.classList.remove('hidden');
+          isValid = false;
+        } else if (!phoneRegex.test(document.getElementById('emergencyPhone').value.trim())) {
+          emPhoneEl.classList.add('border-red-500', 'ring-2', 'ring-red-200');
+          emPhoneErr.innerText = "Enter a valid phone number.";
+          emPhoneErr.classList.remove('hidden');
+          isValid = false;
+        } else {
+          emPhoneEl.classList.remove('border-red-500', 'ring-2', 'ring-red-200');
+          emPhoneErr.classList.add('hidden');
+        }
+      }
+
+      return isValid;
+    }
+
+    document.getElementById('emergencyName').addEventListener('blur', () => { checkEmergencyContact(); checkFormValidity(); });
+    document.getElementById('emergencyName').addEventListener('input', () => { checkEmergencyContact(); checkFormValidity(); });
+    document.getElementById('emergencyPhone').addEventListener('blur', () => { checkEmergencyContact(); checkFormValidity(); });
+    document.getElementById('emergencyPhone').addEventListener('input', () => { checkEmergencyContact(); checkFormValidity(); });
+    document.getElementById('firstName').addEventListener('blur', () => { checkEmergencyContact(); checkFormValidity(); });
+    document.getElementById('lastName').addEventListener('blur', () => { checkEmergencyContact(); checkFormValidity(); });
+    document.getElementById('mobile').addEventListener('blur', () => { checkEmergencyContact(); checkFormValidity(); });
+
+    // Real-Time PIN Match Verification
+    function checkPinMatch() {
+      const pin = document.getElementById('userPin').value;
+      const confirm = document.getElementById('confirmPin').value;
+      const pinErr = document.getElementById('pinErr');
+      
+      if (confirm && pin !== confirm) {
+        document.getElementById('confirmPin').classList.add('border-red-500', 'ring-2', 'ring-red-200');
+        pinErr.classList.remove('hidden');
+        return false;
+      } else {
+        document.getElementById('confirmPin').classList.remove('border-red-500', 'ring-2', 'ring-red-200');
+        pinErr.classList.add('hidden');
+        return true;
+      }
+    }
+    document.getElementById('confirmPin').addEventListener('blur', () => { checkPinMatch(); checkFormValidity(); });
+    document.getElementById('confirmPin').addEventListener('input', () => { checkPinMatch(); checkFormValidity(); });
+    document.getElementById('userPin').addEventListener('input', () => { checkPinMatch(); checkFormValidity(); });
+
+    // Real-Time Signature Verification
+    function checkSignatureMatch() {
+      const fn = document.getElementById('firstName').value.trim();
+      const ln = document.getElementById('lastName').value.trim();
+      const sig = document.getElementById('signature').value.trim();
+      const sigErr = document.getElementById('sigMatchError');
+      const sigEl = document.getElementById('signature');
+
+      if (!sig) {
+        sigEl.classList.remove('border-red-500', 'ring-2', 'ring-red-200');
+        sigErr.classList.add('hidden');
+        return false;
+      }
+
+      const expected = `${fn} ${ln}`.toLowerCase();
+      if (sig.toLowerCase() !== expected) {
+        sigEl.classList.add('border-red-500', 'ring-2', 'ring-red-200');
+        sigErr.classList.remove('hidden');
+        return false;
+      } else {
+        sigEl.classList.remove('border-red-500', 'ring-2', 'ring-red-200');
+        sigErr.classList.add('hidden');
+        return true;
+      }
+    }
+    document.getElementById('signature').addEventListener('blur', () => { checkSignatureMatch(); checkFormValidity(); });
+    document.getElementById('signature').addEventListener('input', () => { checkSignatureMatch(); checkFormValidity(); });
+
+    // --- FORM COMPLETION & BUTTON ENABLING GUARD ---
+    function checkFormValidity() {
+      const fn = document.getElementById('firstName').value.trim();
+      const ln = document.getElementById('lastName').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const mobile = document.getElementById('mobile').value.trim();
+      const company = document.getElementById('company').value.trim();
+      const city = document.getElementById('city').value.trim();
+      const country = document.getElementById('country').value.trim();
+      const emName = document.getElementById('emergencyName').value.trim();
+      const emPhone = document.getElementById('emergencyPhone').value.trim();
+      const shirt = document.getElementById('tshirtSize').value.trim();
+      const photo = document.getElementById('photoRelease').checked;
+      const waiver = document.getElementById('liabilityWaiver').checked;
+      const sig = document.getElementById('signature').value.trim();
+      const userPin = document.getElementById('userPin').value.trim();
+      const confirmPin = document.getElementById('confirmPin').value.trim();
+      const isEditing = Boolean(document.getElementById('regId').value);
+
+      const submitBtn = document.getElementById('submitBtn');
+
+      const isBaseValid = fn && ln && emailRegex.test(email) && phoneRegex.test(mobile) &&
+                          company && city && country && emName && phoneRegex.test(emPhone) &&
+                          shirt && photo && waiver && sig && (sig.toLowerCase() === `${fn} ${ln}`.toLowerCase()) &&
+                          checkEmergencyContact();
+
+      const isPinValid = isEditing || (userPin && confirmPin && userPin === confirmPin);
+
+      if (isBaseValid && isPinValid) {
+        submitBtn.disabled = false;
+        submitBtn.classList.remove('bg-gray-300', 'text-gray-500', 'cursor-not-allowed');
+        submitBtn.classList.add('bg-pts-navy', 'hover:bg-pts-blue', 'text-white', 'shadow-lg', 'cursor-pointer');
+      } else {
+        submitBtn.disabled = true;
+        submitBtn.classList.add('bg-gray-300', 'text-gray-500', 'cursor-not-allowed');
+        submitBtn.classList.remove('bg-pts-navy', 'hover:bg-pts-blue', 'text-white', 'shadow-lg', 'cursor-pointer');
+      }
+    }
+
+    // Attach form validity checks to remaining controls
+    document.getElementById('regForm').addEventListener('input', checkFormValidity);
+    document.getElementById('country').addEventListener('change', checkFormValidity);
+    document.getElementById('tshirtSize').addEventListener('change', checkFormValidity);
+    document.getElementById('photoRelease').addEventListener('change', checkFormValidity);
+    document.getElementById('liabilityWaiver').addEventListener('change', checkFormValidity);
+
+    // --- PDF PASS DOWNLOAD (PAID USERS ONLY) ---
+    function generatePDFPass() {
+      const regId = document.getElementById('regId').value;
+      const fn = document.getElementById('firstName').value;
+      const ln = document.getElementById('lastName').value;
+      
+      document.getElementById('pdfRegId').innerText = regId;
+      document.getElementById('pdfName').innerText = `${fn} ${ln}`;
+      document.getElementById('pdfEmail').innerText = document.getElementById('email').value;
+      document.getElementById('pdfCompany').innerText = document.getElementById('company').value;
+      document.getElementById('pdfShirt').innerText = document.getElementById('tshirtSize').value;
+      document.getElementById('pdfEmergPhone').innerText = document.getElementById('emergencyPhone').value;
+
+      const element = document.getElementById('pdfPassTemplate');
+      html2pdf().from(element).save(`${regId}_5K_Registration_Pass.pdf`);
+    }
+
+    // --- FORM SUBMIT HANDLER ---
+    document.getElementById('regForm').addEventListener('submit', function(e) {
+      if (!checkEmergencyContact()) {
+        e.preventDefault();
+        alert("Invalid Emergency Contact Details!\n\nYour emergency contact name and phone number cannot be your own details or a variation. Please provide someone else's contact info.");
+        document.getElementById('emergencyName').focus();
+        return;
+      }
+
+      const firstName = document.getElementById('firstName').value.trim();
+      const lastName = document.getElementById('lastName').value.trim();
+      const signature = document.getElementById('signature').value.trim();
+      const expectedFullName = `${firstName} ${lastName}`.toLowerCase();
+
+      if (signature.toLowerCase() !== expectedFullName) {
+        e.preventDefault();
+        document.getElementById('sigMatchError').classList.remove('hidden');
+        document.getElementById('signature').focus();
+        return;
+      }
+
+      const existingRegId = document.getElementById('regId').value;
+      const isEditing = Boolean(existingRegId);
+      const userPin = document.getElementById('userPin').value;
+      const confirmPin = document.getElementById('confirmPin').value;
+      const currentStatus = document.getElementById('currentPaymentStatus').value;
+
+      if (!isEditing && userPin !== confirmPin) {
+        e.preventDefault();
+        document.getElementById('pinErr').classList.remove('hidden');
+        document.getElementById('confirmPin').focus();
+        return;
+      }
+
+      const btnText = document.getElementById('btnText');
+      btnText.innerText = "Saving & Redirecting...";
+
+      const targetRegId = isEditing ? existingRegId : ('PTS-' + Math.floor(100000 + Math.random() * 900000));
+      document.getElementById('generatedRegId').value = targetRegId;
+
+      if (isEditing) {
+        if (currentStatus !== 'Paid') {
+          pendingRedirectUrl = `${STRIPE_PAYMENT_LINK}?client_reference_id=${targetRegId}`;
+        } else {
+          pendingRedirectUrl = "";
+          setTimeout(() => {
+            alert('Your registration details have been updated successfully!');
+            btnText.innerText = "Save Changes";
+          }, 1000);
+        }
+      } else {
+        pendingRedirectUrl = `${STRIPE_PAYMENT_LINK}?client_reference_id=${targetRegId}`;
+      }
+    });
+
+    async function performLookup() {
+      const q = document.getElementById('lookupQuery').value;
+      const pin = document.getElementById('lookupPin').value;
+      const msg = document.getElementById('lookupMessage');
+      
+      if (!q || !pin) {
+        msg.className = "mt-4 text-sm text-center text-red-500";
+        msg.innerText = "Please enter both Email/ID and Security PIN.";
+        return;
+      }
+
+      msg.className = "mt-4 text-sm text-center text-gray-500";
+      msg.innerText = "Verifying...";
+
+      try {
+        const res = await fetch(`${SCRIPT_URL}?action=lookup&query=${encodeURIComponent(q)}&pin=${encodeURIComponent(pin)}`);
+        const json = await res.json();
+
+        if (json.status === 'found') {
+          const d = json.data;
+          document.getElementById('regId').value = d.regId;
+          document.getElementById('userPin').value = d.pin;
+          document.getElementById('confirmPin').value = d.pin;
+          document.getElementById('currentPaymentStatus').value = d.paymentStatus;
+          
+          document.getElementById('pinSection').classList.add('hidden');
+
+          document.getElementById('firstName').value = d.firstName;
+          document.getElementById('lastName').value = d.lastName;
+          document.getElementById('email').value = d.email;
+          document.getElementById('mobile').value = d.mobile;
+          document.getElementById('company').value = d.company;
+          document.getElementById('city').value = d.city;
+          document.getElementById('state').value = d.state;
+          document.getElementById('country').value = d.country;
+          if (d.postalCode) document.getElementById('postalCode').value = d.postalCode;
+          document.getElementById('emergencyName').value = d.emergencyName;
+          document.getElementById('emergencyPhone').value = d.emergencyPhone;
+          document.getElementById('tshirtSize').value = d.tshirtSize;
+          document.getElementById('specialAccommodations').value = d.specialAccommodations || '';
+          document.getElementById('signature').value = d.signature;
+          
+          // Preserve original signature date from record
+          if (d.sigDate) {
+            document.getElementById('sigDate').value = d.sigDate.split('T')[0];
+          }
+
+          document.getElementById('photoRelease').checked = d.photoRelease;
+          document.getElementById('liabilityWaiver').checked = d.liabilityWaiver;
+
+          document.getElementById('formTitle').innerText = `Editing Registration (${d.regId})`;
+          
+          const badgeContainer = document.getElementById('paymentBadge');
+          badgeContainer.classList.remove('hidden');
+
+          if (d.paymentStatus === 'Paid') {
+            badgeContainer.innerHTML = `
+              <span class="bg-green-100 text-green-800 text-xs font-bold px-3 py-1.5 rounded-full"><i class="fa-solid fa-check mr-1"></i> Payment Complete</span>
+              <button type="button" onclick="generatePDFPass()" class="bg-pts-navy hover:bg-pts-blue text-white text-xs font-bold px-3 py-1.5 rounded-lg shadow transition flex items-center gap-1.5"><i class="fa-solid fa-file-pdf"></i> Download Official Pass</button>
+            `;
+            document.getElementById('btnText').innerText = "Save Changes";
+          } else {
+            badgeContainer.innerHTML = `<span class="bg-amber-100 text-amber-800 text-xs font-bold px-3 py-1 rounded-full"><i class="fa-solid fa-clock mr-1"></i> Payment Pending</span>`;
+            document.getElementById('btnText').innerText = "Save & Complete $75.00 Payment Now";
+          }
+
+          toggleModal('lookupModal');
+          msg.innerText = "";
+          checkFormValidity();
+        } else if (json.status === 'denied') {
+          msg.className = "mt-4 text-sm text-center text-red-600 font-semibold";
+          msg.innerText = "Access Denied: Incorrect Security PIN.";
+        } else {
+          msg.className = "mt-4 text-sm text-center text-red-500";
+          msg.innerText = "No matching registration found.";
+        }
+      } catch (e) {
+        msg.className = "mt-4 text-sm text-center text-red-500";
+        msg.innerText = "Error searching registration.";
+      }
+    }
+  </script>
+</body>
+</html>
