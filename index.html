@@ -22,28 +22,34 @@
     }
   </script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <!-- html2pdf for PDF generation -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 <body class="bg-gray-50 text-gray-800 font-sans antialiased min-h-screen flex flex-col">
 
+  <!-- Hidden Iframe to process Google Apps Script POST without CORS block -->
   <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
 
+  <!-- Header / Hero Section -->
   <header class="bg-pts-navy text-white shadow-xl relative overflow-hidden">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 py-6 md:py-8 relative z-10">
       
+      <!-- Balanced Navigation Header: Host Logos Left, Charity Logos Center/Right, Check-in Right -->
       <div class="flex flex-col lg:flex-row items-center justify-between gap-4 border-b border-blue-800/60 pb-6">
         
         <div class="flex flex-wrap items-center justify-center gap-4">
+          <!-- Host Logos -->
           <div class="bg-white px-5 py-3 rounded-xl shadow-md flex items-center space-x-4 sm:space-x-6">
-            <img src="Paramount30thLogo.jfif" alt="Paramount Transportation Systems - 30th Anniversary" class="h-14 sm:h-16 md:h-20 object-contain">
+            <img src="Paramount30thLogo.png" alt="Paramount Transportation Systems - 30th Anniversary" class="h-14 sm:h-16 md:h-20 object-contain">
             <div class="h-10 sm:h-12 w-px bg-gray-300"></div>
             <img src="IAM_logo(1500px).png" alt="International Association of Movers" class="h-12 sm:h-14 md:h-16 object-contain" onError="this.onerror=null;this.src='https://iamovers.org/wp-content/uploads/2025/01/IAM-Logo.png';">
           </div>
 
+          <!-- Beneficiary Charity Logos -->
           <div class="bg-white px-5 py-3 rounded-xl shadow-md flex items-center space-x-4 sm:space-x-6">
             <img src="GlobalMovingFoundationLogo.webp" alt="Global Moving Foundation" class="h-12 sm:h-14 md:h-16 object-contain">
             <div class="h-10 sm:h-12 w-px bg-gray-300"></div>
-            <img src="CoastalK9Logo.jfif" alt="Coastal K9 German Shepherd Rescue" class="h-12 sm:h-14 md:h-16 object-contain">
+            <img src="CoastalK9Logo.png" alt="Coastal K9 German Shepherd Rescue" class="h-12 sm:h-14 md:h-16 object-contain">
           </div>
         </div>
 
@@ -54,7 +60,9 @@
         </div>
       </div>
 
+      <!-- Hero Content Grid -->
       <div class="mt-6 grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+        <!-- Title & Subtitle -->
         <div class="md:col-span-6 text-center md:text-left">
           <h1 class="leading-tight">
             <span class="block text-3xl sm:text-4xl md:text-4xl lg:text-5xl font-black tracking-tight text-white">IAM & PARAMOUNT</span>
@@ -68,6 +76,7 @@
           </p>
         </div>
 
+        <!-- Live Countdown Timer -->
         <div class="md:col-span-3">
           <div class="bg-blue-900/50 backdrop-blur-md rounded-xl p-3.5 border border-blue-400/30 text-center">
             <span class="text-[11px] uppercase tracking-wider text-blue-200 block font-semibold mb-1.5"><i class="fa-solid fa-stopwatch mr-1"></i> Race Countdown</span>
@@ -80,6 +89,7 @@
           </div>
         </div>
 
+        <!-- Fee Badge -->
         <div class="md:col-span-3">
           <div class="bg-white/10 backdrop-blur-md rounded-xl p-4 border border-white/20 text-center shadow-inner">
             <span class="text-xs font-semibold uppercase tracking-wider text-blue-200 block">Registration Fee</span>
@@ -91,6 +101,7 @@
     </div>
   </header>
 
+  <!-- Key Details Bar + Add to Calendar -->
   <section class="max-w-6xl mx-auto px-4 sm:px-6 -mt-5 relative z-20 w-full">
     <div class="bg-white rounded-xl shadow-lg border border-gray-100 p-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4 text-xs sm:text-sm">
       <div class="flex items-start space-x-3">
@@ -144,6 +155,7 @@
     </div>
   </section>
 
+  <!-- Late Registration Deadline Notice Banner -->
   <div class="max-w-6xl mx-auto px-4 sm:px-6 mt-3 w-full">
     <div class="bg-blue-50 border border-blue-200 text-blue-900 px-4 py-2.5 rounded-lg text-xs sm:text-sm flex items-center gap-3">
       <i class="fa-solid fa-circle-info text-pts-blue text-base flex-shrink-0"></i>
@@ -151,6 +163,7 @@
     </div>
   </div>
 
+  <!-- Main Registration Form Container -->
   <main class="max-w-4xl mx-auto px-4 sm:px-6 py-6 w-full flex-grow">
     <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
       
@@ -164,6 +177,7 @@
         <input type="hidden" id="generatedRegId" name="generatedRegId" value="">
         <input type="hidden" id="currentPaymentStatus" value="Pending Payment">
 
+        <!-- Personal Info -->
         <div>
           <h3 class="text-lg font-semibold text-pts-navy border-b pb-2 mb-4"><i class="fa-solid fa-user mr-2"></i> Participant Details</h3>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -178,9 +192,9 @@
               <span id="lastNameErr" class="text-xs text-red-500 hidden mt-1"><i class="fa-solid fa-circle-exclamation mr-1"></i> Last name must contain only letters.</span>
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700">Email Address <span class="text-red-500 font-bold">*</span></label>
-              <input type="email" id="email" name="email" required placeholder="name@company.com" class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
-              <span id="emailErr" class="text-xs text-red-500 hidden mt-1"><i class="fa-solid fa-circle-exclamation mr-1"></i> Please enter a valid email address.</span>
+              <label class="block text-sm font-medium text-gray-700">Mobile Phone (International) <span class="text-red-500 font-bold">*</span></label>
+              <input type="tel" id="mobile" name="mobile" placeholder="+1 555 000 0000" required class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
+              <span id="mobileErr" class="text-xs text-red-500 hidden mt-1"><i class="fa-solid fa-circle-exclamation mr-1"></i> Enter a valid phone number (digits and optional +).</span>
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700">T-Shirt Size <span class="text-red-500 font-bold">*</span></label>
@@ -197,13 +211,14 @@
               </select>
             </div>
             <div class="md:col-span-2">
-              <label class="block text-sm font-medium text-gray-700">Mobile Phone (International) <span class="text-red-500 font-bold">*</span></label>
-              <input type="tel" id="mobile" name="mobile" placeholder="+1 555 000 0000" required class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
-              <span id="mobileErr" class="text-xs text-red-500 hidden mt-1"><i class="fa-solid fa-circle-exclamation mr-1"></i> Enter a valid phone number (digits and optional +).</span>
+              <label class="block text-sm font-medium text-gray-700">Email Address <span class="text-red-500 font-bold">*</span></label>
+              <input type="email" id="email" name="email" required placeholder="name@company.com" class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
+              <span id="emailErr" class="text-xs text-red-500 hidden mt-1"><i class="fa-solid fa-circle-exclamation mr-1"></i> Please enter a valid email address.</span>
             </div>
           </div>
         </div>
 
+        <!-- Custom Security PIN Setup Section -->
         <div id="pinSection" class="bg-blue-50/60 p-5 rounded-xl border border-blue-200">
           <h3 class="text-sm font-bold text-pts-navy uppercase tracking-wider mb-1"><i class="fa-solid fa-key mr-2"></i> Create Your Security PIN <span class="text-red-500 font-bold">*</span></h3>
           <p class="text-xs text-gray-600 mb-4">Choose a PIN so you can access and update your details later.</p>
@@ -221,6 +236,7 @@
           </div>
         </div>
 
+        <!-- Company Info -->
         <div>
           <div class="flex items-center justify-between border-b pb-2 mb-4">
             <h3 class="text-lg font-semibold text-pts-navy"><i class="fa-solid fa-building mr-2"></i> Company Information</h3>
@@ -349,7 +365,7 @@
                 <option value="Guadeloupe">Guadeloupe</option>
                 <option value="Guam">Guam</option>
                 <option value="Guatemala">Guatemala</option>
-                <option border-blue-200 value="Guernsey">Guernsey</option>
+                <option value="Guernsey">Guernsey</option>
                 <option value="Guinea">Guinea</option>
                 <option value="Guinea-Bissau">Guinea-Bissau</option>
                 <option value="Guyana">Guyana</option>
@@ -510,6 +526,7 @@
           </div>
         </div>
 
+        <!-- Emergency Contact & Logistics -->
         <div>
           <h3 class="text-lg font-semibold text-pts-navy border-b pb-2 mb-4"><i class="fa-solid fa-heart-pulse mr-2"></i> Logistics & Emergency Contact</h3>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -530,6 +547,7 @@
           </div>
         </div>
 
+        <!-- Waivers -->
         <div class="space-y-4">
           <h3 class="text-lg font-semibold text-pts-navy border-b pb-2"><i class="fa-solid fa-file-contract mr-2"></i> Terms & Waivers</h3>
           
@@ -572,6 +590,7 @@
     </div>
   </main>
 
+  <!-- Modal for Secure Lookup / Verification -->
   <div id="lookupModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
     <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl relative">
       <button type="button" onclick="toggleModal('lookupModal')" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark text-xl"></i></button>
@@ -593,6 +612,7 @@
     </div>
   </div>
 
+  <!-- HIDDEN PDF CONFIRMATION PASS TEMPLATE -->
   <div class="hidden">
     <div id="pdfPassTemplate" class="p-8 bg-white text-gray-800 font-sans max-w-xl">
       <div class="border-b-2 border-blue-900 pb-4 mb-6 flex justify-between items-center">
@@ -777,7 +797,7 @@
             matrix[i][j] = Math.min(
               matrix[i - 1][j - 1] + 1,
               matrix[i][j - 1] + 1,
-              matrix[i - 1][j + 1]
+              matrix[i - 1][j] + 1
             );
           }
         }
