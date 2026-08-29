@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>IAM & PARAMOUNT Charity 5K Fun Run Registration</title>
+  <title>IAM & PARAMOUNT Charity 5K Fun Run/Walk Registration</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -22,74 +22,84 @@
     }
   </script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <!-- html2pdf for PDF generation -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 <body class="bg-gray-50 text-gray-800 font-sans antialiased min-h-screen flex flex-col">
 
+  <!-- Hidden Iframe to process Google Apps Script POST without CORS block -->
   <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
 
+  <!-- Header / Hero Section -->
   <header class="bg-pts-navy text-white shadow-xl relative overflow-hidden">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 py-6 md:py-8 relative z-10">
       
+      <!-- Top Row: Host Logos (Left), Countdown (Center), Secure Check-in + Registration Fee (Right) -->
       <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center border-b border-blue-800/60 pb-6">
         
+        <!-- Host Logos (Left) - Swapped: IAM Left, Paramount Right -->
         <div class="md:col-span-4 flex justify-center md:justify-start">
           <div class="bg-white px-4 py-3 rounded-2xl shadow-md grid grid-cols-[1fr_auto_1fr] items-center w-full max-w-sm">
-            <div class="flex items-center justify-center p-1">
-              <a href="https://pts-moves.com/" target="_blank" rel="noopener noreferrer" class="hover:opacity-85 transition-opacity flex items-center justify-center">
-                <img src="Paramount30thLogo.png" alt="Paramount Transportation Systems - 30th Anniversary" class="h-16 sm:h-20 md:h-24 w-auto max-w-full object-contain">
-              </a>
-            </div>
-            <div class="h-12 sm:h-16 w-px bg-gray-300 mx-2 sm:mx-3"></div>
             <div class="flex items-center justify-center p-1">
               <a href="https://iamovers.org/" target="_blank" rel="noopener noreferrer" class="hover:opacity-85 transition-opacity flex items-center justify-center">
                 <img src="IAM_logo(1500px).png" alt="International Association of Movers" class="h-14 sm:h-18 md:h-20 w-auto max-w-full object-contain" onError="this.onerror=null;this.src='https://iamovers.org/wp-content/uploads/2025/01/IAM-Logo.png';">
               </a>
             </div>
+            <div class="h-12 sm:h-16 w-px bg-gray-300 mx-2 sm:mx-3"></div>
+            <div class="flex items-center justify-center p-1">
+              <a href="https://pts-moves.com/" target="_blank" rel="noopener noreferrer" class="hover:opacity-85 transition-opacity flex items-center justify-center">
+                <img src="Paramount30thLogo.png" alt="Paramount Transportation Systems - 30th Anniversary" class="h-16 sm:h-20 md:h-24 w-auto max-w-full object-contain">
+              </a>
+            </div>
           </div>
         </div>
 
+        <!-- Live Countdown Timer (Center) - White Background -->
         <div class="md:col-span-4 flex justify-center">
-          <div class="bg-blue-900/60 backdrop-blur-md rounded-2xl px-5 py-3 border border-blue-400/30 text-center shadow-inner w-full max-w-xs">
-            <span class="text-xs uppercase tracking-wider text-blue-200 block font-semibold mb-2">
-              <i class="fa-solid fa-stopwatch mr-1"></i> Race Countdown
+          <div class="bg-white rounded-2xl px-5 py-3 border border-gray-100 text-center shadow-md w-full max-w-xs">
+            <span class="text-xs uppercase tracking-wider text-pts-navy block font-bold mb-2">
+              <i class="fa-solid fa-stopwatch mr-1 text-pts-blue"></i> Race Countdown
             </span>
             <div id="countdownClock" class="grid grid-cols-4 gap-2 text-center">
-              <div class="bg-pts-navy p-2 rounded-lg border border-blue-400/20"><span id="cdDays" class="text-lg sm:text-xl font-black text-white block leading-none">00</span><span class="text-[9px] text-blue-200 uppercase mt-1 block">Days</span></div>
-              <div class="bg-pts-navy p-2 rounded-lg border border-blue-400/20"><span id="cdHours" class="text-lg sm:text-xl font-black text-white block leading-none">00</span><span class="text-[9px] text-blue-200 uppercase mt-1 block">Hrs</span></div>
-              <div class="bg-pts-navy p-2 rounded-lg border border-blue-400/20"><span id="cdMins" class="text-lg sm:text-xl font-black text-white block leading-none">00</span><span class="text-[9px] text-blue-200 uppercase mt-1 block">Mins</span></div>
-              <div class="bg-pts-navy p-2 rounded-lg border border-blue-400/20"><span id="cdSecs" class="text-lg sm:text-xl font-black text-white block leading-none">00</span><span class="text-[9px] text-blue-200 uppercase mt-1 block">Secs</span></div>
+              <div class="bg-pts-light p-2 rounded-lg border border-blue-100"><span id="cdDays" class="text-lg sm:text-xl font-black text-pts-navy block leading-none">00</span><span class="text-[9px] text-gray-500 font-semibold uppercase mt-1 block">Days</span></div>
+              <div class="bg-pts-light p-2 rounded-lg border border-blue-100"><span id="cdHours" class="text-lg sm:text-xl font-black text-pts-navy block leading-none">00</span><span class="text-[9px] text-gray-500 font-semibold uppercase mt-1 block">Hrs</span></div>
+              <div class="bg-pts-light p-2 rounded-lg border border-blue-100"><span id="cdMins" class="text-lg sm:text-xl font-black text-pts-navy block leading-none">00</span><span class="text-[9px] text-gray-500 font-semibold uppercase mt-1 block">Mins</span></div>
+              <div class="bg-pts-light p-2 rounded-lg border border-blue-100"><span id="cdSecs" class="text-lg sm:text-xl font-black text-pts-navy block leading-none">00</span><span class="text-[9px] text-gray-500 font-semibold uppercase mt-1 block">Secs</span></div>
             </div>
           </div>
         </div>
 
+        <!-- Secure Check-in + Registration Fee (Right Stack) - White Background -->
         <div class="md:col-span-4 flex flex-col items-center md:items-end gap-2.5 w-full">
-          <button type="button" onclick="toggleModal('lookupModal')" class="w-full max-w-xs bg-blue-900/60 backdrop-blur-md hover:bg-blue-900/80 text-white px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-semibold border border-blue-400/30 transition flex items-center justify-center gap-2 shadow-inner">
-            <i class="fa-solid fa-lock text-blue-200"></i> Secure Check-in / Edit Registration
+          <button type="button" onclick="toggleModal('lookupModal')" class="w-full max-w-xs bg-white hover:bg-gray-50 text-pts-navy px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-bold border border-gray-100 transition flex items-center justify-center gap-2 shadow-md">
+            <i class="fa-solid fa-lock text-pts-blue"></i> Secure Check-in / Edit Registration
           </button>
           
-          <div class="w-full max-w-xs bg-blue-900/60 backdrop-blur-md rounded-2xl p-2.5 border border-blue-400/30 text-center shadow-inner">
+          <div class="w-full max-w-xs bg-white rounded-2xl p-2.5 border border-gray-100 text-center shadow-md">
             <div class="flex items-baseline justify-center gap-2">
-              <span class="text-[11px] font-semibold uppercase tracking-wider text-blue-200">Registration Fee:</span>
-              <span class="text-xl sm:text-2xl font-black text-white">$75.00</span>
+              <span class="text-[11px] font-bold uppercase tracking-wider text-gray-600">Registration Fee:</span>
+              <span class="text-xl sm:text-2xl font-black text-pts-navy">USD 75.00</span>
             </div>
-            <span class="text-[10px] text-blue-100 block mt-0.5 leading-tight">Includes Shirt, Bib, Beverages and Snacks</span>
+            <span class="text-[10px] text-gray-500 block mt-0.5 leading-tight font-medium">Includes Shirt, Bib, Beverages and Snacks</span>
           </div>
         </div>
 
       </div>
 
+      <!-- Main Hero Content: Title Left, Beneficiaries Right -->
       <div class="mt-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+        <!-- Title & Description (Left) -->
         <div class="lg:col-span-6 text-center lg:text-left">
           <h1 class="leading-tight">
             <span class="block text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-white">IAM & PARAMOUNT</span>
-            <span class="block text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-white">Charity 5K Fun Run</span>
+            <span class="block text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-white">Charity 5K Fun Run/Walk</span>
           </h1>
           <p class="mt-3 text-sm sm:text-base text-blue-100 max-w-xl mx-auto lg:mx-0">
-            Join us for an energetic 5K run! Complete your registration below to secure your spot and official race shirt.
+            Join us for an energetic 5K run/walk! Complete your registration below to secure your spot and official race shirt.
           </p>
         </div>
 
+        <!-- Beneficiary Charities (Right) -->
         <div class="lg:col-span-6 flex flex-col gap-3">
           <div class="bg-white px-4 sm:px-6 py-4 rounded-2xl shadow-md grid grid-cols-[1fr_auto_1fr] items-center w-full">
             <div class="flex items-center justify-center p-1">
@@ -113,6 +123,7 @@
     </div>
   </header>
 
+  <!-- Key Details Bar + Add to Calendar -->
   <section class="max-w-6xl mx-auto px-4 sm:px-6 -mt-5 relative z-20 w-full">
     <div class="bg-white rounded-xl shadow-lg border border-gray-100 p-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4 text-xs sm:text-sm">
       <div class="flex items-start space-x-3">
@@ -126,7 +137,7 @@
               <i class="fa-regular fa-calendar-plus"></i> Add to Calendar
             </button>
             <div id="calMenu" class="hidden absolute top-7 left-0 bg-white border border-gray-200 rounded-lg shadow-xl z-30 py-1.5 w-44 text-xs">
-              <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=IAM+%26+PARAMOUNT+Charity+5K+Fun+Run&dates=20261023T133000Z/20261023T160000Z&details=IAM+%26+Paramount+Charity+5K+Fun+Run.+Check-in+starts+at+6%3A30+AM.+Race+starts+at+7%3A30+AM.&location=Hyatt+Hotel" target="_blank" class="block px-3 py-1.5 hover:bg-blue-50 text-gray-700 flex items-center gap-2"><i class="fa-brands fa-google text-blue-500"></i> Google Calendar</a>
+              <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=IAM+%26+PARAMOUNT+Charity+5K+Fun+Run%2FWalk&dates=20261023T133000Z/20261023T160000Z&details=IAM+%26+Paramount+Charity+5K+Fun+Run%2FWalk.+Check-in+starts+at+6%3A30+AM.+Race+starts+at+7%3A30+AM.&location=Hyatt+Hotel" target="_blank" class="block px-3 py-1.5 hover:bg-blue-50 text-gray-700 flex items-center gap-2"><i class="fa-brands fa-google text-blue-500"></i> Google Calendar</a>
               <a href="javascript:downloadICS()" class="block px-3 py-1.5 hover:bg-blue-50 text-gray-700 flex items-center gap-2"><i class="fa-brands fa-apple text-gray-800"></i> Apple / Outlook (.ics)</a>
             </div>
           </div>
@@ -144,9 +155,8 @@
         <i class="fa-solid fa-shirt text-pts-navy text-lg mt-0.5"></i>
         <div>
           <strong class="block text-gray-900">Shirt & Bib Pick Up</strong>
-          <span class="text-gray-600 block">Wednesday, 21 Oct -</span>
-          <span class="text-gray-600 block">Thursday, 22 Oct -</span>
-          <span class="text-gray-600 block">Times and location at Hyatt are TBA</span>
+          <span class="text-gray-600 block">Wednesday, 21 Oct & Thursday, 22 Oct</span>
+          <span class="text-gray-500 text-[11px] block mt-0.5">(Booth Time & location @ Hyatt are TBA)</span>
         </div>
       </div>
       <div class="flex items-start space-x-3">
@@ -166,6 +176,7 @@
     </div>
   </section>
 
+  <!-- Late Registration Deadline Notice Banner -->
   <div class="max-w-6xl mx-auto px-4 sm:px-6 mt-3 w-full">
     <div class="bg-blue-50 border border-blue-200 text-blue-900 px-4 py-2.5 rounded-lg text-xs sm:text-sm flex items-center gap-3">
       <i class="fa-solid fa-circle-info text-pts-blue text-base flex-shrink-0"></i>
@@ -173,6 +184,7 @@
     </div>
   </div>
 
+  <!-- Main Registration Form Container -->
   <main class="max-w-4xl mx-auto px-4 sm:px-6 py-6 w-full flex-grow">
     <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
       
@@ -186,6 +198,7 @@
         <input type="hidden" id="generatedRegId" name="generatedRegId" value="">
         <input type="hidden" id="currentPaymentStatus" value="Pending Payment">
 
+        <!-- Personal Info -->
         <div>
           <h3 class="text-lg font-semibold text-pts-navy border-b pb-2 mb-4"><i class="fa-solid fa-user mr-2"></i> Participant Details</h3>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -218,14 +231,31 @@
                 <option value="Mens 4XL">Mens 4XL</option>
               </select>
             </div>
-            <div class="md:col-span-2">
+            <div>
               <label class="block text-sm font-medium text-gray-700">Email Address <span class="text-red-500 font-bold">*</span></label>
               <input type="email" id="email" name="email" required placeholder="name@company.com" class="mt-1 w-full rounded-lg border-gray-300 border p-2.5 focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
               <span id="emailErr" class="text-xs text-red-500 hidden mt-1"><i class="fa-solid fa-circle-exclamation mr-1"></i> Please enter a valid email address.</span>
             </div>
+
+            <!-- Award Category / Gender Field -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Award Category: <span class="text-red-500 font-bold">*</span></label>
+              <div class="mt-2.5 flex items-center space-x-6">
+                <label class="inline-flex items-center cursor-pointer">
+                  <input type="radio" name="gender" value="Male" required class="text-pts-navy focus:ring-pts-navy h-4 w-4 border-gray-300">
+                  <span class="ml-2 text-sm text-gray-700 font-medium">Male</span>
+                </label>
+                <label class="inline-flex items-center cursor-pointer">
+                  <input type="radio" name="gender" value="Female" required class="text-pts-navy focus:ring-pts-navy h-4 w-4 border-gray-300">
+                  <span class="ml-2 text-sm text-gray-700 font-medium">Female</span>
+                </label>
+              </div>
+              <span class="text-[11px] text-gray-500 block mt-1.5 leading-snug">Awards will be presented to the top three male and top three female finishers</span>
+            </div>
           </div>
         </div>
 
+        <!-- Custom Security PIN Setup Section -->
         <div id="pinSection" class="bg-blue-50/60 p-5 rounded-xl border border-blue-200">
           <h3 class="text-sm font-bold text-pts-navy uppercase tracking-wider mb-1"><i class="fa-solid fa-key mr-2"></i> Create Your Security PIN <span class="text-red-500 font-bold">*</span></h3>
           <p class="text-xs text-gray-600 mb-4">Choose a PIN so you can access and update your details later.</p>
@@ -243,6 +273,7 @@
           </div>
         </div>
 
+        <!-- Company Info -->
         <div>
           <div class="flex items-center justify-between border-b pb-2 mb-4">
             <h3 class="text-lg font-semibold text-pts-navy"><i class="fa-solid fa-building mr-2"></i> Company Information</h3>
@@ -310,7 +341,7 @@
                 <option value="Bhutan">Bhutan</option>
                 <option value="Bolivia">Bolivia</option>
                 <option value="Bonaire, Sint Eustatius and Saba">Bonaire, Sint Eustatius and Saba</option>
-                <option value="Bosnia and Herzegovina">Bosnia and Herzegovina</option>
+                <option border-blue-200 value="Bosnia and Herzegovina">Bosnia and Herzegovina</option>
                 <option value="Botswana">Botswana</option>
                 <option value="Brazil">Brazil</option>
                 <option value="British Virgin Islands">British Virgin Islands</option>
@@ -335,7 +366,7 @@
                 <option value="Congo (Democratic Republic)">Congo (Democratic Republic)</option>
                 <option value="Cook Islands">Cook Islands</option>
                 <option value="Costa Rica">Costa Rica</option>
-                <option border-blue-200 value="Croatia">Croatia</option>
+                <option value="Croatia">Croatia</option>
                 <option value="Cuba">Cuba</option>
                 <option value="Curaçao">Curaçao</option>
                 <option value="Cyprus">Cyprus</option>
@@ -532,6 +563,7 @@
           </div>
         </div>
 
+        <!-- Emergency Contact & Logistics -->
         <div>
           <h3 class="text-lg font-semibold text-pts-navy border-b pb-2 mb-4"><i class="fa-solid fa-heart-pulse mr-2"></i> Logistics & Emergency Contact</h3>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -552,11 +584,12 @@
           </div>
         </div>
 
+        <!-- Waivers -->
         <div class="space-y-4">
           <h3 class="text-lg font-semibold text-pts-navy border-b pb-2"><i class="fa-solid fa-file-contract mr-2"></i> Terms & Waivers</h3>
           
           <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 text-xs text-gray-600 leading-relaxed">
-            <strong>Photo/Video Release:</strong> I certify that I am over 18 years old and agree to this Photo & Video Release. I authorize Paramount Transportation Systems to photograph and record me during the Charity 5K Fun Run and allow both the International Association of Movers and/or Paramount to place my picture/video on their website/in their newsletters and use my image for any promotional purposes without compensation.
+            <strong>Photo/Video Release:</strong> I certify that I am over 18 years old and agree to this Photo & Video Release. I authorize Paramount Transportation Systems to photograph and record me during the Charity 5K Fun Run/Walk and allow both the International Association of Movers and/or Paramount to place my picture/video on their website/in their newsletters and use my image for any promotional purposes without compensation.
           </div>
           <label class="flex items-center text-sm font-medium text-gray-700">
             <input type="checkbox" id="photoRelease" name="photoRelease" value="true" required class="rounded text-pts-navy focus:ring-pts-navy h-4 w-4">
@@ -586,7 +619,7 @@
 
         <div class="pt-4 border-t border-gray-200">
           <button type="submit" id="submitBtn" disabled class="w-full bg-gray-300 text-gray-500 font-bold py-4 px-6 rounded-xl shadow transition duration-200 flex items-center justify-center text-lg cursor-not-allowed">
-            <span id="btnText">Proceed to $75.00 Payment</span>
+            <span id="btnText">Proceed to USD 75.00 Payment</span>
             <i class="fa-solid fa-arrow-right ml-2"></i>
           </button>
         </div>
@@ -594,6 +627,7 @@
     </div>
   </main>
 
+  <!-- Modal for Secure Lookup / Verification -->
   <div id="lookupModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
     <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl relative">
       <button type="button" onclick="toggleModal('lookupModal')" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark text-xl"></i></button>
@@ -615,11 +649,12 @@
     </div>
   </div>
 
+  <!-- HIDDEN PDF CONFIRMATION PASS TEMPLATE -->
   <div class="hidden">
     <div id="pdfPassTemplate" class="p-8 bg-white text-gray-800 font-sans max-w-xl">
       <div class="border-b-2 border-blue-900 pb-4 mb-6 flex justify-between items-center">
         <div>
-          <h1 class="text-2xl font-extrabold text-blue-900">IAM & PARAMOUNT Charity 5K RUN</h1>
+          <h1 class="text-2xl font-extrabold text-blue-900">IAM & PARAMOUNT Charity 5K RUN/WALK</h1>
           <p class="text-xs text-gray-500 font-semibold uppercase">Official Registration Confirmation Pass</p>
         </div>
         <div class="text-right">
@@ -632,6 +667,7 @@
         <div><strong class="text-gray-500 text-xs uppercase block">Runner Name:</strong> <span id="pdfName" class="font-bold"></span></div>
         <div><strong class="text-gray-500 text-xs uppercase block">Email:</strong> <span id="pdfEmail"></span></div>
         <div><strong class="text-gray-500 text-xs uppercase block">Company:</strong> <span id="pdfCompany"></span></div>
+        <div><strong class="text-gray-500 text-xs uppercase block">Award Category:</strong> <span id="pdfGender" class="font-bold text-blue-900"></span></div>
         <div><strong class="text-gray-500 text-xs uppercase block">T-Shirt Size:</strong> <span id="pdfShirt" class="font-bold text-blue-900"></span></div>
         <div><strong class="text-gray-500 text-xs uppercase block">Emergency Phone:</strong> <span id="pdfEmergPhone"></span></div>
       </div>
@@ -673,7 +709,7 @@
     }
 
     function downloadICS() {
-      const icsData = "BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nSUMMARY:IAM & PARAMOUNT Charity 5K Fun Run\nDESCRIPTION:IAM & Paramount Charity 5K Fun Run Event. Check-in starts at 6:30 AM.\nLOCATION:Hyatt Hotel\nDTSTART:20261023T133000Z\nDTEND:20261023T160000Z\nEND:VEVENT\nEND:VCALENDAR";
+      const icsData = "BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nSUMMARY:IAM & PARAMOUNT Charity 5K Fun Run/Walk\nDESCRIPTION:IAM & Paramount Charity 5K Fun Run/Walk Event. Check-in starts at 6:30 AM.\nLOCATION:Hyatt Hotel\nDTSTART:20261023T133000Z\nDTEND:20261023T160000Z\nEND:VEVENT\nEND:VCALENDAR";
       const blob = new Blob([icsData], { type: 'text/calendar;charset=utf-8' });
       const link = document.createElement('a');
       link.href = window.URL.createObjectURL(blob);
@@ -799,7 +835,7 @@
             matrix[i][j] = Math.min(
               matrix[i - 1][j - 1] + 1,
               matrix[i][j - 1] + 1,
-              matrix[i - 1][j + 1]
+              matrix[i - 1][j] + 1
             );
           }
         }
@@ -946,6 +982,7 @@
       const ln = document.getElementById('lastName').value.trim();
       const email = document.getElementById('email').value.trim();
       const mobile = document.getElementById('mobile').value.trim();
+      const genderChecked = document.querySelector('input[name="gender"]:checked');
       const company = document.getElementById('company').value.trim();
       const city = document.getElementById('city').value.trim();
       const country = document.getElementById('country').value.trim();
@@ -962,7 +999,7 @@
       const submitBtn = document.getElementById('submitBtn');
 
       const isBaseValid = fn && ln && emailRegex.test(email) && phoneRegex.test(mobile) &&
-                          company && city && country && emName && phoneRegex.test(emPhone) &&
+                          genderChecked && company && city && country && emName && phoneRegex.test(emPhone) &&
                           shirt && photo && waiver && sig && (sig.toLowerCase() === `${fn} ${ln}`.toLowerCase()) &&
                           checkEmergencyContact();
 
@@ -985,17 +1022,20 @@
     document.getElementById('tshirtSize').addEventListener('change', checkFormValidity);
     document.getElementById('photoRelease').addEventListener('change', checkFormValidity);
     document.getElementById('liabilityWaiver').addEventListener('change', checkFormValidity);
+    document.querySelectorAll('input[name="gender"]').forEach(el => el.addEventListener('change', checkFormValidity));
 
     // --- PDF PASS DOWNLOAD (PAID USERS ONLY) ---
     function generatePDFPass() {
       const regId = document.getElementById('regId').value;
       const fn = document.getElementById('firstName').value;
       const ln = document.getElementById('lastName').value;
+      const genderEl = document.querySelector('input[name="gender"]:checked');
       
       document.getElementById('pdfRegId').innerText = regId;
       document.getElementById('pdfName').innerText = `${fn} ${ln}`;
       document.getElementById('pdfEmail').innerText = document.getElementById('email').value;
       document.getElementById('pdfCompany').innerText = document.getElementById('company').value;
+      document.getElementById('pdfGender').innerText = genderEl ? genderEl.value : '';
       document.getElementById('pdfShirt').innerText = document.getElementById('tshirtSize').value;
       document.getElementById('pdfEmergPhone').innerText = document.getElementById('emergencyPhone').value;
 
@@ -1089,6 +1129,12 @@
           document.getElementById('lastName').value = d.lastName;
           document.getElementById('email').value = d.email;
           document.getElementById('mobile').value = d.mobile;
+          
+          if (d.gender) {
+            const genderRadio = document.querySelector(`input[name="gender"][value="${d.gender}"]`);
+            if (genderRadio) genderRadio.checked = true;
+          }
+
           document.getElementById('company').value = d.company;
           document.getElementById('city').value = d.city;
           document.getElementById('state').value = d.state;
@@ -1121,7 +1167,7 @@
             document.getElementById('btnText').innerText = "Save Changes";
           } else {
             badgeContainer.innerHTML = `<span class="bg-amber-100 text-amber-800 text-xs font-bold px-3 py-1 rounded-full"><i class="fa-solid fa-clock mr-1"></i> Payment Pending</span>`;
-            document.getElementById('btnText').innerText = "Save & Complete $75.00 Payment Now";
+            document.getElementById('btnText').innerText = "Save & Complete USD 75.00 Payment Now";
           }
 
           toggleModal('lookupModal');
