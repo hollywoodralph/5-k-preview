@@ -22,22 +22,17 @@
     }
   </script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-  <!-- html2pdf for PDF generation -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 <body class="bg-gray-50 text-gray-800 font-sans antialiased min-h-screen flex flex-col">
 
-  <!-- Hidden Iframe to process Google Apps Script POST without CORS block -->
   <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
 
-  <!-- Header / Hero Section -->
   <header class="bg-pts-navy text-white shadow-xl relative overflow-hidden">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 py-6 md:py-8 relative z-10">
       
-      <!-- Top Row: Host Logos (Left), Countdown (Center), Secure Check-in + Registration Fee (Right) -->
       <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center border-b border-blue-800/60 pb-6">
         
-        <!-- Host Logos (Left) - Swapped: IAM Left, Paramount Right -->
         <div class="md:col-span-4 flex justify-center md:justify-start">
           <div class="bg-white px-4 py-3 rounded-2xl shadow-md grid grid-cols-[1fr_auto_1fr] items-center w-full max-w-sm">
             <div class="flex items-center justify-center p-1">
@@ -54,7 +49,6 @@
           </div>
         </div>
 
-        <!-- Live Countdown Timer (Center) - White Background -->
         <div class="md:col-span-4 flex justify-center">
           <div class="bg-white rounded-2xl px-5 py-3 border border-gray-100 text-center shadow-md w-full max-w-xs">
             <span class="text-xs uppercase tracking-wider text-pts-navy block font-bold mb-2">
@@ -69,7 +63,6 @@
           </div>
         </div>
 
-        <!-- Secure Check-in + Registration Fee (Right Stack) - White Background -->
         <div class="md:col-span-4 flex flex-col items-center md:items-end gap-2.5 w-full">
           <button type="button" onclick="toggleModal('lookupModal')" class="w-full max-w-xs bg-white hover:bg-gray-50 text-pts-navy px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-bold border border-gray-100 transition flex items-center justify-center gap-2 shadow-md">
             <i class="fa-solid fa-lock text-pts-blue"></i> Secure Check-in / Edit Registration
@@ -86,9 +79,7 @@
 
       </div>
 
-      <!-- Main Hero Content: Title Left, Beneficiaries Right -->
       <div class="mt-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
-        <!-- Title & Description (Left) -->
         <div class="lg:col-span-6 text-center lg:text-left">
           <h1 class="leading-tight">
             <span class="block text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-white">IAM & PARAMOUNT</span>
@@ -99,18 +90,17 @@
           </p>
         </div>
 
-        <!-- Beneficiary Charities (Right) -->
         <div class="lg:col-span-6 flex flex-col gap-3">
-          <div class="bg-white px-4 sm:px-6 py-4 rounded-2xl shadow-md grid grid-cols-[1fr_auto_1fr] items-center w-full">
+          <div class="bg-white px-4 sm:px-6 py-2 rounded-2xl shadow-md grid grid-cols-[1fr_auto_1fr] items-center w-full min-h-[96px] sm:min-h-[110px]">
             <div class="flex items-center justify-center p-1">
-              <a href="https://globalmovingfoundation.org/" target="_blank" rel="noopener noreferrer" class="hover:opacity-85 transition-opacity flex items-center justify-center">
+              <a href="https://globalmovingfoundation.org/" target="_blank" rel="noopener noreferrer" class="hover:opacity-85 transition-opacity flex items-center justify-center w-full">
                 <img src="GlobalMovingFoundationLogo.webp" alt="Global Moving Foundation" class="h-12 sm:h-16 md:h-18 w-auto max-w-full object-contain">
               </a>
             </div>
-            <div class="h-10 sm:h-14 w-px bg-gray-300 mx-2 sm:mx-4"></div>
-            <div class="flex items-center justify-center p-1">
-              <a href="https://www.coastalk9gsr.org/" target="_blank" rel="noopener noreferrer" class="hover:opacity-85 transition-opacity flex items-center justify-center">
-                <img src="CoastalK9Logo.png" alt="Coastal K9 German Shepherd Rescue" class="h-12 sm:h-16 md:h-18 w-auto max-w-full object-contain">
+            <div class="h-14 sm:h-20 w-px bg-gray-300 mx-2 sm:mx-4"></div>
+            <div class="flex items-center justify-center p-0.5">
+              <a href="https://www.coastalk9gsr.org/" target="_blank" rel="noopener noreferrer" class="hover:opacity-85 transition-opacity flex items-center justify-center w-full">
+                <img src="CoastalK9Logo.png" alt="Coastal K9 German Shepherd Rescue" class="h-20 sm:h-24 md:h-28 w-auto max-w-full object-contain">
               </a>
             </div>
           </div>
@@ -123,7 +113,6 @@
     </div>
   </header>
 
-  <!-- Key Details Bar + Add to Calendar -->
   <section class="max-w-6xl mx-auto px-4 sm:px-6 -mt-5 relative z-20 w-full">
     <div class="bg-white rounded-xl shadow-lg border border-gray-100 p-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4 text-xs sm:text-sm">
       <div class="flex items-start space-x-3">
@@ -176,7 +165,6 @@
     </div>
   </section>
 
-  <!-- Late Registration Deadline Notice Banner -->
   <div class="max-w-6xl mx-auto px-4 sm:px-6 mt-3 w-full">
     <div class="bg-blue-50 border border-blue-200 text-blue-900 px-4 py-2.5 rounded-lg text-xs sm:text-sm flex items-center gap-3">
       <i class="fa-solid fa-circle-info text-pts-blue text-base flex-shrink-0"></i>
@@ -184,7 +172,6 @@
     </div>
   </div>
 
-  <!-- Main Registration Form Container -->
   <main class="max-w-4xl mx-auto px-4 sm:px-6 py-6 w-full flex-grow">
     <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
       
@@ -198,7 +185,6 @@
         <input type="hidden" id="generatedRegId" name="generatedRegId" value="">
         <input type="hidden" id="currentPaymentStatus" value="Pending Payment">
 
-        <!-- Personal Info -->
         <div>
           <h3 class="text-lg font-semibold text-pts-navy border-b pb-2 mb-4"><i class="fa-solid fa-user mr-2"></i> Participant Details</h3>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -237,7 +223,6 @@
               <span id="emailErr" class="text-xs text-red-500 hidden mt-1"><i class="fa-solid fa-circle-exclamation mr-1"></i> Please enter a valid email address.</span>
             </div>
 
-            <!-- Award Category / Gender Field -->
             <div>
               <label class="block text-sm font-medium text-gray-700">Award Category: <span class="text-red-500 font-bold">*</span></label>
               <div class="mt-2.5 flex items-center space-x-6">
@@ -255,7 +240,6 @@
           </div>
         </div>
 
-        <!-- Custom Security PIN Setup Section -->
         <div id="pinSection" class="bg-blue-50/60 p-5 rounded-xl border border-blue-200">
           <h3 class="text-sm font-bold text-pts-navy uppercase tracking-wider mb-1"><i class="fa-solid fa-key mr-2"></i> Create Your Security PIN <span class="text-red-500 font-bold">*</span></h3>
           <p class="text-xs text-gray-600 mb-4">Choose a PIN so you can access and update your details later.</p>
@@ -273,7 +257,6 @@
           </div>
         </div>
 
-        <!-- Company Info -->
         <div>
           <div class="flex items-center justify-between border-b pb-2 mb-4">
             <h3 class="text-lg font-semibold text-pts-navy"><i class="fa-solid fa-building mr-2"></i> Company Information</h3>
@@ -563,7 +546,6 @@
           </div>
         </div>
 
-        <!-- Emergency Contact & Logistics -->
         <div>
           <h3 class="text-lg font-semibold text-pts-navy border-b pb-2 mb-4"><i class="fa-solid fa-heart-pulse mr-2"></i> Logistics & Emergency Contact</h3>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -584,7 +566,6 @@
           </div>
         </div>
 
-        <!-- Waivers -->
         <div class="space-y-4">
           <h3 class="text-lg font-semibold text-pts-navy border-b pb-2"><i class="fa-solid fa-file-contract mr-2"></i> Terms & Waivers</h3>
           
@@ -627,7 +608,6 @@
     </div>
   </main>
 
-  <!-- Modal for Secure Lookup / Verification -->
   <div id="lookupModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
     <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl relative">
       <button type="button" onclick="toggleModal('lookupModal')" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark text-xl"></i></button>
@@ -649,7 +629,6 @@
     </div>
   </div>
 
-  <!-- HIDDEN PDF CONFIRMATION PASS TEMPLATE -->
   <div class="hidden">
     <div id="pdfPassTemplate" class="p-8 bg-white text-gray-800 font-sans max-w-xl">
       <div class="border-b-2 border-blue-900 pb-4 mb-6 flex justify-between items-center">
