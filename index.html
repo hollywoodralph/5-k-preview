@@ -91,16 +91,16 @@
         </div>
 
         <div class="lg:col-span-6 flex flex-col gap-3">
-          <div class="bg-white px-4 sm:px-6 py-2 rounded-2xl shadow-md grid grid-cols-[1fr_auto_1fr] items-center w-full min-h-[96px] sm:min-h-[110px]">
-            <div class="flex items-center justify-center p-1">
-              <a href="https://globalmovingfoundation.org/" target="_blank" rel="noopener noreferrer" class="hover:opacity-85 transition-opacity flex items-center justify-center w-full">
-                <img src="GlobalMovingFoundationLogo.png" alt="Global Moving Foundation" class="h-12 sm:h-16 md:h-18 w-auto max-w-full object-contain">
+          <div class="bg-white px-4 sm:px-6 py-2.5 rounded-2xl shadow-md grid grid-cols-[1fr_auto_1fr] items-center w-full min-h-[96px] sm:min-h-[110px]">
+            <div class="flex items-center justify-center h-20 sm:h-24 md:h-28">
+              <a href="https://globalmovingfoundation.org/" target="_blank" rel="noopener noreferrer" class="hover:opacity-85 transition-opacity flex items-center justify-center w-full h-full">
+                <img src="GlobalMovingFoundationLogo.png" alt="Global Moving Foundation" class="h-auto max-h-full w-auto max-w-full object-contain">
               </a>
             </div>
             <div class="h-14 sm:h-20 w-px bg-gray-300 mx-2 sm:mx-4"></div>
-            <div class="flex items-center justify-center p-0.5">
-              <a href="https://www.coastalk9gsr.org/" target="_blank" rel="noopener noreferrer" class="hover:opacity-85 transition-opacity flex items-center justify-center w-full">
-                <img src="CoastalK9Logo.png" alt="Coastal K9 German Shepherd Rescue" class="h-20 sm:h-24 md:h-28 w-auto max-w-full object-contain">
+            <div class="flex items-center justify-center h-20 sm:h-24 md:h-28">
+              <a href="https://www.coastalk9gsr.org/" target="_blank" rel="noopener noreferrer" class="hover:opacity-85 transition-opacity flex items-center justify-center w-full h-full">
+                <img src="CoastalK9Logo.png" alt="Coastal K9 German Shepherd Rescue" class="h-auto max-h-full w-auto max-w-full object-contain">
               </a>
             </div>
           </div>
@@ -669,7 +669,6 @@
 
     document.getElementById('regForm').action = SCRIPT_URL;
 
-    // Set today's date on initial load
     const today = new Date().toISOString().split('T')[0];
     document.getElementById('sigDate').value = today;
 
@@ -698,7 +697,6 @@
       document.body.removeChild(link);
     }
 
-    // --- LIVE COUNTDOWN TIMER ---
     const raceDate = new Date("October 23, 2026 07:30:00").getTime();
     setInterval(function() {
       const now = new Date().getTime();
@@ -711,7 +709,6 @@
       }
     }, 1000);
 
-    // --- AUTO-FORMATTING & CAPITALIZATION MASKS ---
     function autoCapitalize(e) {
       const words = e.target.value.split(' ');
       e.target.value = words.map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
@@ -720,14 +717,12 @@
     document.getElementById('lastName').addEventListener('keyup', autoCapitalize);
     document.getElementById('city').addEventListener('keyup', autoCapitalize);
 
-    // AUTO-JUMP PIN BOXES
     document.getElementById('userPin').addEventListener('input', function(e) {
       if (e.target.value.length === 4 || e.target.value.length === 6) {
         document.getElementById('confirmPin').focus();
       }
     });
 
-    // --- DOMAIN AUTO-FILL FOR CORPORATE TEAMS ---
     const IGNORED_DOMAINS = ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com', 'icloud.com', 'aol.com', 'protonmail.com', 'me.com', 'live.com', 'msn.com'];
 
     async function checkCompanyDomainAutoFill() {
@@ -754,13 +749,11 @@
           checkFormValidity();
         }
       } catch (e) {
-        // Silent catch if offline or error
       }
     }
 
     document.getElementById('email').addEventListener('blur', checkCompanyDomainAutoFill);
 
-    // --- REAL-TIME FIELD VALIDATORS ---
     const nameRegex = /^[a-zA-Z\s\-']+$/;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const phoneRegex = /^\+?[0-9\s\-\(\)]{7,20}$/;
@@ -797,7 +790,6 @@
     attachFieldValidator('mobile', phoneRegex, 'mobileErr');
     attachFieldValidator('city', nameRegex, 'cityErr');
 
-    // Helper: Levenshtein Distance for fuzzy name match detection
     function levenshteinDistance(a, b) {
       if (a.length === 0) return b.length;
       if (b.length === 0) return a.length;
@@ -822,7 +814,6 @@
       return matrix[b.length][a.length];
     }
 
-    // --- ADVANCED EMERGENCY CONTACT SELF-ENTRY GUARD ---
     function checkEmergencyContact() {
       const fnRaw = document.getElementById('firstName').value.trim();
       const lnRaw = document.getElementById('lastName').value.trim();
@@ -907,7 +898,6 @@
     document.getElementById('lastName').addEventListener('blur', () => { checkEmergencyContact(); checkFormValidity(); });
     document.getElementById('mobile').addEventListener('blur', () => { checkEmergencyContact(); checkFormValidity(); });
 
-    // Real-Time PIN Match Verification
     function checkPinMatch() {
       const pin = document.getElementById('userPin').value;
       const confirm = document.getElementById('confirmPin').value;
@@ -927,7 +917,6 @@
     document.getElementById('confirmPin').addEventListener('input', () => { checkPinMatch(); checkFormValidity(); });
     document.getElementById('userPin').addEventListener('input', () => { checkPinMatch(); checkFormValidity(); });
 
-    // Real-Time Signature Verification
     function checkSignatureMatch() {
       const fn = document.getElementById('firstName').value.trim();
       const ln = document.getElementById('lastName').value.trim();
@@ -955,7 +944,6 @@
     document.getElementById('signature').addEventListener('blur', () => { checkSignatureMatch(); checkFormValidity(); });
     document.getElementById('signature').addEventListener('input', () => { checkSignatureMatch(); checkFormValidity(); });
 
-    // --- FORM COMPLETION & BUTTON ENABLING GUARD ---
     function checkFormValidity() {
       const fn = document.getElementById('firstName').value.trim();
       const ln = document.getElementById('lastName').value.trim();
@@ -995,7 +983,6 @@
       }
     }
 
-    // Attach form validity checks to remaining controls
     document.getElementById('regForm').addEventListener('input', checkFormValidity);
     document.getElementById('country').addEventListener('change', checkFormValidity);
     document.getElementById('tshirtSize').addEventListener('change', checkFormValidity);
@@ -1003,7 +990,6 @@
     document.getElementById('liabilityWaiver').addEventListener('change', checkFormValidity);
     document.querySelectorAll('input[name="gender"]').forEach(el => el.addEventListener('change', checkFormValidity));
 
-    // --- PDF PASS DOWNLOAD (PAID USERS ONLY) ---
     function generatePDFPass() {
       const regId = document.getElementById('regId').value;
       const fn = document.getElementById('firstName').value;
@@ -1022,7 +1008,6 @@
       html2pdf().from(element).save(`${regId}_5K_Registration_Pass.pdf`);
     }
 
-    // --- FORM SUBMIT HANDLER ---
     document.getElementById('regForm').addEventListener('submit', function(e) {
       if (!checkEmergencyContact()) {
         e.preventDefault();
@@ -1125,7 +1110,6 @@
           document.getElementById('specialAccommodations').value = d.specialAccommodations || '';
           document.getElementById('signature').value = d.signature;
           
-          // Preserve original signature date from record
           if (d.sigDate) {
             document.getElementById('sigDate').value = d.sigDate.split('T')[0];
           }
