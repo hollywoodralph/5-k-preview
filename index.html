@@ -584,7 +584,8 @@
             <span class="ml-2">I have read and agree to the Liability Waiver above. <span class="text-red-500 font-bold">*</span></span>
           </label>
 
-          <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 text-xs text-gray-600 leading-relaxed mt-4 max-h-56 overflow-y-auto space-y-2">
+          <!-- Scrollable Privacy Notice Box with Scroll Enforcement -->
+          <div id="privacyScrollBox" class="bg-gray-50 p-4 rounded-lg border border-gray-200 text-xs text-gray-600 leading-relaxed mt-4 max-h-56 overflow-y-auto space-y-2">
             <p class="font-bold text-gray-800 text-sm">5K Registration Privacy Notice</p>
             <p>Paramount Transportation Systems, Inc. (“Paramount”) respects your privacy. The personal information collected through this registration form is used to register you for and administer the IAM & Paramount Charity 5K Fun Run/Walk.</p>
             
@@ -620,8 +621,15 @@
             <p>For privacy questions or requests regarding your 5K registration information, please contact <a href="mailto:privacy@pts-moves.com" class="text-pts-blue underline">privacy@pts-moves.com</a>.</p>
             <p>For general information about Paramount's privacy and data-protection practices, please see our <a href="https://pts-moves.com/privacy-policy/" target="_blank" rel="noopener noreferrer" class="text-pts-blue underline">Privacy Statement</a>.</p>
           </div>
-          <label class="flex items-center text-sm font-medium text-gray-700">
-            <input type="checkbox" id="privacyNotice" name="privacyNotice" value="Yes" required class="rounded text-pts-navy focus:ring-pts-navy h-4 w-4">
+
+          <!-- Explicit Scroll Instruction & Unlock Status -->
+          <div id="privacyScrollPrompt" class="text-xs text-amber-700 bg-amber-50 border border-amber-200 px-3 py-1.5 rounded-lg flex items-center gap-2">
+            <i class="fa-solid fa-circle-down"></i>
+            <span>Please scroll through to the very bottom of the Privacy Notice above to unlock this checkbox.</span>
+          </div>
+
+          <label id="privacyLabel" class="flex items-center text-sm font-medium text-gray-400 cursor-not-allowed select-none transition-colors">
+            <input type="checkbox" id="privacyNotice" name="privacyNotice" value="Yes" disabled required class="rounded text-pts-navy focus:ring-pts-navy h-4 w-4 cursor-not-allowed">
             <span class="ml-2">I have read and agree to the 5K Registration Privacy Notice. <span class="text-red-500 font-bold">*</span></span>
           </label>
 
@@ -760,6 +768,30 @@
     document.getElementById('userPin').addEventListener('input', function(e) {
       if (e.target.value.length === 4 || e.target.value.length === 6) {
         document.getElementById('confirmPin').focus();
+      }
+    });
+
+    // --- SCROLL TO ACCEPT PRIVACY NOTICE ---
+    const privacyBox = document.getElementById('privacyScrollBox');
+    const privacyCheckbox = document.getElementById('privacyNotice');
+    const privacyLabel = document.getElementById('privacyLabel');
+    const privacyPrompt = document.getElementById('privacyScrollPrompt');
+
+    function unlockPrivacyCheckbox() {
+      privacyCheckbox.disabled = false;
+      privacyCheckbox.classList.remove('cursor-not-allowed');
+      privacyCheckbox.classList.add('cursor-pointer');
+      privacyLabel.classList.remove('text-gray-400', 'cursor-not-allowed');
+      privacyLabel.classList.add('text-gray-700', 'cursor-pointer');
+
+      privacyPrompt.className = "text-xs text-green-700 bg-green-50 border border-green-200 px-3 py-1.5 rounded-lg flex items-center gap-2";
+      privacyPrompt.innerHTML = '<i class="fa-solid fa-circle-check"></i><span>Privacy Notice reviewed. You may now check the agreement box below.</span>';
+    }
+
+    privacyBox.addEventListener('scroll', function() {
+      // Check if user has scrolled to within 10px of the bottom
+      if (privacyBox.scrollHeight - privacyBox.scrollTop - privacyBox.clientHeight <= 10) {
+        unlockPrivacyCheckbox();
       }
     });
 
@@ -1157,6 +1189,9 @@
 
           document.getElementById('photoRelease').checked = (d.photoRelease === true || d.photoRelease === 'Yes');
           document.getElementById('liabilityWaiver').checked = (d.liabilityWaiver === true || d.liabilityWaiver === 'Yes');
+          
+          // Existing entries unlock the privacy checkbox automatically
+          unlockPrivacyCheckbox();
           if (d.privacyNotice !== undefined) {
             document.getElementById('privacyNotice').checked = (d.privacyNotice === true || d.privacyNotice === 'Yes');
           }
