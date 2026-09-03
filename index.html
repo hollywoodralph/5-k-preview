@@ -90,20 +90,23 @@
           </p>
         </div>
 
-        <div class="lg:col-span-6 flex flex-col gap-3">
-          <div class="bg-white px-4 sm:px-6 py-3 rounded-2xl shadow-md flex items-center justify-center gap-4 sm:gap-6 w-full max-w-lg mx-auto lg:mx-0">
-            <div class="flex-1 flex items-center justify-center h-14 sm:h-18 md:h-20">
-              <a href="https://globalmovingfoundation.org/" target="_blank" rel="noopener noreferrer" class="hover:opacity-85 transition-opacity flex items-center justify-center h-full w-full">
-                <img src="GlobalMovingFoundationLogo.png" alt="Global Moving Foundation" class="h-full w-auto max-w-full object-contain">
+        <div class="lg:col-span-6 flex flex-col items-center lg:items-start gap-3">
+          <div class="bg-white px-4 sm:px-5 py-3 rounded-2xl shadow-md inline-flex items-center gap-4 sm:gap-5">
+            <div class="flex items-center justify-center h-14 sm:h-18 md:h-20">
+              <a href="https://globalmovingfoundation.org/" target="_blank" rel="noopener noreferrer" class="hover:opacity-85 transition-opacity flex items-center justify-center h-full">
+                <img src="GlobalMovingFoundationLogo.png" alt="Global Moving Foundation" class="h-full w-auto max-w-none object-contain block">
               </a>
             </div>
+
             <div class="h-12 sm:h-16 w-px bg-gray-300 flex-shrink-0"></div>
-            <div class="flex-1 flex items-center justify-center h-14 sm:h-18 md:h-20">
-              <a href="https://www.coastalk9gsr.org/" target="_blank" rel="noopener noreferrer" class="hover:opacity-85 transition-opacity flex items-center justify-center h-full w-full">
-                <img src="CoastalK9Logo.png" alt="Coastal K9 German Shepherd Rescue" class="h-full w-auto max-w-full object-contain">
+
+            <div class="flex items-center justify-center h-14 sm:h-18 md:h-20">
+              <a href="https://www.coastalk9gsr.org/" target="_blank" rel="noopener noreferrer" class="hover:opacity-85 transition-opacity flex items-center justify-center h-full">
+                <img src="CoastalK9Logo.png" alt="Coastal K9 German Shepherd Rescue" class="h-full w-auto max-w-none object-contain block">
               </a>
             </div>
           </div>
+          
           <p class="text-xs sm:text-sm text-blue-100 leading-relaxed text-center lg:text-left">
             Proceeds from this year’s 5K will support two worthy charities: the <strong>Global Moving Foundation</strong>, an international organization, and <strong>Coastal K9 German Shepherd Rescue</strong>, a local nonprofit in San Diego.
           </p>
@@ -569,7 +572,7 @@
             <strong>Photo/Video Release:</strong> I certify that I am over 18 years old and agree to this Photo & Video Release. I authorize Paramount Transportation Systems to photograph and record me during the Charity 5K Fun Run/Walk and allow both the International Association of Movers and/or Paramount to place my picture/video on their website/in their newsletters and use my image for any promotional purposes without compensation.
           </div>
           <label class="flex items-center text-sm font-medium text-gray-700">
-            <input type="checkbox" id="photoRelease" name="photoRelease" value="true" required class="rounded text-pts-navy focus:ring-pts-navy h-4 w-4">
+            <input type="checkbox" id="photoRelease" name="photoRelease" value="Yes" required class="rounded text-pts-navy focus:ring-pts-navy h-4 w-4">
             <span class="ml-2">I certify that I am over 18 years old and agree to the Photo & Video Release. <span class="text-red-500 font-bold">*</span></span>
           </label>
 
@@ -577,7 +580,7 @@
             <strong>Liability Statement:</strong> I certify that I am over 18 years old and I acknowledge that participating in a 5K involves physical activity and assume all risks associated with participation. I release and hold harmless the event organizers, sponsors, the property owners, their employees and my employer from liability for injuries or damages arising from my participation.
           </div>
           <label class="flex items-center text-sm font-medium text-gray-700">
-            <input type="checkbox" id="liabilityWaiver" name="liabilityWaiver" value="true" required class="rounded text-pts-navy focus:ring-pts-navy h-4 w-4">
+            <input type="checkbox" id="liabilityWaiver" name="liabilityWaiver" value="Yes" required class="rounded text-pts-navy focus:ring-pts-navy h-4 w-4">
             <span class="ml-2">I have read and agree to the Liability Waiver above. <span class="text-red-500 font-bold">*</span></span>
           </label>
 
@@ -618,7 +621,7 @@
             <p>For general information about Paramount's privacy and data-protection practices, please see our <a href="https://pts-moves.com/privacy-policy/" target="_blank" rel="noopener noreferrer" class="text-pts-blue underline">Privacy Statement</a>.</p>
           </div>
           <label class="flex items-center text-sm font-medium text-gray-700">
-            <input type="checkbox" id="privacyNotice" name="privacyNotice" value="true" required class="rounded text-pts-navy focus:ring-pts-navy h-4 w-4">
+            <input type="checkbox" id="privacyNotice" name="privacyNotice" value="Yes" required class="rounded text-pts-navy focus:ring-pts-navy h-4 w-4">
             <span class="ml-2">I have read and agree to the 5K Registration Privacy Notice. <span class="text-red-500 font-bold">*</span></span>
           </label>
 
@@ -1152,10 +1155,10 @@
             document.getElementById('sigDate').value = d.sigDate.split('T')[0];
           }
 
-          document.getElementById('photoRelease').checked = d.photoRelease;
-          document.getElementById('liabilityWaiver').checked = d.liabilityWaiver;
+          document.getElementById('photoRelease').checked = (d.photoRelease === true || d.photoRelease === 'Yes');
+          document.getElementById('liabilityWaiver').checked = (d.liabilityWaiver === true || d.liabilityWaiver === 'Yes');
           if (d.privacyNotice !== undefined) {
-            document.getElementById('privacyNotice').checked = d.privacyNotice;
+            document.getElementById('privacyNotice').checked = (d.privacyNotice === true || d.privacyNotice === 'Yes');
           }
 
           document.getElementById('formTitle').innerText = `Editing Registration (${d.regId})`;
