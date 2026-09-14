@@ -75,6 +75,15 @@
             </div>
             <span class="text-[10px] text-gray-500 block mt-0.5 leading-tight font-medium">Includes Shirt, Bib, Beverages and Snacks</span>
           </div>
+
+          <div class="w-full max-w-xs bg-pts-light rounded-2xl p-2.5 border border-blue-200 text-center shadow-md">
+            <span class="text-[11px] font-bold uppercase tracking-wider text-pts-navy block mb-1">
+              <i class="fa-solid fa-heart text-pts-accent mr-1"></i> Not Running?
+            </span>
+            <a href="PASTE_YOUR_NEW_STRIPE_DONATION_LINK_HERE" target="_blank" rel="noopener noreferrer" class="inline-block w-full bg-pts-accent hover:bg-red-700 text-white font-bold py-1.5 px-3 rounded-xl text-xs shadow transition">
+              Donate Any Amount to Charity
+            </a>
+          </div>
         </div>
 
       </div>
@@ -789,7 +798,6 @@
     }
 
     privacyBox.addEventListener('scroll', function() {
-      // Check if user has scrolled to within 10px of the bottom
       if (privacyBox.scrollHeight - privacyBox.scrollTop - privacyBox.clientHeight <= 10) {
         unlockPrivacyCheckbox();
       }
@@ -1190,7 +1198,6 @@
           document.getElementById('photoRelease').checked = (d.photoRelease === true || d.photoRelease === 'Yes');
           document.getElementById('liabilityWaiver').checked = (d.liabilityWaiver === true || d.liabilityWaiver === 'Yes');
           
-          // Existing entries unlock the privacy checkbox automatically
           unlockPrivacyCheckbox();
           if (d.privacyNotice !== undefined) {
             document.getElementById('privacyNotice').checked = (d.privacyNotice === true || d.privacyNotice === 'Yes');
