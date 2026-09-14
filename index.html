@@ -78,7 +78,7 @@
 
           <div class="w-full max-w-xs bg-pts-light rounded-2xl p-2.5 border border-blue-200 text-center shadow-md">
             <span class="text-[11px] font-bold uppercase tracking-wider text-pts-navy block mb-1">
-              <i class="fa-solid fa-heart text-pts-accent mr-1"></i> Not Running?
+              <i class="fa-solid fa-heart text-pts-accent mr-1"></i> Not Running or Walking?
             </span>
             <a href="https://donate.stripe.com/eVq6oz1MEdinausaBR3gk02" target="_blank" rel="noopener noreferrer" class="inline-block w-full bg-pts-accent hover:bg-red-700 text-white font-bold py-1.5 px-3 rounded-xl text-xs shadow transition">
               Donate Any Amount to Charity
@@ -798,6 +798,7 @@
     }
 
     privacyBox.addEventListener('scroll', function() {
+      // Check if user has scrolled to within 10px of the bottom
       if (privacyBox.scrollHeight - privacyBox.scrollTop - privacyBox.clientHeight <= 10) {
         unlockPrivacyCheckbox();
       }
