@@ -75,15 +75,6 @@
             </div>
             <span class="text-[10px] text-gray-500 block mt-0.5 leading-tight font-medium">Includes Shirt, Bib, Beverages and Snacks</span>
           </div>
-
-          <div class="w-full max-w-xs bg-pts-light rounded-2xl p-2.5 border border-blue-200 text-center shadow-md">
-            <span class="text-[11px] font-bold uppercase tracking-wider text-pts-navy block mb-1">
-              <i class="fa-solid fa-heart text-pts-accent mr-1"></i> Not Running or Walking?
-            </span>
-            <a href="https://donate.stripe.com/eVq6oz1MEdinausaBR3gk02" target="_blank" rel="noopener noreferrer" class="inline-block w-full bg-pts-accent hover:bg-red-700 text-white font-bold py-1.5 px-3 rounded-xl text-xs shadow transition">
-              Donate Any Amount to Charity
-            </a>
-          </div>
         </div>
 
       </div>
@@ -655,11 +646,21 @@
           </div>
         </div>
 
-        <div class="pt-4 border-t border-gray-200">
+        <div class="pt-4 border-t border-gray-200 space-y-4">
           <button type="submit" id="submitBtn" disabled class="w-full bg-gray-300 text-gray-500 font-bold py-4 px-6 rounded-xl shadow transition duration-200 flex items-center justify-center text-lg cursor-not-allowed">
-            <span id="btnText">Proceed to USD 75.00 Payment</span>
+            <span id="btnText">Proceed to USD 75.00 Registration Payment</span>
             <i class="fa-solid fa-arrow-right ml-2"></i>
           </button>
+
+          <!-- Donation Container at End of Page -->
+          <div class="w-full bg-pts-light rounded-2xl p-4 border border-blue-200 text-center shadow-md">
+            <span class="text-xs sm:text-sm font-bold uppercase tracking-wider text-pts-navy block mb-2">
+              <i class="fa-solid fa-heart text-pts-accent mr-1"></i> Not Running or Walking?
+            </span>
+            <a href="https://donate.stripe.com/eVq6oz1MEdinausaBR3gk02" target="_blank" rel="noopener noreferrer" class="inline-block w-full max-w-md bg-pts-accent hover:bg-red-700 text-white font-bold py-2.5 px-4 rounded-xl text-sm shadow transition">
+              Donate Any Amount to Charities
+            </a>
+          </div>
         </div>
       </form>
     </div>
@@ -798,7 +799,6 @@
     }
 
     privacyBox.addEventListener('scroll', function() {
-      // Check if user has scrolled to within 10px of the bottom
       if (privacyBox.scrollHeight - privacyBox.scrollTop - privacyBox.clientHeight <= 10) {
         unlockPrivacyCheckbox();
       }
