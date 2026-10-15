@@ -306,12 +306,25 @@
       <!-- Main Map & Interactive Guide Grid -->
       <div class="grid grid-cols-1 lg:grid-cols-12">
         
-        <!-- Left Column: Interactive Leaflet Map (7 cols) -->
+        <!-- Left Column: Interactive Google Map (7 cols) -->
         <div class="lg:col-span-7 relative bg-blue-950 min-h-[420px] sm:min-h-[500px] flex flex-col">
           <div id="courseMap" class="w-full flex-grow min-h-[420px] sm:min-h-[500px]"></div>
 
+          <!-- Google Map Layer Switcher (Streets, Satellite Hybrid, Terrain) -->
+          <div class="absolute top-3 right-3 z-[400] bg-white/95 backdrop-blur-sm rounded-xl shadow-lg border border-gray-200 p-1 flex items-center gap-1 text-xs font-bold">
+            <button type="button" id="btnMapStreet" onclick="setGoogleMapMode('streets')" class="px-2.5 py-1.5 rounded-lg bg-pts-navy text-white transition flex items-center gap-1">
+              <i class="fa-solid fa-map"></i> Map
+            </button>
+            <button type="button" id="btnMapSat" onclick="setGoogleMapMode('hybrid')" class="px-2.5 py-1.5 rounded-lg text-gray-700 hover:bg-gray-100 transition flex items-center gap-1">
+              <i class="fa-solid fa-satellite"></i> Satellite
+            </button>
+            <button type="button" id="btnMapTerrain" onclick="setGoogleMapMode('terrain')" class="px-2.5 py-1.5 rounded-lg text-gray-700 hover:bg-gray-100 transition flex items-center gap-1">
+              <i class="fa-solid fa-mountain-sun"></i> Terrain
+            </button>
+          </div>
+
           <!-- Live Simulation Progress Bar Overlay -->
-          <div id="simStatusOverlay" class="hidden absolute top-3 left-3 right-3 z-[400] bg-pts-navy/95 text-white backdrop-blur-md px-4 py-3 rounded-xl shadow-xl border border-white/15">
+          <div id="simStatusOverlay" class="hidden absolute top-14 left-3 right-3 z-[400] bg-pts-navy/95 text-white backdrop-blur-md px-4 py-3 rounded-xl shadow-xl border border-white/15">
             <div class="flex items-center justify-between text-xs mb-1.5">
               <span class="font-bold flex items-center gap-2">
                 <span class="w-2.5 h-2.5 rounded-full bg-green-400 animate-ping"></span>
@@ -372,7 +385,7 @@
                       <span class="text-[10px] font-mono font-bold text-green-700 bg-green-50 px-2 py-0.5 rounded">0.0 – 0.8 KM</span>
                     </div>
                     <p class="text-gray-600 mt-1 leading-relaxed">
-                      Begins at the <strong>Northwest corner of North Embarcadero Marina</strong> (near Kismet Yacht). Follow the marina walkway <strong>counterclockwise</strong> around Embarcadero Marina Park North, then turn right heading south.
+                      Begins at the <strong>Northwest corner of North Embarcadero Marina</strong>. Follow the marina walkway <strong>counterclockwise</strong> around Embarcadero Marina Park North, then turn right heading south.
                     </p>
                   </div>
                 </div>
@@ -1105,7 +1118,7 @@
     }, 1000);
 
     // =========================================================================
-    // INTERACTIVE 5K COURSE MAP (LEAFLET.JS)
+    // INTERACTIVE 5K COURSE MAP (GOOGLE MAPS TILES - NO API KEY REQUIRED)
     // =========================================================================
     const COURSE_COORDS = [
       // Start at NW Corner of Embarcadero Marina Park North (Green Dot)
@@ -1179,6 +1192,9 @@
     ];
 
     let courseMap;
+    let googleStreetsLayer;
+    let googleHybridLayer;
+    let googleTerrainLayer;
     let poiLayerGroup;
     let stageMarkers = [];
     let poisVisible = true;
@@ -1191,10 +1207,24 @@
         scrollWheelZoom: false
       }).setView([32.7068, -117.1658], 15);
 
-      L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-        attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
-        maxZoom: 19
+      // Free Google Maps Tile Layers (Streets, Satellite Hybrid & Terrain - No API Key Needed)
+      googleStreetsLayer = L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+        maxZoom: 20,
+        subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+        attribution: '&copy; Google Maps'
       }).addTo(courseMap);
+
+      googleHybridLayer = L.tileLayer('https://{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', {
+        maxZoom: 20,
+        subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+        attribution: '&copy; Google Maps Satellite'
+      });
+
+      googleTerrainLayer = L.tileLayer('https://{s}.google.com/vt/lyrs=p&x={x}&y={y}&z={z}', {
+        maxZoom: 20,
+        subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+        attribution: '&copy; Google Maps Terrain'
+      });
 
       // Outer white casing for high contrast
       L.polyline(COURSE_COORDS, {
@@ -1302,6 +1332,34 @@
       });
 
       courseMap.fitBounds(mainRouteLine.getBounds(), { padding: [25, 25] });
+    }
+
+    function setGoogleMapMode(mode) {
+      const btnStreet = document.getElementById('btnMapStreet');
+      const btnSat = document.getElementById('btnMapSat');
+      const btnTerrain = document.getElementById('btnMapTerrain');
+
+      const activeClass = "px-2.5 py-1.5 rounded-lg bg-pts-navy text-white transition flex items-center gap-1";
+      const inactiveClass = "px-2.5 py-1.5 rounded-lg text-gray-700 hover:bg-gray-100 transition flex items-center gap-1";
+
+      courseMap.removeLayer(googleStreetsLayer);
+      courseMap.removeLayer(googleHybridLayer);
+      courseMap.removeLayer(googleTerrainLayer);
+
+      btnStreet.className = inactiveClass;
+      btnSat.className = inactiveClass;
+      btnTerrain.className = inactiveClass;
+
+      if (mode === 'hybrid') {
+        courseMap.addLayer(googleHybridLayer);
+        btnSat.className = activeClass;
+      } else if (mode === 'terrain') {
+        courseMap.addLayer(googleTerrainLayer);
+        btnTerrain.className = activeClass;
+      } else {
+        courseMap.addLayer(googleStreetsLayer);
+        btnStreet.className = activeClass;
+      }
     }
 
     function focusCourseStage(index) {
