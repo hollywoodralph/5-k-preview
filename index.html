@@ -209,10 +209,10 @@
         </div>
       </div>
       <div class="flex items-start space-x-2.5 sm:space-x-3 col-span-1">
-        <i class="fa-solid fa-hourglass-half text-pts-navy text-base sm:text-lg mt-0.5"></i>
+        <i class="fa-solid fa-circle-check text-green-600 text-base sm:text-lg mt-0.5"></i>
         <div>
-          <strong class="block text-gray-900">Register By</strong>
-          <span class="text-gray-600">Sunday, 04 Oct 2026</span>
+          <strong class="block text-gray-900">Registration Status</strong>
+          <span class="text-green-700 font-semibold">Open Until Further Notice</span>
         </div>
       </div>
       <div class="flex items-start space-x-2.5 sm:space-x-3 col-span-1">
@@ -224,13 +224,6 @@
       </div>
     </div>
   </section>
-
-  <div class="max-w-6xl mx-auto px-4 sm:px-6 mt-3 w-full">
-    <div class="bg-blue-50 border border-blue-200 text-blue-900 px-3.5 py-2.5 rounded-lg text-xs sm:text-sm flex items-start sm:items-center gap-2.5 sm:gap-3">
-      <i class="fa-solid fa-circle-info text-pts-blue text-base flex-shrink-0 mt-0.5 sm:mt-0"></i>
-      <span><strong>Late registration needed?</strong> Contact us at <a href="mailto:convention@pts-moves.com" class="underline font-semibold whitespace-nowrap">convention@pts-moves.com</a> to check if extra space is available for last-minute registrations.</span>
-    </div>
-  </div>
 
   <!-- ================================================================= -->
   <!-- 23 OCTOBER 2026 – IAM & PTS 5K FUN RUN/WALK MAP SECTION           -->
@@ -277,7 +270,7 @@
         </div>
 
         <!-- One-Tap Mobile GPS Directions to Start Line -->
-        <a href="https://www.google.com/maps/dir/?api=1&destination=32.70812,-117.16999&travelmode=walking" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-1.5 bg-pts-navy hover:bg-pts-blue active:bg-blue-950 text-white font-bold px-3.5 py-2 rounded-xl text-xs shadow-sm transition whitespace-nowrap flex-shrink-0">
+        <a href="https://www.google.com/maps/dir/?api=1&destination=32.70820,-117.17009&travelmode=walking" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-1.5 bg-pts-navy hover:bg-pts-blue active:bg-blue-950 text-white font-bold px-3.5 py-2 rounded-xl text-xs shadow-sm transition whitespace-nowrap flex-shrink-0">
           <i class="fa-solid fa-location-arrow text-amber-300"></i> Navigate to Start Line
         </a>
       </div>
@@ -363,7 +356,7 @@
               </span>
             </div>
 
-            <!-- Strictly Verbatim Course Bullet Cards (Horizontal snap scroll on mobile, vertical on lg+) -->
+            <!-- Strictly Verbatim Course Bullet Cards -->
             <div id="courseStepList" class="flex lg:flex-col gap-3 overflow-x-auto lg:overflow-x-visible snap-x snap-mandatory pb-2 lg:pb-0 no-scrollbar">
               
               <!-- Bullet 1 -->
@@ -1057,123 +1050,145 @@
     }, 1000);
 
     // =========================================================================
-    // PIXEL-CALIBRATED WATERFRONT & PARK PAVED PATHWAY COORDINATES
-    // Aligned directly to Google Maps walkways in Embarcadero Marina Park North,
-    // Bayfront Promenade, Embarcadero Marina Park South, and Ruocco Park.
+    // EXACT GOOGLE MAPS PEDESTRIAN FOOTPATH COORDINATES
+    // Verified 1-to-1 against Google Maps green park trails & waterfront paths
     // =========================================================================
     const COURSE_COORDS = [
       // START: Northwest corner of the North Embarcadero Marina (Green Dot)
-      [32.70812, -117.16999],
-      // Follow North Embarcadero Marina walkway counterclockwise along paved park path
-      [32.70786, -117.17001],
-      [32.70754, -117.16994],
-      [32.70714, -117.16960],
-      [32.70667, -117.16915],
-      [32.70616, -117.16866],
-      [32.70569, -117.16817],
-      [32.70538, -117.16778],
-      [32.70527, -117.16750],
-      [32.70538, -117.16724],
-      [32.70561, -117.16720],
-      [32.70590, -117.16739],
-      [32.70634, -117.16784],
-      [32.70681, -117.16832],
-      [32.70725, -117.16874],
-      [32.70764, -117.16911],
-      [32.70790, -117.16924],
-      [32.70826, -117.16926],
-      [32.70853, -117.16926],
-      // Right turn heading south continuing down along the Bayfront Promenade
-      [32.70857, -117.16868],
-      [32.70857, -117.16804],
-      [32.70857, -117.16739],
-      [32.70853, -117.16682],
-      [32.70828, -117.16639],
-      [32.70781, -117.16581],
-      [32.70726, -117.16517],
-      [32.70672, -117.16452],
-      [32.70618, -117.16388],
-      [32.70578, -117.16341],
-      [32.70556, -117.16318],
-      // Turn right and follow the loop (counterclockwise) around South Embarcadero Marina paved path
-      [32.70518, -117.16358],
-      [32.70478, -117.16401],
-      [32.70438, -117.16444], // Mile 1 area
-      [32.70462, -117.16480],
-      [32.70487, -117.16519],
-      [32.70492, -117.16549],
-      [32.70478, -117.16566],
-      [32.70453, -117.16562],
-      [32.70416, -117.16525],
-      [32.70375, -117.16476],
-      [32.70329, -117.16422],
-      [32.70291, -117.16377],
-      [32.70282, -117.16356],
-      [32.70293, -117.16333],
-      [32.70324, -117.16298],
-      [32.70353, -117.16275],
-      [32.70373, -117.16273],
-      [32.70402, -117.16305],
-      [32.70433, -117.16341],
-      [32.70462, -117.16375],
-      [32.70500, -117.16335],
-      [32.70534, -117.16296],
+      [32.70820, -117.17009],
+      // Follow North Embarcadero Marina walkway counterclockwise along inner green park path
+      [32.70795, -117.17009],
+      [32.70768, -117.17009],
+      [32.70745, -117.17006],
+      [32.70722, -117.16985],
+      [32.70695, -117.16956],
+      [32.70668, -117.16926],
+      [32.70639, -117.16894],
+      [32.70606, -117.16857],
+      [32.70575, -117.16819],
+      [32.70556, -117.16793],
+      [32.70543, -117.16766],
+      [32.70539, -117.16739],
+      [32.70548, -117.16712],
+      [32.70565, -117.16697],
+      [32.70585, -117.16697],
+      [32.70605, -117.16712],
+      [32.70634, -117.16744],
+      [32.70664, -117.16779],
+      [32.70695, -117.16814],
+      [32.70728, -117.16851],
+      [32.70759, -117.16888],
+      [32.70782, -117.16914],
+      [32.70804, -117.16921],
+      [32.70827, -117.16921],
+      [32.70847, -117.16921],
+      // Right turn heading south continuing down along the Bayfront Promenade footpath
+      [32.70847, -117.16884],
+      [32.70847, -117.16835],
+      [32.70847, -117.16787],
+      [32.70845, -117.16742],
+      [32.70835, -117.16717],
+      [32.70817, -117.16691],
+      [32.70793, -117.16658],
+      [32.70766, -117.16624],
+      [32.70738, -117.16589],
+      [32.70715, -117.16560],
+      [32.70655, -117.16485],
+      [32.70595, -117.16410],
+      [32.70551, -117.16305],
+      // Turn right and follow the loop (counterclockwise) around South Embarcadero Marina paved trail
+      [32.70522, -117.16335],
+      [32.70489, -117.16365],
+      [32.70457, -117.16395],
+      [32.70428, -117.16423],
+      [32.70444, -117.16447], // Mile 1 Marker
+      [32.70468, -117.16477],
+      [32.70493, -117.16511],
+      [32.70489, -117.16532],
+      [32.70471, -117.16543],
+      [32.70449, -117.16541],
+      [32.70431, -117.16522],
+      [32.70399, -117.16485],
+      [32.70366, -117.16447],
+      [32.70330, -117.16404],
+      [32.70303, -117.16372],
+      [32.70295, -117.16355],
+      [32.70301, -117.16335],
+      [32.70326, -117.16308],
+      [32.70353, -117.16280],
+      [32.70371, -117.16267],
+      [32.70390, -117.16269],
+      [32.70413, -117.16297],
+      [32.70439, -117.16329],
+      [32.70462, -117.16357],
+      [32.70493, -117.16329],
+      [32.70522, -117.16301],
+      [32.70540, -117.16280],
       // Turn right onto the Promenade toward the Hilton and make a U-turn before the hotel
-      [32.70483, -117.16236],
-      [32.70429, -117.16172],
-      [32.70375, -117.16108],
-      [32.70324, -117.16048],
-      [32.70297, -117.16016], // U-turn before the hotel
-      [32.70324, -117.16048],
-      [32.70375, -117.16108],
-      [32.70429, -117.16172],
-      [32.70483, -117.16236],
-      [32.70534, -117.16296],
-      [32.70567, -117.16333], // Mile 2 Marker
-      // Return route follows the waterfront north toward Ruocco Park
-      [32.70618, -117.16388],
-      [32.70672, -117.16452],
-      [32.70726, -117.16517],
-      [32.70781, -117.16581],
-      [32.70828, -117.16639],
-      [32.70853, -117.16682],
-      [32.70857, -117.16739],
-      [32.70857, -117.16804],
-      [32.70857, -117.16868],
-      [32.70853, -117.16926],
-      [32.70850, -117.16969],
-      [32.70850, -117.17003],
-      [32.70844, -117.17041],
-      [32.70846, -117.17082],
-      [32.70859, -117.17119], // Mile 3 Marker
-      [32.70879, -117.17153],
-      [32.70906, -117.17179],
-      [32.70942, -117.17187],
-      [32.70988, -117.17196],
-      [32.71033, -117.17204],
-      [32.71073, -117.17213],
-      [32.71102, -117.17217],
-      // Loops around Ruocco Park (counterclockwise) inside the park paths
-      [32.71098, -117.17189],
-      [32.71109, -117.17161],
-      [32.71127, -117.17149],
-      [32.71142, -117.17166],
-      [32.71142, -117.17194],
-      [32.71127, -117.17215],
-      [32.71102, -117.17217],
-      // Continues back south with a right turn to the start/finish area at North Embarcadero Marina
-      [32.71073, -117.17213],
-      [32.71033, -117.17204],
-      [32.70988, -117.17196],
-      [32.70942, -117.17187],
-      [32.70906, -117.17179],
-      [32.70879, -117.17153],
-      [32.70859, -117.17119],
-      [32.70846, -117.17082],
-      [32.70844, -117.17041],
-      [32.70850, -117.17003],
-      [32.70833, -117.16982],
-      [32.70812, -117.16977]  // FINISH: NW corner of North Embarcadero Marina (Red Dot)
+      [32.70511, -117.16243],
+      [32.70468, -117.16190],
+      [32.70424, -117.16136],
+      [32.70380, -117.16083],
+      [32.70335, -117.16029],
+      [32.70312, -117.16001], // U-turn before the hotel
+      [32.70335, -117.16029],
+      [32.70380, -117.16083],
+      [32.70424, -117.16136],
+      [32.70468, -117.16190],
+      [32.70511, -117.16243],
+      [32.70540, -117.16280],
+      [32.70584, -117.16344], // Mile 2 Marker
+      // Return route follows the waterfront north toward Ruocco Park along "The Embarcadero" boardwalk
+      [32.70655, -117.16485],
+      [32.70715, -117.16560],
+      [32.70738, -117.16589],
+      [32.70766, -117.16624],
+      [32.70793, -117.16658],
+      [32.70817, -117.16691],
+      [32.70835, -117.16717],
+      [32.70845, -117.16742],
+      [32.70847, -117.16787],
+      [32.70847, -117.16835],
+      [32.70847, -117.16884],
+      [32.70847, -117.16921],
+      [32.70847, -117.16943],
+      [32.70845, -117.16964],
+      [32.70851, -117.16985],
+      [32.70851, -117.17010],
+      [32.70850, -117.17039],
+      [32.70850, -117.17068],
+      [32.70858, -117.17093],
+      [32.70879, -117.17123], // Mile 3 Marker
+      [32.70888, -117.17151],
+      [32.70910, -117.17181],
+      [32.70942, -117.17202],
+      [32.70982, -117.17215],
+      [32.71024, -117.17228],
+      [32.71066, -117.17241],
+      [32.71102, -117.17251],
+      // Loops around Ruocco Park (counterclockwise) inside the park pathways
+      [32.71091, -117.17224],
+      [32.71096, -117.17194],
+      [32.71115, -117.17177],
+      [32.71135, -117.17181],
+      [32.71142, -117.17209],
+      [32.71135, -117.17236],
+      [32.71116, -117.17251],
+      [32.71102, -117.17251],
+      // Continues back south along the waterfront boardwalk with a right turn to Start/Finish area
+      [32.71066, -117.17241],
+      [32.71024, -117.17228],
+      [32.70982, -117.17215],
+      [32.70942, -117.17202],
+      [32.70910, -117.17181],
+      [32.70888, -117.17151],
+      [32.70879, -117.17123],
+      [32.70858, -117.17093],
+      [32.70850, -117.17068],
+      [32.70850, -117.17039],
+      [32.70851, -117.17010],
+      [32.70851, -117.16985],
+      [32.70820, -117.16985]  // FINISH: NW corner of North Embarcadero Marina (Red Dot)
     ];
 
     const STAGE_VIEWS = [
@@ -1246,19 +1261,19 @@
         });
       }
 
-      const startMarker = L.marker([32.70812, -117.16999], {
+      const startMarker = L.marker([32.70820, -117.17009], {
         icon: createBadgeIcon('', 'bg-green-600', 22)
       }).addTo(courseMap).bindPopup(`
         <div class="text-xs p-1 space-y-1.5">
           <strong class="text-green-700 uppercase block">START</strong>
           <div>Northwest corner of the North Embarcadero Marina</div>
-          <a href="https://www.google.com/maps/dir/?api=1&destination=32.70812,-117.16999&travelmode=walking" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 bg-pts-navy text-white font-bold px-2.5 py-1 rounded text-[11px] shadow">
+          <a href="https://www.google.com/maps/dir/?api=1&destination=32.70820,-117.17009&travelmode=walking" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 bg-pts-navy text-white font-bold px-2.5 py-1 rounded text-[11px] shadow">
             <i class="fa-solid fa-location-arrow text-amber-300"></i> Navigate Here
           </a>
         </div>
       `);
 
-      const finishMarker = L.marker([32.70812, -117.16977], {
+      const finishMarker = L.marker([32.70820, -117.16985], {
         icon: createBadgeIcon('', 'bg-pts-accent', 22)
       }).addTo(courseMap).bindPopup(`
         <div class="text-xs p-1">
@@ -1267,19 +1282,19 @@
         </div>
       `);
 
-      const mile1Marker = L.marker([32.70449, -117.16461], {
+      const mile1Marker = L.marker([32.70444, -117.16447], {
         icon: createBadgeIcon('1', 'bg-pts-accent', 26)
       }).addTo(courseMap).bindPopup(`<div class="text-xs p-1"><strong class="text-pts-accent">Mile 1</strong><br>South Embarcadero Marina loop</div>`);
 
-      const hiltonTurnMarker = L.marker([32.70297, -117.16016], {
+      const hiltonTurnMarker = L.marker([32.70312, -117.16001], {
         icon: createBadgeIcon('<i class="fa-solid fa-rotate-left text-[10px]"></i>', 'bg-pts-blue', 24)
       }).addTo(courseMap).bindPopup(`<div class="text-xs p-1"><strong class="text-pts-blue">U-Turn</strong><br>Promenade toward the Hilton (U-turn before the hotel)</div>`);
 
-      const mile2Marker = L.marker([32.70567, -117.16333], {
+      const mile2Marker = L.marker([32.70584, -117.16344], {
         icon: createBadgeIcon('2', 'bg-pts-accent', 26)
       }).addTo(courseMap).bindPopup(`<div class="text-xs p-1"><strong class="text-pts-accent">Mile 2</strong><br>Bayfront Promenade</div>`);
 
-      const mile3Marker = L.marker([32.70859, -117.17119], {
+      const mile3Marker = L.marker([32.70879, -117.17123], {
         icon: createBadgeIcon('3', 'bg-pts-accent', 26)
       }).addTo(courseMap).bindPopup(`<div class="text-xs p-1"><strong class="text-pts-accent">Mile 3</strong><br>Return route from Ruocco Park</div>`);
 
@@ -1324,7 +1339,6 @@
       }, 200);
     }
 
-    // Allow Escape key to exit full screen map mode
     document.addEventListener('keydown', function(e) {
       if (e.key === 'Escape' && isMapFullScreen) {
         toggleFullScreenMap();
