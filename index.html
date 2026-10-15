@@ -29,7 +29,6 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
   <style>
-    /* Custom styling for interactive map markers & animations */
     .leaflet-container {
       font-family: inherit;
       z-index: 10;
@@ -132,11 +131,11 @@
             <span class="block text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-white">Charity 5K Fun Run/Walk</span>
           </h1>
           <p class="mt-3 text-sm sm:text-base text-blue-100 max-w-xl mx-auto lg:mx-0">
-            Join us for an energetic 5K run/walk along scenic San Diego Bay! Complete your registration below to secure your spot and official race shirt.
+            Join us for an energetic 5K run/walk! Complete your registration below to secure your spot and official race shirt.
           </p>
           <div class="mt-4 flex flex-wrap justify-center lg:justify-start gap-3">
             <a href="#courseExplorerSection" class="inline-flex items-center gap-2 bg-white/15 hover:bg-white/25 text-white border border-white/30 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold backdrop-blur-sm transition shadow">
-              <i class="fa-solid fa-map-location-dot text-amber-300"></i> Explore Interactive 5K Course Map
+              <i class="fa-solid fa-map-location-dot text-amber-300"></i> View 5K Course Map
             </a>
             <a href="#regFormSection" class="inline-flex items-center gap-2 bg-pts-accent hover:bg-red-700 text-white px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition shadow">
               <i class="fa-solid fa-person-running"></i> Register Now
@@ -183,7 +182,7 @@
               <i class="fa-regular fa-calendar-plus"></i> Add to Calendar
             </button>
             <div id="calMenu" class="hidden absolute top-7 left-0 bg-white border border-gray-200 rounded-lg shadow-xl z-30 py-1.5 w-44 text-xs">
-              <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=IAM+%26+PARAMOUNT+Charity+5K+Fun+Run%2FWalk&dates=20261023T133000Z/20261023T160000Z&details=IAM+%26+Paramount+Charity+5K+Fun+Run%2FWalk.+Check-in+starts+at+6%3A30+AM.+Race+starts+at+7%3A30+AM.+Start%2FFinish%3A+Northwest+corner+of+North+Embarcadero+Marina.&location=Embarcadero+Marina+Park+North,+San+Diego,+CA" target="_blank" class="block px-3 py-1.5 hover:bg-blue-50 text-gray-700 flex items-center gap-2"><i class="fa-brands fa-google text-blue-500"></i> Google Calendar</a>
+              <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=IAM+%26+PARAMOUNT+Charity+5K+Fun+Run%2FWalk&dates=20261023T133000Z/20261023T160000Z&details=IAM+%26+Paramount+Charity+5K+Fun+Run%2FWalk.+Check-in+starts+at+6%3A30+AM.+Race+starts+at+7%3A30+AM.&location=Hyatt+Hotel" target="_blank" class="block px-3 py-1.5 hover:bg-blue-50 text-gray-700 flex items-center gap-2"><i class="fa-brands fa-google text-blue-500"></i> Google Calendar</a>
               <a href="javascript:downloadICS()" class="block px-3 py-1.5 hover:bg-blue-50 text-gray-700 flex items-center gap-2"><i class="fa-brands fa-apple text-gray-800"></i> Apple / Outlook (.ics)</a>
             </div>
           </div>
@@ -230,7 +229,8 @@
   </div>
 
   <!-- ================================================================= -->
-  <!-- INTERACTIVE 5K COURSE MAP & ROUTE OVERVIEW SECTION                -->
+  <!-- 23 OCTOBER 2026 – IAM & PTS 5K FUN RUN/WALK MAP SECTION           -->
+  <!-- Strictly using the exact approved PDF wording                     -->
   <!-- ================================================================= -->
   <section id="courseExplorerSection" class="max-w-6xl mx-auto px-4 sm:px-6 mt-6 w-full">
     <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
@@ -238,79 +238,49 @@
       <!-- Top Banner Header -->
       <div class="bg-gradient-to-r from-pts-navy via-pts-blue to-pts-navy text-white px-6 py-4 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
         <div>
-          <div class="flex items-center gap-2">
-            <span class="bg-pts-accent text-white text-[10px] font-black uppercase tracking-widest px-2.5 py-0.5 rounded-full">Interactive Course Preview</span>
-            <span class="text-xs text-blue-200 font-semibold"><i class="fa-solid fa-water mr-1"></i> San Diego Bayfront Promenade</span>
-          </div>
-          <h2 class="text-xl sm:text-2xl font-black tracking-tight mt-1">Scenic 5K Waterfront Course Map & Turn-by-Turn Guide</h2>
+          <h2 class="text-xl sm:text-2xl font-black tracking-tight">23 October 2026 – IAM &amp; PTS 5K Fun Run/Walk Map</h2>
+          <p class="text-xs sm:text-sm text-blue-100 mt-0.5">
+            Participants will enjoy a scenic waterfront route along San Diego Bay.
+          </p>
         </div>
 
         <!-- Interactive Control Toolbar -->
         <div class="flex flex-wrap items-center gap-2">
           <button type="button" id="simRunBtn" onclick="toggleCourseSimulation()" class="bg-pts-accent hover:bg-red-700 text-white text-xs sm:text-sm font-bold px-4 py-2 rounded-xl shadow-md transition flex items-center gap-2">
             <i id="simRunIcon" class="fa-solid fa-play"></i>
-            <span id="simRunText">Simulate 5K Run</span>
+            <span id="simRunText">Simulate Course Route</span>
           </button>
-          <button type="button" onclick="resetCourseMapView()" class="bg-white/15 hover:bg-white/25 text-white border border-white/25 text-xs sm:text-sm font-semibold px-3 py-2 rounded-xl transition flex items-center gap-1.5" title="Reset Map View">
+          <button type="button" onclick="resetCourseMapView()" class="bg-white/15 hover:bg-white/25 text-white border border-white/25 text-xs sm:text-sm font-semibold px-3 py-2 rounded-xl transition flex items-center gap-1.5">
             <i class="fa-solid fa-expand"></i> Full Overview
           </button>
-          <button type="button" id="poiToggleBtn" onclick="togglePOIMarkers()" class="bg-white/15 hover:bg-white/25 text-white border border-white/25 text-xs sm:text-sm font-semibold px-3 py-2 rounded-xl transition flex items-center gap-1.5">
-            <i class="fa-solid fa-restroom text-amber-300"></i> <span id="poiToggleText">Hide Landmarks</span>
-          </button>
           <button type="button" onclick="toggleModal('officialMapModal')" class="bg-white text-pts-navy hover:bg-blue-50 text-xs sm:text-sm font-bold px-3.5 py-2 rounded-xl shadow transition flex items-center gap-1.5">
-            <i class="fa-regular fa-map text-pts-accent"></i> Official Map PDF
+            <i class="fa-regular fa-file-pdf text-pts-accent"></i> Official Map PDF
           </button>
         </div>
       </div>
 
-      <!-- Quick Stats Strip -->
-      <div class="bg-pts-light border-b border-gray-200 px-6 py-3 grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs">
+      <!-- Approved START/FINISH Bar -->
+      <div class="bg-pts-light border-b border-gray-200 px-6 py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs sm:text-sm">
         <div class="flex items-center gap-2.5">
-          <div class="w-8 h-8 rounded-lg bg-green-100 text-green-700 flex items-center justify-center font-bold text-sm flex-shrink-0">
-            <i class="fa-solid fa-flag-checkered"></i>
-          </div>
+          <span class="inline-flex items-center">
+            <span class="w-3.5 h-3.5 rounded-full bg-green-600 inline-block border-2 border-white shadow"></span>
+            <span class="w-3.5 h-3.5 rounded-full bg-pts-accent inline-block -ml-1.5 border-2 border-white shadow"></span>
+          </span>
           <div>
-            <span class="text-gray-500 block text-[10px] uppercase font-bold">Start / Finish Line</span>
-            <strong class="text-pts-navy">NW Corner, North Embarcadero Marina</strong>
-          </div>
-        </div>
-        <div class="flex items-center gap-2.5">
-          <div class="w-8 h-8 rounded-lg bg-blue-100 text-pts-blue flex items-center justify-center font-bold text-sm flex-shrink-0">
-            <i class="fa-solid fa-route"></i>
-          </div>
-          <div>
-            <span class="text-gray-500 block text-[10px] uppercase font-bold">Distance & Surface</span>
-            <strong class="text-pts-navy">5.0 KM (3.1 Mi) • Flat Paved Walkway</strong>
-          </div>
-        </div>
-        <div class="flex items-center gap-2.5">
-          <div class="w-8 h-8 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center font-bold text-sm flex-shrink-0">
-            <i class="fa-solid fa-arrows-rotate"></i>
-          </div>
-          <div>
-            <span class="text-gray-500 block text-[10px] uppercase font-bold">Loop Direction</span>
-            <strong class="text-pts-navy">Counterclockwise Park Loops</strong>
-          </div>
-        </div>
-        <div class="flex items-center gap-2.5">
-          <div class="w-8 h-8 rounded-lg bg-red-100 text-pts-accent flex items-center justify-center font-bold text-sm flex-shrink-0">
-            <i class="fa-solid fa-hands-clapping"></i>
-          </div>
-          <div>
-            <span class="text-gray-500 block text-[10px] uppercase font-bold">On-Course Support</span>
-            <strong class="text-pts-navy">Course Markings & Volunteers</strong>
+            <strong class="text-pts-navy uppercase tracking-wide">START/FINISH:</strong>
+            <span class="text-gray-800 font-medium">Northwest corner of the North Embarcadero Marina (marked by the green &amp; red dots on the map).</span>
           </div>
         </div>
       </div>
 
-      <!-- Main Map & Interactive Guide Grid -->
+      <!-- Main Map & Approved Course Route Grid -->
       <div class="grid grid-cols-1 lg:grid-cols-12">
         
         <!-- Left Column: Interactive Google Map (7 cols) -->
-        <div class="lg:col-span-7 relative bg-blue-950 min-h-[420px] sm:min-h-[500px] flex flex-col">
-          <div id="courseMap" class="w-full flex-grow min-h-[420px] sm:min-h-[500px]"></div>
+        <div class="lg:col-span-7 relative bg-blue-950 min-h-[440px] sm:min-h-[520px] flex flex-col">
+          <div id="courseMap" class="w-full flex-grow min-h-[440px] sm:min-h-[520px]"></div>
 
-          <!-- Google Map Layer Switcher (Streets, Satellite Hybrid, Terrain) -->
+          <!-- Google Map Layer Switcher -->
           <div class="absolute top-3 right-3 z-[400] bg-white/95 backdrop-blur-sm rounded-xl shadow-lg border border-gray-200 p-1 flex items-center gap-1 text-xs font-bold">
             <button type="button" id="btnMapStreet" onclick="setGoogleMapMode('streets')" class="px-2.5 py-1.5 rounded-lg bg-pts-navy text-white transition flex items-center gap-1">
               <i class="fa-solid fa-map"></i> Map
@@ -327,10 +297,10 @@
           <div id="simStatusOverlay" class="hidden absolute top-14 left-3 right-3 z-[400] bg-pts-navy/95 text-white backdrop-blur-md px-4 py-3 rounded-xl shadow-xl border border-white/15">
             <div class="flex items-center justify-between text-xs mb-1.5">
               <span class="font-bold flex items-center gap-2">
-                <span class="w-2.5 h-2.5 rounded-full bg-green-400 animate-ping"></span>
-                <span id="simStageLabel">Starting at North Embarcadero Marina...</span>
+                <span class="w-2.5 h-2.5 rounded-full bg-green-400 animate-ping flex-shrink-0"></span>
+                <span id="simStageLabel" class="truncate">North Embarcadero Marina</span>
               </span>
-              <span id="simDistanceLabel" class="font-mono font-black text-amber-300">0.00 km / 5.00 km</span>
+              <span id="simDistanceLabel" class="font-mono font-black text-amber-300 flex-shrink-0 ml-2">0%</span>
             </div>
             <div class="w-full bg-white/20 h-2 rounded-full overflow-hidden">
               <div id="simProgressBar" class="bg-gradient-to-r from-green-400 via-amber-400 to-pts-accent h-full transition-all duration-150" style="width: 0%"></div>
@@ -346,145 +316,84 @@
             </div>
             <div class="flex items-center gap-1.5 font-semibold text-gray-800">
               <span class="w-5 h-1.5 bg-pts-accent rounded-full inline-block"></span>
-              5K Course Path
+              Course Route
             </div>
             <div class="flex items-center gap-1.5 font-semibold text-gray-800">
               <span class="w-4 h-4 rounded-full bg-pts-accent text-white text-[9px] font-black inline-flex items-center justify-center">1</span>
-              Mile Markers
-            </div>
-            <div class="flex items-center gap-1.5 font-semibold text-gray-800">
-              <span class="w-4 h-4 rounded-full bg-pts-blue text-white text-[9px] inline-flex items-center justify-center"><i class="fa-solid fa-location-dot"></i></span>
-              Landmarks & Restrooms
+              Mile Markers (1, 2, 3)
             </div>
           </div>
         </div>
 
-        <!-- Right Column: Interactive Step-by-Step Route Breakdown (5 cols) -->
+        <!-- Right Column: Strictly Approved PDF Text Breakdown (5 cols) -->
         <div class="lg:col-span-5 p-5 sm:p-6 flex flex-col justify-between bg-white border-t lg:border-t-0 lg:border-l border-gray-200">
           <div>
-            <div class="flex items-center justify-between border-b border-gray-100 pb-3 mb-3">
-              <div>
-                <span class="text-[11px] font-bold uppercase tracking-wider text-pts-blue block">Interactive Checkpoints</span>
-                <h3 class="text-base font-extrabold text-pts-navy">Click Any Stage to Fly to Location</h3>
-              </div>
-              <span class="text-[11px] bg-red-50 text-pts-accent font-bold px-2.5 py-1 rounded-full border border-red-200">6 Stages</span>
+            <div class="border-b border-gray-100 pb-3 mb-3">
+              <span class="text-[11px] font-bold uppercase tracking-wider text-pts-blue block">COURSE ROUTE</span>
+              <h3 class="text-sm sm:text-base font-extrabold text-pts-navy mt-0.5">
+                Participants will enjoy a scenic waterfront route along San Diego Bay.
+              </h3>
+              <p class="text-[11px] text-gray-500 mt-1">Click any section below to highlight that part of the route on the map:</p>
             </div>
 
-            <!-- Interactive Course Cards -->
-            <div id="courseStepList" class="space-y-2.5 max-h-[380px] overflow-y-auto pr-1 custom-scrollbar">
+            <!-- Strictly Verbatim Course Bullet Cards -->
+            <div id="courseStepList" class="space-y-3">
               
-              <!-- Stage 0: Start -->
-              <div onclick="focusCourseStage(0)" id="stage-card-0" class="course-step-card active cursor-pointer p-3 rounded-xl border border-gray-200 transition-all hover:border-pts-accent">
+              <!-- Bullet 1 -->
+              <div onclick="focusCourseStage(0)" id="stage-card-0" class="course-step-card active cursor-pointer p-3.5 rounded-xl border border-gray-200 transition-all hover:border-pts-accent">
                 <div class="flex items-start gap-3">
                   <div class="w-7 h-7 rounded-full bg-green-600 text-white font-black text-xs flex items-center justify-center flex-shrink-0 mt-0.5 shadow">
-                    <i class="fa-solid fa-play text-[10px]"></i>
+                    1
                   </div>
-                  <div class="text-xs">
-                    <div class="flex items-center justify-between">
-                      <strong class="text-pts-navy text-sm">Start & North Marina Loop</strong>
-                      <span class="text-[10px] font-mono font-bold text-green-700 bg-green-50 px-2 py-0.5 rounded">0.0 – 0.8 KM</span>
-                    </div>
-                    <p class="text-gray-600 mt-1 leading-relaxed">
-                      Begins at the <strong>Northwest corner of North Embarcadero Marina</strong>. Follow the marina walkway <strong>counterclockwise</strong> around Embarcadero Marina Park North, then turn right heading south.
-                    </p>
-                  </div>
+                  <p class="text-xs text-gray-700 leading-relaxed">
+                    The course begins at the North Embarcadero Marina and follows the marina walkway counterclockwise before heading south (right turn) continuing down along the Bayfront Promenade.
+                  </p>
                 </div>
               </div>
 
-              <!-- Stage 1: Mile 1 -->
-              <div onclick="focusCourseStage(1)" id="stage-card-1" class="course-step-card cursor-pointer p-3 rounded-xl border border-gray-200 transition-all hover:border-pts-accent">
+              <!-- Bullet 2 -->
+              <div onclick="focusCourseStage(1)" id="stage-card-1" class="course-step-card cursor-pointer p-3.5 rounded-xl border border-gray-200 transition-all hover:border-pts-accent">
                 <div class="flex items-start gap-3">
-                  <div class="w-7 h-7 rounded-full bg-pts-accent text-white font-black text-xs flex items-center justify-center flex-shrink-0 mt-0.5 shadow">1</div>
-                  <div class="text-xs">
-                    <div class="flex items-center justify-between">
-                      <strong class="text-pts-navy text-sm">Bayfront Promenade & Mile 1</strong>
-                      <span class="text-[10px] font-mono font-bold text-pts-accent bg-red-50 px-2 py-0.5 rounded">1.6 KM (Mile 1)</span>
-                    </div>
-                    <p class="text-gray-600 mt-1 leading-relaxed">
-                      Continue south along the scenic Bayfront Promenade past <em>Spill the Beans</em>, <em>Sally's Fish House & Bar</em>, and <em>Agave Bar & Grill</em>. Turn right into <strong>Embarcadero Marina Park South</strong> to hit <strong>Mile 1</strong>.
-                    </p>
+                  <div class="w-7 h-7 rounded-full bg-pts-accent text-white font-black text-xs flex items-center justify-center flex-shrink-0 mt-0.5 shadow">
+                    2
                   </div>
+                  <p class="text-xs text-gray-700 leading-relaxed">
+                    Participants will turn right and follow the loop (counterclockwise) around the South Embarcadero Marina.
+                  </p>
                 </div>
               </div>
 
-              <!-- Stage 2: South Marina Loop & Hilton Turnaround -->
-              <div onclick="focusCourseStage(2)" id="stage-card-2" class="course-step-card cursor-pointer p-3 rounded-xl border border-gray-200 transition-all hover:border-pts-accent">
+              <!-- Bullet 3 -->
+              <div onclick="focusCourseStage(2)" id="stage-card-2" class="course-step-card cursor-pointer p-3.5 rounded-xl border border-gray-200 transition-all hover:border-pts-accent">
                 <div class="flex items-start gap-3">
                   <div class="w-7 h-7 rounded-full bg-pts-blue text-white font-black text-xs flex items-center justify-center flex-shrink-0 mt-0.5 shadow">
-                    <i class="fa-solid fa-rotate-left"></i>
+                    3
                   </div>
-                  <div class="text-xs">
-                    <div class="flex items-center justify-between">
-                      <strong class="text-pts-navy text-sm">South Park Loop & Hilton U-Turn</strong>
-                      <span class="text-[10px] font-mono font-bold text-pts-blue bg-blue-50 px-2 py-0.5 rounded">1.6 – 2.9 KM</span>
-                    </div>
-                    <p class="text-gray-600 mt-1 leading-relaxed">
-                      Follow the loop <strong>counterclockwise</strong> around South Embarcadero Marina. Turn right onto the Promenade toward the Hilton alongside the Convention Center and make a <strong>U-turn just past Bayside Landing Restrooms</strong> before the hotel.
-                    </p>
-                  </div>
+                  <p class="text-xs text-gray-700 leading-relaxed">
+                    They will then turn right onto the Promenade toward the Hilton and make a U-turn before the hotel.
+                  </p>
                 </div>
               </div>
 
-              <!-- Stage 3: Mile 2 -->
-              <div onclick="focusCourseStage(3)" id="stage-card-3" class="course-step-card cursor-pointer p-3 rounded-xl border border-gray-200 transition-all hover:border-pts-accent">
-                <div class="flex items-start gap-3">
-                  <div class="w-7 h-7 rounded-full bg-pts-accent text-white font-black text-xs flex items-center justify-center flex-shrink-0 mt-0.5 shadow">2</div>
-                  <div class="text-xs">
-                    <div class="flex items-center justify-between">
-                      <strong class="text-pts-navy text-sm">Flame of Friendship & Mile 2</strong>
-                      <span class="text-[10px] font-mono font-bold text-pts-accent bg-red-50 px-2 py-0.5 rounded">3.2 KM (Mile 2)</span>
-                    </div>
-                    <p class="text-gray-600 mt-1 leading-relaxed">
-                      Pass the <strong>Flame of Friendship</strong> monument at the entrance to South Park to reach <strong>Mile 2</strong>, then cruise north along the waterfront Promenade toward Ruocco Park.
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Stage 4: Ruocco Park & Mile 3 -->
-              <div onclick="focusCourseStage(4)" id="stage-card-4" class="course-step-card cursor-pointer p-3 rounded-xl border border-gray-200 transition-all hover:border-pts-accent">
-                <div class="flex items-start gap-3">
-                  <div class="w-7 h-7 rounded-full bg-pts-accent text-white font-black text-xs flex items-center justify-center flex-shrink-0 mt-0.5 shadow">3</div>
-                  <div class="text-xs">
-                    <div class="flex items-center justify-between">
-                      <strong class="text-pts-navy text-sm">Ruocco Park Loop & Mile 3</strong>
-                      <span class="text-[10px] font-mono font-bold text-pts-accent bg-red-50 px-2 py-0.5 rounded">4.8 KM (Mile 3)</span>
-                    </div>
-                    <p class="text-gray-600 mt-1 leading-relaxed">
-                      Head north past Seaport Village to <strong>Ruocco Park</strong> (near <em>Waltzing Matilda</em>), loop <strong>counterclockwise</strong> around the park, and pass the <strong>Mile 3</strong> marker on your return south.
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Stage 5: Finish Line -->
-              <div onclick="focusCourseStage(5)" id="stage-card-5" class="course-step-card cursor-pointer p-3 rounded-xl border border-gray-200 transition-all hover:border-pts-accent">
+              <!-- Bullet 4 -->
+              <div onclick="focusCourseStage(3)" id="stage-card-3" class="course-step-card cursor-pointer p-3.5 rounded-xl border border-gray-200 transition-all hover:border-pts-accent">
                 <div class="flex items-start gap-3">
                   <div class="w-7 h-7 rounded-full bg-pts-navy text-white font-black text-xs flex items-center justify-center flex-shrink-0 mt-0.5 shadow">
-                    <i class="fa-solid fa-flag-checkered"></i>
+                    4
                   </div>
-                  <div class="text-xs">
-                    <div class="flex items-center justify-between">
-                      <strong class="text-pts-navy text-sm">Final Sprint to Finish Line!</strong>
-                      <span class="text-[10px] font-mono font-bold text-pts-navy bg-gray-100 px-2 py-0.5 rounded">5.0 KM (3.1 Mi)</span>
-                    </div>
-                    <p class="text-gray-600 mt-1 leading-relaxed">
-                      Make a right turn back into the <strong>Northwest corner of North Embarcadero Marina</strong> to cross the Finish Line for refreshments, snacks, and awards!
-                    </p>
-                  </div>
+                  <p class="text-xs text-gray-700 leading-relaxed">
+                    The return route follows the waterfront north toward Ruocco Park, loops around the park (counterclockwise), and continues back with a right turn to the start/finish area at the North Embarcadero Marina.
+                  </p>
                 </div>
               </div>
 
             </div>
           </div>
 
-          <!-- Official Route Guidance Footer Box -->
-          <div class="mt-4 bg-pts-light p-3.5 rounded-xl border border-blue-200 text-xs text-gray-700 flex items-start gap-2.5">
-            <i class="fa-solid fa-bullhorn text-pts-accent text-base mt-0.5"></i>
-            <div>
-              <strong class="text-pts-navy block">Course Markings & Volunteer Support</strong>
-              Course markings and volunteers will be positioned along every turn of the route to guide runners and walkers throughout the event.
-            </div>
+          <!-- Bullet 5: Verbatim Course Markings & Volunteers Box -->
+          <div class="mt-4 bg-pts-light p-3.5 rounded-xl border border-blue-200 text-xs text-pts-navy font-medium flex items-start gap-2.5">
+            <i class="fa-solid fa-circle-check text-green-600 text-sm mt-0.5"></i>
+            <span>Course markings and volunteers will be along the route to help guide participants throughout the event.</span>
           </div>
         </div>
 
@@ -492,13 +401,12 @@
     </div>
   </section>
 
-  <!-- Official Static Map Modal (Displays Official PDF Map / Download) -->
+  <!-- Official Static Map Modal (Verbatim Approved PDF Wording) -->
   <div id="officialMapModal" class="fixed inset-0 bg-black/75 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
     <div class="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
       <div class="bg-pts-navy text-white px-6 py-4 flex items-center justify-between">
         <div>
-          <h3 class="text-lg font-bold"><i class="fa-solid fa-map mr-2 text-amber-300"></i> Official 23 October 2026 – IAM & PTS 5K Course Map</h3>
-          <p class="text-xs text-blue-200">Start/Finish: Northwest corner of the North Embarcadero Marina</p>
+          <h3 class="text-lg font-bold"><i class="fa-solid fa-map mr-2 text-amber-300"></i> 23 October 2026 – IAM &amp; PTS 5K Fun Run/Walk Map</h3>
         </div>
         <button type="button" onclick="toggleModal('officialMapModal')" class="text-white/80 hover:text-white text-xl">
           <i class="fa-solid fa-xmark"></i>
@@ -506,15 +414,21 @@
       </div>
       <div class="p-6 overflow-y-auto space-y-4 text-xs sm:text-sm text-gray-700">
         <div class="bg-blue-50 border border-blue-200 p-4 rounded-xl space-y-2">
-          <p><strong><i class="fa-solid fa-location-dot text-pts-accent mr-1"></i> START / FINISH:</strong> Northwest corner of the North Embarcadero Marina (marked by the green & red dots on the map).</p>
-          <p><strong><i class="fa-solid fa-route text-pts-blue mr-1"></i> COURSE ROUTE:</strong> Participants will enjoy a scenic waterfront route along San Diego Bay. The course begins at the North Embarcadero Marina and follows the marina walkway counterclockwise before heading south (right turn) continuing down along the Bayfront Promenade. Participants will turn right and follow the loop (counterclockwise) around the South Embarcadero Marina. They will then turn right onto the Promenade toward the Hilton and make a U-turn before the hotel. The return route follows the waterfront north toward Ruocco Park, loops around the park (counterclockwise), and continues back with a right turn to the start/finish area at the North Embarcadero Marina.</p>
-          <p class="text-xs text-pts-navy font-semibold"><i class="fa-solid fa-circle-check text-green-600 mr-1"></i> Course markings and volunteers will be along the route to help guide participants throughout the event.</p>
+          <p><strong>START/FINISH:</strong> Northwest corner of the North Embarcadero Marina (marked by the green &amp; red dots on the map).</p>
+          <p><strong>COURSE ROUTE:</strong> Participants will enjoy a scenic waterfront route along San Diego Bay.</p>
+          <ul class="list-disc pl-5 space-y-1">
+            <li>The course begins at the North Embarcadero Marina and follows the marina walkway counterclockwise before heading south (right turn) continuing down along the Bayfront Promenade.</li>
+            <li>Participants will turn right and follow the loop (counterclockwise) around the South Embarcadero Marina.</li>
+            <li>They will then turn right onto the Promenade toward the Hilton and make a U-turn before the hotel.</li>
+            <li>The return route follows the waterfront north toward Ruocco Park, loops around the park (counterclockwise), and continues back with a right turn to the start/finish area at the North Embarcadero Marina.</li>
+            <li>Course markings and volunteers will be along the route to help guide participants throughout the event.</li>
+          </ul>
         </div>
         <div class="text-center bg-gray-100 rounded-xl p-4 border border-gray-200">
-          <img src="5K_Course_Map.png" alt="Official 5K Course Map" class="max-h-[480px] w-auto mx-auto rounded-lg shadow" onerror="this.style.display='none'; document.getElementById('pdfFallbackNotice').classList.remove('hidden');">
+          <img src="5K_Course_Map.png" alt="23 October 2026 – IAM & PTS 5K Fun Run/Walk Map" class="max-h-[480px] w-auto mx-auto rounded-lg shadow" onerror="this.style.display='none'; document.getElementById('pdfFallbackNotice').classList.remove('hidden');">
           <div id="pdfFallbackNotice" class="hidden py-6">
             <i class="fa-solid fa-file-pdf text-4xl text-pts-accent mb-2 block"></i>
-            <p class="font-bold text-pts-navy">View or Download the Printable Official Course Map PDF</p>
+            <p class="font-bold text-pts-navy">23 October 2026 – IAM &amp; PTS 5K Fun Run/Walk Map</p>
             <a href="23 October 2026 – IAM & PTS 5K Fun Run Walk Map.pdf" target="_blank" class="mt-3 inline-flex items-center gap-2 bg-pts-navy hover:bg-pts-blue text-white font-bold px-4 py-2 rounded-lg text-xs shadow transition">
               <i class="fa-solid fa-download"></i> Open Official Map PDF
             </a>
@@ -1061,7 +975,7 @@
       <div class="border-t border-gray-200 pt-4 text-xs text-gray-600 space-y-1">
         <p><strong>Race Date:</strong> Friday, 23 October 2026</p>
         <p><strong>Check-In:</strong> 6:30 AM – 7:15 AM | <strong>Start:</strong> 7:30 AM</p>
-        <p><strong>Start / Finish Location:</strong> Northwest corner of North Embarcadero Marina</p>
+        <p><strong>START/FINISH:</strong> Northwest corner of the North Embarcadero Marina</p>
         <p><strong>Packet Pick Up:</strong> Oct 21 & 22 @ Hyatt Hotel</p>
         <p class="mt-4 text-[10px] text-gray-400">Present this digital or printed pass at race check-in to collect your bib and T-shirt.</p>
       </div>
@@ -1095,7 +1009,7 @@
     }
 
     function downloadICS() {
-      const icsData = "BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nSUMMARY:IAM & PARAMOUNT Charity 5K Fun Run/Walk\nDESCRIPTION:IAM & Paramount Charity 5K Fun Run/Walk Event. Check-in starts at 6:30 AM at the Northwest corner of North Embarcadero Marina.\nLOCATION:Embarcadero Marina Park North, San Diego, CA\nDTSTART:20261023T133000Z\nDTEND:20261023T160000Z\nEND:VEVENT\nEND:VCALENDAR";
+      const icsData = "BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nSUMMARY:IAM & PARAMOUNT Charity 5K Fun Run/Walk\nDESCRIPTION:IAM & Paramount Charity 5K Fun Run/Walk Event. Check-in starts at 6:30 AM.\nLOCATION:Hyatt Hotel\nDTSTART:20261023T133000Z\nDTEND:20261023T160000Z\nEND:VEVENT\nEND:VCALENDAR";
       const blob = new Blob([icsData], { type: 'text/calendar;charset=utf-8' });
       const link = document.createElement('a');
       link.href = window.URL.createObjectURL(blob);
@@ -1118,86 +1032,116 @@
     }, 1000);
 
     // =========================================================================
-    // INTERACTIVE 5K COURSE MAP (GOOGLE MAPS TILES - NO API KEY REQUIRED)
+    // CALIBRATED WATERFRONT PROMENADE & PARK WALKWAY COORDINATES
+    // Aligned to the paved Embarcadero boardwalk & park loops (never in water
+    // or through Seaport Village buildings).
     // =========================================================================
     const COURSE_COORDS = [
-      // Start at NW Corner of Embarcadero Marina Park North (Green Dot)
-      [32.70825, -117.17045],
-      // Counterclockwise loop around Embarcadero Marina Park North
-      [32.70735, -117.17055],
-      [32.70640, -117.16955],
-      [32.70555, -117.16845],
-      [32.70535, -117.16765],
-      [32.70595, -117.16720],
-      [32.70685, -117.16815],
-      [32.70775, -117.16915],
-      [32.70870, -117.16920],
-      // Right turn heading South along Bayfront Promenade (Spill the Beans, Sally's, Agave)
-      [32.70888, -117.16825],
-      [32.70880, -117.16695],
-      [32.70820, -117.16610],
-      [32.70730, -117.16500],
-      [32.70635, -117.16380],
-      [32.70555, -117.16280],
-      // Right turn into Embarcadero Marina Park South (Counterclockwise loop)
-      [32.70470, -117.16360],
-      [32.70405, -117.16425], // Mile 1 Marker area
-      [32.70435, -117.16510],
-      [32.70375, -117.16535],
-      [32.70295, -117.16430],
-      [32.70210, -117.16320],
-      [32.70160, -117.16245],
-      [32.70220, -117.16155],
+      // START: Northwest corner of the North Embarcadero Marina (Green Dot)
+      [32.70812, -117.17008],
+      // Follow North Embarcadero Marina walkway counterclockwise (west side heading south)
+      [32.70755, -117.17012],
+      [32.70690, -117.16958],
+      [32.70620, -117.16895],
+      [32.70562, -117.16838],
+      // Southern tip of North Embarcadero Marina Park loop
+      [32.70542, -117.16795],
+      [32.70558, -117.16760],
+      [32.70595, -117.16758],
+      // East side of North Embarcadero Marina Park heading north
+      [32.70655, -117.16815],
+      [32.70720, -117.16880],
+      [32.70778, -117.16928],
+      [32.70842, -117.16932],
+      // Right turn onto the outer waterfront S Embarcadero / Bayfront Promenade
+      [32.70845, -117.16860],
+      [32.70846, -117.16775],
+      [32.70842, -117.16695],
+      [32.70795, -117.16632],
+      [32.70720, -117.16542],
+      [32.70642, -117.16448],
+      [32.70562, -117.16352],
+      // Turn right into South Embarcadero Marina and follow loop counterclockwise
+      [32.70515, -117.16392],
+      [32.70455, -117.16448],
+      [32.70435, -117.16475], // Mile 1 Marker
+      [32.70462, -117.16535],
+      [32.70442, -117.16575],
+      [32.70395, -117.16565],
+      [32.70330, -117.16490],
+      [32.70260, -117.16410],
+      [32.70198, -117.16335],
+      [32.70235, -117.16270],
       [32.70295, -117.16210],
-      [32.70380, -117.16300],
-      [32.70475, -117.16215],
-      // Turn right onto Promenade toward Hilton & Bayside Landing Restrooms U-turn
-      [32.70395, -117.16110],
-      [32.70315, -117.16015],
-      [32.70240, -117.15925], // U-turn before Hilton
-      [32.70325, -117.16020],
-      [32.70410, -117.16120],
-      // Past Flame of Friendship (Mile 2) & North along Bayfront Promenade
-      [32.70520, -117.16235], // Mile 2 Marker
-      [32.70635, -117.16380],
-      [32.70730, -117.16500],
-      [32.70820, -117.16610],
-      [32.70880, -117.16695],
-      [32.70888, -117.16825],
-      // Continue North along Waterfront toward Ruocco Park
-      [32.70875, -117.16980],
-      [32.70895, -117.17105],
-      [32.70975, -117.17165],
-      [32.71085, -117.17210],
-      [32.71185, -117.17255],
-      // Counterclockwise loop around Ruocco Park
-      [32.71235, -117.17175],
-      [32.71195, -117.17115],
-      [32.71145, -117.17175],
-      // Return south from Ruocco Park past Mile 3 to Finish Line
-      [32.71075, -117.17205],
-      [32.70975, -117.17165],
-      [32.70895, -117.17105], // Mile 3 Marker
-      [32.70875, -117.16985],
-      [32.70820, -117.17015]  // Finish Line (Red Dot)
+      [32.70355, -117.16278],
+      [32.70415, -117.16348],
+      [32.70465, -117.16325],
+      [32.70515, -117.16282],
+      // Turn right onto the Promenade toward the Hilton and make a U-turn before the hotel
+      [32.70445, -117.16195],
+      [32.70370, -117.16105],
+      [32.70295, -117.16015], // U-turn before the Hilton
+      [32.70375, -117.16108],
+      [32.70450, -117.16198],
+      [32.70535, -117.16305],
+      [32.70572, -117.16358], // Mile 2 Marker
+      // Return route follows the waterfront Bayfront Promenade north toward Ruocco Park
+      [32.70642, -117.16448],
+      [32.70720, -117.16542],
+      [32.70795, -117.16632],
+      [32.70842, -117.16695],
+      [32.70846, -117.16775],
+      [32.70845, -117.16860],
+      // Stay strictly on the outer waterfront Embarcadero boardwalk past Seaport Village
+      [32.70845, -117.16955],
+      [32.70852, -117.17045],
+      [32.70875, -117.17115],
+      [32.70925, -117.17175],
+      [32.71005, -117.17205],
+      [32.71085, -117.17230],
+      // Loop around Ruocco Park counterclockwise
+      [32.71135, -117.17242],
+      [32.71165, -117.17205],
+      [32.71145, -117.17165],
+      [32.71105, -117.17185],
+      [32.71085, -117.17225],
+      // Continue back south along waterfront boardwalk with a right turn to Start/Finish area
+      [32.71005, -117.17205],
+      [32.70925, -117.17175],
+      [32.70875, -117.17115], // Mile 3 Marker
+      [32.70852, -117.17045],
+      [32.70845, -117.16985],
+      [32.70810, -117.16985]  // FINISH: NW corner of North Embarcadero Marina (Red Dot)
     ];
 
     const STAGE_VIEWS = [
-      { coords: [32.7072, -117.1692], zoom: 16, title: "Start & North Embarcadero Marina Loop", desc: "Start at NW corner of North Embarcadero Marina and loop counterclockwise around the park." },
-      { coords: [32.70405, -117.16425], zoom: 16, title: "Mile 1 – Embarcadero Marina Park South", desc: "Cruise down the Bayfront Promenade and enter South Embarcadero Marina to hit Mile 1." },
-      { coords: [32.7028, -117.1618], zoom: 16, title: "South Marina Loop & Hilton Turnaround", desc: "Loop counterclockwise around South Park, then head toward the Hilton and U-turn at Bayside Landing." },
-      { coords: [32.70520, -117.16235], zoom: 16, title: "Mile 2 – Flame of Friendship", desc: "Pass the Flame of Friendship monument at Mile 2 and head north along the waterfront." },
-      { coords: [32.7116, -117.1719], zoom: 16, title: "Ruocco Park Loop & Mile 3", desc: "Loop counterclockwise around scenic Ruocco Park and pass Mile 3 heading south." },
-      { coords: [32.70820, -117.17015], zoom: 17, title: "Finish Line – North Embarcadero Marina", desc: "Turn right into the North Embarcadero Marina start/finish chute!" }
+      {
+        coords: [32.7072, -117.1685],
+        zoom: 16,
+        text: "The course begins at the North Embarcadero Marina and follows the marina walkway counterclockwise before heading south (right turn) continuing down along the Bayfront Promenade."
+      },
+      {
+        coords: [32.7035, -117.1642],
+        zoom: 16,
+        text: "Participants will turn right and follow the loop (counterclockwise) around the South Embarcadero Marina."
+      },
+      {
+        coords: [32.7038, -117.1612],
+        zoom: 16,
+        text: "They will then turn right onto the Promenade toward the Hilton and make a U-turn before the hotel."
+      },
+      {
+        coords: [32.7102, -117.1715],
+        zoom: 16,
+        text: "The return route follows the waterfront north toward Ruocco Park, loops around the park (counterclockwise), and continues back with a right turn to the start/finish area at the North Embarcadero Marina."
+      }
     ];
 
     let courseMap;
     let googleStreetsLayer;
     let googleHybridLayer;
     let googleTerrainLayer;
-    let poiLayerGroup;
     let stageMarkers = [];
-    let poisVisible = true;
     let simInterval = null;
     let runnerMarker = null;
     let simIndex = 0;
@@ -1205,9 +1149,9 @@
     function initCourseMap() {
       courseMap = L.map('courseMap', {
         scrollWheelZoom: false
-      }).setView([32.7068, -117.1658], 15);
+      }).setView([32.7068, -117.1662], 15);
 
-      // Free Google Maps Tile Layers (Streets, Satellite Hybrid & Terrain - No API Key Needed)
+      // Free Google Maps Tile Layers (Streets, Satellite Hybrid & Terrain)
       googleStreetsLayer = L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
         maxZoom: 20,
         subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
@@ -1226,7 +1170,7 @@
         attribution: '&copy; Google Maps Terrain'
       });
 
-      // Outer white casing for high contrast
+      // White outer border for contrast on both Map & Satellite views
       L.polyline(COURSE_COORDS, {
         color: '#ffffff',
         weight: 9,
@@ -1234,7 +1178,7 @@
         lineJoin: 'round'
       }).addTo(courseMap);
 
-      // Main Crimson 5K Course Line
+      // Main Crimson 5K Course Route Line
       const mainRouteLine = L.polyline(COURSE_COORDS, {
         color: '#E31837',
         weight: 5,
@@ -1242,7 +1186,7 @@
         lineJoin: 'round'
       }).addTo(courseMap);
 
-      // Dashed directional inner highlight
+      // Inner directional dash
       L.polyline(COURSE_COORDS, {
         color: '#FCA5A5',
         weight: 1.5,
@@ -1250,8 +1194,7 @@
         opacity: 0.9
       }).addTo(courseMap);
 
-      // Helper for HTML badge icons
-      function createBadgeIcon(htmlContent, bgClass, size = 30) {
+      function createBadgeIcon(htmlContent, bgClass, size = 28) {
         return L.divIcon({
           className: 'custom-div-icon',
           html: `<div class="${bgClass} text-white font-black rounded-full shadow-lg border-2 border-white flex items-center justify-center marker-pulse" style="width:${size}px;height:${size}px;font-size:12px;">${htmlContent}</div>`,
@@ -1261,77 +1204,46 @@
         });
       }
 
-      // Start Marker (Green Dot)
-      const startMarker = L.marker([32.70825, -117.17045], {
-        icon: createBadgeIcon('<i class="fa-solid fa-play text-[10px]"></i>', 'bg-green-600', 30)
+      // Green Start Dot (NW corner of North Embarcadero Marina)
+      const startMarker = L.marker([32.70812, -117.17008], {
+        icon: createBadgeIcon('', 'bg-green-600', 22)
       }).addTo(courseMap).bindPopup(`
         <div class="text-xs p-1">
-          <strong class="text-green-700 uppercase block">Start Line (0.0 KM)</strong>
-          <b>NW Corner of North Embarcadero Marina</b><br>
-          Check-in: 6:30–7:15 AM | Race Start: 7:30 AM
+          <strong class="text-green-700 uppercase block">START</strong>
+          Northwest corner of the North Embarcadero Marina
         </div>
       `);
 
-      // Finish Marker (Red Dot)
-      const finishMarker = L.marker([32.70815, -117.17010], {
-        icon: createBadgeIcon('<i class="fa-solid fa-flag-checkered text-[11px]"></i>', 'bg-pts-accent', 30)
+      // Red Finish Dot (NW corner of North Embarcadero Marina)
+      const finishMarker = L.marker([32.70810, -117.16985], {
+        icon: createBadgeIcon('', 'bg-pts-accent', 22)
       }).addTo(courseMap).bindPopup(`
         <div class="text-xs p-1">
-          <strong class="text-pts-accent uppercase block">Finish Line (5.0 KM)</strong>
-          <b>North Embarcadero Marina</b><br>
-          Post-race refreshments, snacks & awards!
+          <strong class="text-pts-accent uppercase block">FINISH</strong>
+          Northwest corner of the North Embarcadero Marina
         </div>
       `);
 
-      // Mile 1, 2, 3 & Turnaround Markers
-      const mile1Marker = L.marker([32.70405, -117.16425], {
-        icon: createBadgeIcon('1', 'bg-pts-accent', 28)
-      }).addTo(courseMap).bindPopup(`<div class="text-xs p-1"><strong class="text-pts-accent">MILE 1 (1.6 KM)</strong><br>Entrance to Embarcadero Marina Park South counterclockwise loop.</div>`);
+      // Mile Markers 1, 2, 3 (Matching the red numbered circles on the approved PDF map)
+      const mile1Marker = L.marker([32.70435, -117.16475], {
+        icon: createBadgeIcon('1', 'bg-pts-accent', 26)
+      }).addTo(courseMap).bindPopup(`<div class="text-xs p-1"><strong class="text-pts-accent">Mile 1</strong><br>South Embarcadero Marina loop</div>`);
 
-      const turnaroundMarker = L.marker([32.70240, -117.15925], {
-        icon: createBadgeIcon('<i class="fa-solid fa-rotate-left text-[11px]"></i>', 'bg-pts-blue', 28)
-      }).addTo(courseMap).bindPopup(`<div class="text-xs p-1"><strong class="text-pts-blue">HILTON U-TURN (~2.7 KM)</strong><br>U-turn on the Promenade near Bayside Landing Restrooms just before the Hilton.</div>`);
+      const hiltonTurnMarker = L.marker([32.70295, -117.16015], {
+        icon: createBadgeIcon('<i class="fa-solid fa-rotate-left text-[10px]"></i>', 'bg-pts-blue', 24)
+      }).addTo(courseMap).bindPopup(`<div class="text-xs p-1"><strong class="text-pts-blue">U-Turn</strong><br>Promenade toward the Hilton (U-turn before the hotel)</div>`);
 
-      const mile2Marker = L.marker([32.70520, -117.16235], {
-        icon: createBadgeIcon('2', 'bg-pts-accent', 28)
-      }).addTo(courseMap).bindPopup(`<div class="text-xs p-1"><strong class="text-pts-accent">MILE 2 (3.2 KM)</strong><br>Located by the Flame of Friendship monument heading north.</div>`);
+      const mile2Marker = L.marker([32.70572, -117.16358], {
+        icon: createBadgeIcon('2', 'bg-pts-accent', 26)
+      }).addTo(courseMap).bindPopup(`<div class="text-xs p-1"><strong class="text-pts-accent">Mile 2</strong><br>Bayfront Promenade</div>`);
 
-      const mile3Marker = L.marker([32.70895, -117.17105], {
-        icon: createBadgeIcon('3', 'bg-pts-accent', 28)
-      }).addTo(courseMap).bindPopup(`<div class="text-xs p-1"><strong class="text-pts-accent">MILE 3 (4.8 KM)</strong><br>Final stretch returning from Ruocco Park to North Embarcadero Marina!</div>`);
+      const mile3Marker = L.marker([32.70875, -117.17115], {
+        icon: createBadgeIcon('3', 'bg-pts-accent', 26)
+      }).addTo(courseMap).bindPopup(`<div class="text-xs p-1"><strong class="text-pts-accent">Mile 3</strong><br>Return route from Ruocco Park</div>`);
 
-      stageMarkers = [startMarker, mile1Marker, turnaroundMarker, mile2Marker, mile3Marker, finishMarker];
+      stageMarkers = [startMarker, mile1Marker, hiltonTurnMarker, mile3Marker];
 
-      // Landmarks & Restrooms Layer Group (From PDF Map)
-      poiLayerGroup = L.layerGroup().addTo(courseMap);
-
-      const landmarks = [
-        { coords: [32.71185, -117.17185], icon: 'fa-tree', color: 'bg-emerald-700', name: 'Ruocco Park', note: 'Northern counterclockwise loop turnaround' },
-        { coords: [32.71285, -117.17220], icon: 'fa-anchor', color: 'bg-pts-blue', name: 'Waltzing Matilda Monument', note: 'North of Ruocco Park' },
-        { coords: [32.70990, -117.16840], icon: 'fa-restroom', color: 'bg-blue-600', name: 'Seaport Village Restrooms', note: 'Public restrooms near Marina District' },
-        { coords: [32.70895, -117.16800], icon: 'fa-mug-hot', color: 'bg-amber-700', name: 'Spill the Beans', note: 'Promenade turn landmark' },
-        { coords: [32.70890, -117.16665], icon: 'fa-utensils', color: 'bg-pts-navy', name: "Sally's Fish House & Bar", note: 'Waterfront Promenade' },
-        { coords: [32.70785, -117.16465], icon: 'fa-martini-glass-citrus', color: 'bg-pts-navy', name: 'Agave Bar and Grill', note: 'Bayfront Promenade' },
-        { coords: [32.70750, -117.16310], icon: 'fa-mug-saucer', color: 'bg-emerald-800', name: 'Starbucks', note: 'East Harbor Drive / Promenade' },
-        { coords: [32.70535, -117.16205], icon: 'fa-landmark', color: 'bg-pts-blue', name: 'Flame of Friendship', note: 'Adjacent to Mile 2 Marker' },
-        { coords: [32.70550, -117.16045], icon: 'fa-building-columns', color: 'bg-pts-navy', name: 'San Diego Convention Center', note: 'East of the Promenade' },
-        { coords: [32.70285, -117.15975], icon: 'fa-restroom', color: 'bg-blue-600', name: 'Bayside Landing Restrooms', note: 'Near southern Hilton U-turn' },
-        { coords: [32.70640, -117.16860], icon: 'fa-tree', color: 'bg-emerald-700', name: 'Embarcadero Marina Park North', note: 'First counterclockwise loop' },
-        { coords: [32.70345, -117.16395], icon: 'fa-tree', color: 'bg-emerald-700', name: 'Embarcadero Marina Park South', note: 'Second counterclockwise loop' }
-      ];
-
-      landmarks.forEach(lm => {
-        const icon = L.divIcon({
-          className: 'poi-icon',
-          html: `<div class="${lm.color} text-white rounded-full shadow border border-white flex items-center justify-center" style="width:22px;height:22px;font-size:10px;"><i class="fa-solid ${lm.icon}"></i></div>`,
-          iconSize: [22, 22],
-          iconAnchor: [11, 11],
-          popupAnchor: [0, -11]
-        });
-        L.marker(lm.coords, { icon }).bindPopup(`<div class="text-xs"><strong>${lm.name}</strong><br><span class="text-gray-600">${lm.note}</span></div>`).addTo(poiLayerGroup);
-      });
-
-      courseMap.fitBounds(mainRouteLine.getBounds(), { padding: [25, 25] });
+      courseMap.fitBounds(mainRouteLine.getBounds(), { padding: [28, 28] });
     }
 
     function setGoogleMapMode(mode) {
@@ -1368,7 +1280,7 @@
       });
       const stage = STAGE_VIEWS[index];
       if (stage && courseMap) {
-        courseMap.flyTo(stage.coords, stage.zoom, { duration: 1.1 });
+        courseMap.flyTo(stage.coords, stage.zoom, { duration: 1.0 });
         if (stageMarkers[index]) {
           stageMarkers[index].openPopup();
         }
@@ -1377,25 +1289,13 @@
 
     function resetCourseMapView() {
       if (courseMap) {
-        courseMap.flyTo([32.7068, -117.1658], 15, { duration: 1.0 });
+        courseMap.flyTo([32.7068, -117.1662], 15, { duration: 1.0 });
         courseMap.closePopup();
       }
     }
 
-    function togglePOIMarkers() {
-      const btnText = document.getElementById('poiToggleText');
-      if (poisVisible) {
-        courseMap.removeLayer(poiLayerGroup);
-        btnText.innerText = "Show Landmarks";
-      } else {
-        courseMap.addLayer(poiLayerGroup);
-        btnText.innerText = "Hide Landmarks";
-      }
-      poisVisible = !poisVisible;
-    }
-
     // Interpolate points for smooth animated runner simulation
-    function buildSmoothCoursePoints(coords, stepsPerSegment = 8) {
+    function buildSmoothCoursePoints(coords, stepsPerSegment = 6) {
       const points = [];
       for (let i = 0; i < coords.length - 1; i++) {
         const start = coords[i];
@@ -1422,7 +1322,7 @@
       if (simInterval) {
         clearInterval(simInterval);
         simInterval = null;
-        btnText.innerText = "Simulate 5K Run";
+        btnText.innerText = "Simulate Course Route";
         btnIcon.className = "fa-solid fa-play";
         overlay.classList.add('hidden');
         if (runnerMarker) {
@@ -1439,9 +1339,9 @@
 
       const runnerIcon = L.divIcon({
         className: 'runner-sim-icon',
-        html: `<div class="bg-amber-400 text-pts-navy rounded-full shadow-xl border-2 border-pts-navy flex items-center justify-center" style="width:32px;height:32px;font-size:15px;"><i class="fa-solid fa-person-running"></i></div>`,
-        iconSize: [32, 32],
-        iconAnchor: [16, 16]
+        html: `<div class="bg-amber-400 text-pts-navy rounded-full shadow-xl border-2 border-pts-navy flex items-center justify-center" style="width:30px;height:30px;font-size:14px;"><i class="fa-solid fa-person-running"></i></div>`,
+        iconSize: [30, 30],
+        iconAnchor: [15, 15]
       });
 
       runnerMarker = L.marker(SMOOTH_COURSE_PATH[0], { icon: runnerIcon, zIndexOffset: 1000 }).addTo(courseMap);
@@ -1452,12 +1352,12 @@
         if (simIndex >= SMOOTH_COURSE_PATH.length) {
           clearInterval(simInterval);
           simInterval = null;
-          btnText.innerText = "Replay 5K Run";
+          btnText.innerText = "Replay Course Route";
           btnIcon.className = "fa-solid fa-rotate-right";
-          document.getElementById('simStageLabel').innerText = "Finished! 5.00 KM Complete at North Embarcadero Marina!";
-          document.getElementById('simDistanceLabel').innerText = "5.00 km / 5.00 km";
+          document.getElementById('simStageLabel').innerText = "Start/Finish area at the North Embarcadero Marina";
+          document.getElementById('simDistanceLabel').innerText = "100%";
           document.getElementById('simProgressBar').style.width = "100%";
-          focusCourseStage(5);
+          highlightStepCardOnly(3);
           return;
         }
 
@@ -1465,35 +1365,28 @@
         runnerMarker.setLatLng(pt);
 
         const pct = simIndex / (SMOOTH_COURSE_PATH.length - 1);
-        const km = (pct * 5.0).toFixed(2);
-        document.getElementById('simDistanceLabel').innerText = `${km} km / 5.00 km`;
+        document.getElementById('simDistanceLabel').innerText = `${Math.round(pct * 100)}%`;
         document.getElementById('simProgressBar').style.width = `${(pct * 100).toFixed(1)}%`;
 
-        let stageDesc = "Looping counterclockwise around North Embarcadero Marina...";
-        if (pct > 0.82) {
-          stageDesc = "Final sprint south from Ruocco Park past Mile 3 to Finish!";
-          highlightStepCardOnly(5);
-        } else if (pct > 0.68) {
-          stageDesc = "Looping counterclockwise around Ruocco Park (Mile 3)...";
-          highlightStepCardOnly(4);
-        } else if (pct > 0.52) {
-          stageDesc = "Passing Flame of Friendship (Mile 2) & heading north...";
+        let stageLabel = "North Embarcadero Marina & Bayfront Promenade";
+        if (pct > 0.62) {
+          stageLabel = "Waterfront north toward Ruocco Park & back to Start/Finish";
           highlightStepCardOnly(3);
-        } else if (pct > 0.35) {
-          stageDesc = "Looping South Embarcadero Marina & U-turn before Hilton...";
+        } else if (pct > 0.48) {
+          stageLabel = "Promenade toward the Hilton & U-turn before the hotel";
           highlightStepCardOnly(2);
-        } else if (pct > 0.18) {
-          stageDesc = "Heading south down Bayfront Promenade to Mile 1...";
+        } else if (pct > 0.28) {
+          stageLabel = "Loop (counterclockwise) around the South Embarcadero Marina";
           highlightStepCardOnly(1);
         } else {
           highlightStepCardOnly(0);
         }
-        document.getElementById('simStageLabel').innerText = stageDesc;
+        document.getElementById('simStageLabel').innerText = stageLabel;
 
         if (simIndex % 8 === 0) {
           courseMap.panTo(pt, { animate: true, duration: 0.35 });
         }
-      }, 65);
+      }, 60);
     }
 
     function highlightStepCardOnly(index) {
