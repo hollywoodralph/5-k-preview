@@ -21,6 +21,10 @@
       }
     }
   </script>
+  <!-- Google Fonts for Editorial Finisher Cards -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@500;600;700;800;900&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
@@ -68,9 +72,14 @@
       -ms-overflow-style: none;
       scrollbar-width: none;
     }
-    /* Prevent iOS tap highlight flash */
+    /* Prevent iOS tap highlight flash & allow smooth canvas touch gestures */
     * {
       -webkit-tap-highlight-color: transparent;
+    }
+    #finisherCanvas {
+      touch-action: none;
+      user-select: none;
+      -webkit-user-select: none;
     }
   </style>
 </head>
@@ -124,53 +133,61 @@
 
         <div class="md:col-span-4 flex justify-center">
           <!-- Race Day Live Status Badge (Shown in Race Day Mode) -->
-          <div id="headerRaceDayBadge" class="bg-white rounded-2xl px-5 py-3 border border-gray-100 text-center shadow-md w-full max-w-sm md:max-w-xs">
-            <span class="text-[11px] uppercase tracking-wider text-pts-accent block font-black mb-1 flex items-center justify-center gap-1.5">
-              <span class="w-2.5 h-2.5 rounded-full bg-pts-accent animate-ping"></span> Event Status: Live
-            </span>
-            <div class="bg-pts-light px-3 py-2 rounded-xl border border-blue-100">
-              <span class="text-base sm:text-lg font-black text-pts-navy block leading-tight">RACE DAY IN PROGRESS</span>
-              <span class="text-[11px] text-pts-blue font-semibold block mt-0.5">San Diego Bayfront • 5.0 KM (3.16 Mi)</span>
+          <div id="headerRaceDayBadge" class="w-full max-w-sm md:max-w-xs">
+            <div class="bg-white rounded-2xl px-5 py-3 border border-gray-100 text-center shadow-md">
+              <span class="text-[11px] uppercase tracking-wider text-pts-accent font-black mb-1 flex items-center justify-center gap-1.5">
+                <span class="w-2.5 h-2.5 rounded-full bg-pts-accent animate-ping"></span> Event Status: Live
+              </span>
+              <div class="bg-pts-light px-3 py-2 rounded-xl border border-blue-100">
+                <span class="text-base sm:text-lg font-black text-pts-navy block leading-tight">RACE DAY IN PROGRESS</span>
+                <span class="text-[11px] text-pts-blue font-semibold block mt-0.5">San Diego Bayfront • 5.0 KM (3.16 Mi)</span>
+              </div>
             </div>
           </div>
 
           <!-- Pre-Race Countdown Clock (Shown in Pre-Race Mode) -->
-          <div id="headerPreRaceCountdown" class="hidden bg-white rounded-2xl px-4 py-2.5 sm:px-5 sm:py-3 border border-gray-100 text-center shadow-md w-full max-w-sm md:max-w-xs">
-            <span class="text-[11px] sm:text-xs uppercase tracking-wider text-pts-navy block font-bold mb-1.5 sm:mb-2">
-              <i class="fa-solid fa-stopwatch mr-1 text-pts-blue"></i> Race Countdown
-            </span>
-            <div id="countdownClock" class="grid grid-cols-4 gap-2 text-center">
-              <div class="bg-pts-light p-1.5 sm:p-2 rounded-lg border border-blue-100"><span id="cdDays" class="text-lg sm:text-xl font-black text-pts-navy block leading-none">00</span><span class="text-[9px] text-gray-500 font-semibold uppercase mt-1 block">Days</span></div>
-              <div class="bg-pts-light p-1.5 sm:p-2 rounded-lg border border-blue-100"><span id="cdHours" class="text-lg sm:text-xl font-black text-pts-navy block leading-none">00</span><span class="text-[9px] text-gray-500 font-semibold uppercase mt-1 block">Hrs</span></div>
-              <div class="bg-pts-light p-1.5 sm:p-2 rounded-lg border border-blue-100"><span id="cdMins" class="text-lg sm:text-xl font-black text-pts-navy block leading-none">00</span><span class="text-[9px] text-gray-500 font-semibold uppercase mt-1 block">Mins</span></div>
-              <div class="bg-pts-light p-1.5 sm:p-2 rounded-lg border border-blue-100"><span id="cdSecs" class="text-lg sm:text-xl font-black text-pts-navy block leading-none">00</span><span class="text-[9px] text-gray-500 font-semibold uppercase mt-1 block">Secs</span></div>
+          <div id="headerPreRaceCountdown" class="hidden w-full max-w-sm md:max-w-xs">
+            <div class="bg-white rounded-2xl px-4 py-2.5 sm:px-5 sm:py-3 border border-gray-100 text-center shadow-md">
+              <span class="text-[11px] sm:text-xs uppercase tracking-wider text-pts-navy block font-bold mb-1.5 sm:mb-2">
+                <i class="fa-solid fa-stopwatch mr-1 text-pts-blue"></i> Race Countdown
+              </span>
+              <div id="countdownClock" class="grid grid-cols-4 gap-2 text-center">
+                <div class="bg-pts-light p-1.5 sm:p-2 rounded-lg border border-blue-100"><span id="cdDays" class="text-lg sm:text-xl font-black text-pts-navy block leading-none">00</span><span class="text-[9px] text-gray-500 font-semibold uppercase mt-1 block">Days</span></div>
+                <div class="bg-pts-light p-1.5 sm:p-2 rounded-lg border border-blue-100"><span id="cdHours" class="text-lg sm:text-xl font-black text-pts-navy block leading-none">00</span><span class="text-[9px] text-gray-500 font-semibold uppercase mt-1 block">Hrs</span></div>
+                <div class="bg-pts-light p-1.5 sm:p-2 rounded-lg border border-blue-100"><span id="cdMins" class="text-lg sm:text-xl font-black text-pts-navy block leading-none">00</span><span class="text-[9px] text-gray-500 font-semibold uppercase mt-1 block">Mins</span></div>
+                <div class="bg-pts-light p-1.5 sm:p-2 rounded-lg border border-blue-100"><span id="cdSecs" class="text-lg sm:text-xl font-black text-pts-navy block leading-none">00</span><span class="text-[9px] text-gray-500 font-semibold uppercase mt-1 block">Secs</span></div>
+              </div>
             </div>
           </div>
         </div>
 
         <div class="md:col-span-4 flex flex-col items-center md:items-end gap-2.5 w-full">
           <!-- Race Day Header Actions (Shown in Race Day Mode) -->
-          <div id="headerRaceDayActions" class="w-full max-w-sm md:max-w-xs flex flex-col gap-2">
-            <button type="button" onclick="openFinisherStudioModal()" class="w-full bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-pts-navy px-4 py-3 rounded-2xl text-xs sm:text-sm font-black transition flex items-center justify-center gap-2 shadow-lg">
-              <i class="fa-solid fa-camera-retro text-base"></i> Create Finisher Social Post
-            </button>
-            <a href="https://www.google.com/maps/dir/?api=1&destination=32.70820,-117.17009&travelmode=walking" target="_blank" rel="noopener noreferrer" class="w-full bg-white/15 hover:bg-white/25 text-white border border-white/25 px-4 py-2 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2">
-              <i class="fa-solid fa-location-arrow text-amber-300"></i> Directions to Start / Finish
-            </a>
+          <div id="headerRaceDayActions" class="w-full max-w-sm md:max-w-xs">
+            <div class="flex flex-col gap-2">
+              <button type="button" onclick="openFinisherStudioModal()" class="w-full bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-pts-navy px-4 py-3 rounded-2xl text-xs sm:text-sm font-black transition flex items-center justify-center gap-2 shadow-lg">
+                <i class="fa-solid fa-camera-retro text-base"></i> Create Finisher Social Post
+              </button>
+              <a href="https://www.google.com/maps/dir/?api=1&destination=32.70820,-117.17009&travelmode=walking" target="_blank" rel="noopener noreferrer" class="w-full bg-white/15 hover:bg-white/25 text-white border border-white/25 px-4 py-2 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2">
+                <i class="fa-solid fa-location-arrow text-amber-300"></i> Directions to Start / Finish
+              </a>
+            </div>
           </div>
 
           <!-- Pre-Race Check-In & $75 Fee Card (Shown in Pre-Race Mode) -->
-          <div id="headerPreRaceActions" class="hidden w-full max-w-sm md:max-w-xs flex flex-col gap-2.5">
-            <button type="button" onclick="toggleModal('lookupModal')" class="w-full bg-white active:bg-gray-100 hover:bg-gray-50 text-pts-navy px-4 py-3 sm:py-2.5 rounded-2xl text-xs sm:text-sm font-bold border border-gray-100 transition flex items-center justify-center gap-2 shadow-md">
-              <i class="fa-solid fa-lock text-pts-blue"></i> Secure Check-in / Edit Registration
-            </button>
-            
-            <div class="w-full bg-white rounded-2xl p-2.5 border border-gray-100 text-center shadow-md">
-              <div class="flex items-baseline justify-center gap-2">
-                <span class="text-[11px] font-bold uppercase tracking-wider text-gray-600">Registration Fee:</span>
-                <span class="text-xl sm:text-2xl font-black text-pts-navy">USD 75.00</span>
+          <div id="headerPreRaceActions" class="hidden w-full max-w-sm md:max-w-xs">
+            <div class="flex flex-col gap-2.5">
+              <button type="button" onclick="toggleModal('lookupModal')" class="w-full bg-white active:bg-gray-100 hover:bg-gray-50 text-pts-navy px-4 py-3 sm:py-2.5 rounded-2xl text-xs sm:text-sm font-bold border border-gray-100 transition flex items-center justify-center gap-2 shadow-md">
+                <i class="fa-solid fa-lock text-pts-blue"></i> Secure Check-in / Edit Registration
+              </button>
+              
+              <div class="w-full bg-white rounded-2xl p-2.5 border border-gray-100 text-center shadow-md">
+                <div class="flex items-baseline justify-center gap-2">
+                  <span class="text-[11px] font-bold uppercase tracking-wider text-gray-600">Registration Fee:</span>
+                  <span class="text-xl sm:text-2xl font-black text-pts-navy">USD 75.00</span>
+                </div>
+                <span class="text-[10px] text-gray-500 block mt-0.5 leading-tight font-medium">Includes Shirt, Bib, Beverages and Snacks</span>
               </div>
-              <span class="text-[10px] text-gray-500 block mt-0.5 leading-tight font-medium">Includes Shirt, Bib, Beverages and Snacks</span>
             </div>
           </div>
         </div>
@@ -187,27 +204,31 @@
             Welcome to Race Day on San Diego Bay! Track your live 5K run/walk with GPS, follow the waterfront course, and create your custom Finisher Social Card.
           </p>
 
-          <!-- Race Day Hero Buttons -->
-          <div id="heroButtonsRaceDay" class="mt-4 flex flex-wrap justify-center lg:justify-start gap-2.5 sm:gap-3">
-            <a href="#raceHubSection" class="inline-flex items-center justify-center gap-2 bg-pts-accent hover:bg-red-700 text-white px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition shadow-lg">
-              <i class="fa-solid fa-satellite-dish animate-pulse"></i> Launch Live GPS Tracker
-            </a>
-            <button type="button" onclick="openFinisherStudioModal()" class="inline-flex items-center justify-center gap-2 bg-amber-400 hover:bg-amber-500 text-pts-navy px-4 py-2.5 rounded-xl text-xs sm:text-sm font-black transition shadow-lg">
-              <i class="fa-solid fa-medal"></i> Finisher Photo Badge Studio
-            </button>
-            <a href="#courseExplorerSection" class="inline-flex items-center justify-center gap-1.5 bg-white/15 hover:bg-white/25 text-white border border-white/30 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold backdrop-blur-sm transition shadow">
-              <i class="fa-solid fa-map-location-dot text-amber-300"></i> 5K Course Map
-            </a>
+          <!-- Race Day Hero Buttons (Wrapped cleanly so hidden never conflicts with flex) -->
+          <div id="heroButtonsRaceDay" class="mt-4">
+            <div class="flex flex-wrap justify-center lg:justify-start gap-2.5 sm:gap-3">
+              <a href="#raceHubSection" class="inline-flex items-center justify-center gap-2 bg-pts-accent hover:bg-red-700 text-white px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition shadow-lg">
+                <i class="fa-solid fa-satellite-dish animate-pulse"></i> Launch Live GPS Tracker
+              </a>
+              <button type="button" onclick="openFinisherStudioModal()" class="inline-flex items-center justify-center gap-2 bg-amber-400 hover:bg-amber-500 text-pts-navy px-4 py-2.5 rounded-xl text-xs sm:text-sm font-black transition shadow-lg">
+                <i class="fa-solid fa-medal"></i> Finisher Photo Badge Studio
+              </button>
+              <a href="#courseExplorerSection" class="inline-flex items-center justify-center gap-1.5 bg-white/15 hover:bg-white/25 text-white border border-white/30 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold backdrop-blur-sm transition shadow">
+                <i class="fa-solid fa-map-location-dot text-amber-300"></i> 5K Course Map
+              </a>
+            </div>
           </div>
 
-          <!-- Pre-Race Hero Buttons -->
-          <div id="heroButtonsPreRace" class="hidden mt-4 grid grid-cols-2 sm:flex sm:flex-wrap justify-center lg:justify-start gap-2.5 sm:gap-3 max-w-md mx-auto lg:mx-0">
-            <a href="#courseExplorerSection" class="inline-flex items-center justify-center gap-1.5 bg-white/15 active:bg-white/30 hover:bg-white/25 text-white border border-white/30 px-3 py-2.5 rounded-xl text-xs sm:text-sm font-bold backdrop-blur-sm transition shadow">
-              <i class="fa-solid fa-map-location-dot text-amber-300"></i> 5K Course Map
-            </a>
-            <a href="#regFormSection" class="inline-flex items-center justify-center gap-1.5 bg-pts-accent active:bg-red-800 hover:bg-red-700 text-white px-3 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition shadow">
-              <i class="fa-solid fa-person-running"></i> Register Now
-            </a>
+          <!-- Pre-Race Hero Buttons (Wrapped cleanly so hidden hides it on all screen sizes) -->
+          <div id="heroButtonsPreRace" class="hidden mt-4">
+            <div class="grid grid-cols-2 sm:flex sm:flex-wrap justify-center lg:justify-start gap-2.5 sm:gap-3 max-w-md mx-auto lg:mx-0">
+              <a href="#courseExplorerSection" class="inline-flex items-center justify-center gap-1.5 bg-white/15 active:bg-white/30 hover:bg-white/25 text-white border border-white/30 px-3 py-2.5 rounded-xl text-xs sm:text-sm font-bold backdrop-blur-sm transition shadow">
+                <i class="fa-solid fa-map-location-dot text-amber-300"></i> 5K Course Map
+              </a>
+              <a href="#regFormSection" class="inline-flex items-center justify-center gap-1.5 bg-pts-accent active:bg-red-800 hover:bg-red-700 text-white px-3 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition shadow">
+                <i class="fa-solid fa-person-running"></i> Register Now
+              </a>
+            </div>
           </div>
         </div>
 
@@ -242,84 +263,89 @@
   <!-- ================================================================= -->
   <section class="max-w-6xl mx-auto px-4 sm:px-6 -mt-4 sm:-mt-5 relative z-20 w-full">
     <!-- Race Day Info Bar -->
-    <div id="infoBarRaceDay" class="bg-white rounded-xl shadow-lg border border-gray-100 p-4 sm:p-5 grid grid-cols-2 md:grid-cols-4 gap-4 text-xs sm:text-sm">
-      <div class="flex items-start space-x-2.5 sm:space-x-3">
-        <i class="fa-solid fa-flag-checkered text-pts-accent text-base sm:text-lg mt-0.5 flex-shrink-0"></i>
-        <div>
-          <strong class="block text-gray-900">Start / Finish Area</strong>
-          <span class="text-gray-600">NW Corner, North Embarcadero Marina</span>
+    <div id="infoBarRaceDay">
+      <div class="bg-white rounded-xl shadow-lg border border-gray-100 p-4 sm:p-5 grid grid-cols-2 md:grid-cols-4 gap-4 text-xs sm:text-sm">
+        <div class="flex items-start space-x-2.5 sm:space-x-3">
+          <i class="fa-solid fa-flag-checkered text-pts-accent text-base sm:text-lg mt-0.5 flex-shrink-0"></i>
+          <div>
+            <strong class="block text-gray-900">Start / Finish Area</strong>
+            <span class="text-gray-600">NW Corner, North Embarcadero Marina</span>
+          </div>
         </div>
-      </div>
-      <div class="flex items-start space-x-2.5 sm:space-x-3">
-        <i class="fa-solid fa-clock text-pts-navy text-base sm:text-lg mt-0.5 flex-shrink-0"></i>
-        <div>
-          <strong class="block text-gray-900">Race Schedule</strong>
-          <span class="text-gray-600">Check-in: 6:30–7:15 AM • Start: 7:30 AM</span>
+        <div class="flex items-start space-x-2.5 sm:space-x-3">
+          <i class="fa-solid fa-clock text-pts-navy text-base sm:text-lg mt-0.5 flex-shrink-0"></i>
+          <div>
+            <strong class="block text-gray-900">Race Schedule</strong>
+            <span class="text-gray-600">Check-in: 6:30–7:15 AM • Start: 7:30 AM</span>
+          </div>
         </div>
-      </div>
-      <div class="flex items-start space-x-2.5 sm:space-x-3">
-        <i class="fa-solid fa-hands-clapping text-green-600 text-base sm:text-lg mt-0.5 flex-shrink-0"></i>
-        <div>
-          <strong class="block text-gray-900">Course Guidance</strong>
-          <span class="text-gray-600">Course markings &amp; volunteers along route</span>
+        <div class="flex items-start space-x-2.5 sm:space-x-3">
+          <i class="fa-solid fa-hands-clapping text-green-600 text-base sm:text-lg mt-0.5 flex-shrink-0"></i>
+          <div>
+            <strong class="block text-gray-900">Course Guidance</strong>
+            <span class="text-gray-600">Course markings &amp; volunteers along route</span>
+          </div>
         </div>
-      </div>
-      <div class="flex items-start space-x-2.5 sm:space-x-3 min-w-0">
-        <i class="fa-solid fa-envelope text-pts-navy text-base sm:text-lg mt-0.5 flex-shrink-0"></i>
-        <div class="min-w-0">
-          <strong class="block text-gray-900">Contact Host</strong>
-          <a href="mailto:convention@pts-moves.com" class="text-pts-blue font-medium hover:underline block text-[11px] sm:text-xs lg:text-[13px] whitespace-nowrap">convention@pts-moves.com</a>
+        <div class="flex items-start space-x-2.5 sm:space-x-3 min-w-0">
+          <i class="fa-solid fa-envelope text-pts-navy text-base sm:text-lg mt-0.5 flex-shrink-0"></i>
+          <div class="min-w-0">
+            <strong class="block text-gray-900">Contact Host</strong>
+            <a href="mailto:convention@pts-moves.com" class="text-pts-blue font-medium hover:underline block text-[11px] sm:text-xs lg:text-[13px] whitespace-nowrap">convention@pts-moves.com</a>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- Pre-Race Info Bar (Identical to index.html) -->
-    <div id="infoBarPreRace" class="hidden bg-white rounded-xl shadow-lg border border-gray-100 p-4 sm:p-5 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-5 gap-3.5 sm:gap-4 text-xs sm:text-sm">
-      <div class="flex items-start space-x-2.5 sm:space-x-3 col-span-1">
-        <i class="fa-solid fa-calendar-day text-pts-navy text-base sm:text-lg mt-0.5 flex-shrink-0"></i>
-        <div>
-          <strong class="block text-gray-900">Date</strong>
-          <span class="text-gray-600">Friday, 23 Oct 2026</span>
-          
-          <div class="relative mt-1.5">
-            <button type="button" onclick="toggleCalDropdown()" class="text-[11px] bg-pts-light hover:bg-blue-100 text-pts-navy font-semibold px-2 py-1 rounded border border-blue-200 flex items-center gap-1 transition">
-              <i class="fa-regular fa-calendar-plus"></i> Add Calendar
-            </button>
-            <div id="calMenu" class="hidden absolute top-8 left-0 bg-white border border-gray-200 rounded-lg shadow-xl z-30 py-1.5 w-44 text-xs">
-              <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=IAM+%26+PARAMOUNT+Charity+5K+Fun+Run%2FWalk&dates=20261023T133000Z/20261023T160000Z&details=IAM+%26+Paramount+Charity+5K+Fun+Run%2FWalk.+Check-in+starts+at+6%3A30+AM.+Race+starts+at+7%3A30+AM.&location=Hyatt+Hotel" target="_blank" class="block px-3 py-2 hover:bg-blue-50 text-gray-700 flex items-center gap-2"><i class="fa-brands fa-google text-blue-500"></i> Google Calendar</a>
-              <a href="javascript:downloadICS()" class="block px-3 py-2 hover:bg-blue-50 text-gray-700 flex items-center gap-2"><i class="fa-brands fa-apple text-gray-800"></i> Apple / Outlook (.ics)</a>
+    <!-- Pre-Race Info Bar (With Updated Shirt & Bib Pick Up Details) -->
+    <div id="infoBarPreRace" class="hidden">
+      <div class="bg-white rounded-xl shadow-lg border border-gray-100 p-4 sm:p-5 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-5 gap-3.5 sm:gap-4 text-xs sm:text-sm">
+        <div class="flex items-start space-x-2.5 sm:space-x-3 col-span-1">
+          <i class="fa-solid fa-calendar-day text-pts-navy text-base sm:text-lg mt-0.5 flex-shrink-0"></i>
+          <div>
+            <strong class="block text-gray-900">Date</strong>
+            <span class="text-gray-600">Friday, 23 Oct 2026</span>
+            
+            <div class="relative mt-1.5">
+              <button type="button" onclick="toggleCalDropdown()" class="text-[11px] bg-pts-light hover:bg-blue-100 text-pts-navy font-semibold px-2 py-1 rounded border border-blue-200 flex items-center gap-1 transition">
+                <i class="fa-regular fa-calendar-plus"></i> Add Calendar
+              </button>
+              <div id="calMenu" class="hidden absolute top-8 left-0 bg-white border border-gray-200 rounded-lg shadow-xl z-30 py-1.5 w-44 text-xs">
+                <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=IAM+%26+PARAMOUNT+Charity+5K+Fun+Run%2FWalk&dates=20261023T133000Z/20261023T160000Z&details=IAM+%26+Paramount+Charity+5K+Fun+Run%2FWalk.+Check-in+starts+at+6%3A30+AM.+Race+starts+at+7%3A30+AM.&location=Manchester+Grand+Hyatt+Hotel" target="_blank" class="block px-3 py-2 hover:bg-blue-50 text-gray-700 flex items-center gap-2"><i class="fa-brands fa-google text-blue-500"></i> Google Calendar</a>
+                <a href="javascript:downloadICS()" class="block px-3 py-2 hover:bg-blue-50 text-gray-700 flex items-center gap-2"><i class="fa-brands fa-apple text-gray-800"></i> Apple / Outlook (.ics)</a>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="flex items-start space-x-2.5 sm:space-x-3 col-span-1">
-        <i class="fa-solid fa-clock text-pts-navy text-base sm:text-lg mt-0.5 flex-shrink-0"></i>
-        <div>
-          <strong class="block text-gray-900">Times</strong>
-          <span class="text-gray-600">Check-in: 6:30–7:15 AM</span><br>
-          <span class="text-gray-600">Start: 7:30 AM</span>
+        <div class="flex items-start space-x-2.5 sm:space-x-3 col-span-1">
+          <i class="fa-solid fa-clock text-pts-navy text-base sm:text-lg mt-0.5 flex-shrink-0"></i>
+          <div>
+            <strong class="block text-gray-900">Times</strong>
+            <span class="text-gray-600">Check-in: 6:30–7:15 AM</span><br>
+            <span class="text-gray-600">Start: 7:30 AM</span>
+          </div>
         </div>
-      </div>
-      <div class="flex items-start space-x-2.5 sm:space-x-3 col-span-2 sm:col-span-1">
-        <i class="fa-solid fa-shirt text-pts-navy text-base sm:text-lg mt-0.5 flex-shrink-0"></i>
-        <div>
-          <strong class="block text-gray-900">Shirt &amp; Bib Pick Up</strong>
-          <span class="text-gray-600 block">Wednesday, 21 Oct &amp; Thursday, 22 Oct</span>
-          <span class="text-gray-500 text-[11px] block mt-0.5">(Booth Time &amp; location @ Hyatt are TBA)</span>
+        <div class="flex items-start space-x-2.5 sm:space-x-3 col-span-2 sm:col-span-1">
+          <i class="fa-solid fa-shirt text-pts-navy text-base sm:text-lg mt-0.5 flex-shrink-0"></i>
+          <div>
+            <strong class="block text-gray-900">Shirt &amp; Bib Pick Up</strong>
+            <span class="text-gray-600 block leading-snug">Wednesday, 21 October 7AM-7PM</span>
+            <span class="text-gray-600 block leading-snug">Thursday, 23 October 7AM-5PM</span>
+            <span class="text-gray-500 text-[11px] block mt-0.5 leading-snug">@ Paramount’s Table in the<br>Seaport Foyer,<br>Manchester Grand Hyatt Hotel<br>(Next to the IAM registration desks!)</span>
+          </div>
         </div>
-      </div>
-      <div class="flex items-start space-x-2.5 sm:space-x-3 col-span-1">
-        <i class="fa-solid fa-circle-check text-green-600 text-base sm:text-lg mt-0.5 flex-shrink-0"></i>
-        <div>
-          <strong class="block text-gray-900">Registration Status</strong>
-          <span class="text-green-700 font-semibold">Open Until Further Notice</span>
+        <div class="flex items-start space-x-2.5 sm:space-x-3 col-span-1">
+          <i class="fa-solid fa-circle-check text-green-600 text-base sm:text-lg mt-0.5 flex-shrink-0"></i>
+          <div>
+            <strong class="block text-gray-900">Registration Status</strong>
+            <span class="text-green-700 font-semibold">Open Until Further Notice</span>
+          </div>
         </div>
-      </div>
-      <div class="flex items-start space-x-2.5 sm:space-x-3 col-span-1 min-w-0">
-        <i class="fa-solid fa-envelope text-pts-navy text-base sm:text-lg mt-0.5 flex-shrink-0"></i>
-        <div class="min-w-0">
-          <strong class="block text-gray-900">Contact Host</strong>
-          <a href="mailto:convention@pts-moves.com" class="text-pts-blue font-medium hover:underline block text-[11px] sm:text-xs lg:text-[13px] whitespace-nowrap">convention@pts-moves.com</a>
+        <div class="flex items-start space-x-2.5 sm:space-x-3 col-span-1 min-w-0">
+          <i class="fa-solid fa-envelope text-pts-navy text-base sm:text-lg mt-0.5 flex-shrink-0"></i>
+          <div class="min-w-0">
+            <strong class="block text-gray-900">Contact Host</strong>
+            <a href="mailto:convention@pts-moves.com" class="text-pts-blue font-medium hover:underline block text-[11px] sm:text-xs lg:text-[13px] whitespace-nowrap">convention@pts-moves.com</a>
+          </div>
         </div>
       </div>
     </div>
@@ -364,18 +390,20 @@
             <span id="trackerAuthMsg" class="text-[11px] text-blue-200 mt-1.5 block">Links your run &amp; finisher card to the participant list.</span>
           </div>
 
-          <div id="verifiedState" class="hidden flex items-center justify-between gap-3">
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-xl bg-green-500/20 border border-green-400/40 flex items-center justify-center text-green-300 text-lg font-black">
-                <i class="fa-solid fa-user-check"></i>
+          <div id="verifiedState" class="hidden">
+            <div class="flex items-center justify-between gap-3">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-green-500/20 border border-green-400/40 flex items-center justify-center text-green-300 text-lg font-black">
+                  <i class="fa-solid fa-user-check"></i>
+                </div>
+                <div>
+                  <span class="text-[10px] uppercase font-bold text-green-300 block">Confirmed Participant</span>
+                  <strong id="verifiedRunnerName" class="text-sm sm:text-base font-black text-white block leading-tight"></strong>
+                  <span id="verifiedRunnerCompany" class="text-xs text-blue-200 block"></span>
+                </div>
               </div>
-              <div>
-                <span class="text-[10px] uppercase font-bold text-green-300 block">Confirmed Participant</span>
-                <strong id="verifiedRunnerName" class="text-sm sm:text-base font-black text-white block leading-tight"></strong>
-                <span id="verifiedRunnerCompany" class="text-xs text-blue-200 block"></span>
-              </div>
+              <button type="button" onclick="resetParticipantProfile()" class="text-xs text-blue-200 hover:text-white underline font-semibold">Change</button>
             </div>
-            <button type="button" onclick="resetParticipantProfile()" class="text-xs text-blue-200 hover:text-white underline font-semibold">Change</button>
           </div>
         </div>
       </div>
@@ -420,7 +448,7 @@
             </div>
             <h3 class="text-base sm:text-lg font-extrabold">3. Finisher Social Card Studio</h3>
             <p class="text-xs text-blue-100 mt-1 leading-relaxed">
-              Already finished or tracked on your watch? Take a selfie or upload a photo to generate 1 of 3 custom social media bragging cards!
+              Take a selfie or upload a photo to generate 1 of 4 custom social media cards (including a metrics-free participation design)!
             </p>
           </div>
           <button type="button" onclick="openFinisherStudioModal()" class="mt-4 w-full bg-white hover:bg-blue-50 text-pts-navy font-black py-3.5 px-4 rounded-xl shadow-lg transition text-sm flex items-center justify-center gap-2">
@@ -690,7 +718,6 @@
 
   <!-- ================================================================= -->
   <!-- COMPLETE PRE-RACE REGISTRATION FORM SECTION                       -->
-  <!-- 100% Identical to index.html when Pre-Race Mode is selected       -->
   <!-- ================================================================= -->
   <main id="regFormSection" class="hidden max-w-4xl mx-auto px-4 sm:px-6 py-5 sm:py-6 w-full flex-grow">
     <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
@@ -1183,7 +1210,7 @@
   </main>
 
   <!-- ================================================================= -->
-  <!-- POST-RACE FINISHER SOCIAL CARD STUDIO MODAL (3 STUNNING DESIGNS)  -->
+  <!-- POST-RACE FINISHER SOCIAL CARD STUDIO MODAL (4 MODERN DESIGNS)    -->
   <!-- ================================================================= -->
   <div id="finisherStudioModal" class="fixed inset-0 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-2 sm:p-4 z-50 overflow-y-auto">
     <div class="bg-white rounded-3xl max-w-5xl w-full max-h-[95vh] flex flex-col shadow-2xl overflow-hidden my-auto">
@@ -1195,7 +1222,7 @@
           </span>
           <div>
             <h3 class="text-base sm:text-xl font-black leading-tight">Official 5K Finisher Social Card Studio</h3>
-            <p class="text-[11px] sm:text-xs text-blue-200">Take a selfie or upload a photo • 3 custom designs • Ready for Instagram, LinkedIn &amp; WhatsApp</p>
+            <p class="text-[11px] sm:text-xs text-blue-200">Drag &amp; pinch photo directly on card • 4 modern designs (including metrics-free option)</p>
           </div>
         </div>
         <button type="button" onclick="toggleModal('finisherStudioModal')" class="text-white/80 hover:text-white text-2xl p-1">
@@ -1205,41 +1232,58 @@
 
       <div class="p-4 sm:p-6 overflow-y-auto grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         
-        <div class="lg:col-span-7 flex flex-col items-center bg-gray-900 rounded-2xl p-4 sm:p-6 border border-gray-800 shadow-inner">
-          <div class="w-full flex items-center justify-between mb-3 text-xs text-gray-300">
-            <span class="font-bold flex items-center gap-1.5">
+        <!-- Left Column: Interactive Touch Canvas Preview -->
+        <div class="lg:col-span-7 flex flex-col items-center bg-gray-950 rounded-2xl p-4 sm:p-5 border border-gray-800 shadow-inner">
+          <div class="w-full flex items-center justify-between mb-2.5 text-xs text-gray-300">
+            <span class="font-bold flex items-center gap-1.5 truncate">
               <i class="fa-solid fa-wand-magic-sparkles text-amber-400"></i>
-              <span id="activeDesignTitle">Design 1: Bayfront Championship Gold</span>
+              <span id="activeDesignTitle" class="truncate">Design 1: Executive Gold Crest</span>
             </span>
-            <button type="button" onclick="randomizeFinisherDesign()" class="bg-white/15 hover:bg-white/25 text-amber-300 font-bold px-3 py-1 rounded-lg transition flex items-center gap-1.5 text-xs">
+            <button type="button" onclick="randomizeFinisherDesign()" class="bg-white/15 hover:bg-white/25 text-amber-300 font-bold px-3 py-1 rounded-lg transition flex items-center gap-1.5 text-xs flex-shrink-0">
               <i class="fa-solid fa-shuffle"></i> Shuffle Design
             </button>
           </div>
 
-          <div class="w-full max-w-[380px] rounded-2xl overflow-hidden shadow-2xl border-2 border-white/15 bg-pts-navy">
-            <canvas id="finisherCanvas" width="1080" height="1350" class="w-full h-auto block"></canvas>
+          <!-- Touch Gesture Hint Pill -->
+          <div class="mb-2.5 bg-white/10 text-blue-200 px-3 py-1 rounded-full text-[11px] font-medium flex items-center gap-2 border border-white/10">
+            <i class="fa-solid fa-hand-pointer text-amber-300"></i>
+            <span>Drag photo with 1 finger to move • Pinch with 2 fingers to zoom</span>
           </div>
 
-          <div class="mt-4 grid grid-cols-3 gap-2 w-full max-w-[380px]">
-            <button type="button" id="designBtn0" onclick="selectFinisherDesign(0)" class="py-2 px-2 rounded-xl text-xs font-bold border transition bg-amber-400 text-pts-navy border-amber-400 shadow">
-              1. Gold Crest
+          <div class="w-full max-w-[370px] rounded-2xl overflow-hidden shadow-2xl border-2 border-white/15 bg-pts-navy relative">
+            <canvas id="finisherCanvas" width="1080" height="1350" class="w-full h-auto block cursor-grab active:cursor-grabbing"></canvas>
+          </div>
+
+          <!-- 4 Design Switcher Pills -->
+          <div class="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-2 w-full max-w-[420px]">
+            <button type="button" id="designBtn0" onclick="selectFinisherDesign(0)" class="py-2 px-2 rounded-xl text-[11px] font-bold border transition bg-amber-400 text-pts-navy border-amber-400 shadow">
+              1. Executive Gold
             </button>
-            <button type="button" id="designBtn1" onclick="selectFinisherDesign(1)" class="py-2 px-2 rounded-xl text-xs font-bold border transition bg-white/10 text-white border-white/20 hover:bg-white/20">
-              2. Glass Pro
+            <button type="button" id="designBtn1" onclick="selectFinisherDesign(1)" class="py-2 px-2 rounded-xl text-[11px] font-bold border transition bg-white/10 text-white border-white/20 hover:bg-white/20">
+              2. Magazine Cover
             </button>
-            <button type="button" id="designBtn2" onclick="selectFinisherDesign(2)" class="py-2 px-2 rounded-xl text-xs font-bold border transition bg-white/10 text-white border-white/20 hover:bg-white/20">
-              3. VIP Bib Card
+            <button type="button" id="designBtn2" onclick="selectFinisherDesign(2)" class="py-2 px-2 rounded-xl text-[11px] font-bold border transition bg-white/10 text-white border-white/20 hover:bg-white/20">
+              3. Swiss Bento
+            </button>
+            <button type="button" id="designBtn3" onclick="selectFinisherDesign(3)" class="py-2 px-2 rounded-xl text-[11px] font-bold border transition bg-white/10 text-white border-white/20 hover:bg-white/20">
+              4. No Metrics
             </button>
           </div>
         </div>
 
-        <div class="lg:col-span-5 space-y-5">
+        <!-- Right Column: Controls -->
+        <div class="lg:col-span-5 space-y-4">
           
+          <!-- Step 1: Photo Upload & Touch Framing -->
           <div class="bg-pts-light p-4 rounded-2xl border border-blue-200 space-y-3">
-            <h4 class="text-xs sm:text-sm font-black uppercase tracking-wider text-pts-navy flex items-center gap-2">
-              <i class="fa-solid fa-camera text-pts-accent"></i> 1. Add Your Finisher Photo
-            </h4>
-            <p class="text-xs text-gray-600">Snap a finish-line selfie with your phone camera or choose a photo from your library:</p>
+            <div class="flex items-center justify-between">
+              <h4 class="text-xs sm:text-sm font-black uppercase tracking-wider text-pts-navy flex items-center gap-2">
+                <i class="fa-solid fa-camera text-pts-accent"></i> 1. Add Your Finisher Photo
+              </h4>
+              <button type="button" id="resetPhotoFitBtn" onclick="resetPhotoTransform()" class="hidden text-[11px] bg-white hover:bg-gray-100 text-pts-navy font-bold px-2.5 py-1 rounded-lg border border-blue-300 shadow-sm transition">
+                <i class="fa-solid fa-arrows-to-circle mr-1"></i> Reset Fit
+              </button>
+            </div>
             
             <div class="grid grid-cols-2 gap-2.5">
               <label class="cursor-pointer bg-pts-navy hover:bg-pts-blue text-white font-bold py-3 px-3 rounded-xl text-xs shadow transition flex items-center justify-center gap-2 text-center">
@@ -1253,49 +1297,56 @@
             </div>
 
             <div id="photoAdjustControls" class="hidden pt-2 border-t border-blue-200/80 space-y-2 text-xs">
-              <div class="flex items-center justify-between">
-                <span class="font-semibold text-gray-700">Photo Zoom</span>
-                <input type="range" id="photoZoomSlider" min="0.8" max="2.5" step="0.05" value="1" oninput="renderFinisherCanvas()" class="w-36 accent-pts-navy">
+              <div class="flex items-center justify-between gap-3">
+                <span class="font-semibold text-gray-700 whitespace-nowrap"><i class="fa-solid fa-magnifying-glass-plus mr-1 text-pts-blue"></i> Zoom</span>
+                <input type="range" id="photoZoomSlider" min="0.6" max="3.0" step="0.02" value="1" oninput="onSliderTransformChange()" class="w-full accent-pts-navy">
               </div>
-              <div class="flex items-center justify-between">
-                <span class="font-semibold text-gray-700">Vertical Position</span>
-                <input type="range" id="photoPanYSlider" min="-300" max="300" step="5" value="0" oninput="renderFinisherCanvas()" class="w-36 accent-pts-navy">
-              </div>
-              <div class="flex items-center justify-between">
-                <span class="font-semibold text-gray-700">Horizontal Position</span>
-                <input type="range" id="photoPanXSlider" min="-300" max="300" step="5" value="0" oninput="renderFinisherCanvas()" class="w-36 accent-pts-navy">
-              </div>
+              <p class="text-[11px] text-pts-blue font-medium">
+                <i class="fa-solid fa-hand-Sparkles mr-1"></i> Tip: Drag your photo directly on the card preview with your finger to position it!
+              </p>
             </div>
           </div>
 
+          <!-- Step 2: Participant & Performance Details -->
           <div class="bg-gray-50 p-4 rounded-2xl border border-gray-200 space-y-3">
-            <h4 class="text-xs sm:text-sm font-black uppercase tracking-wider text-pts-navy flex items-center gap-2">
-              <i class="fa-solid fa-sliders text-pts-blue"></i> 2. Participant &amp; Performance Details
-            </h4>
+            <div class="flex items-center justify-between">
+              <h4 class="text-xs sm:text-sm font-black uppercase tracking-wider text-pts-navy flex items-center gap-2">
+                <i class="fa-solid fa-sliders text-pts-blue"></i> 2. Card Details
+              </h4>
+              <button type="button" onclick="selectFinisherDesign(3)" id="quickNoMetricsToggle" class="text-[11px] text-pts-blue font-bold hover:underline">
+                Prefer no time/pace? Use Design 4
+              </button>
+            </div>
+
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
               <div class="sm:col-span-2">
                 <label class="font-bold text-gray-700 block mb-1">Participant Name</label>
-                <input type="text" id="cardRunnerName" value="Alex Finisher" oninput="renderFinisherCanvas()" class="w-full rounded-lg border border-gray-300 p-2 text-sm font-bold text-pts-navy">
+                <input type="text" id="cardRunnerName" value="Alex Finisher" oninput="renderFinisherCanvas()" class="w-full rounded-lg border border-gray-300 p-2.5 text-sm font-bold text-pts-navy">
               </div>
               <div>
                 <label class="font-bold text-gray-700 block mb-1">Company / Team</label>
-                <input type="text" id="cardRunnerCompany" value="Paramount & IAM" oninput="renderFinisherCanvas()" class="w-full rounded-lg border border-gray-300 p-2 text-sm">
+                <input type="text" id="cardRunnerCompany" value="Paramount & IAM" oninput="renderFinisherCanvas()" class="w-full rounded-lg border border-gray-300 p-2.5 text-sm">
               </div>
               <div>
                 <label class="font-bold text-gray-700 block mb-1">Bib / Reg ID</label>
-                <input type="text" id="cardRunnerBib" value="PTS-2026" oninput="renderFinisherCanvas()" class="w-full rounded-lg border border-gray-300 p-2 text-sm font-mono">
+                <input type="text" id="cardRunnerBib" value="PTS-2026" oninput="renderFinisherCanvas()" class="w-full rounded-lg border border-gray-300 p-2.5 text-sm font-mono">
               </div>
-              <div>
+              <div id="metricInputTimeWrap">
                 <label class="font-bold text-gray-700 block mb-1">Finish Time</label>
-                <input type="text" id="cardRunnerTime" value="27:42" oninput="renderFinisherCanvas()" class="w-full rounded-lg border border-gray-300 p-2 text-sm font-mono font-bold">
+                <input type="text" id="cardRunnerTime" value="27:42" oninput="renderFinisherCanvas()" class="w-full rounded-lg border border-gray-300 p-2.5 text-sm font-mono font-bold">
               </div>
-              <div>
+              <div id="metricInputPaceWrap">
                 <label class="font-bold text-gray-700 block mb-1">Avg Pace</label>
-                <input type="text" id="cardRunnerPace" value="8'46&quot; /mi" oninput="renderFinisherCanvas()" class="w-full rounded-lg border border-gray-300 p-2 text-sm font-mono font-bold">
+                <input type="text" id="cardRunnerPace" value="8'46&quot; /mi" oninput="renderFinisherCanvas()" class="w-full rounded-lg border border-gray-300 p-2.5 text-sm font-mono font-bold">
+              </div>
+              <div id="noMetricsNotice" class="hidden sm:col-span-2 bg-emerald-50 border border-emerald-200 text-emerald-800 px-3 py-2 rounded-xl text-[11px] font-semibold flex items-center gap-2">
+                <i class="fa-solid fa-circle-check text-emerald-600"></i>
+                <span>Metrics-Free Card Active: Time &amp; Pace are hidden so you can share your photo &amp; participation!</span>
               </div>
             </div>
           </div>
 
+          <!-- Step 3: Share or Download -->
           <div class="space-y-2.5">
             <button type="button" onclick="shareFinisherCard()" class="w-full bg-pts-accent hover:bg-red-700 text-white font-black py-3.5 px-5 rounded-xl shadow-lg transition text-sm flex items-center justify-center gap-2">
               <i class="fa-solid fa-share-nodes"></i> Share to Social Media / Save to Phone
@@ -1393,7 +1444,7 @@
         <p><strong>Race Date:</strong> Friday, 23 October 2026</p>
         <p><strong>Check-In:</strong> 6:30 AM – 7:15 AM | <strong>Start:</strong> 7:30 AM</p>
         <p><strong>START/FINISH:</strong> Northwest corner of the North Embarcadero Marina</p>
-        <p><strong>Packet Pick Up:</strong> Oct 21 &amp; 22 @ Hyatt Hotel</p>
+        <p><strong>Shirt &amp; Bib Pick Up:</strong> Wednesday, 21 October 7AM-7PM &amp; Thursday, 23 October 7AM-5PM @ Paramount’s Table in the Seaport Foyer, Manchester Grand Hyatt Hotel (Next to the IAM registration desks!)</p>
         <p class="mt-4 text-[10px] text-gray-400">Present this digital or printed pass at race check-in to collect your bib and T-shirt.</p>
       </div>
     </div>
@@ -1426,7 +1477,7 @@
     }
 
     function downloadICS() {
-      const icsData = "BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nSUMMARY:IAM & PARAMOUNT Charity 5K Fun Run/Walk\nDESCRIPTION:IAM & Paramount Charity 5K Fun Run/Walk Event. Check-in starts at 6:30 AM.\nLOCATION:Hyatt Hotel\nDTSTART:20261023T133000Z\nDTEND:20261023T160000Z\nEND:VEVENT\nEND:VCALENDAR";
+      const icsData = "BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nSUMMARY:IAM & PARAMOUNT Charity 5K Fun Run/Walk\nDESCRIPTION:IAM & Paramount Charity 5K Fun Run/Walk Event. Check-in starts at 6:30 AM.\nLOCATION:Manchester Grand Hyatt Hotel\nDTSTART:20261023T133000Z\nDTEND:20261023T160000Z\nEND:VEVENT\nEND:VCALENDAR";
       const blob = new Blob([icsData], { type: 'text/calendar;charset=utf-8' });
       const link = document.createElement('a');
       link.href = window.URL.createObjectURL(blob);
@@ -1442,7 +1493,7 @@
     function setSitePhaseMode(mode) {
       const isRaceDay = (mode === 'raceday');
 
-      // Toggle Header Elements
+      // Toggle Header & Hero Elements cleanly
       document.getElementById('headerRaceDayBadge').classList.toggle('hidden', !isRaceDay);
       document.getElementById('headerPreRaceCountdown').classList.toggle('hidden', isRaceDay);
       document.getElementById('headerRaceDayActions').classList.toggle('hidden', !isRaceDay);
@@ -1455,12 +1506,11 @@
       document.getElementById('infoBarPreRace').classList.toggle('hidden', isRaceDay);
       document.getElementById('lateRegBanner').classList.toggle('hidden', isRaceDay);
 
-      // Toggle Main Sections (Hide $75 Registration Form on Race Day, Show Full Form on Pre-Race!)
+      // Toggle Main Sections
       document.getElementById('raceHubSection').classList.toggle('hidden', !isRaceDay);
       document.getElementById('raceDayDonationBanner').classList.toggle('hidden', !isRaceDay);
       document.getElementById('regFormSection').classList.toggle('hidden', isRaceDay);
 
-      // Update Demo Switcher Bar Styling
       const btnRace = document.getElementById('btnModeRaceDay');
       const btnPre = document.getElementById('btnModePreRace');
       const desc = document.getElementById('demoModeDescription');
@@ -1856,7 +1906,7 @@
     }
 
     // =========================================================================
-    // FINISHER SOCIAL MEDIA CARD STUDIO (3 DESIGNS + PHOTO + ALL 4 LOGOS)
+    // FINISHER SOCIAL MEDIA CARD STUDIO (4 MODERN DESIGNS + TOUCH GESTURES)
     // =========================================================================
     const LOGO_SOURCES = {
       iam: 'IAM_logo(1500px).png',
@@ -1869,19 +1919,25 @@
       const img = new Image();
       img.crossOrigin = "anonymous";
       img.src = LOGO_SOURCES[key];
-      img.onload = () => { loadedLogos[key] = img; };
+      img.onload = () => { loadedLogos[key] = img; renderFinisherCanvas(); };
     });
 
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(() => renderFinisherCanvas());
+    }
+
     let uploadedUserPhoto = null;
+    let photoState = { zoom: 1, panX: 0, panY: 0 };
     let currentDesignIndex = 0;
     const DESIGN_NAMES = [
-      "Design 1: Bayfront Championship Gold",
-      "Design 2: San Diego Sunrise Glass Pro",
-      "Design 3: 30th Anniversary VIP Bib Card"
+      "Design 1: Executive Gold Crest",
+      "Design 2: San Diego Bay Magazine Cover",
+      "Design 3: Modern Swiss Gallery Grid",
+      "Design 4: Proud Participant (Metrics-Free)"
     ];
 
     function openFinisherStudioModal() {
-      currentDesignIndex = Math.floor(Math.random() * 3);
+      currentDesignIndex = Math.floor(Math.random() * 4);
       updateDesignButtonsUI();
       document.getElementById('finisherStudioModal').classList.remove('hidden');
       renderFinisherCanvas();
@@ -1889,7 +1945,7 @@
     }
 
     function randomizeFinisherDesign() {
-      currentDesignIndex = (currentDesignIndex + 1) % 3;
+      currentDesignIndex = (currentDesignIndex + 1) % 4;
       updateDesignButtonsUI();
       renderFinisherCanvas();
     }
@@ -1902,14 +1958,20 @@
 
     function updateDesignButtonsUI() {
       document.getElementById('activeDesignTitle').innerText = DESIGN_NAMES[currentDesignIndex];
-      [0, 1, 2].forEach(i => {
+      [0, 1, 2, 3].forEach(i => {
         const btn = document.getElementById(`designBtn${i}`);
         if (i === currentDesignIndex) {
-          btn.className = "py-2 px-2 rounded-xl text-xs font-black border transition bg-amber-400 text-pts-navy border-amber-400 shadow";
+          btn.className = "py-2 px-2 rounded-xl text-[11px] font-black border transition bg-amber-400 text-pts-navy border-amber-400 shadow";
         } else {
-          btn.className = "py-2 px-2 rounded-xl text-xs font-bold border transition bg-white/10 text-white border-white/20 hover:bg-white/20";
+          btn.className = "py-2 px-2 rounded-xl text-[11px] font-bold border transition bg-white/10 text-white border-white/20 hover:bg-white/20";
         }
       });
+
+      const isNoMetrics = (currentDesignIndex === 3);
+      document.getElementById('metricInputTimeWrap').classList.toggle('hidden', isNoMetrics);
+      document.getElementById('metricInputPaceWrap').classList.toggle('hidden', isNoMetrics);
+      document.getElementById('noMetricsNotice').classList.toggle('hidden', !isNoMetrics);
+      document.getElementById('quickNoMetricsToggle').classList.toggle('hidden', isNoMetrics);
     }
 
     function handleFinisherPhotoUpload(e) {
@@ -1920,15 +1982,110 @@
         const img = new Image();
         img.onload = function() {
           uploadedUserPhoto = img;
+          resetPhotoTransform();
           document.getElementById('photoAdjustControls').classList.remove('hidden');
-          document.getElementById('photoZoomSlider').value = 1;
-          document.getElementById('photoPanXSlider').value = 0;
-          document.getElementById('photoPanYSlider').value = 0;
-          renderFinisherCanvas();
+          document.getElementById('resetPhotoFitBtn').classList.remove('hidden');
         };
         img.src = evt.target.result;
       };
       reader.readAsDataURL(file);
+    }
+
+    function resetPhotoTransform() {
+      photoState = { zoom: 1, panX: 0, panY: 0 };
+      const slider = document.getElementById('photoZoomSlider');
+      if (slider) slider.value = 1;
+      renderFinisherCanvas();
+    }
+
+    function onSliderTransformChange() {
+      photoState.zoom = parseFloat(document.getElementById('photoZoomSlider').value || 1);
+      renderFinisherCanvas();
+    }
+
+    // --- DIRECT TOUCH (1-FINGER DRAG & 2-FINGER PINCH) & MOUSE GESTURES ON CANVAS ---
+    function initCanvasTouchGestures() {
+      const canvas = document.getElementById('finisherCanvas');
+      if (!canvas) return;
+
+      let isDragging = false;
+      let startX = 0, startY = 0;
+      let initialPinchDist = null;
+      let initialZoom = 1;
+
+      function getCanvasScale() {
+        const rect = canvas.getBoundingClientRect();
+        return rect.width > 0 ? (canvas.width / rect.width) : 2.5;
+      }
+
+      // Mouse Events
+      canvas.addEventListener('mousedown', (e) => {
+        if (!uploadedUserPhoto) return;
+        isDragging = true;
+        startX = e.clientX;
+        startY = e.clientY;
+      });
+      window.addEventListener('mousemove', (e) => {
+        if (!isDragging || !uploadedUserPhoto) return;
+        const scale = getCanvasScale();
+        photoState.panX += (e.clientX - startX) * scale;
+        photoState.panY += (e.clientY - startY) * scale;
+        startX = e.clientX;
+        startY = e.clientY;
+        renderFinisherCanvas();
+      });
+      window.addEventListener('mouseup', () => { isDragging = false; });
+
+      canvas.addEventListener('wheel', (e) => {
+        if (!uploadedUserPhoto) return;
+        e.preventDefault();
+        const delta = e.deltaY < 0 ? 0.06 : -0.06;
+        photoState.zoom = Math.min(3.0, Math.max(0.6, photoState.zoom + delta));
+        document.getElementById('photoZoomSlider').value = photoState.zoom;
+        renderFinisherCanvas();
+      }, { passive: false });
+
+      // Touch Events (1-finger pan, 2-finger pinch zoom)
+      canvas.addEventListener('touchstart', (e) => {
+        if (!uploadedUserPhoto) return;
+        if (e.touches.length === 1) {
+          isDragging = true;
+          startX = e.touches[0].clientX;
+          startY = e.touches[0].clientY;
+        } else if (e.touches.length === 2) {
+          isDragging = false;
+          const dx = e.touches[0].clientX - e.touches[1].clientX;
+          const dy = e.touches[0].clientY - e.touches[1].clientY;
+          initialPinchDist = Math.hypot(dx, dy);
+          initialZoom = photoState.zoom;
+        }
+      }, { passive: false });
+
+      canvas.addEventListener('touchmove', (e) => {
+        if (!uploadedUserPhoto) return;
+        e.preventDefault();
+        if (e.touches.length === 1 && isDragging) {
+          const scale = getCanvasScale();
+          photoState.panX += (e.touches[0].clientX - startX) * scale;
+          photoState.panY += (e.touches[0].clientY - startY) * scale;
+          startX = e.touches[0].clientX;
+          startY = e.touches[0].clientY;
+          renderFinisherCanvas();
+        } else if (e.touches.length === 2 && initialPinchDist) {
+          const dx = e.touches[0].clientX - e.touches[1].clientX;
+          const dy = e.touches[0].clientY - e.touches[1].clientY;
+          const dist = Math.hypot(dx, dy);
+          const ratio = dist / initialPinchDist;
+          photoState.zoom = Math.min(3.0, Math.max(0.6, initialZoom * ratio));
+          document.getElementById('photoZoomSlider').value = photoState.zoom;
+          renderFinisherCanvas();
+        }
+      }, { passive: false });
+
+      canvas.addEventListener('touchend', (e) => {
+        if (e.touches.length < 2) initialPinchDist = null;
+        if (e.touches.length === 0) isDragging = false;
+      });
     }
 
     function drawRoundedRect(ctx, x, y, w, h, r) {
@@ -1947,9 +2104,9 @@
       ctx.clip();
 
       if (uploadedUserPhoto) {
-        const zoom = parseFloat(document.getElementById('photoZoomSlider').value || 1);
-        const panX = parseFloat(document.getElementById('photoPanXSlider').value || 0);
-        const panY = parseFloat(document.getElementById('photoPanYSlider').value || 0);
+        const zoom = photoState.zoom;
+        const panX = photoState.panX;
+        const panY = photoState.panY;
 
         const imgRatio = uploadedUserPhoto.width / uploadedUserPhoto.height;
         const boxRatio = w / h;
@@ -1965,25 +2122,37 @@
         const drawY = y + (h - drawH) / 2 + panY;
         ctx.drawImage(uploadedUserPhoto, drawX, drawY, drawW, drawH);
       } else {
+        // Modern editorial placeholder with subtle San Diego Bay wave motif
         const grad = ctx.createLinearGradient(x, y, x + w, y + h);
-        grad.addColorStop(0, '#004B8D');
-        grad.addColorStop(0.5, '#002855');
-        grad.addColorStop(1, '#001833');
+        grad.addColorStop(0, '#0B2545');
+        grad.addColorStop(0.5, '#134074');
+        grad.addColorStop(1, '#07162C');
         ctx.fillStyle = grad;
         ctx.fillRect(x, y, w, h);
 
-        ctx.fillStyle = 'rgba(251, 191, 36, 0.18)';
+        // Glowing subtle ambient orb
+        const radGrad = ctx.createRadialGradient(x + w * 0.5, y + h * 0.42, 10, x + w * 0.5, y + h * 0.42, 260);
+        radGrad.addColorStop(0, 'rgba(245, 158, 11, 0.25)');
+        radGrad.addColorStop(1, 'rgba(245, 158, 11, 0)');
+        ctx.fillStyle = radGrad;
+        ctx.fillRect(x, y, w, h);
+
+        // Camera icon circle
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.08)';
         ctx.beginPath();
-        ctx.arc(x + w * 0.5, y + h * 0.42, 140, 0, Math.PI * 2);
+        ctx.arc(x + w / 2, y + h / 2 - 45, 58, 0, Math.PI * 2);
         ctx.fill();
+        ctx.strokeStyle = 'rgba(251, 191, 36, 0.45)';
+        ctx.lineWidth = 2;
+        ctx.stroke();
 
         ctx.fillStyle = '#FBBF24';
-        ctx.font = '900 34px sans-serif';
+        ctx.font = '800 28px "Outfit", sans-serif';
         ctx.textAlign = 'center';
-        ctx.fillText('TAP "TAKE SELFIE" OR "UPLOAD PHOTO"', x + w / 2, y + h / 2 - 10);
+        ctx.fillText('ADD YOUR FINISHER PHOTO', x + w / 2, y + h / 2 + 45);
         ctx.fillStyle = '#93C5FD';
-        ctx.font = '600 26px sans-serif';
-        ctx.fillText('Your Finisher Photo Appears Right Here!', x + w / 2, y + h / 2 + 35);
+        ctx.font = '500 21px "Inter", sans-serif';
+        ctx.fillText('Tap "Take Selfie" or "Upload Photo" — then drag or pinch to fit', x + w / 2, y + h / 2 + 82);
       }
       ctx.restore();
     }
@@ -2002,7 +2171,7 @@
       ctx.shadowColor = glowColor;
       ctx.shadowBlur = 14;
       ctx.strokeStyle = strokeColor;
-      ctx.lineWidth = 7;
+      ctx.lineWidth = 6.5;
       ctx.lineCap = 'round';
       ctx.lineJoin = 'round';
       ctx.beginPath();
@@ -2022,18 +2191,18 @@
       const sy = boxY + pad + (1 - (startPt[0] - minLat) / (maxLat - minLat)) * usableH;
       ctx.shadowBlur = 0;
       ctx.fillStyle = '#22C55E';
-      ctx.beginPath(); ctx.arc(sx - 5, sy, 8, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.arc(sx - 5, sy, 7, 0, Math.PI * 2); ctx.fill();
       ctx.fillStyle = '#E31837';
-      ctx.beginPath(); ctx.arc(sx + 5, sy, 8, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.arc(sx + 5, sy, 7, 0, Math.PI * 2); ctx.fill();
       ctx.restore();
     }
 
     function drawAllFourLogosBar(ctx, x, y, w, h) {
       ctx.save();
-      drawRoundedRect(ctx, x, y, w, h, 28);
+      drawRoundedRect(ctx, x, y, w, h, 26);
       ctx.fillStyle = '#FFFFFF';
-      ctx.shadowColor = 'rgba(0,0,0,0.22)';
-      ctx.shadowBlur = 20;
+      ctx.shadowColor = 'rgba(0, 15, 35, 0.25)';
+      ctx.shadowBlur = 24;
       ctx.fill();
       ctx.shadowBlur = 0;
 
@@ -2045,25 +2214,25 @@
         const slotX = x + i * slotW;
         if (i > 0) {
           ctx.strokeStyle = '#E2E8F0';
-          ctx.lineWidth = 2;
+          ctx.lineWidth = 1.5;
           ctx.beginPath();
-          ctx.moveTo(slotX, y + 24);
-          ctx.lineTo(slotX, y + h - 24);
+          ctx.moveTo(slotX, y + 26);
+          ctx.lineTo(slotX, y + h - 26);
           ctx.stroke();
         }
         const img = loadedLogos[key];
         if (img && img.complete && img.naturalWidth > 0) {
-          const maxW = slotW - 36;
-          const maxH = h - 28;
+          const maxW = slotW - 40;
+          const maxH = h - 30;
           const ratio = Math.min(maxW / img.naturalWidth, maxH / img.naturalHeight);
           const dw = img.naturalWidth * ratio;
           const dh = img.naturalHeight * ratio;
           ctx.drawImage(img, slotX + (slotW - dw) / 2, y + (h - dh) / 2, dw, dh);
         } else {
           ctx.fillStyle = '#003366';
-          ctx.font = '900 20px sans-serif';
+          ctx.font = '800 18px "Outfit", sans-serif';
           ctx.textAlign = 'center';
-          ctx.fillText(fallbackLabels[i], slotX + slotW / 2, y + h / 2 + 7);
+          ctx.fillText(fallbackLabels[i], slotX + slotW / 2, y + h / 2 + 6);
         }
       });
       ctx.restore();
@@ -2073,7 +2242,8 @@
       const canvas = document.getElementById('finisherCanvas');
       if (!canvas) return;
       const ctx = canvas.getContext('2d');
-      const W = canvas.width, H = canvas.height;
+      const W = canvas.width;   // 1080
+      const H = canvas.height;  // 1350
 
       const runnerName = (document.getElementById('cardRunnerName').value || 'OFFICIAL FINISHER').toUpperCase();
       const runnerCompany = (document.getElementById('cardRunnerCompany').value || 'IAM & PARAMOUNT 5K').toUpperCase();
@@ -2084,237 +2254,343 @@
       ctx.clearRect(0, 0, W, H);
 
       if (currentDesignIndex === 0) {
+        // =====================================================================
+        // DESIGN 1: EXECUTIVE GOLD CREST (LUXURY ATHLETIC EDITORIAL)
+        // =====================================================================
         const bgGrad = ctx.createLinearGradient(0, 0, W, H);
-        bgGrad.addColorStop(0, '#001F42');
-        bgGrad.addColorStop(0.5, '#003366');
-        bgGrad.addColorStop(1, '#00152B');
+        bgGrad.addColorStop(0, '#040D1A');
+        bgGrad.addColorStop(0.45, '#0A2246');
+        bgGrad.addColorStop(1, '#030914');
         ctx.fillStyle = bgGrad;
         ctx.fillRect(0, 0, W, H);
 
-        ctx.fillStyle = 'rgba(227, 24, 55, 0.18)';
-        ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(460, 0); ctx.lineTo(0, 460); ctx.closePath(); ctx.fill();
-        ctx.fillStyle = 'rgba(251, 191, 36, 0.14)';
-        ctx.beginPath(); ctx.moveTo(W, H); ctx.lineTo(W - 520, H); ctx.lineTo(W, H - 520); ctx.closePath(); ctx.fill();
+        // Subtle architectural gold hairline frame
+        ctx.strokeStyle = 'rgba(212, 175, 55, 0.35)';
+        ctx.lineWidth = 2;
+        drawRoundedRect(ctx, 34, 34, W - 68, H - 68, 36);
+        ctx.stroke();
 
-        ctx.fillStyle = '#FBBF24';
-        drawRoundedRect(ctx, 60, 45, W - 120, 48, 24);
+        // Top Gold Pill Badge
+        drawRoundedRect(ctx, 310, 62, W - 620, 42, 21);
+        ctx.fillStyle = 'rgba(212, 175, 55, 0.16)';
         ctx.fill();
-        ctx.fillStyle = '#002855';
-        ctx.font = '900 24px sans-serif';
+        ctx.strokeStyle = '#D4AF37';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+
+        ctx.fillStyle = '#FDE68A';
+        ctx.font = '700 19px "Outfit", sans-serif';
         ctx.textAlign = 'center';
-        ctx.fillText('★ OFFICIAL 2026 FINISHER • SAN DIEGO BAYFRONT • 23 OCT 2026 ★', W / 2, 78);
+        ctx.fillText('23 OCTOBER 2026  •  SAN DIEGO BAYFRONT', W / 2, 89);
 
+        // Editorial Event Title
         ctx.fillStyle = '#FFFFFF';
-        ctx.font = '900 54px sans-serif';
-        ctx.fillText('IAM & PARAMOUNT', W / 2, 160);
-        ctx.fillStyle = '#60A5FA';
-        ctx.font = '900 38px sans-serif';
-        ctx.fillText('CHARITY 5K FUN RUN / WALK', W / 2, 208);
+        ctx.font = '900 54px "Outfit", sans-serif';
+        ctx.fillText('IAM & PARAMOUNT', W / 2, 158);
+        ctx.fillStyle = '#D4AF37';
+        ctx.font = '700 28px "Outfit", sans-serif';
+        ctx.fillText('CHARITY 5K FUN RUN & WALK FINISHER', W / 2, 198);
 
-        drawRoundedRect(ctx, 60, 238, W - 120, 560, 34);
-        ctx.fillStyle = '#FBBF24';
+        // Hero Photo Window with Champagne Gold Frame
+        drawRoundedRect(ctx, 64, 226, W - 128, 590, 32);
+        ctx.fillStyle = '#D4AF37';
         ctx.fill();
-        drawUserPhotoInBox(ctx, 68, 246, W - 136, 544, 28);
+        drawUserPhotoInBox(ctx, 68, 230, W - 136, 582, 29);
 
-        drawRoundedRect(ctx, 110, 745, W - 220, 96, 24);
-        ctx.fillStyle = '#E31837';
-        ctx.shadowColor = 'rgba(0,0,0,0.45)';
-        ctx.shadowBlur = 18;
+        // Floating Dark Glass Identity Bar overlapping bottom of photo
+        drawRoundedRect(ctx, 100, 756, W - 200, 104, 24);
+        ctx.fillStyle = 'rgba(6, 18, 38, 0.92)';
+        ctx.shadowColor = 'rgba(0,0,0,0.5)';
+        ctx.shadowBlur = 24;
         ctx.fill();
         ctx.shadowBlur = 0;
+        ctx.strokeStyle = 'rgba(212, 175, 55, 0.6)';
+        ctx.lineWidth = 2;
+        ctx.stroke();
 
         ctx.fillStyle = '#FFFFFF';
-        ctx.font = '900 42px sans-serif';
-        ctx.fillText(runnerName, W / 2, 795);
+        ctx.font = '800 40px "Outfit", sans-serif';
+        ctx.fillText(runnerName, W / 2, 804);
         ctx.fillStyle = '#FDE68A';
-        ctx.font = '700 23px sans-serif';
-        ctx.fillText(`${runnerCompany}  •  BIB #${runnerBib}`, W / 2, 826);
+        ctx.font = '600 21px "Inter", sans-serif';
+        ctx.fillText(`${runnerCompany}   •   BIB #${runnerBib}`, W / 2, 840);
 
-        const statY = 868, statH = 240;
-        drawRoundedRect(ctx, 60, statY, 620, statH, 26);
-        ctx.fillStyle = 'rgba(255,255,255,0.09)';
+        // Modern Telemetry & Route Row
+        const statY = 882, statH = 225;
+        drawRoundedRect(ctx, 64, statY, 635, statH, 26);
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
         ctx.fill();
-        ctx.strokeStyle = 'rgba(255,255,255,0.22)';
-        ctx.lineWidth = 2;
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.14)';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+
+        // Dividers inside telemetry box
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+        ctx.beginPath();
+        ctx.moveTo(275, statY + 35); ctx.lineTo(275, statY + statH - 35);
+        ctx.moveTo(486, statY + 35); ctx.lineTo(486, statY + statH - 35);
         ctx.stroke();
 
         ctx.textAlign = 'center';
-        ctx.fillStyle = '#93C5FD'; ctx.font = '800 22px sans-serif';
-        ctx.fillText('DISTANCE', 175, statY + 58);
-        ctx.fillStyle = '#FFFFFF'; ctx.font = '900 50px monospace';
-        ctx.fillText('5.08K', 175, statY + 125);
-        ctx.fillStyle = '#FBBF24'; ctx.font = '700 22px sans-serif';
-        ctx.fillText('3.16 MILES', 175, statY + 165);
+        ctx.fillStyle = '#94A3B8'; ctx.font = '700 18px "Outfit", sans-serif';
+        ctx.fillText('DISTANCE', 170, statY + 55);
+        ctx.fillText('FINISH TIME', 380, statY + 55);
+        ctx.fillText('AVG PACE', 592, statY + 55);
 
-        ctx.fillStyle = '#93C5FD'; ctx.font = '800 22px sans-serif';
-        ctx.fillText('OFFICIAL TIME', 375, statY + 58);
-        ctx.fillStyle = '#FBBF24'; ctx.font = '900 50px monospace';
-        ctx.fillText(runnerTime, 375, statY + 125);
-        ctx.fillStyle = '#FFFFFF'; ctx.font = '700 22px sans-serif';
-        ctx.fillText('5K COMPLETED', 375, statY + 165);
+        ctx.fillStyle = '#FFFFFF'; ctx.font = '700 48px "Space Grotesk", monospace';
+        ctx.fillText('3.16', 170, statY + 122);
+        ctx.fillStyle = '#FDE68A';
+        ctx.fillText(runnerTime, 380, statY + 122);
+        ctx.fillStyle = '#38BDF8';
+        ctx.fillText(runnerPace.replace(' /mi', ''), 592, statY + 122);
 
-        ctx.fillStyle = '#93C5FD'; ctx.font = '800 22px sans-serif';
-        ctx.fillText('AVG PACE', 570, statY + 58);
-        ctx.fillStyle = '#38BDF8'; ctx.font = '900 42px monospace';
-        ctx.fillText(runnerPace.replace(' /mi', ''), 570, statY + 125);
-        ctx.fillStyle = '#FFFFFF'; ctx.font = '700 22px sans-serif';
-        ctx.fillText('PER MILE', 570, statY + 165);
+        ctx.fillStyle = '#64748B'; ctx.font = '600 18px "Inter", sans-serif';
+        ctx.fillText('MILES (5.08K)', 170, statY + 165);
+        ctx.fillText('OFFICIAL CHIP', 380, statY + 165);
+        ctx.fillText('PER MILE', 592, statY + 165);
 
-        drawRoundedRect(ctx, 705, statY, 315, statH, 26);
-        ctx.fillStyle = 'rgba(0, 20, 45, 0.7)';
+        // Route Map Card on Right
+        drawRoundedRect(ctx, 720, statY, 296, statH, 26);
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.04)';
         ctx.fill();
-        ctx.strokeStyle = '#FBBF24';
-        ctx.lineWidth = 2;
+        ctx.strokeStyle = 'rgba(212, 175, 55, 0.45)';
         ctx.stroke();
-        drawCourseTraceMiniMap(ctx, 720, statY + 10, 285, statH - 45, '#00F0FF', '#00F0FF');
-        ctx.fillStyle = '#FBBF24';
-        ctx.font = '800 18px sans-serif';
-        ctx.fillText('SAN DIEGO BAY COURSE', 862, statY + statH - 14);
+        drawCourseTraceMiniMap(ctx, 735, statY + 8, 266, statH - 42, '#FDE68A', '#D4AF37');
+        ctx.fillStyle = '#D4AF37';
+        ctx.font = '700 16px "Outfit", sans-serif';
+        ctx.fillText('SAN DIEGO BAY LOOP', 868, statY + statH - 14);
 
-        drawAllFourLogosBar(ctx, 60, 1140, W - 120, 160);
+        // 4-Logo Studio Bar
+        drawAllFourLogosBar(ctx, 64, 1134, W - 128, 154);
 
       } else if (currentDesignIndex === 1) {
-        drawUserPhotoInBox(ctx, 0, 0, W, 980, 0);
+        // =====================================================================
+        // DESIGN 2: FULL-BLEED MAGAZINE COVER (STRAVA / APPLE FITNESS+ GLASS)
+        // =====================================================================
+        drawUserPhotoInBox(ctx, 0, 0, W, 1080, 0);
 
-        const topVig = ctx.createLinearGradient(0, 0, 0, 290);
-        topVig.addColorStop(0, 'rgba(0, 25, 55, 0.92)');
-        topVig.addColorStop(1, 'rgba(0, 25, 55, 0)');
+        const topVig = ctx.createLinearGradient(0, 0, 0, 310);
+        topVig.addColorStop(0, 'rgba(4, 13, 26, 0.90)');
+        topVig.addColorStop(0.65, 'rgba(4, 13, 26, 0.45)');
+        topVig.addColorStop(1, 'rgba(4, 13, 26, 0)');
         ctx.fillStyle = topVig;
-        ctx.fillRect(0, 0, W, 290);
+        ctx.fillRect(0, 0, W, 310);
 
         const botVig = ctx.createLinearGradient(0, 620, 0, 1350);
-        botVig.addColorStop(0, 'rgba(0, 25, 55, 0)');
-        botVig.addColorStop(0.32, 'rgba(0, 32, 70, 0.96)');
-        botVig.addColorStop(1, '#001833');
+        botVig.addColorStop(0, 'rgba(4, 13, 26, 0)');
+        botVig.addColorStop(0.35, 'rgba(4, 15, 32, 0.94)');
+        botVig.addColorStop(1, '#040D1A');
         ctx.fillStyle = botVig;
         ctx.fillRect(0, 620, W, 730);
 
+        // Minimalist Magazine Masthead
         ctx.textAlign = 'left';
+        drawRoundedRect(ctx, 64, 54, 355, 42, 21);
         ctx.fillStyle = '#E31837';
-        drawRoundedRect(ctx, 60, 50, 340, 44, 12);
         ctx.fill();
         ctx.fillStyle = '#FFFFFF';
-        ctx.font = '900 22px sans-serif';
-        ctx.fillText('✓ 2026 OFFICIAL 5K FINISHER', 80, 80);
+        ctx.font = '800 19px "Outfit", sans-serif';
+        ctx.fillText('●  OFFICIAL 2026 5K FINISHER', 88, 81);
 
         ctx.fillStyle = '#FFFFFF';
-        ctx.font = '900 52px sans-serif';
-        ctx.fillText('IAM & PARAMOUNT 5K', 60, 150);
+        ctx.font = '900 56px "Outfit", sans-serif';
+        ctx.fillText('IAM & PARAMOUNT 5K', 64, 154);
         ctx.fillStyle = '#FBBF24';
-        ctx.font = '800 28px sans-serif';
-        ctx.fillText('SAN DIEGO BAYFRONT • 23 OCTOBER 2026', 60, 192);
+        ctx.font = '700 24px "Outfit", sans-serif';
+        ctx.fillText('SAN DIEGO BAYFRONT PROMENADE  •  23 OCT 2026', 64, 194);
 
-        drawRoundedRect(ctx, 60, 740, W - 120, 365, 32);
-        ctx.fillStyle = 'rgba(0, 40, 85, 0.85)';
+        // Frosted Glass Telemetry Overlay Card
+        drawRoundedRect(ctx, 64, 755, W - 128, 345, 32);
+        ctx.fillStyle = 'rgba(10, 30, 60, 0.82)';
         ctx.fill();
-        ctx.strokeStyle = 'rgba(255, 255, 255, 0.28)';
-        ctx.lineWidth = 3;
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.22)';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        ctx.fillStyle = '#38BDF8';
+        ctx.font = '700 22px "Outfit", sans-serif';
+        ctx.fillText(`${runnerCompany}  •  BIB #${runnerBib}`, 104, 812);
+
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = '900 50px "Outfit", sans-serif';
+        ctx.fillText(runnerName, 104, 870);
+
+        ctx.fillStyle = '#94A3B8'; ctx.font = '700 19px "Outfit", sans-serif';
+        ctx.fillText('DISTANCE', 104, 938);
+        ctx.fillText('OFFICIAL TIME', 335, 938);
+        ctx.fillText('PACE', 595, 938);
+
+        ctx.fillStyle = '#FFFFFF'; ctx.font = '700 58px "Space Grotesk", monospace';
+        ctx.fillText('3.16 mi', 104, 1004);
+        ctx.fillStyle = '#FBBF24';
+        ctx.fillText(runnerTime, 335, 1004);
+        ctx.fillStyle = '#00F0FF';
+        ctx.fillText(runnerPace.replace(' /mi', ''), 595, 1004);
+
+        ctx.fillStyle = '#CBD5E1'; ctx.font = '500 20px "Inter", sans-serif';
+        ctx.fillText('Supporting Global Moving Foundation & Coastal K9 German Shepherd Rescue', 104, 1066);
+
+        drawCourseTraceMiniMap(ctx, 795, 775, 195, 250, '#00F0FF', '#00F0FF');
+
+        drawAllFourLogosBar(ctx, 64, 1134, W - 128, 154);
+
+      } else if (currentDesignIndex === 2) {
+        // =====================================================================
+        // DESIGN 3: MODERN SWISS GALLERY BENTO GRID (ALABASTER & COBALT)
+        // =====================================================================
+        ctx.fillStyle = '#F1F5F9';
+        ctx.fillRect(0, 0, W, H);
+
+        // Top Architectural Header Card
+        drawRoundedRect(ctx, 48, 48, W - 96, 185, 28);
+        ctx.fillStyle = '#002855';
+        ctx.fill();
+
+        ctx.textAlign = 'left';
+        ctx.fillStyle = '#FBBF24';
+        ctx.font = '800 20px "Outfit", sans-serif';
+        ctx.fillText('FRIDAY, 23 OCTOBER 2026  •  SAN DIEGO BAYFRONT', 88, 98);
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = '900 48px "Outfit", sans-serif';
+        ctx.fillText('IAM & PARAMOUNT CHARITY 5K', 88, 154);
+        ctx.fillStyle = '#93C5FD';
+        ctx.font = '600 23px "Inter", sans-serif';
+        ctx.fillText('Official Finisher & Charity Supporter Record', 88, 194);
+
+        // Left Bento: Photo Frame
+        drawRoundedRect(ctx, 48, 256, 610, 610, 30);
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fill();
+        drawUserPhotoInBox(ctx, 56, 264, 594, 594, 24);
+
+        // Right Top Bento: Course Route Vector Module
+        drawRoundedRect(ctx, 680, 256, 352, 375, 30);
+        ctx.fillStyle = '#071936';
+        ctx.fill();
+        drawCourseTraceMiniMap(ctx, 700, 275, 312, 295, '#E31837', '#FBBF24');
+        ctx.textAlign = 'center';
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = '800 19px "Outfit", sans-serif';
+        ctx.fillText('5.08 KM WATERFRONT COURSE', 856, 600);
+
+        // Right Bottom Bento: Race Bib Module
+        drawRoundedRect(ctx, 680, 653, 352, 213, 30);
+        ctx.fillStyle = '#E31837';
+        ctx.fill();
+        ctx.fillStyle = 'rgba(255,255,255,0.85)';
+        ctx.font = '800 20px "Outfit", sans-serif';
+        ctx.fillText('OFFICIAL FINISHER BIB', 856, 706);
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = '700 52px "Space Grotesk", monospace';
+        ctx.fillText(runnerBib, 856, 775);
+        ctx.fillStyle = '#FDE68A';
+        ctx.font = '700 19px "Outfit", sans-serif';
+        ctx.fillText('SAN DIEGO, CA', 856, 825);
+
+        // Full-Width Athlete Telemetry Bar
+        drawRoundedRect(ctx, 48, 888, W - 96, 218, 30);
+        ctx.fillStyle = '#FFFFFF';
+        ctx.shadowColor = 'rgba(0, 40, 85, 0.08)';
+        ctx.shadowBlur = 20;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+
+        ctx.textAlign = 'left';
+        ctx.fillStyle = '#00529B';
+        ctx.font = '800 22px "Outfit", sans-serif';
+        ctx.fillText(runnerCompany, 88, 940);
+        ctx.fillStyle = '#002855';
+        ctx.font = '900 46px "Outfit", sans-serif';
+        ctx.fillText(runnerName, 88, 994);
+
+        // Pill Metrics on Bottom Right of Athlete Bar
+        drawRoundedRect(ctx, 88, 1020, 260, 60, 16);
+        ctx.fillStyle = '#F0F4F8'; ctx.fill();
+        ctx.fillStyle = '#002855'; ctx.font = '800 24px "Space Grotesk", monospace';
+        ctx.fillText(`TIME: ${runnerTime}`, 112, 1058);
+
+        drawRoundedRect(ctx, 368, 1020, 290, 60, 16);
+        ctx.fillStyle = '#F0F4F8'; ctx.fill();
+        ctx.fillStyle = '#00529B'; ctx.font = '800 24px "Space Grotesk", monospace';
+        ctx.fillText(`PACE: ${runnerPace}`, 392, 1058);
+
+        drawRoundedRect(ctx, 678, 1020, 310, 60, 16);
+        ctx.fillStyle = '#DCFCE7'; ctx.fill();
+        ctx.fillStyle = '#15803D'; ctx.font = '800 23px "Outfit", sans-serif';
+        ctx.fillText(`✓ 3.16 MILES (5.08K)`, 712, 1058);
+
+        drawAllFourLogosBar(ctx, 48, 1134, W - 96, 154);
+
+      } else {
+        // =====================================================================
+        // DESIGN 4: PROUD PARTICIPANT & CHARITY SUPPORTER (METRICS-FREE!)
+        // =====================================================================
+        const bgGrad = ctx.createLinearGradient(0, 0, W, H);
+        bgGrad.addColorStop(0, '#061A3A');
+        bgGrad.addColorStop(0.5, '#003B73');
+        bgGrad.addColorStop(1, '#041226');
+        ctx.fillStyle = bgGrad;
+        ctx.fillRect(0, 0, W, H);
+
+        // Warm San Diego Sunrise Glow
+        const sunGlow = ctx.createRadialGradient(W / 2, 220, 20, W / 2, 220, 560);
+        sunGlow.addColorStop(0, 'rgba(251, 191, 36, 0.22)');
+        sunGlow.addColorStop(1, 'rgba(251, 191, 36, 0)');
+        ctx.fillStyle = sunGlow;
+        ctx.fillRect(0, 0, W, H);
+
+        // Top Community Spirit Pill
+        drawRoundedRect(ctx, 250, 52, W - 500, 44, 22);
+        ctx.fillStyle = '#E31837';
+        ctx.fill();
+        ctx.textAlign = 'center';
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = '800 20px "Outfit", sans-serif';
+        ctx.fillText('♥  PROUD 2026 CHARITY 5K PARTICIPANT  ♥', W / 2, 81);
+
+        // Event Title
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = '900 54px "Outfit", sans-serif';
+        ctx.fillText('IAM & PARAMOUNT', W / 2, 154);
+        ctx.fillStyle = '#FDE68A';
+        ctx.font = '700 30px "Outfit", sans-serif';
+        ctx.fillText('CHARITY 5K FUN RUN & WALK  •  SAN DIEGO BAY', W / 2, 196);
+
+        // Extra-Large Showcase Photo Frame (Since no metrics take up space!)
+        drawRoundedRect(ctx, 64, 224, W - 128, 665, 36);
+        ctx.fillStyle = '#FFFFFF';
+        ctx.shadowColor = 'rgba(0,0,0,0.4)';
+        ctx.shadowBlur = 25;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+        drawUserPhotoInBox(ctx, 72, 232, W - 144, 649, 30);
+
+        // Elegant Participant & Charity Tribute Card below Photo
+        drawRoundedRect(ctx, 64, 912, W - 128, 198, 28);
+        ctx.fillStyle = 'rgba(7, 25, 54, 0.90)';
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(253, 230, 138, 0.45)';
+        ctx.lineWidth = 2;
         ctx.stroke();
 
         ctx.textAlign = 'left';
-        ctx.fillStyle = '#38BDF8';
-        ctx.font = '800 24px sans-serif';
-        ctx.fillText(`${runnerCompany} • BIB #${runnerBib}`, 100, 800);
-
-        ctx.fillStyle = '#FFFFFF';
-        ctx.font = '900 54px sans-serif';
-        ctx.fillText(runnerName, 100, 862);
-
-        ctx.fillStyle = '#93C5FD'; ctx.font = '700 22px sans-serif';
-        ctx.fillText('DISTANCE', 100, 935);
-        ctx.fillText('FINISH TIME', 340, 935);
-        ctx.fillText('PACE', 600, 935);
-
-        ctx.fillStyle = '#FFFFFF'; ctx.font = '900 62px monospace';
-        ctx.fillText('3.16 mi', 100, 1005);
         ctx.fillStyle = '#FBBF24';
-        ctx.fillText(runnerTime, 340, 1005);
-        ctx.fillStyle = '#00F0FF';
-        ctx.fillText(runnerPace.replace(' /mi', ''), 600, 1005);
+        ctx.font = '800 22px "Outfit", sans-serif';
+        ctx.fillText(`${runnerCompany}   •   SAN DIEGO BAYFRONT 5K`, 104, 964);
 
-        ctx.fillStyle = '#E2E8F0'; ctx.font = '600 22px sans-serif';
-        ctx.fillText('Proudly supporting Global Moving Foundation & Coastal K9 Rescue', 100, 1072);
-
-        drawCourseTraceMiniMap(ctx, 790, 765, 205, 260, '#FBBF24', '#E31837');
-        drawAllFourLogosBar(ctx, 60, 1140, W - 120, 160);
-
-      } else {
-        ctx.fillStyle = '#F8FAFC';
-        ctx.fillRect(0, 0, W, H);
-
-        ctx.fillStyle = '#003366';
-        ctx.fillRect(0, 0, W, 250);
-        ctx.fillStyle = '#E31837';
-        ctx.fillRect(0, 240, W, 16);
-
-        ctx.textAlign = 'center';
-        ctx.fillStyle = '#FBBF24';
-        ctx.font = '900 24px sans-serif';
-        ctx.fillText('23 OCTOBER 2026 • SAN DIEGO BAYFRONT PROMENADE', W / 2, 65);
         ctx.fillStyle = '#FFFFFF';
-        ctx.font = '900 56px sans-serif';
-        ctx.fillText('IAM & PARAMOUNT', W / 2, 135);
-        ctx.font = '800 38px sans-serif';
-        ctx.fillStyle = '#93C5FD';
-        ctx.fillText('CHARITY 5K FUN RUN / WALK FINISHER', W / 2, 192);
-
-        drawRoundedRect(ctx, 60, 290, 580, 560, 28);
-        ctx.fillStyle = '#003366';
-        ctx.fill();
-        drawUserPhotoInBox(ctx, 68, 298, 564, 544, 22);
-
-        drawRoundedRect(ctx, 670, 290, 350, 340, 28);
-        ctx.fillStyle = '#002855';
-        ctx.fill();
-        drawCourseTraceMiniMap(ctx, 690, 305, 310, 265, '#E31837', '#FBBF24');
-        ctx.fillStyle = '#FFFFFF';
-        ctx.font = '800 20px sans-serif';
-        ctx.textAlign = 'center';
-        ctx.fillText('5.08 KM WATERFRONT LOOP', 845, 605);
-
-        drawRoundedRect(ctx, 670, 655, 350, 195, 28);
-        ctx.fillStyle = '#E31837';
-        ctx.fill();
-        ctx.fillStyle = '#FFFFFF';
-        ctx.font = '800 22px sans-serif';
-        ctx.fillText('OFFICIAL RACE BIB', 845, 705);
-        ctx.font = '900 54px monospace';
-        ctx.fillText(runnerBib, 845, 775);
-        ctx.fillStyle = '#FDE68A';
-        ctx.font = '800 20px sans-serif';
-        ctx.fillText('VERIFIED 5K FINISHER', 845, 820);
-
-        drawRoundedRect(ctx, 60, 880, W - 120, 225, 28);
-        ctx.fillStyle = '#003366';
-        ctx.fill();
-
-        ctx.textAlign = 'left';
-        ctx.fillStyle = '#FBBF24';
-        ctx.font = '800 24px sans-serif';
-        ctx.fillText(runnerCompany, 100, 932);
-        ctx.fillStyle = '#FFFFFF';
-        ctx.font = '900 50px sans-serif';
-        ctx.fillText(runnerName, 100, 990);
+        ctx.font = '900 48px "Outfit", sans-serif';
+        ctx.fillText(runnerName, 104, 1022);
 
         ctx.fillStyle = '#93C5FD';
-        ctx.font = '800 24px sans-serif';
-        ctx.fillText(`TIME: `, 100, 1060);
-        ctx.fillStyle = '#FBBF24';
-        ctx.font = '900 38px monospace';
-        ctx.fillText(runnerTime, 185, 1062);
+        ctx.font = '600 21px "Inter", sans-serif';
+        ctx.fillText('Proudly supporting Global Moving Foundation & Coastal K9 Rescue', 104, 1068);
 
-        ctx.fillStyle = '#93C5FD';
-        ctx.font = '800 24px sans-serif';
-        ctx.fillText(`PACE: `, 420, 1060);
-        ctx.fillStyle = '#38BDF8';
-        ctx.font = '900 38px monospace';
-        ctx.fillText(runnerPace, 510, 1062);
+        // Subtle Mini Route Emblem on Right of Tribute Card
+        drawCourseTraceMiniMap(ctx, 825, 922, 165, 178, '#FDE68A', '#E31837');
 
-        ctx.fillStyle = '#22C55E';
-        ctx.font = '900 32px sans-serif';
-        ctx.fillText('★ 3.16 MI', 810, 1060);
-
-        drawAllFourLogosBar(ctx, 60, 1140, W - 120, 160);
+        // 4-Logo Studio Bar
+        drawAllFourLogosBar(ctx, 64, 1134, W - 128, 154);
       }
     }
 
@@ -2327,7 +2603,7 @@
           try {
             await navigator.share({
               title: 'IAM & Paramount Charity 5K Finisher!',
-              text: 'Just completed the IAM & Paramount Charity 5K Fun Run/Walk along San Diego Bay supporting Global Moving Foundation & Coastal K9 German Shepherd Rescue!',
+              text: 'Proud to participate in the IAM & Paramount Charity 5K Fun Run/Walk along San Diego Bay supporting Global Moving Foundation & Coastal K9 German Shepherd Rescue!',
               files: [file]
             });
             return;
@@ -2402,6 +2678,7 @@
 
       stageMarkers = [startMarker, mile1Marker, hiltonTurnMarker, mile3Marker];
       courseMap.fitBounds(mainRouteLine.getBounds(), { padding: [22, 22] });
+      initCanvasTouchGestures();
       renderFinisherCanvas();
     }
 
@@ -2596,7 +2873,7 @@
     window.addEventListener('DOMContentLoaded', initCourseMap);
 
     // =========================================================================
-    // COMPLETE FORM VALIDATION & REGISTRATION LOGIC (FROM INDEX.HTML)
+    // COMPLETE FORM VALIDATION & REGISTRATION LOGIC
     // =========================================================================
     function autoCapitalize(e) {
       const words = e.target.value.split(' ');
@@ -2612,7 +2889,6 @@
       }
     });
 
-    // --- SCROLL TO ACCEPT PRIVACY NOTICE ---
     const privacyBox = document.getElementById('privacyScrollBox');
     const privacyCheckbox = document.getElementById('privacyNotice');
     const privacyLabel = document.getElementById('privacyLabel');
