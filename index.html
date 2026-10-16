@@ -51,7 +51,6 @@
       background-color: #FFF5F5;
       box-shadow: 0 8px 15px -3px rgba(227, 24, 55, 0.15);
     }
-    /* Fullscreen Map Container Mode */
     .map-fullscreen-active {
       position: fixed !important;
       inset: 0 !important;
@@ -59,7 +58,6 @@
       height: 100vh !important;
       z-index: 9999 !important;
     }
-    /* Hide scrollbar for Chrome, Safari and Opera on horizontal mobile carousel */
     .no-scrollbar::-webkit-scrollbar {
       display: none;
     }
@@ -67,7 +65,6 @@
       -ms-overflow-style: none;
       scrollbar-width: none;
     }
-    /* Prevent iOS tap highlight flash */
     * {
       -webkit-tap-highlight-color: transparent;
     }
@@ -186,7 +183,7 @@
               <i class="fa-regular fa-calendar-plus"></i> Add Calendar
             </button>
             <div id="calMenu" class="hidden absolute top-8 left-0 bg-white border border-gray-200 rounded-lg shadow-xl z-30 py-1.5 w-44 text-xs">
-              <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=IAM+%26+PARAMOUNT+Charity+5K+Fun+Run%2FWalk&dates=20261023T133000Z/20261023T160000Z&details=IAM+%26+Paramount+Charity+5K+Fun+Run%2FWalk.+Check-in+starts+at+6%3A30+AM.+Race+starts+at+7%3A30+AM.&location=Hyatt+Hotel" target="_blank" class="block px-3 py-2 hover:bg-blue-50 text-gray-700 flex items-center gap-2"><i class="fa-brands fa-google text-blue-500"></i> Google Calendar</a>
+              <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=IAM+%26+PARAMOUNT+Charity+5K+Fun+Run%2FWalk&dates=20261023T133000Z/20261023T160000Z&details=IAM+%26+Paramount+Charity+5K+Fun+Run%2FWalk.+Check-in+starts+at+6%3A30+AM.+Race+starts+at+7%3A30+AM.&location=Manchester+Grand+Hyatt+Hotel" target="_blank" class="block px-3 py-2 hover:bg-blue-50 text-gray-700 flex items-center gap-2"><i class="fa-brands fa-google text-blue-500"></i> Google Calendar</a>
               <a href="javascript:downloadICS()" class="block px-3 py-2 hover:bg-blue-50 text-gray-700 flex items-center gap-2"><i class="fa-brands fa-apple text-gray-800"></i> Apple / Outlook (.ics)</a>
             </div>
           </div>
@@ -203,9 +200,10 @@
       <div class="flex items-start space-x-2.5 sm:space-x-3 col-span-2 sm:col-span-1">
         <i class="fa-solid fa-shirt text-pts-navy text-base sm:text-lg mt-0.5 flex-shrink-0"></i>
         <div>
-          <strong class="block text-gray-900">Shirt & Bib Pick Up</strong>
-          <span class="text-gray-600 block">Wednesday, 21 Oct & Thursday, 22 Oct</span>
-          <span class="text-gray-500 text-[11px] block mt-0.5">(Booth Time & location @ Hyatt are TBA)</span>
+          <strong class="block text-gray-900">Shirt &amp; Bib Pick Up</strong>
+          <span class="text-gray-600 block leading-snug">Wednesday, 21 October 7AM-7PM</span>
+          <span class="text-gray-600 block leading-snug">Thursday, 23 October 7AM-5PM</span>
+          <span class="text-gray-500 text-[11px] block mt-0.5 leading-snug">@ Paramount’s Table in the<br>Seaport Foyer,<br>Manchester Grand Hyatt Hotel<br>(Next to the IAM registration desks!)</span>
         </div>
       </div>
       <div class="flex items-start space-x-2.5 sm:space-x-3 col-span-1">
@@ -225,7 +223,7 @@
     </div>
   </section>
 
-  <!-- Restored Last-Minute Registration Info Banner -->
+  <!-- Last-Minute Registration Info Banner -->
   <div class="max-w-6xl mx-auto px-4 sm:px-6 mt-3 w-full">
     <div class="bg-blue-50 border border-blue-200 text-blue-900 px-3.5 py-2.5 rounded-lg text-xs sm:text-sm flex items-start sm:items-center gap-2.5 sm:gap-3">
       <i class="fa-solid fa-circle-info text-pts-blue text-base flex-shrink-0 mt-0.5 sm:mt-0"></i>
@@ -235,12 +233,10 @@
 
   <!-- ================================================================= -->
   <!-- 23 OCTOBER 2026 – IAM & PTS 5K FUN RUN/WALK MAP SECTION           -->
-  <!-- Strictly using the exact approved PDF wording & Mobile-First UX   -->
   <!-- ================================================================= -->
   <section id="courseExplorerSection" class="max-w-6xl mx-auto px-4 sm:px-6 mt-5 sm:mt-6 w-full">
     <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
       
-      <!-- Top Banner Header -->
       <div class="bg-gradient-to-r from-pts-navy via-pts-blue to-pts-navy text-white px-4 sm:px-6 py-4 flex flex-col lg:flex-row lg:items-center justify-between gap-3.5">
         <div>
           <h2 class="text-lg sm:text-2xl font-black tracking-tight">23 October 2026 – IAM &amp; PTS 5K Fun Run/Walk Map</h2>
@@ -249,7 +245,6 @@
           </p>
         </div>
 
-        <!-- Mobile-Friendly Action Toolbar -->
         <div class="grid grid-cols-2 sm:flex sm:flex-wrap items-center gap-2">
           <button type="button" id="simRunBtn" onclick="toggleCourseSimulation()" class="col-span-2 sm:col-span-1 bg-pts-accent active:bg-red-800 hover:bg-red-700 text-white text-xs sm:text-sm font-bold px-4 py-2.5 sm:py-2 rounded-xl shadow-md transition flex items-center justify-center gap-2">
             <i id="simRunIcon" class="fa-solid fa-play"></i>
@@ -264,7 +259,6 @@
         </div>
       </div>
 
-      <!-- Approved START/FINISH Bar + Navigate to Start Button -->
       <div class="bg-pts-light border-b border-gray-200 px-4 sm:px-6 py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs sm:text-sm">
         <div class="flex items-start sm:items-center gap-2.5">
           <span class="inline-flex items-center flex-shrink-0 mt-0.5 sm:mt-0">
@@ -277,20 +271,16 @@
           </div>
         </div>
 
-        <!-- One-Tap Mobile GPS Directions to Start Line -->
         <a href="https://www.google.com/maps/dir/?api=1&destination=32.70820,-117.17009&travelmode=walking" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-1.5 bg-pts-navy hover:bg-pts-blue active:bg-blue-950 text-white font-bold px-3.5 py-2 rounded-xl text-xs shadow-sm transition whitespace-nowrap flex-shrink-0">
           <i class="fa-solid fa-location-arrow text-amber-300"></i> Navigate to Start Line
         </a>
       </div>
 
-      <!-- Main Map & Approved Course Route Grid -->
       <div class="grid grid-cols-1 lg:grid-cols-12">
         
-        <!-- Left Column: Interactive Google Map (Supports Fullscreen Expansion) -->
         <div id="mapWrapperContainer" class="lg:col-span-7 relative bg-blue-950 h-[370px] sm:h-[460px] lg:h-auto lg:min-h-[540px] flex flex-col transition-all">
           <div id="courseMap" class="w-full h-full flex-grow"></div>
 
-          <!-- Top-Left Controls: Full Screen Toggle & Mobile Touch Lock -->
           <div class="absolute top-3 left-14 z-[400] flex flex-wrap items-center gap-1.5">
             <button type="button" id="fsToggleBtn" onclick="toggleFullScreenMap()" class="bg-pts-navy/95 hover:bg-pts-blue text-white backdrop-blur-sm px-3 py-1.5 rounded-xl shadow-lg border border-white/20 text-[11px] sm:text-xs font-bold flex items-center gap-1.5 transition">
               <i id="fsToggleIcon" class="fa-solid fa-expand text-amber-300"></i>
@@ -303,7 +293,6 @@
             </button>
           </div>
 
-          <!-- Top-Right Controls: Google Map Layer Switcher + Reset View -->
           <div class="absolute top-3 right-3 z-[400] bg-white/95 backdrop-blur-sm rounded-xl shadow-lg border border-gray-200 p-1 flex items-center gap-0.5 sm:gap-1 text-[11px] sm:text-xs font-bold">
             <button type="button" id="btnMapStreet" onclick="setGoogleMapMode('streets')" class="px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-lg bg-pts-navy text-white transition flex items-center gap-1">
               <i class="fa-solid fa-map"></i> Map
@@ -316,7 +305,6 @@
             </button>
           </div>
 
-          <!-- Live Simulation Progress Bar Overlay -->
           <div id="simStatusOverlay" class="hidden absolute top-14 left-3 right-3 z-[400] bg-pts-navy/95 text-white backdrop-blur-md px-3.5 py-2.5 rounded-xl shadow-xl border border-white/15">
             <div class="flex items-center justify-between text-[11px] sm:text-xs mb-1.5">
               <span class="font-bold flex items-center gap-1.5 truncate">
@@ -330,7 +318,6 @@
             </div>
           </div>
 
-          <!-- Compact Map Legend Overlay -->
           <div class="absolute bottom-2.5 left-2.5 right-2.5 sm:right-auto z-[400] bg-white/95 backdrop-blur-sm px-2.5 py-1.5 sm:p-2.5 rounded-xl shadow-lg border border-gray-200 text-[10px] sm:text-[11px] flex flex-wrap items-center justify-center sm:justify-start gap-2.5 sm:gap-3">
             <div class="flex items-center gap-1 font-semibold text-gray-800">
               <span class="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-green-600 inline-block border border-white shadow"></span>
@@ -348,8 +335,6 @@
           </div>
         </div>
 
-        <!-- Right Column: Strictly Approved PDF Text Breakdown -->
-        <!-- Swipeable Horizontal Carousel on Mobile, Vertical Stack on Desktop -->
         <div class="lg:col-span-5 p-4 sm:p-6 flex flex-col justify-between bg-white border-t lg:border-t-0 lg:border-l border-gray-200">
           <div>
             <div class="border-b border-gray-100 pb-2.5 mb-3 flex items-center justify-between">
@@ -364,10 +349,8 @@
               </span>
             </div>
 
-            <!-- Strictly Verbatim Course Bullet Cards -->
             <div id="courseStepList" class="flex lg:flex-col gap-3 overflow-x-auto lg:overflow-x-visible snap-x snap-mandatory pb-2 lg:pb-0 no-scrollbar">
               
-              <!-- Bullet 1 -->
               <div onclick="focusCourseStage(0)" id="stage-card-0" class="course-step-card active snap-center flex-shrink-0 w-[85%] sm:w-[70%] lg:w-full cursor-pointer p-3.5 rounded-xl border border-gray-200 transition-all hover:border-pts-accent">
                 <div class="flex items-start gap-3">
                   <div class="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-green-600 text-white font-black text-xs flex items-center justify-center flex-shrink-0 mt-0.5 shadow">
@@ -379,7 +362,6 @@
                 </div>
               </div>
 
-              <!-- Bullet 2 -->
               <div onclick="focusCourseStage(1)" id="stage-card-1" class="course-step-card snap-center flex-shrink-0 w-[85%] sm:w-[70%] lg:w-full cursor-pointer p-3.5 rounded-xl border border-gray-200 transition-all hover:border-pts-accent">
                 <div class="flex items-start gap-3">
                   <div class="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-pts-accent text-white font-black text-xs flex items-center justify-center flex-shrink-0 mt-0.5 shadow">
@@ -391,7 +373,6 @@
                 </div>
               </div>
 
-              <!-- Bullet 3 -->
               <div onclick="focusCourseStage(2)" id="stage-card-2" class="course-step-card snap-center flex-shrink-0 w-[85%] sm:w-[70%] lg:w-full cursor-pointer p-3.5 rounded-xl border border-gray-200 transition-all hover:border-pts-accent">
                 <div class="flex items-start gap-3">
                   <div class="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-pts-blue text-white font-black text-xs flex items-center justify-center flex-shrink-0 mt-0.5 shadow">
@@ -403,7 +384,6 @@
                 </div>
               </div>
 
-              <!-- Bullet 4 -->
               <div onclick="focusCourseStage(3)" id="stage-card-3" class="course-step-card snap-center flex-shrink-0 w-[85%] sm:w-[70%] lg:w-full cursor-pointer p-3.5 rounded-xl border border-gray-200 transition-all hover:border-pts-accent">
                 <div class="flex items-start gap-3">
                   <div class="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-pts-navy text-white font-black text-xs flex items-center justify-center flex-shrink-0 mt-0.5 shadow">
@@ -418,7 +398,6 @@
             </div>
           </div>
 
-          <!-- Bullet 5: Verbatim Course Markings & Volunteers Box -->
           <div class="mt-3 lg:mt-4 bg-pts-light p-3 sm:p-3.5 rounded-xl border border-blue-200 text-xs text-pts-navy font-medium flex items-start gap-2.5">
             <i class="fa-solid fa-circle-check text-green-600 text-sm mt-0.5 flex-shrink-0"></i>
             <span>Course markings and volunteers will be along the route to help guide participants throughout the event.</span>
@@ -429,7 +408,7 @@
     </div>
   </section>
 
-  <!-- Official Static Map Modal (Verbatim Approved PDF Wording + Pinch-to-Zoom on Mobile) -->
+  <!-- Official Static Map Modal -->
   <div id="officialMapModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-2 sm:p-4 z-50">
     <div class="bg-white rounded-2xl max-w-4xl w-full max-h-[92vh] flex flex-col shadow-2xl overflow-hidden">
       <div class="bg-pts-navy text-white px-4 sm:px-6 py-3.5 sm:py-4 flex items-center justify-between">
@@ -451,11 +430,9 @@
           </ul>
         </div>
         <div class="text-center bg-gray-100 rounded-xl p-3 sm:p-4 border border-gray-200">
-          <img src="5K_Course_Map.png" alt="23 October 2026 – IAM & PTS 5K Fun Run/Walk Map" class="max-h-[460px] w-auto mx-auto rounded-lg shadow" onerror="this.style.display='none'; document.getElementById('pdfFallbackNotice').classList.remove('hidden');">
-          <div id="pdfFallbackNotice" class="hidden py-5">
-            <i class="fa-solid fa-file-pdf text-4xl text-pts-accent mb-2 block"></i>
-            <p class="font-bold text-pts-navy">23 October 2026 – IAM &amp; PTS 5K Fun Run/Walk Map</p>
-            <a href="23 October 2026 – IAM & PTS 5K Fun Run Walk Map.pdf" target="_blank" class="mt-3 inline-flex items-center gap-2 bg-pts-navy hover:bg-pts-blue text-white font-bold px-4 py-2.5 rounded-xl text-xs shadow transition">
+          <img src="5K_Course_Map.jpg" alt="23 October 2026 – IAM & PTS 5K Fun Run/Walk Map" class="max-h-[460px] w-auto mx-auto rounded-lg shadow" onerror="this.onerror=null;this.src='5K_Course_Map.png';">
+          <div class="mt-3">
+            <a href="23 October 2026 – IAM & PTS 5K Fun Run Walk Map.pdf" target="_blank" class="inline-flex items-center gap-2 bg-pts-navy hover:bg-pts-blue text-white font-bold px-4 py-2.5 rounded-xl text-xs shadow transition">
               <i class="fa-solid fa-download"></i> Open Official Map PDF
             </a>
           </div>
@@ -873,7 +850,6 @@
             <span class="ml-2.5 sm:ml-2">I have read and agree to the Liability Waiver above. <span class="text-red-500 font-bold">*</span></span>
           </label>
 
-          <!-- Scrollable Privacy Notice Box with Scroll Enforcement -->
           <div id="privacyScrollBox" class="bg-gray-50 p-3.5 sm:p-4 rounded-lg border border-gray-200 text-xs text-gray-600 leading-relaxed mt-4 max-h-56 overflow-y-auto space-y-2">
             <p class="font-bold text-gray-800 text-sm">5K Registration Privacy Notice</p>
             <p>Paramount Transportation Systems, Inc. (“Paramount”) respects your privacy. The personal information collected through this registration form is used to register you for and administer the IAM & Paramount Charity 5K Fun Run/Walk.</p>
@@ -911,7 +887,6 @@
             <p>For general information about Paramount's privacy and data-protection practices, please see our <a href="https://pts-moves.com/privacy-policy/" target="_blank" rel="noopener noreferrer" class="text-pts-blue underline">Privacy Statement</a>.</p>
           </div>
 
-          <!-- Explicit Scroll Instruction & Unlock Status -->
           <div id="privacyScrollPrompt" class="text-xs text-amber-700 bg-amber-50 border border-amber-200 px-3 py-2 rounded-lg flex items-center gap-2">
             <i class="fa-solid fa-circle-down flex-shrink-0"></i>
             <span>Please scroll through to the very bottom of the Privacy Notice above to unlock this checkbox.</span>
@@ -941,7 +916,6 @@
             <i class="fa-solid fa-arrow-right ml-2"></i>
           </button>
 
-          <!-- Donation Container at End of Page -->
           <div class="w-full bg-pts-light rounded-2xl p-4 border border-blue-200 text-center shadow-md">
             <span class="text-xs sm:text-sm font-bold uppercase tracking-wider text-pts-navy block mb-2">
               <i class="fa-solid fa-heart text-pts-accent mr-1"></i> Not Running or Walking?
@@ -1002,7 +976,7 @@
         <p><strong>Race Date:</strong> Friday, 23 October 2026</p>
         <p><strong>Check-In:</strong> 6:30 AM – 7:15 AM | <strong>Start:</strong> 7:30 AM</p>
         <p><strong>START/FINISH:</strong> Northwest corner of the North Embarcadero Marina</p>
-        <p><strong>Packet Pick Up:</strong> Oct 21 & 22 @ Hyatt Hotel</p>
+        <p><strong>Shirt &amp; Bib Pick Up:</strong> Wed, 21 Oct (7AM-7PM) &amp; Thu, 23 Oct (7AM-5PM) @ Paramount’s Table in Seaport Foyer, Manchester Grand Hyatt (Next to IAM registration desks!)</p>
         <p class="mt-4 text-[10px] text-gray-400">Present this digital or printed pass at race check-in to collect your bib and T-shirt.</p>
       </div>
     </div>
@@ -1026,1014 +1000,8 @@
       }
     });
 
-    function toggleModal(id) {
-      document.getElementById(id).classList.toggle('hidden');
-    }
-
-    function toggleCalDropdown() {
-      document.getElementById('calMenu').classList.toggle('hidden');
-    }
-
-    function downloadICS() {
-      const icsData = "BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nSUMMARY:IAM & PARAMOUNT Charity 5K Fun Run/Walk\nDESCRIPTION:IAM & Paramount Charity 5K Fun Run/Walk Event. Check-in starts at 6:30 AM.\nLOCATION:Hyatt Hotel\nDTSTART:20261023T133000Z\nDTEND:20261023T160000Z\nEND:VEVENT\nEND:VCALENDAR";
-      const blob = new Blob([icsData], { type: 'text/calendar;charset=utf-8' });
-      const link = document.createElement('a');
-      link.href = window.URL.createObjectURL(blob);
-      link.setAttribute('download', 'IAM_Paramount_5K.ics');
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }
-
-    const raceDate = new Date("October 23, 2026 07:30:00").getTime();
-    setInterval(function() {
-      const now = new Date().getTime();
-      const distance = raceDate - now;
-      if (distance > 0) {
-        document.getElementById("cdDays").innerText = String(Math.floor(distance / (1000 * 60 * 60 * 24))).padStart(2, '0');
-        document.getElementById("cdHours").innerText = String(Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
-        document.getElementById("cdMins").innerText = String(Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
-        document.getElementById("cdSecs").innerText = String(Math.floor((distance % (1000 * 60)) / 1000)).padStart(2, '0');
-      }
-    }, 1000);
-
-    // =========================================================================
-    // CALIBRATED COURSE COORDINATES MATCHING YELLOW HIGHLIGHTED PATHS
-    // =========================================================================
-    const COURSE_COORDS = [
-      // START: Northwest corner of the North Embarcadero Marina (Green Dot)
-      [32.70820, -117.17009],
-      [32.70801, -117.17010],
-      [32.70779, -117.17010],
-      [32.70756, -117.17008],
-      [32.70736, -117.17005],
-      [32.70720, -117.17000],
-      [32.70707, -117.16985],
-      [32.70692, -117.16964],
-      [32.70676, -117.16939],
-      [32.70656, -117.16910],
-      [32.70635, -117.16878],
-      [32.70613, -117.16845],
-      [32.70594, -117.16816],
-      [32.70582, -117.16795],
-      [32.70578, -117.16784],
-      [32.70580, -117.16768],
-      [32.70583, -117.16754],
-      [32.70589, -117.16745],
-      [32.70601, -117.16741],
-      [32.70614, -117.16741],
-      [32.70626, -117.16746],
-      [32.70634, -117.16759],
-      [32.70641, -117.16781],
-      [32.70649, -117.16801],
-      [32.70661, -117.16817],
-      [32.70673, -117.16824],
-      [32.70686, -117.16835],
-      [32.70701, -117.16856],
-      [32.70718, -117.16880],
-      [32.70736, -117.16902],
-      [32.70752, -117.16917],
-      [32.70768, -117.16922],
-      [32.70786, -117.16923],
-      [32.70806, -117.16921],
-      [32.70826, -117.16920],
-      [32.70846, -117.16919],
-      // Right turn heading south along Bayfront Promenade (S Embarcadero)
-      [32.70847, -117.16880],
-      [32.70847, -117.16837],
-      [32.70847, -117.16794],
-      [32.70846, -117.16757],
-      [32.70844, -117.16738],
-      [32.70834, -117.16716],
-      [32.70815, -117.16689],
-      [32.70793, -117.16660],
-      [32.70782, -117.16644],
-      [32.70752, -117.16602],
-      [32.70714, -117.16552],
-      [32.70676, -117.16499],
-      [32.70637, -117.16445],
-      [32.70602, -117.16396],
-      [32.70574, -117.16357],
-      [32.70561, -117.16340],
-      // Turn right into South Embarcadero Marina & loop counterclockwise around Rady Shell & South Park
-      [32.70535, -117.16365],
-      [32.70507, -117.16396],
-      [32.70479, -117.16426],
-      [32.70458, -117.16449],
-      [32.70448, -117.16467], // Mile 1 Marker
-      [32.70454, -117.16487],
-      [32.70467, -117.16510],
-      [32.70486, -117.16537],
-      [32.70502, -117.16560],
-      [32.70510, -117.16579],
-      [32.70510, -117.16598],
-      [32.70501, -117.16615],
-      [32.70486, -117.16626],
-      [32.70468, -117.16627],
-      [32.70452, -117.16620],
-      [32.70431, -117.16600],
-      [32.70405, -117.16571],
-      [32.70381, -117.16541],
-      [32.70359, -117.16503],
-      [32.70333, -117.16464],
-      [32.70309, -117.16426],
-      [32.70291, -117.16393],
-      [32.70286, -117.16373],
-      [32.70293, -117.16354],
-      [32.70302, -117.16336],
-      [32.70331, -117.16306],
-      [32.70358, -117.16279],
-      [32.70373, -117.16269],
-      [32.70390, -117.16270],
-      [32.70415, -117.16296],
-      [32.70441, -117.16327],
-      [32.70467, -117.16357],
-      [32.70502, -117.16319],
-      [32.70538, -117.16282],
-      // Turn right onto S Embarcadero Promenade toward the Hilton & make a U-turn before the hotel
-      [32.70516, -117.16250],
-      [32.70486, -117.16208],
-      [32.70454, -117.16163],
-      [32.70419, -117.16113],
-      [32.70386, -117.16063],
-      [32.70354, -117.16014],
-      [32.70331, -117.15973], // U-Turn before the hotel
-      // Return north along S Embarcadero Promenade past Mile 2 toward Ruocco Park
-      [32.70354, -117.16014],
-      [32.70386, -117.16063],
-      [32.70419, -117.16113],
-      [32.70454, -117.16163],
-      [32.70486, -117.16208],
-      [32.70516, -117.16250],
-      [32.70538, -117.16282],
-      [32.70561, -117.16315],
-      [32.70578, -117.16340], // Mile 2 Marker
-      [32.70589, -117.16357],
-      [32.70611, -117.16396],
-      [32.70642, -117.16445],
-      [32.70679, -117.16499],
-      [32.70716, -117.16552],
-      [32.70752, -117.16602],
-      [32.70782, -117.16644],
-      [32.70793, -117.16660],
-      [32.70815, -117.16689],
-      [32.70834, -117.16716],
-      [32.70844, -117.16738],
-      [32.70846, -117.16757],
-      [32.70847, -117.16794],
-      [32.70847, -117.16837],
-      [32.70847, -117.16880],
-      [32.70846, -117.16919],
-      [32.70846, -117.16964],
-      [32.70852, -117.17015],
-      // Follow outer waterfront boardwalk ("The Embarcadero") north toward Ruocco Park
-      [32.70853, -117.17038],
-      [32.70853, -117.17065],
-      [32.70854, -117.17092],
-      [32.70855, -117.17113],
-      [32.70859, -117.17129],
-      [32.70867, -117.17146], // Mile 3 Marker
-      [32.70877, -117.17161],
-      [32.70890, -117.17175],
-      [32.70907, -117.17189],
-      [32.70927, -117.17202],
-      [32.70943, -117.17209],
-      [32.70965, -117.17217],
-      [32.70988, -117.17224],
-      [32.71010, -117.17232],
-      [32.71033, -117.17240],
-      [32.71050, -117.17251],
-      // Loop counterclockwise around Ruocco Park
-      [32.71067, -117.17241],
-      [32.71070, -117.17224],
-      [32.71073, -117.17202],
-      [32.71079, -117.17183],
-      [32.71089, -117.17170],
-      [32.71101, -117.17163],
-      [32.71114, -117.17164],
-      [32.71124, -117.17174],
-      [32.71129, -117.17189],
-      [32.71127, -117.17207],
-      [32.71121, -117.17229],
-      [32.71110, -117.17247],
-      [32.71097, -117.17255],
-      [32.71080, -117.17256],
-      [32.71064, -117.17255],
-      [32.71050, -117.17251],
-      // Continue back south along waterfront boardwalk & turn right to Start/Finish at NW corner of North Embarcadero Marina
-      [32.71033, -117.17240],
-      [32.71010, -117.17232],
-      [32.70988, -117.17224],
-      [32.70965, -117.17217],
-      [32.70943, -117.17209],
-      [32.70927, -117.17202],
-      [32.70907, -117.17189],
-      [32.70890, -117.17175],
-      [32.70877, -117.17161],
-      [32.70867, -117.17146],
-      [32.70859, -117.17129],
-      [32.70855, -117.17113],
-      [32.70854, -117.17092],
-      [32.70853, -117.17065],
-      [32.70853, -117.17038],
-      [32.70852, -117.17015],
-      [32.70841, -117.17010],
-      [32.70830, -117.17007],
-      [32.70820, -117.17005]  // FINISH: Right alongside Start at NW corner of North Embarcadero Marina (Red Dot)
-    ];
-
-    const STAGE_VIEWS = [
-      { coords: [32.7070, -117.1688], zoom: 16 },
-      { coords: [32.7040, -117.1645], zoom: 16 },
-      { coords: [32.7042, -117.1614], zoom: 16 },
-      { coords: [32.7098, -117.1715], zoom: 16 }
-    ];
-
-    let courseMap;
-    let mainRouteLine;
-    let googleStreetsLayer;
-    let googleHybridLayer;
-    let stageMarkers = [];
-    let simInterval = null;
-    let runnerMarker = null;
-    let simIndex = 0;
-    let mobileMapInteractive = false;
-    let isMapFullScreen = false;
-
-    function initCourseMap() {
-      const isMobile = window.innerWidth < 1024;
-
-      courseMap = L.map('courseMap', {
-        scrollWheelZoom: false,
-        dragging: !isMobile,
-        tap: !isMobile
-      }).setView([32.7068, -117.1662], 15);
-
-      googleStreetsLayer = L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
-        maxZoom: 20,
-        subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
-        attribution: '&copy; Google Maps'
-      }).addTo(courseMap);
-
-      googleHybridLayer = L.tileLayer('https://{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', {
-        maxZoom: 20,
-        subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
-        attribution: '&copy; Google Maps Satellite'
-      });
-
-      L.polyline(COURSE_COORDS, {
-        color: '#ffffff',
-        weight: 8,
-        opacity: 0.9,
-        lineJoin: 'round'
-      }).addTo(courseMap);
-
-      mainRouteLine = L.polyline(COURSE_COORDS, {
-        color: '#E31837',
-        weight: 5,
-        opacity: 1,
-        lineJoin: 'round'
-      }).addTo(courseMap);
-
-      L.polyline(COURSE_COORDS, {
-        color: '#FCA5A5',
-        weight: 1.5,
-        dashArray: '6, 8',
-        opacity: 0.9
-      }).addTo(courseMap);
-
-      function createBadgeIcon(htmlContent, bgClass, size = 28) {
-        return L.divIcon({
-          className: 'custom-div-icon',
-          html: `<div class="${bgClass} text-white font-black rounded-full shadow-lg border-2 border-white flex items-center justify-center marker-pulse" style="width:${size}px;height:${size}px;font-size:12px;">${htmlContent}</div>`,
-          iconSize: [size, size],
-          iconAnchor: [size / 2, size / 2],
-          popupAnchor: [0, -size / 2]
-        });
-      }
-
-      const startMarker = L.marker([32.70820, -117.17012], {
-        icon: createBadgeIcon('', 'bg-green-600', 22)
-      }).addTo(courseMap).bindPopup(`
-        <div class="text-xs p-1 space-y-1.5">
-          <strong class="text-green-700 uppercase block">START</strong>
-          <div>Northwest corner of the North Embarcadero Marina</div>
-          <a href="https://www.google.com/maps/dir/?api=1&destination=32.70820,-117.17009&travelmode=walking" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 bg-pts-navy text-white font-bold px-2.5 py-1 rounded text-[11px] shadow">
-            <i class="fa-solid fa-location-arrow text-amber-300"></i> Navigate Here
-          </a>
-        </div>
-      `);
-
-      const finishMarker = L.marker([32.70820, -117.16998], {
-        icon: createBadgeIcon('', 'bg-pts-accent', 22)
-      }).addTo(courseMap).bindPopup(`
-        <div class="text-xs p-1">
-          <strong class="text-pts-accent uppercase block">FINISH</strong>
-          Northwest corner of the North Embarcadero Marina
-        </div>
-      `);
-
-      const mile1Marker = L.marker([32.70448, -117.16467], {
-        icon: createBadgeIcon('1', 'bg-pts-accent', 26)
-      }).addTo(courseMap).bindPopup(`<div class="text-xs p-1"><strong class="text-pts-accent">Mile 1</strong><br>South Embarcadero Marina loop</div>`);
-
-      const hiltonTurnMarker = L.marker([32.70331, -117.15973], {
-        icon: createBadgeIcon('<i class="fa-solid fa-rotate-left text-[10px]"></i>', 'bg-pts-blue', 24)
-      }).addTo(courseMap).bindPopup(`<div class="text-xs p-1"><strong class="text-pts-blue">U-Turn</strong><br>Promenade toward the Hilton (U-turn before the hotel)</div>`);
-
-      const mile2Marker = L.marker([32.70578, -117.16340], {
-        icon: createBadgeIcon('2', 'bg-pts-accent', 26)
-      }).addTo(courseMap).bindPopup(`<div class="text-xs p-1"><strong class="text-pts-accent">Mile 2</strong><br>Bayfront Promenade</div>`);
-
-      const mile3Marker = L.marker([32.70867, -117.17146], {
-        icon: createBadgeIcon('3', 'bg-pts-accent', 26)
-      }).addTo(courseMap).bindPopup(`<div class="text-xs p-1"><strong class="text-pts-accent">Mile 3</strong><br>Return route from Ruocco Park</div>`);
-
-      stageMarkers = [startMarker, mile1Marker, hiltonTurnMarker, mile3Marker];
-
-      courseMap.fitBounds(mainRouteLine.getBounds(), { padding: [22, 22] });
-    }
-
-    function toggleFullScreenMap() {
-      const wrapper = document.getElementById('mapWrapperContainer');
-      const fsText = document.getElementById('fsToggleText');
-      const fsIcon = document.getElementById('fsToggleIcon');
-      const lockBtn = document.getElementById('mobileTouchLockBtn');
-
-      isMapFullScreen = !isMapFullScreen;
-
-      if (isMapFullScreen) {
-        wrapper.classList.add('map-fullscreen-active');
-        document.body.style.overflow = 'hidden';
-        fsText.innerText = "Exit Full Screen";
-        fsIcon.className = "fa-solid fa-compress text-amber-300";
-        courseMap.dragging.enable();
-        courseMap.scrollWheelZoom.enable();
-        if (lockBtn) lockBtn.classList.add('hidden');
-      } else {
-        wrapper.classList.remove('map-fullscreen-active');
-        document.body.style.overflow = '';
-        fsText.innerText = "Full Screen";
-        fsIcon.className = "fa-solid fa-expand text-amber-300";
-        courseMap.scrollWheelZoom.disable();
-        if (window.innerWidth < 1024 && !mobileMapInteractive) {
-          courseMap.dragging.disable();
-        }
-        if (lockBtn) lockBtn.classList.remove('hidden');
-      }
-
-      setTimeout(() => {
-        if (courseMap && mainRouteLine) {
-          courseMap.invalidateSize();
-          courseMap.fitBounds(mainRouteLine.getBounds(), { padding: [25, 25] });
-        }
-      }, 200);
-    }
-
-    document.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape' && isMapFullScreen) {
-        toggleFullScreenMap();
-      }
-    });
-
-    function toggleMobileMapTouch() {
-      if (!courseMap) return;
-      mobileMapInteractive = !mobileMapInteractive;
-      const btn = document.getElementById('mobileTouchLockBtn');
-      const text = document.getElementById('mobileTouchText');
-      const icon = document.getElementById('mobileTouchIcon');
-
-      if (mobileMapInteractive) {
-        courseMap.dragging.enable();
-        text.innerText = "Lock Map to Scroll";
-        icon.className = "fa-solid fa-lock-open text-green-400";
-        btn.classList.replace('bg-pts-navy/90', 'bg-green-900/95');
-      } else {
-        courseMap.dragging.disable();
-        text.innerText = "Tap to Pan Map";
-        icon.className = "fa-solid fa-hand-pointer text-amber-300";
-        btn.classList.replace('bg-green-900/95', 'bg-pts-navy/90');
-      }
-    }
-
-    function setGoogleMapMode(mode) {
-      const btnStreet = document.getElementById('btnMapStreet');
-      const btnSat = document.getElementById('btnMapSat');
-
-      const activeClass = "px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-lg bg-pts-navy text-white transition flex items-center gap-1";
-      const inactiveClass = "px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-lg text-gray-700 hover:bg-gray-100 transition flex items-center gap-1";
-
-      courseMap.removeLayer(googleStreetsLayer);
-      courseMap.removeLayer(googleHybridLayer);
-
-      if (mode === 'hybrid') {
-        courseMap.addLayer(googleHybridLayer);
-        btnSat.className = activeClass;
-        btnStreet.className = inactiveClass;
-      } else {
-        courseMap.addLayer(googleStreetsLayer);
-        btnStreet.className = activeClass;
-        btnSat.className = inactiveClass;
-      }
-    }
-
-    function focusCourseStage(index) {
-      highlightStepCardOnly(index);
-      const stage = STAGE_VIEWS[index];
-      if (stage && courseMap) {
-        courseMap.flyTo(stage.coords, stage.zoom, { duration: 1.0 });
-        if (stageMarkers[index]) {
-          stageMarkers[index].openPopup();
-        }
-      }
-    }
-
-    function resetCourseMapView() {
-      if (courseMap && mainRouteLine) {
-        courseMap.closePopup();
-        courseMap.fitBounds(mainRouteLine.getBounds(), { padding: [22, 22] });
-      }
-    }
-
-    function buildSmoothCoursePoints(coords, stepsPerSegment = 4) {
-      const points = [];
-      for (let i = 0; i < coords.length - 1; i++) {
-        const start = coords[i];
-        const end = coords[i + 1];
-        for (let s = 0; s < stepsPerSegment; s++) {
-          const t = s / stepsPerSegment;
-          points.push([
-            start[0] + (end[0] - start[0]) * t,
-            start[1] + (end[1] - start[1]) * t
-          ]);
-        }
-      }
-      points.push(coords[coords.length - 1]);
-      return points;
-    }
-
-    const SMOOTH_COURSE_PATH = buildSmoothCoursePoints(COURSE_COORDS, 4);
-
-    function toggleCourseSimulation() {
-      const btnText = document.getElementById('simRunText');
-      const btnIcon = document.getElementById('simRunIcon');
-      const overlay = document.getElementById('simStatusOverlay');
-
-      if (simInterval) {
-        clearInterval(simInterval);
-        simInterval = null;
-        btnText.innerText = "Simulate Course Route";
-        btnIcon.className = "fa-solid fa-play";
-        overlay.classList.add('hidden');
-        if (runnerMarker) {
-          courseMap.removeLayer(runnerMarker);
-          runnerMarker = null;
-        }
-        return;
-      }
-
-      overlay.classList.remove('hidden');
-      btnText.innerText = "Stop Simulation";
-      btnIcon.className = "fa-solid fa-stop";
-      simIndex = 0;
-
-      const runnerIcon = L.divIcon({
-        className: 'runner-sim-icon',
-        html: `<div class="bg-amber-400 text-pts-navy rounded-full shadow-xl border-2 border-pts-navy flex items-center justify-center" style="width:30px;height:30px;font-size:14px;"><i class="fa-solid fa-person-running"></i></div>`,
-        iconSize: [30, 30],
-        iconAnchor: [15, 15]
-      });
-
-      runnerMarker = L.marker(SMOOTH_COURSE_PATH[0], { icon: runnerIcon, zIndexOffset: 1000 }).addTo(courseMap);
-      courseMap.panTo(SMOOTH_COURSE_PATH[0]);
-
-      simInterval = setInterval(() => {
-        simIndex++;
-        if (simIndex >= SMOOTH_COURSE_PATH.length) {
-          clearInterval(simInterval);
-          simInterval = null;
-          btnText.innerText = "Replay Course Route";
-          btnIcon.className = "fa-solid fa-rotate-right";
-          document.getElementById('simStageLabel').innerText = "Start/Finish area at the North Embarcadero Marina";
-          document.getElementById('simDistanceLabel').innerText = "100%";
-          document.getElementById('simProgressBar').style.width = "100%";
-          highlightStepCardOnly(3);
-          return;
-        }
-
-        const pt = SMOOTH_COURSE_PATH[simIndex];
-        runnerMarker.setLatLng(pt);
-
-        const pct = simIndex / (SMOOTH_COURSE_PATH.length - 1);
-        document.getElementById('simDistanceLabel').innerText = `${Math.round(pct * 100)}%`;
-        document.getElementById('simProgressBar').style.width = `${(pct * 100).toFixed(1)}%`;
-
-        let stageLabel = "North Embarcadero Marina & Bayfront Promenade";
-        if (pct > 0.62) {
-          stageLabel = "Waterfront north toward Ruocco Park & back to Start/Finish";
-          highlightStepCardOnly(3);
-        } else if (pct > 0.48) {
-          stageLabel = "Promenade toward the Hilton & U-turn before the hotel";
-          highlightStepCardOnly(2);
-        } else if (pct > 0.28) {
-          stageLabel = "Loop (counterclockwise) around the South Embarcadero Marina";
-          highlightStepCardOnly(1);
-        } else {
-          highlightStepCardOnly(0);
-        }
-        document.getElementById('simStageLabel').innerText = stageLabel;
-
-        if (simIndex % 8 === 0) {
-          courseMap.panTo(pt, { animate: true, duration: 0.35 });
-        }
-      }, 45);
-    }
-
-    function highlightStepCardOnly(index) {
-      const container = document.getElementById('courseStepList');
-      document.querySelectorAll('.course-step-card').forEach((el, idx) => {
-        const isActive = idx === index;
-        el.classList.toggle('active', isActive);
-        if (isActive && window.innerWidth < 1024 && container) {
-          const scrollLeft = el.offsetLeft - container.offsetLeft - 16;
-          container.scrollTo({ left: scrollLeft, behavior: 'smooth' });
-        }
-      });
-    }
-
-    window.addEventListener('DOMContentLoaded', initCourseMap);
-
-    // =========================================================================
-    // FORM VALIDATION & REGISTRATION LOGIC
-    // =========================================================================
-    function autoCapitalize(e) {
-      const words = e.target.value.split(' ');
-      e.target.value = words.map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-    }
-    document.getElementById('firstName').addEventListener('keyup', autoCapitalize);
-    document.getElementById('lastName').addEventListener('keyup', autoCapitalize);
-    document.getElementById('city').addEventListener('keyup', autoCapitalize);
-
-    document.getElementById('userPin').addEventListener('input', function(e) {
-      if (e.target.value.length === 4 || e.target.value.length === 6) {
-        document.getElementById('confirmPin').focus();
-      }
-    });
-
-    // --- SCROLL TO ACCEPT PRIVACY NOTICE ---
-    const privacyBox = document.getElementById('privacyScrollBox');
-    const privacyCheckbox = document.getElementById('privacyNotice');
-    const privacyLabel = document.getElementById('privacyLabel');
-    const privacyPrompt = document.getElementById('privacyScrollPrompt');
-
-    function unlockPrivacyCheckbox() {
-      privacyCheckbox.disabled = false;
-      privacyCheckbox.classList.remove('cursor-not-allowed');
-      privacyCheckbox.classList.add('cursor-pointer');
-      privacyLabel.classList.remove('text-gray-400', 'cursor-not-allowed');
-      privacyLabel.classList.add('text-gray-700', 'cursor-pointer');
-
-      privacyPrompt.className = "text-xs text-green-700 bg-green-50 border border-green-200 px-3 py-2 rounded-lg flex items-center gap-2";
-      privacyPrompt.innerHTML = '<i class="fa-solid fa-circle-check flex-shrink-0"></i><span>Privacy Notice reviewed. You may now check the agreement box below.</span>';
-    }
-
-    privacyBox.addEventListener('scroll', function() {
-      if (privacyBox.scrollHeight - privacyBox.scrollTop - privacyBox.clientHeight <= 10) {
-        unlockPrivacyCheckbox();
-      }
-    });
-
-    const IGNORED_DOMAINS = ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com', 'icloud.com', 'aol.com', 'protonmail.com', 'me.com', 'live.com', 'msn.com'];
-
-    async function checkCompanyDomainAutoFill() {
-      const email = document.getElementById('email').value.trim();
-      if (!email || !email.includes('@')) return;
-
-      const domain = email.split('@')[1].toLowerCase();
-      if (IGNORED_DOMAINS.includes(domain)) return;
-
-      if (document.getElementById('company').value.trim()) return;
-
-      try {
-        const res = await fetch(`${SCRIPT_URL}?action=getCompanyByDomain&domain=${encodeURIComponent(domain)}`);
-        const json = await res.json();
-
-        if (json.status === 'found') {
-          if (json.company) document.getElementById('company').value = json.company;
-          if (json.city) document.getElementById('city').value = json.city;
-          if (json.state) document.getElementById('state').value = json.state;
-          if (json.country) document.getElementById('country').value = json.country;
-          if (json.postalCode) document.getElementById('postalCode').value = json.postalCode;
-
-          document.getElementById('autofillBadge').classList.remove('hidden');
-          checkFormValidity();
-        }
-      } catch (e) {
-      }
-    }
-
-    document.getElementById('email').addEventListener('blur', checkCompanyDomainAutoFill);
-
-    const nameRegex = /^[a-zA-Z\s\-']+$/;
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const phoneRegex = /^\+?[0-9\s\-\(\)]{7,20}$/;
-
-    function validateField(inputEl, regex, errEl) {
-      const val = inputEl.value.trim();
-      if (!val) {
-        inputEl.classList.remove('border-red-500', 'ring-red-200');
-        if (errEl) errEl.classList.add('hidden');
-        return true;
-      }
-      
-      const isValid = regex.test(val);
-      if (!isValid) {
-        inputEl.classList.add('border-red-500', 'ring-2', 'ring-red-200');
-        if (errEl) errEl.classList.remove('hidden');
-      } else {
-        inputEl.classList.remove('border-red-500', 'ring-2', 'ring-red-200');
-        if (errEl) errEl.classList.add('hidden');
-      }
-      return isValid;
-    }
-
-    function attachFieldValidator(id, regex, errId) {
-      const el = document.getElementById(id);
-      const errEl = document.getElementById(errId);
-      el.addEventListener('blur', () => { validateField(el, regex, errEl); checkFormValidity(); });
-      el.addEventListener('input', () => { validateField(el, regex, errEl); checkFormValidity(); });
-    }
-
-    attachFieldValidator('firstName', nameRegex, 'firstNameErr');
-    attachFieldValidator('lastName', nameRegex, 'lastNameErr');
-    attachFieldValidator('email', emailRegex, 'emailErr');
-    attachFieldValidator('mobile', phoneRegex, 'mobileErr');
-    attachFieldValidator('city', nameRegex, 'cityErr');
-
-    function levenshteinDistance(a, b) {
-      if (a.length === 0) return b.length;
-      if (b.length === 0) return a.length;
-
-      const matrix = [];
-      for (let i = 0; i <= b.length; i++) matrix[i] = [i];
-      for (let j = 0; j <= a.length; j++) matrix[0][j] = j;
-
-      for (let i = 1; i <= b.length; i++) {
-        for (let j = 1; j <= a.length; j++) {
-          if (b.charAt(i - 1) === a.charAt(j - 1)) {
-            matrix[i][j] = matrix[i - 1][j - 1];
-          } else {
-            matrix[i][j] = Math.min(
-              matrix[i - 1][j - 1] + 1,
-              matrix[i][j - 1] + 1,
-              matrix[i - 1][j] + 1
-            );
-          }
-        }
-      }
-      return matrix[b.length][a.length];
-    }
-
-    function checkEmergencyContact() {
-      const fnRaw = document.getElementById('firstName').value.trim();
-      const lnRaw = document.getElementById('lastName').value.trim();
-      const emNameRaw = document.getElementById('emergencyName').value.trim();
-
-      const fnClean = fnRaw.toLowerCase().replace(/[^a-z0-9]/g, '');
-      const lnClean = lnRaw.toLowerCase().replace(/[^a-z0-9]/g, '');
-      const emNameClean = emNameRaw.toLowerCase().replace(/[^a-z0-9]/g, '');
-
-      const mobileDigits = document.getElementById('mobile').value.replace(/\D/g, '');
-      const emPhoneDigits = document.getElementById('emergencyPhone').value.replace(/\D/g, '');
-
-      const emNameEl = document.getElementById('emergencyName');
-      const emNameErr = document.getElementById('emergencyNameErr');
-      const emPhoneEl = document.getElementById('emergencyPhone');
-      const emPhoneErr = document.getElementById('emergencyPhoneErr');
-
-      let isValid = true;
-
-      if (emNameClean) {
-        const normalFullName = fnClean + lnClean;
-        const reverseFullName = lnClean + fnClean;
-
-        let isSelfMatch = false;
-
-        if (normalFullName && reverseFullName) {
-          if (emNameClean === normalFullName || emNameClean === reverseFullName) {
-            isSelfMatch = true;
-          }
-          else if ((fnClean && emNameClean === fnClean) || (lnClean && emNameClean === lnClean)) {
-            isSelfMatch = true;
-          }
-          else if (
-            levenshteinDistance(emNameClean, normalFullName) <= 2 ||
-            levenshteinDistance(emNameClean, reverseFullName) <= 2
-          ) {
-            isSelfMatch = true;
-          }
-        }
-
-        if (isSelfMatch) {
-          emNameEl.classList.add('border-red-500', 'ring-2', 'ring-red-200');
-          emNameErr.innerText = "Emergency contact cannot be yourself or a variation of your name.";
-          emNameErr.classList.remove('hidden');
-          isValid = false;
-        } else if (!nameRegex.test(emNameRaw)) {
-          emNameEl.classList.add('border-red-500', 'ring-2', 'ring-red-200');
-          emNameErr.innerText = "Name should contain only letters.";
-          emNameErr.classList.remove('hidden');
-          isValid = false;
-        } else {
-          emNameEl.classList.remove('border-red-500', 'ring-2', 'ring-red-200');
-          emNameErr.classList.add('hidden');
-        }
-      }
-
-      if (emPhoneDigits) {
-        if (mobileDigits && emPhoneDigits === mobileDigits) {
-          emPhoneEl.classList.add('border-red-500', 'ring-2', 'ring-red-200');
-          emPhoneErr.innerText = "Emergency phone cannot be your own phone number.";
-          emPhoneErr.classList.remove('hidden');
-          isValid = false;
-        } else if (!phoneRegex.test(document.getElementById('emergencyPhone').value.trim())) {
-          emPhoneEl.classList.add('border-red-500', 'ring-2', 'ring-red-200');
-          emPhoneErr.innerText = "Enter a valid phone number.";
-          emPhoneErr.classList.remove('hidden');
-          isValid = false;
-        } else {
-          emPhoneEl.classList.remove('border-red-500', 'ring-2', 'ring-red-200');
-          emPhoneErr.classList.add('hidden');
-        }
-      }
-
-      return isValid;
-    }
-
-    document.getElementById('emergencyName').addEventListener('blur', () => { checkEmergencyContact(); checkFormValidity(); });
-    document.getElementById('emergencyName').addEventListener('input', () => { checkEmergencyContact(); checkFormValidity(); });
-    document.getElementById('emergencyPhone').addEventListener('blur', () => { checkEmergencyContact(); checkFormValidity(); });
-    document.getElementById('emergencyPhone').addEventListener('input', () => { checkEmergencyContact(); checkFormValidity(); });
-    document.getElementById('firstName').addEventListener('blur', () => { checkEmergencyContact(); checkFormValidity(); });
-    document.getElementById('lastName').addEventListener('blur', () => { checkEmergencyContact(); checkFormValidity(); });
-    document.getElementById('mobile').addEventListener('blur', () => { checkEmergencyContact(); checkFormValidity(); });
-
-    function checkPinMatch() {
-      const pin = document.getElementById('userPin').value;
-      const confirm = document.getElementById('confirmPin').value;
-      const pinErr = document.getElementById('pinErr');
-      
-      if (confirm && pin !== confirm) {
-        document.getElementById('confirmPin').classList.add('border-red-500', 'ring-2', 'ring-red-200');
-        pinErr.classList.remove('hidden');
-        return false;
-      } else {
-        document.getElementById('confirmPin').classList.remove('border-red-500', 'ring-2', 'ring-red-200');
-        pinErr.classList.add('hidden');
-        return true;
-      }
-    }
-    document.getElementById('confirmPin').addEventListener('blur', () => { checkPinMatch(); checkFormValidity(); });
-    document.getElementById('confirmPin').addEventListener('input', () => { checkPinMatch(); checkFormValidity(); });
-    document.getElementById('userPin').addEventListener('input', () => { checkPinMatch(); checkFormValidity(); });
-
-    function checkSignatureMatch() {
-      const fn = document.getElementById('firstName').value.trim();
-      const ln = document.getElementById('lastName').value.trim();
-      const sig = document.getElementById('signature').value.trim();
-      const sigErr = document.getElementById('sigMatchError');
-      const sigEl = document.getElementById('signature');
-
-      if (!sig) {
-        sigEl.classList.remove('border-red-500', 'ring-2', 'ring-red-200');
-        sigErr.classList.add('hidden');
-        return false;
-      }
-
-      const expected = `${fn} ${ln}`.toLowerCase();
-      if (sig.toLowerCase() !== expected) {
-        sigEl.classList.add('border-red-500', 'ring-2', 'ring-red-200');
-        sigErr.classList.remove('hidden');
-        return false;
-      } else {
-        sigEl.classList.remove('border-red-500', 'ring-2', 'ring-red-200');
-        sigErr.classList.add('hidden');
-        return true;
-      }
-    }
-    document.getElementById('signature').addEventListener('blur', () => { checkSignatureMatch(); checkFormValidity(); });
-    document.getElementById('signature').addEventListener('input', () => { checkSignatureMatch(); checkFormValidity(); });
-
-    function checkFormValidity() {
-      const fn = document.getElementById('firstName').value.trim();
-      const ln = document.getElementById('lastName').value.trim();
-      const email = document.getElementById('email').value.trim();
-      const mobile = document.getElementById('mobile').value.trim();
-      const genderChecked = document.querySelector('input[name="gender"]:checked');
-      const company = document.getElementById('company').value.trim();
-      const city = document.getElementById('city').value.trim();
-      const country = document.getElementById('country').value.trim();
-      const emName = document.getElementById('emergencyName').value.trim();
-      const emPhone = document.getElementById('emergencyPhone').value.trim();
-      const shirt = document.getElementById('tshirtSize').value.trim();
-      const photo = document.getElementById('photoRelease').checked;
-      const waiver = document.getElementById('liabilityWaiver').checked;
-      const privacy = document.getElementById('privacyNotice').checked;
-      const sig = document.getElementById('signature').value.trim();
-      const userPin = document.getElementById('userPin').value.trim();
-      const confirmPin = document.getElementById('confirmPin').value.trim();
-      const isEditing = Boolean(document.getElementById('regId').value);
-
-      const submitBtn = document.getElementById('submitBtn');
-
-      const isBaseValid = fn && ln && emailRegex.test(email) && phoneRegex.test(mobile) &&
-                          genderChecked && company && city && country && emName && phoneRegex.test(emPhone) &&
-                          shirt && photo && waiver && privacy && sig && (sig.toLowerCase() === `${fn} ${ln}`.toLowerCase()) &&
-                          checkEmergencyContact();
-
-      const isPinValid = isEditing || (userPin && confirmPin && userPin === confirmPin);
-
-      if (isBaseValid && isPinValid) {
-        submitBtn.disabled = false;
-        submitBtn.classList.remove('bg-gray-300', 'text-gray-500', 'cursor-not-allowed');
-        submitBtn.classList.add('bg-pts-navy', 'hover:bg-pts-blue', 'text-white', 'shadow-lg', 'cursor-pointer');
-      } else {
-        submitBtn.disabled = true;
-        submitBtn.classList.add('bg-gray-300', 'text-gray-500', 'cursor-not-allowed');
-        submitBtn.classList.remove('bg-pts-navy', 'hover:bg-pts-blue', 'text-white', 'shadow-lg', 'cursor-pointer');
-      }
-    }
-
-    document.getElementById('regForm').addEventListener('input', checkFormValidity);
-    document.getElementById('country').addEventListener('change', checkFormValidity);
-    document.getElementById('tshirtSize').addEventListener('change', checkFormValidity);
-    document.getElementById('photoRelease').addEventListener('change', checkFormValidity);
-    document.getElementById('liabilityWaiver').addEventListener('change', checkFormValidity);
-    document.getElementById('privacyNotice').addEventListener('change', checkFormValidity);
-    document.querySelectorAll('input[name="gender"]').forEach(el => el.addEventListener('change', checkFormValidity));
-
-    function generatePDFPass() {
-      const regId = document.getElementById('regId').value;
-      const fn = document.getElementById('firstName').value;
-      const ln = document.getElementById('lastName').value;
-      const genderEl = document.querySelector('input[name="gender"]:checked');
-      
-      document.getElementById('pdfRegId').innerText = regId;
-      document.getElementById('pdfName').innerText = `${fn} ${ln}`;
-      document.getElementById('pdfEmail').innerText = document.getElementById('email').value;
-      document.getElementById('pdfCompany').innerText = document.getElementById('company').value;
-      document.getElementById('pdfGender').innerText = genderEl ? genderEl.value : '';
-      document.getElementById('pdfShirt').innerText = document.getElementById('tshirtSize').value;
-      document.getElementById('pdfEmergPhone').innerText = document.getElementById('emergencyPhone').value;
-
-      const element = document.getElementById('pdfPassTemplate');
-      html2pdf().from(element).save(`${regId}_5K_Registration_Pass.pdf`);
-    }
-
-    document.getElementById('regForm').addEventListener('submit', function(e) {
-      if (!checkEmergencyContact()) {
-        e.preventDefault();
-        alert("Invalid Emergency Contact Details!\n\nYour emergency contact name and phone number cannot be your own details or a variation. Please provide someone else's contact info.");
-        document.getElementById('emergencyName').focus();
-        return;
-      }
-
-      const firstName = document.getElementById('firstName').value.trim();
-      const lastName = document.getElementById('lastName').value.trim();
-      const signature = document.getElementById('signature').value.trim();
-      const expectedFullName = `${firstName} ${lastName}`.toLowerCase();
-
-      if (signature.toLowerCase() !== expectedFullName) {
-        e.preventDefault();
-        document.getElementById('sigMatchError').classList.remove('hidden');
-        document.getElementById('signature').focus();
-        return;
-      }
-
-      const existingRegId = document.getElementById('regId').value;
-      const isEditing = Boolean(existingRegId);
-      const userPin = document.getElementById('userPin').value;
-      const confirmPin = document.getElementById('confirmPin').value;
-      const currentStatus = document.getElementById('currentPaymentStatus').value;
-
-      if (!isEditing && userPin !== confirmPin) {
-        e.preventDefault();
-        document.getElementById('pinErr').classList.remove('hidden');
-        document.getElementById('confirmPin').focus();
-        return;
-      }
-
-      const btnText = document.getElementById('btnText');
-      btnText.innerText = "Saving & Redirecting...";
-
-      const targetRegId = isEditing ? existingRegId : ('PTS-' + Math.floor(100000 + Math.random() * 900000));
-      document.getElementById('generatedRegId').value = targetRegId;
-
-      if (isEditing) {
-        if (currentStatus !== 'Paid') {
-          pendingRedirectUrl = `${STRIPE_PAYMENT_LINK}?client_reference_id=${targetRegId}`;
-        } else {
-          pendingRedirectUrl = "";
-          setTimeout(() => {
-            alert('Your registration details have been updated successfully!');
-            btnText.innerText = "Save Changes";
-          }, 1000);
-        }
-      } else {
-        pendingRedirectUrl = `${STRIPE_PAYMENT_LINK}?client_reference_id=${targetRegId}`;
-      }
-    });
-
-    async function performLookup() {
-      const q = document.getElementById('lookupQuery').value;
-      const pin = document.getElementById('lookupPin').value;
-      const msg = document.getElementById('lookupMessage');
-      
-      if (!q || !pin) {
-        msg.className = "mt-4 text-sm text-center text-red-500";
-        msg.innerText = "Please enter both Email/ID and Security PIN.";
-        return;
-      }
-
-      msg.className = "mt-4 text-sm text-center text-gray-500";
-      msg.innerText = "Verifying...";
-
-      try {
-        const res = await fetch(`${SCRIPT_URL}?action=lookup&query=${encodeURIComponent(q)}&pin=${encodeURIComponent(pin)}`);
-        const json = await res.json();
-
-        if (json.status === 'found') {
-          const d = json.data;
-          document.getElementById('regId').value = d.regId;
-          document.getElementById('userPin').value = d.pin;
-          document.getElementById('confirmPin').value = d.pin;
-          document.getElementById('currentPaymentStatus').value = d.paymentStatus;
-          
-          document.getElementById('pinSection').classList.add('hidden');
-
-          document.getElementById('firstName').value = d.firstName;
-          document.getElementById('lastName').value = d.lastName;
-          document.getElementById('email').value = d.email;
-          document.getElementById('mobile').value = d.mobile;
-          
-          if (d.gender) {
-            const genderRadio = document.querySelector(`input[name="gender"][value="${d.gender}"]`);
-            if (genderRadio) genderRadio.checked = true;
-          }
-
-          document.getElementById('company').value = d.company;
-          document.getElementById('city').value = d.city;
-          document.getElementById('state').value = d.state;
-          document.getElementById('country').value = d.country;
-          if (d.postalCode) document.getElementById('postalCode').value = d.postalCode;
-          document.getElementById('emergencyName').value = d.emergencyName;
-          document.getElementById('emergencyPhone').value = d.emergencyPhone;
-          document.getElementById('tshirtSize').value = d.tshirtSize;
-          document.getElementById('signature').value = d.signature;
-          
-          if (d.sigDate) {
-            document.getElementById('sigDate').value = d.sigDate.split('T')[0];
-          }
-
-          document.getElementById('photoRelease').checked = (d.photoRelease === true || d.photoRelease === 'Yes');
-          document.getElementById('liabilityWaiver').checked = (d.liabilityWaiver === true || d.liabilityWaiver === 'Yes');
-          
-          unlockPrivacyCheckbox();
-          if (d.privacyNotice !== undefined) {
-            document.getElementById('privacyNotice').checked = (d.privacyNotice === true || d.privacyNotice === 'Yes');
-          }
-
-          document.getElementById('formTitle').innerText = `Editing Registration (${d.regId})`;
-          
-          const badgeContainer = document.getElementById('paymentBadge');
-          badgeContainer.classList.remove('hidden');
-
-          if (d.paymentStatus === 'Paid') {
-            badgeContainer.innerHTML = `
-              <span class="bg-green-100 text-green-800 text-xs font-bold px-3 py-1.5 rounded-full"><i class="fa-solid fa-check mr-1"></i> Payment Complete</span>
-              <button type="button" onclick="generatePDFPass()" class="bg-pts-navy hover:bg-pts-blue text-white text-xs font-bold px-3 py-1.5 rounded-lg shadow transition flex items-center gap-1.5"><i class="fa-solid fa-file-pdf"></i> Download Official Pass</button>
-            `;
-            document.getElementById('btnText').innerText = "Save Changes";
-          } else {
-            badgeContainer.innerHTML = `<span class="bg-amber-100 text-amber-800 text-xs font-bold px-3 py-1 rounded-full"><i class="fa-solid fa-clock mr-1"></i> Payment Pending</span>`;
-            document.getElementById('btnText').innerText = "Save & Complete USD 75.00 Payment Now";
-          }
-
-          toggleModal('lookupModal');
-          msg.innerText = "";
-          checkFormValidity();
-        } else if (json.status === 'denied') {
-          msg.className = "mt-4 text-sm text-center text-red-600 font-semibold";
-          msg.innerText = "Access Denied: Incorrect Security PIN.";
-        } else {
-          msg.className = "mt-4 text-sm text-center text-red-500";
-          msg.innerText = "No matching registration found.";
-        }
-      } catch (e) {
-        msg.className = "mt-4 text-sm text-center text-red-500";
-        msg.innerText = "Error searching registration.";
-      }
-    }
+    // Default to Race Day Mode for demo
+    setSitePhaseMode('raceday');
   </script>
 </body>
 </html>
