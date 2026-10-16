@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>IAM & PARAMOUNT Charity 5K Fun Run/Walk Hub</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            pts: {
+              navy: '#003366',
+              blue: '#00529B',
+              accent: '#E31837',
+              light: '#F0F4F8'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  
+  <!-- Leaflet Interactive Map CSS & JS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <style>
+    .leaflet-container { font-family: inherit; z-index: 10; }
+    @keyframes pulse-ring {
+      0% { transform: scale(0.8); opacity: 0.8; }
+      100% { transform: scale(2.2); opacity: 0; }
+    }
+    .marker-pulse::before {
+      content: ''; position: absolute; inset: -6px; border-radius: 9999px;
+      background-color: inherit; animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite; z-index: -1;
+    }
+    .course-step-card.active {
+      border-color: #E31837; background-color: #FFF5F5; box-shadow: 0 8px 15px -3px rgba(227, 24, 55, 0.15);
+    }
+    .map-fullscreen-active {
+      position: fixed !important; inset: 0 !important; width: 100vw !important; height: 100vh !important; z-index: 9999 !important;
+    }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    * { -webkit-tap-highlight-color: transparent; }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans antialiased min-h-screen flex flex-col">
+
+  <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
+
+  <header class="bg-pts-navy text-white shadow-xl relative overflow-hidden">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-5 md:py-8 relative z-10">
+      
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-6 items-center border-b border-blue-800/60 pb-5 md:pb-6">
+        
+        <div class="md:col-span-4 flex justify-center md:justify-start">
+          <div class="bg-white px-3.5 py-2.5 sm:px-4 sm:py-3 rounded-2xl shadow-md grid grid-cols-[1fr_auto_1fr] items-center w-full max-w-sm">
+            <div class="flex items-center justify-center p-1">
+              <a href="https://iamovers.org/" target="_blank" rel="noopener noreferrer" class="hover:opacity-85 transition-opacity flex items-center justify-center">
+                <img src="IAM_logo(1500px).png" alt="International Association of Movers" class="h-12 sm:h-16 md:h-20 w-auto max-w-full object-contain" onError="this.onerror=null;this.src='https://iamovers.org/wp-content/uploads/2025/01/IAM-Logo.png';">
+              </a>
+            </div>
+            <div class="h-10 sm:h-16 w-px bg-gray-300 mx-2 sm:mx-3"></div>
+            <div class="flex items-center justify-center p-1">
+              <a href="https://pts-moves.com/" target="_blank" rel="noopener noreferrer" class="hover:opacity-85 transition-opacity flex items-center justify-center">
+                <img src="Paramount30thLogo.png" alt="Paramount Transportation Systems" class="h-14 sm:h-18 md:h-24 w-auto max-w-full object-contain">
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="md:col-span-4 flex justify-center">
+          <div class="bg-white rounded-2xl px-4 py-2.5 sm:px-5 sm:py-3 border border-gray-100 text-center shadow-md w-full max-w-sm md:max-w-xs">
+            <span class="text-[11px] sm:text-xs uppercase tracking-wider text-pts-navy block font-bold mb-1.5 sm:mb-2">
+              <i class="fa-solid fa-stopwatch mr-1 text-pts-blue"></i> Race Countdown
+            </span>
+            <div id="countdownClock" class="grid grid-cols-4 gap-2 text-center">
+              <div class="bg-pts-light p-1.5 sm:p-2 rounded-lg border border-blue-100"><span id="cdDays" class="text-lg sm:text-xl font-black text-pts-navy block leading-none">00</span><span class="text-[9px] text-gray-500 font-semibold uppercase mt-1 block">Days</span></div>
+              <div class="bg-pts-light p-1.5 sm:p-2 rounded-lg border border-blue-100"><span id="cdHours" class="text-lg sm:text-xl font-black text-pts-navy block leading-none">00</span><span class="text-[9px] text-gray-500 font-semibold uppercase mt-1 block">Hrs</span></div>
+              <div class="bg-pts-light p-1.5 sm:p-2 rounded-lg border border-blue-100"><span id="cdMins" class="text-lg sm:text-xl font-black text-pts-navy block leading-none">00</span><span class="text-[9px] text-gray-500 font-semibold uppercase mt-1 block">Mins</span></div>
+              <div class="bg-pts-light p-1.5 sm:p-2 rounded-lg border border-blue-100"><span id="cdSecs" class="text-lg sm:text-xl font-black text-pts-navy block leading-none">00</span><span class="text-[9px] text-gray-500 font-semibold uppercase mt-1 block">Secs</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="md:col-span-4 flex flex-col items-center md:items-end gap-2.5 w-full">
+          <button type="button" onclick="toggleModal('lookupModal')" class="w-full max-w-sm md:max-w-xs bg-white active:bg-gray-100 hover:bg-gray-50 text-pts-navy px-4 py-3 sm:py-2.5 rounded-2xl text-xs sm:text-sm font-bold border border-gray-100 transition flex items-center justify-center gap-2 shadow-md">
+            <i class="fa-solid fa-lock text-pts-blue"></i> Secure Check-in / Edit Registration
+          </button>
+          
+          <div class="w-full max-w-sm md:max-w-xs bg-white rounded-2xl p-2.5 border border-gray-100 text-center shadow-md">
+            <div class="flex items-baseline justify-center gap-2">
+              <span class="text-[11px] font-bold uppercase tracking-wider text-gray-600">Registration Fee:</span>
+              <span class="text-xl sm:text-2xl font-black text-pts-navy">USD 75.00</span>
+            </div>
+            <span class="text-[10px] text-gray-500 block mt-0.5 leading-tight font-medium">Includes Shirt, Bib, Beverages and Snacks</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="mt-5 md:mt-6 grid grid-cols-1 lg:grid-cols-12 gap-5 md:gap-6 items-center">
+        <div class="lg:col-span-6 text-center lg:text-left">
+          <h1 class="leading-tight">
+            <span class="block text-2xl sm:text-4xl lg:text-5xl font-black tracking-tight text-white">IAM & PARAMOUNT</span>
+            <span class="block text-2xl sm:text-4xl lg:text-5xl font-black tracking-tight text-white">Charity 5K Fun Run/Walk</span>
+          </h1>
+          <p class="mt-2.5 sm:mt-3 text-xs sm:text-base text-blue-100 max-w-xl mx-auto lg:mx-0">
+            Join us for an energetic 5K run/walk! Complete your registration below or use our live race-day tracker during the event.
+          </p>
+          <div class="mt-4 grid grid-cols-2 sm:flex sm:flex-wrap justify-center lg:justify-start gap-2.5 sm:gap-3 max-w-md mx-auto lg:mx-0">
+            <a href="#courseExplorerSection" class="inline-flex items-center justify-center gap-1.5 bg-white/15 active:bg-white/30 hover:bg-white/25 text-white border border-white/30 px-3 py-2.5 rounded-xl text-xs sm:text-sm font-bold backdrop-blur-sm transition shadow">
+              <i class="fa-solid fa-map-location-dot text-amber-300"></i> Course Map
+            </a>
+            <a href="#raceHubSection" class="inline-flex items-center justify-center gap-1.5 bg-pts-accent active:bg-red-800 hover:bg-red-700 text-white px-3 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition shadow animate-pulse">
+              <i class="fa-solid fa-person-running"></i> Live GPS Tracker
+            </a>
+          </div>
+        </div>
+
+        <div class="lg:col-span-6 flex flex-col items-center lg:items-start gap-3">
+          <div class="bg-white px-4 sm:px-5 py-2.5 sm:py-3 rounded-2xl shadow-md inline-flex items-center gap-4 sm:gap-5">
+            <div class="flex items-center justify-center h-14 sm:h-20 md:h-24">
+              <a href="https://globalmovingfoundation.org/" target="_blank" rel="noopener noreferrer" class="hover:opacity-85 transition-opacity flex items-center justify-center h-full">
+                <img src="GlobalMovingFoundationLogo.png" alt="Global Moving Foundation" class="h-full w-auto max-w-none object-contain block">
+              </a>
+            </div>
+            <div class="h-12 sm:h-18 md:h-20 w-px bg-gray-300 flex-shrink-0"></div>
+            <div class="flex items-center justify-center h-14 sm:h-20 md:h-24">
+              <a href="https://www.coastalk9gsr.org/" target="_blank" rel="noopener noreferrer" class="hover:opacity-85 transition-opacity flex items-center justify-center h-full">
+                <img src="CoastalK9Logo.png" alt="Coastal K9 German Shepherd Rescue" class="h-full w-auto max-w-none object-contain block scale-110">
+              </a>
+            </div>
+          </div>
+          <p class="text-xs sm:text-sm text-blue-100 leading-relaxed text-center lg:text-left">
+            Proceeds from this year’s 5K will support two worthy charities: the <strong>Global Moving Foundation</strong> and <strong>Coastal K9 German Shepherd Rescue</strong>.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- Event Info Bar -->
+  <section class="max-w-6xl mx-auto px-4 sm:px-6 -mt-4 sm:-mt-5 relative z-20 w-full">
+    <div class="bg-white rounded-xl shadow-lg border border-gray-100 p-4 sm:p-5 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-5 gap-3.5 sm:gap-4 text-xs sm:text-sm">
+      <div class="flex items-start space-x-2.5 sm:space-x-3 col-span-1">
+        <i class="fa-solid fa-calendar-day text-pts-navy text-base sm:text-lg mt-0.5 flex-shrink-0"></i>
+        <div>
+          <strong class="block text-gray-900">Date</strong>
+          <span class="text-gray-600">Friday, 23 Oct 2026</span>
+          <div class="relative mt-1.5">
+            <button type="button" onclick="toggleCalDropdown()" class="text-[11px] bg-pts-light hover:bg-blue-100 text-pts-navy font-semibold px-2 py-1 rounded border border-blue-200 flex items-center gap-1 transition">
+              <i class="fa-regular fa-calendar-plus"></i> Add Calendar
+            </button>
+            <div id="calMenu" class="hidden absolute top-8 left-0 bg-white border border-gray-200 rounded-lg shadow-xl z-30 py-1.5 w-44 text-xs">
+              <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=IAM+%26+PARAMOUNT+Charity+5K+Fun+Run%2FWalk&dates=20261023T133000Z/20261023T160000Z&details=IAM+%26+Paramount+Charity+5K+Fun+Run%2FWalk.+Check-in+starts+at+6%3A30+AM.&location=Hyatt+Hotel" target="_blank" class="block px-3 py-2 hover:bg-blue-50 text-gray-700 flex items-center gap-2"><i class="fa-brands fa-google text-blue-500"></i> Google Calendar</a>
+              <a href="javascript:downloadICS()" class="block px-3 py-2 hover:bg-blue-50 text-gray-700 flex items-center gap-2"><i class="fa-brands fa-apple text-gray-800"></i> Apple / Outlook (.ics)</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flex items-start space-x-2.5 sm:space-x-3 col-span-1">
+        <i class="fa-solid fa-clock text-pts-navy text-base sm:text-lg mt-0.5 flex-shrink-0"></i>
+        <div>
+          <strong class="block text-gray-900">Times</strong>
+          <span class="text-gray-600">Check-in: 6:30–7:15 AM</span><br>
+          <span class="text-gray-600">Start: 7:30 AM</span>
+        </div>
+      </div>
+      <div class="flex items-start space-x-2.5 sm:space-x-3 col-span-2 sm:col-span-1">
+        <i class="fa-solid fa-shirt text-pts-navy text-base sm:text-lg mt-0.5 flex-shrink-0"></i>
+        <div>
+          <strong class="block text-gray-900">Shirt & Bib Pick Up</strong>
+          <span class="text-gray-600 block">Wednesday, 21 Oct & Thursday, 22 Oct</span>
+          <span class="text-gray-500 text-[11px] block mt-0.5">(Booth @ Hyatt TBA)</span>
+        </div>
+      </div>
+      <div class="flex items-start space-x-2.5 sm:space-x-3 col-span-1">
+        <i class="fa-solid fa-circle-check text-green-600 text-base sm:text-lg mt-0.5 flex-shrink-0"></i>
+        <div>
+          <strong class="block text-gray-900">Registration Status</strong>
+          <span class="text-green-700 font-semibold">Open Until Further Notice</span>
+        </div>
+      </div>
+      <div class="flex items-start space-x-2.5 sm:space-x-3 col-span-1 min-w-0">
+        <i class="fa-solid fa-envelope text-pts-navy text-base sm:text-lg mt-0.5 flex-shrink-0"></i>
+        <div class="min-w-0">
+          <strong class="block text-gray-900">Contact Host</strong>
+          <a href="mailto:convention@pts-moves.com" class="text-pts-blue font-medium hover:underline block text-[11px] sm:text-xs lg:text-[13px] whitespace-nowrap">convention@pts-moves.com</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================= -->
+  <!-- RACE DAY HUB & LIVE GPS TRACKER SECTION                           -->
+  <!-- ================================================================= -->
+  <section id="raceHubSection" class="max-w-6xl mx-auto px-4 sm:px-6 mt-6 w-full">
+    <div class="bg-gradient-to-br from-pts-navy via-pts-blue to-pts-navy rounded-2xl shadow-2xl text-white p-6 sm:p-8 relative overflow-hidden border border-blue-400/30">
+      
+      <div class="absolute -right-10 -bottom-10 text-white/5 text-9xl pointer-events-none font-black">
+        <i class="fa-solid fa-person-running"></i>
+      </div>
+
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/20 pb-5 mb-6">
+        <div>
+          <span class="bg-pts-accent text-white text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full"><i class="fa-solid fa-satellite-dish mr-1 animate-pulse"></i> Race Day Live Hub</span>
+          <h2 class="text-2xl sm:text-3xl font-black tracking-tight mt-1.5">Interactive GPS Run & Walk Tracker</h2>
+          <p class="text-xs sm:text-sm text-blue-100 mt-1 max-w-xl">
+            Track your exact pace, split times, and live GPS map trace on race day. Link your participant profile to share your finish time.
+          </p>
+        </div>
+
+        <div id="trackerAuthBox" class="bg-white/10 backdrop-blur-md p-3.5 rounded-xl border border-white/20 flex flex-col gap-2 min-w-[260px]">
+          <div id="unverifiedState">
+            <span class="text-[11px] uppercase font-bold tracking-wider text-amber-300 block mb-1"><i class="fa-solid fa-user-check mr-1"></i> Sync Roster Profile</span>
+            <div class="flex gap-2">
+              <input type="text" id="trackerEmailOrName" placeholder="Enter Email or Name..." class="bg-white/20 text-white placeholder-blue-200 text-xs rounded-lg px-3 py-2 border border-white/30 focus:outline-none focus:bg-white/30 w-full">
+              <button type="button" onclick="verifyParticipantProfile()" class="bg-pts-accent hover:bg-red-700 text-white text-xs font-bold px-3 py-2 rounded-lg transition whitespace-nowrap">Sync</button>
+            </div>
+            <span id="trackerAuthMsg" class="text-[10px] text-blue-200 mt-1 block">Optional: Links run to your registration.</span>
+          </div>
+          <div id="verifiedState" class="hidden flex items-center justify-between gap-3">
+            <div>
+              <span class="text-[10px] uppercase font-bold text-green-300 block"><i class="fa-solid fa-circle-check mr-1"></i> Verified Runner</span>
+              <strong id="verifiedRunnerName" class="text-sm"></strong>
+            </div>
+            <button type="button" onclick="resetParticipantProfile()" class="text-xs text-blue-200 hover:text-white underline">Switch</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live GPS Telemetry Dashboard (Hidden until Start is Tapped) -->
+      <div id="liveDashboard" class="hidden space-y-5">
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 text-center">
+          <div class="bg-white/10 backdrop-blur-md p-4 rounded-xl border border-white/15 shadow-inner">
+            <span class="text-[10px] uppercase tracking-wider text-blue-200 font-bold block">Elapsed Time</span>
+            <span id="hudTime" class="text-2xl sm:text-3xl font-mono font-black text-amber-300">00:00:00</span>
+          </div>
+          <div class="bg-white/10 backdrop-blur-md p-4 rounded-xl border border-white/15 shadow-inner">
+            <span class="text-[10px] uppercase tracking-wider text-blue-200 font-bold block">Distance Covered</span>
+            <span id="hudDistance" class="text-2xl sm:text-3xl font-mono font-black text-white">0.00 <span class="text-xs font-sans text-blue-200">mi</span></span>
+          </div>
+          <div class="bg-white/10 backdrop-blur-md p-4 rounded-xl border border-white/15 shadow-inner">
+            <span class="text-[10px] uppercase tracking-wider text-blue-200 font-bold block">Current Pace</span>
+            <span id="hudPace" class="text-2xl sm:text-3xl font-mono font-black text-white">0'00" <span class="text-xs font-sans text-blue-200">/mi</span></span>
+          </div>
+          <div class="bg-white/10 backdrop-blur-md p-4 rounded-xl border border-white/15 shadow-inner">
+            <span class="text-[10px] uppercase tracking-wider text-blue-200 font-bold block">Course Progress</span>
+            <span id="hudProgress" class="text-2xl sm:text-3xl font-mono font-black text-green-400">0%</span>
+          </div>
+        </div>
+
+        <!-- Progress Bar & Split Alerts -->
+        <div class="bg-white/10 backdrop-blur-md p-4 rounded-xl border border-white/15 space-y-2">
+          <div class="flex items-center justify-between text-xs font-bold">
+            <span id="hudSplitStatus"><i class="fa-solid fa-flag text-amber-300 mr-1.5"></i> Heading to Mile 1 (Embarcadero Marina Park South)</span>
+            <span id="hudCoords" class="font-mono text-[11px] text-blue-200">GPS: Acquiring signal...</span>
+          </div>
+          <div class="w-full bg-white/20 h-3 rounded-full overflow-hidden p-0.5">
+            <div id="hudProgressBar" class="bg-gradient-to-r from-green-400 via-amber-400 to-pts-accent h-full rounded-full transition-all duration-300" style="width: 0%"></div>
+          </div>
+        </div>
+
+        <!-- Tracker Control Buttons -->
+        <div class="flex flex-wrap items-center justify-center gap-3">
+          <button type="button" id="pauseTrackerBtn" onclick="pauseGpsTracker()" class="bg-amber-500 hover:bg-amber-600 text-pts-navy font-bold px-6 py-3 rounded-xl shadow transition text-sm flex items-center gap-2">
+            <i class="fa-solid fa-pause"></i> Pause Tracker
+          </button>
+          <button type="button" onclick="stopGpsTracker()" class="bg-pts-accent hover:bg-red-700 text-white font-bold px-6 py-3 rounded-xl shadow transition text-sm flex items-center gap-2">
+            <i class="fa-solid fa-stop"></i> Finish & Generate Badge
+          </button>
+          <button type="button" onclick="togglePocketMode()" class="bg-white/20 hover:bg-white/30 text-white font-semibold px-4 py-3 rounded-xl transition text-sm flex items-center gap-2">
+            <i class="fa-solid fa-mobile-screen-button"></i> Pocket Mode (Dim)
+          </button>
+        </div>
+      </div>
+
+      <!-- Start Tracker CTA (Visible before start) -->
+      <div id="startTrackerPrompt" class="text-center py-6 space-y-4">
+        <div class="max-w-md mx-auto bg-white/10 backdrop-blur-md p-5 rounded-2xl border border-white/20">
+          <i class="fa-solid fa-location-crosshairs text-4xl text-amber-300 mb-2 block animate-bounce"></i>
+          <h3 class="text-lg font-bold">Ready to Run or Walk?</h3>
+          <p class="text-xs text-blue-100 mt-1 mb-4">
+            Tap below to enable high-accuracy GPS tracking, audio milestone alerts, and live map tracing along the San Diego Bay course.
+          </p>
+          <button type="button" onclick="startGpsTracker()" class="w-full bg-pts-accent hover:bg-red-700 active:bg-red-800 text-white font-black py-4 px-6 rounded-xl shadow-xl transition text-base flex items-center justify-center gap-2 cursor-pointer">
+            <i class="fa-solid fa-play"></i> Start My 5K Run / Walk
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================================================================= -->
+  <!-- 23 OCTOBER 2026 – IAM & PTS 5K FUN RUN/WALK MAP SECTION           -->
+  <!-- ================================================================= -->
+  <section id="courseExplorerSection" class="max-w-6xl mx-auto px-4 sm:px-6 mt-6 w-full">
+    <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+      
+      <div class="bg-gradient-to-r from-pts-navy via-pts-blue to-pts-navy text-white px-4 sm:px-6 py-4 flex flex-col lg:flex-row lg:items-center justify-between gap-3.5">
+        <div>
+          <h2 class="text-lg sm:text-2xl font-black tracking-tight">23 October 2026 – IAM &amp; PTS 5K Fun Run/Walk Map</h2>
+          <p class="text-xs sm:text-sm text-blue-100 mt-0.5">Participants will enjoy a scenic waterfront route along San Diego Bay.</p>
+        </div>
+
+        <div class="grid grid-cols-2 sm:flex sm:flex-wrap items-center gap-2">
+          <button type="button" id="simRunBtn" onclick="toggleCourseSimulation()" class="col-span-2 sm:col-span-1 bg-pts-accent active:bg-red-800 hover:bg-red-700 text-white text-xs sm:text-sm font-bold px-4 py-2.5 sm:py-2 rounded-xl shadow-md transition flex items-center justify-center gap-2">
+            <i id="simRunIcon" class="fa-solid fa-play"></i>
+            <span id="simRunText">Simulate Course Route</span>
+          </button>
+          <button type="button" onclick="toggleFullScreenMap()" class="bg-white/15 active:bg-white/30 hover:bg-white/25 text-white border border-white/25 text-xs sm:text-sm font-semibold px-3 py-2.5 sm:py-2 rounded-xl transition flex items-center justify-center gap-1.5">
+            <i class="fa-solid fa-up-right-and-down-left-from-center text-amber-300"></i> Full Screen Map
+          </button>
+          <button type="button" onclick="toggleModal('officialMapModal')" class="bg-white active:bg-gray-100 text-pts-navy hover:bg-blue-50 text-xs sm:text-sm font-bold px-3 py-2.5 sm:py-2 rounded-xl shadow transition flex items-center justify-center gap-1.5">
+            <i class="fa-regular fa-map text-pts-accent"></i> Official PDF Map
+          </button>
+        </div>
+      </div>
+
+      <div class="bg-pts-light border-b border-gray-200 px-4 sm:px-6 py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs sm:text-sm">
+        <div class="flex items-start sm:items-center gap-2.5">
+          <span class="inline-flex items-center flex-shrink-0 mt-0.5 sm:mt-0">
+            <span class="w-3.5 h-3.5 rounded-full bg-green-600 inline-block border-2 border-white shadow"></span>
+            <span class="w-3.5 h-3.5 rounded-full bg-pts-accent inline-block -ml-1.5 border-2 border-white shadow"></span>
+          </span>
+          <div>
+            <strong class="text-pts-navy uppercase tracking-wide">START/FINISH:</strong>
+            <span class="text-gray-800 font-medium">Northwest corner of the North Embarcadero Marina (marked by the green &amp; red dots on the map).</span>
+          </div>
+        </div>
+
+        <a href="https://www.google.com/maps/dir/?api=1&destination=32.70820,-117.17009&travelmode=walking" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-1.5 bg-pts-navy hover:bg-pts-blue active:bg-blue-950 text-white font-bold px-3.5 py-2 rounded-xl text-xs shadow-sm transition whitespace-nowrap flex-shrink-0">
+          <i class="fa-solid fa-location-arrow text-amber-300"></i> Navigate to Start Line
+        </a>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12">
+        
+        <div id="mapWrapperContainer" class="lg:col-span-7 relative bg-blue-950 h-[370px] sm:h-[460px] lg:h-auto lg:min-h-[540px] flex flex-col transition-all">
+          <div id="courseMap" class="w-full h-full flex-grow"></div>
+
+          <div class="absolute top-3 left-14 z-[400] flex flex-wrap items-center gap-1.5">
+            <button type="button" id="fsToggleBtn" onclick="toggleFullScreenMap()" class="bg-pts-navy/95 hover:bg-pts-blue text-white backdrop-blur-sm px-3 py-1.5 rounded-xl shadow-lg border border-white/20 text-[11px] sm:text-xs font-bold flex items-center gap-1.5 transition">
+              <i id="fsToggleIcon" class="fa-solid fa-expand text-amber-300"></i>
+              <span id="fsToggleText">Full Screen</span>
+            </button>
+            <button type="button" id="mobileTouchLockBtn" onclick="toggleMobileMapTouch()" class="lg:hidden bg-pts-navy/90 text-white backdrop-blur-sm px-2.5 py-1.5 rounded-xl shadow-lg border border-white/20 text-[11px] font-bold flex items-center gap-1.5">
+              <i id="mobileTouchIcon" class="fa-solid fa-hand-pointer text-amber-300"></i>
+              <span id="mobileTouchText">Tap to Pan Map</span>
+            </button>
+          </div>
+
+          <div class="absolute top-3 right-3 z-[400] bg-white/95 backdrop-blur-sm rounded-xl shadow-lg border border-gray-200 p-1 flex items-center gap-0.5 sm:gap-1 text-[11px] sm:text-xs font-bold">
+            <button type="button" id="btnMapStreet" onclick="setGoogleMapMode('streets')" class="px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-lg bg-pts-navy text-white transition flex items-center gap-1">
+              <i class="fa-solid fa-map"></i> Map
+            </button>
+            <button type="button" id="btnMapSat" onclick="setGoogleMapMode('hybrid')" class="px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-lg text-gray-700 hover:bg-gray-100 transition flex items-center gap-1">
+              <i class="fa-solid fa-satellite"></i> Satellite
+            </button>
+            <button type="button" onclick="resetCourseMapView()" class="px-2 py-1 sm:py-1.5 rounded-lg text-pts-blue hover:bg-blue-50 transition flex items-center gap-1" title="Reset Map Overview">
+              <i class="fa-solid fa-arrows-to-circle"></i>
+            </button>
+          </div>
+
+          <div id="simStatusOverlay" class="hidden absolute top-14 left-3 right-3 z-[400] bg-pts-navy/95 text-white backdrop-blur-md px-3.5 py-2.5 rounded-xl shadow-xl border border-white/15">
+            <div class="flex items-center justify-between text-[11px] sm:text-xs mb-1.5">
+              <span class="font-bold flex items-center gap-1.5 truncate">
+                <span class="w-2 h-2 rounded-full bg-green-400 animate-ping flex-shrink-0"></span>
+                <span id="simStageLabel" class="truncate">North Embarcadero Marina</span>
+              </span>
+              <span id="simDistanceLabel" class="font-mono font-black text-amber-300 flex-shrink-0 ml-2">0%</span>
+            </div>
+            <div class="w-full bg-white/20 h-1.5 sm:h-2 rounded-full overflow-hidden">
+              <div id="simProgressBar" class="bg-gradient-to-r from-green-400 via-amber-400 to-pts-accent h-full transition-all duration-150" style="width: 0%"></div>
+            </div>
+          </div>
+
+          <div class="absolute bottom-2.5 left-2.5 right-2.5 sm:right-auto z-[400] bg-white/95 backdrop-blur-sm px-2.5 py-1.5 sm:p-2.5 rounded-xl shadow-lg border border-gray-200 text-[10px] sm:text-[11px] flex flex-wrap items-center justify-center sm:justify-start gap-2.5 sm:gap-3">
+            <div class="flex items-center gap-1 font-semibold text-gray-800">
+              <span class="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-green-600 inline-block border border-white shadow"></span>
+              <span class="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-pts-accent inline-block -ml-1.5 border border-white shadow"></span>
+              Start / Finish
+            </div>
+            <div class="flex items-center gap-1 font-semibold text-gray-800">
+              <span class="w-4 h-1.5 bg-pts-accent rounded-full inline-block"></span>
+              Course Route
+            </div>
+            <div class="flex items-center gap-1 font-semibold text-gray-800">
+              <span class="w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full bg-pts-accent text-white text-[8px] sm:text-[9px] font-black inline-flex items-center justify-center">1</span>
+              Mile Markers (1, 2, 3)
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-5 p-4 sm:p-6 flex flex-col justify-between bg-white border-t lg:border-t-0 lg:border-l border-gray-200">
+          <div>
+            <div class="border-b border-gray-100 pb-2.5 mb-3 flex items-center justify-between">
+              <div>
+                <span class="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-pts-blue block">COURSE ROUTE</span>
+                <h3 class="text-xs sm:text-base font-extrabold text-pts-navy mt-0.5">
+                  Participants will enjoy a scenic waterfront route along San Diego Bay.
+                </h3>
+              </div>
+              <span class="lg:hidden text-[10px] font-bold text-pts-blue bg-blue-50 px-2 py-1 rounded-full whitespace-nowrap flex items-center gap-1">
+                Swipe <i class="fa-solid fa-arrows-left-right"></i>
+              </span>
+            </div>
+
+            <div id="courseStepList" class="flex lg:flex-col gap-3 overflow-x-auto lg:overflow-x-visible snap-x snap-mandatory pb-2 lg:pb-0 no-scrollbar">
+              
+              <div onclick="focusCourseStage(0)" id="stage-card-0" class="course-step-card active snap-center flex-shrink-0 w-[85%] sm:w-[70%] lg:w-full cursor-pointer p-3.5 rounded-xl border border-gray-200 transition-all hover:border-pts-accent">
+                <div class="flex items-start gap-3">
+                  <div class="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-green-600 text-white font-black text-xs flex items-center justify-center flex-shrink-0 mt-0.5 shadow">1</div>
+                  <p class="text-xs text-gray-700 leading-relaxed">
+                    The course begins at the North Embarcadero Marina and follows the marina walkway counterclockwise before heading south (right turn) continuing down along the Bayfront Promenade.
+                  </p>
+                </div>
+              </div>
+
+              <div onclick="focusCourseStage(1)" id="stage-card-1" class="course-step-card snap-center flex-shrink-0 w-[85%] sm:w-[70%] lg:w-full cursor-pointer p-3.5 rounded-xl border border-gray-200 transition-all hover:border-pts-accent">
+                <div class="flex items-start gap-3">
+                  <div class="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-pts-accent text-white font-black text-xs flex items-center justify-center flex-shrink-0 mt-0.5 shadow">2</div>
+                  <p class="text-xs text-gray-700 leading-relaxed">
+                    Participants will turn right and follow the loop (counterclockwise) around the South Embarcadero Marina.
+                  </p>
+                </div>
+              </div>
+
+              <div onclick="focusCourseStage(2)" id="stage-card-2" class="course-step-card snap-center flex-shrink-0 w-[85%] sm:w-[70%] lg:w-full cursor-pointer p-3.5 rounded-xl border border-gray-200 transition-all hover:border-pts-accent">
+                <div class="flex items-start gap-3">
+                  <div class="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-pts-blue text-white font-black text-xs flex items-center justify-center flex-shrink-0 mt-0.5 shadow">3</div>
+                  <p class="text-xs text-gray-700 leading-relaxed">
+                    They will then turn right onto the Promenade toward the Hilton and make a U-turn before the hotel.
+                  </p>
+                </div>
+              </div>
+
+              <div onclick="focusCourseStage(3)" id="stage-card-3" class="course-step-card snap-center flex-shrink-0 w-[85%] sm:w-[70%] lg:w-full cursor-pointer p-3.5 rounded-xl border border-gray-200 transition-all hover:border-pts-accent">
+                <div class="flex items-start gap-3">
+                  <div class="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-pts-navy text-white font-black text-xs flex items-center justify-center flex-shrink-0 mt-0.5 shadow">4</div>
+                  <p class="text-xs text-gray-700 leading-relaxed">
+                    The return route follows the waterfront north toward Ruocco Park, loops around the park (counterclockwise), and continues back with a right turn to the start/finish area at the North Embarcadero Marina.
+                  </p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="mt-3 lg:mt-4 bg-pts-light p-3 sm:p-3.5 rounded-xl border border-blue-200 text-xs text-pts-navy font-medium flex items-start gap-2.5">
+            <i class="fa-solid fa-circle-check text-green-600 text-sm mt-0.5 flex-shrink-0"></i>
+            <span>Course markings and volunteers will be along the route to help guide participants throughout the event.</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Official PDF Map Modal -->
+  <div id="officialMapModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-2 sm:p-4 z-50">
+    <div class="bg-white rounded-2xl max-w-4xl w-full max-h-[92vh] flex flex-col shadow-2xl overflow-hidden">
+      <div class="bg-pts-navy text-white px-4 sm:px-6 py-3.5 sm:py-4 flex items-center justify-between">
+        <h3 class="text-sm sm:text-lg font-bold truncate pr-2"><i class="fa-solid fa-map mr-1.5 text-amber-300"></i> 23 October 2026 – IAM &amp; PTS 5K Fun Run/Walk Map</h3>
+        <button type="button" onclick="toggleModal('officialMapModal')" class="text-white/80 hover:text-white text-xl p-1"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="p-4 sm:p-6 overflow-y-auto space-y-4 text-xs sm:text-sm text-gray-700">
+        <div class="bg-blue-50 border border-blue-200 p-3.5 sm:p-4 rounded-xl space-y-2">
+          <p><strong>START/FINISH:</strong> Northwest corner of the North Embarcadero Marina (marked by the green &amp; red dots on the map).</p>
+          <p><strong>COURSE ROUTE:</strong> Participants will enjoy a scenic waterfront route along San Diego Bay.</p>
+        </div>
+        <div class="text-center bg-gray-100 rounded-xl p-3 sm:p-4 border border-gray-200">
+          <img src="5K_Course_Map.png" alt="Official Course Map" class="max-h-[460px] w-auto mx-auto rounded-lg shadow" onerror="this.onerror=null;this.src='5K_Course_Map.jpg';">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- REGISTRATION FORM SECTION (Auto-hides 15 mins before race) -->
+  <main id="regFormSection" class="max-w-4xl mx-auto px-4 sm:px-6 py-5 sm:py-6 w-full flex-grow">
+    
+    <!-- Race Day Notice Banner (Replaces form when race day arrives) -->
+    <div id="raceDayActiveBanner" class="hidden bg-pts-navy text-white p-8 rounded-2xl shadow-xl text-center space-y-4 mb-6">
+      <i class="fa-solid fa-flag-checkered text-5xl text-amber-300 animate-bounce block"></i>
+      <h2 class="text-2xl sm:text-3xl font-black">Race Day is Live!</h2>
+      <p class="text-sm sm:text-base text-blue-100 max-w-lg mx-auto">
+        Online registration has closed for the event. Use the <strong>Live GPS Tracker</strong> above to record your run or walk and view live stats!
+      </p>
+    </div>
+
+    <div id="registrationCardWrapper" class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+      
+      <div class="bg-pts-light border-b border-gray-200 px-5 sm:px-8 py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+        <h2 id="formTitle" class="text-lg sm:text-xl font-bold text-pts-navy">Participant Registration</h2>
+        <div id="paymentBadge" class="hidden flex flex-wrap items-center gap-2 sm:gap-3"></div>
+      </div>
+
+      <form id="regForm" method="POST" target="hidden_iframe" class="p-5 sm:p-8 space-y-7 sm:space-y-8" novalidate>
+        <input type="hidden" id="regId" name="regId" value="">
+        <input type="hidden" id="generatedRegId" name="generatedRegId" value="">
+        <input type="hidden" id="currentPaymentStatus" value="Pending Payment">
+
+        <div>
+          <h3 class="text-base sm:text-lg font-semibold text-pts-navy border-b pb-2 mb-4"><i class="fa-solid fa-user mr-2"></i> Participant Details</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
+            <div>
+              <label class="block text-sm font-medium text-gray-700">First Name <span class="text-red-500 font-bold">*</span></label>
+              <input type="text" id="firstName" name="firstName" autocomplete="given-name" required class="mt-1 w-full rounded-lg border-gray-300 border p-3 sm:p-2.5 text-base sm:text-sm focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
+              <span id="firstNameErr" class="text-xs text-red-500 hidden mt-1"><i class="fa-solid fa-circle-exclamation mr-1"></i> First name must contain only letters.</span>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Last Name <span class="text-red-500 font-bold">*</span></label>
+              <input type="text" id="lastName" name="lastName" autocomplete="family-name" required class="mt-1 w-full rounded-lg border-gray-300 border p-3 sm:p-2.5 text-base sm:text-sm focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
+              <span id="lastNameErr" class="text-xs text-red-500 hidden mt-1"><i class="fa-solid fa-circle-exclamation mr-1"></i> Last name must contain only letters.</span>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Mobile Phone (International) <span class="text-red-500 font-bold">*</span></label>
+              <input type="tel" id="mobile" name="mobile" autocomplete="tel" placeholder="+1 555 000 0000" required class="mt-1 w-full rounded-lg border-gray-300 border p-3 sm:p-2.5 text-base sm:text-sm focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
+              <span id="mobileErr" class="text-xs text-red-500 hidden mt-1"><i class="fa-solid fa-circle-exclamation mr-1"></i> Enter a valid phone number.</span>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">T-Shirt Size <span class="text-red-500 font-bold">*</span></label>
+              <select id="tshirtSize" name="tshirtSize" required class="mt-1 w-full rounded-lg border-gray-300 border p-3 sm:p-2.5 text-base sm:text-sm bg-white focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
+                <option value="">Select Size...</option>
+                <option value="Mens XS">Mens XS</option>
+                <option value="Mens S">Mens S</option>
+                <option value="Mens M">Mens M</option>
+                <option value="Mens L">Mens L</option>
+                <option value="Mens XL">Mens XL</option>
+                <option value="Mens XXL">Mens XXL</option>
+                <option value="Mens 3XL">Mens 3XL</option>
+                <option value="Mens 4XL">Mens 4XL</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Email Address <span class="text-red-500 font-bold">*</span></label>
+              <input type="email" id="email" name="email" autocomplete="email" required placeholder="name@company.com" class="mt-1 w-full rounded-lg border-gray-300 border p-3 sm:p-2.5 text-base sm:text-sm focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
+              <span id="emailErr" class="text-xs text-red-500 hidden mt-1"><i class="fa-solid fa-circle-exclamation mr-1"></i> Please enter a valid email address.</span>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Award Category: <span class="text-red-500 font-bold">*</span></label>
+              <div class="mt-2.5 flex items-center space-x-6">
+                <label class="inline-flex items-center cursor-pointer py-1">
+                  <input type="radio" name="gender" value="Male" required class="text-pts-navy focus:ring-pts-navy h-5 w-5 sm:h-4 sm:w-4 border-gray-300">
+                  <span class="ml-2 text-base sm:text-sm text-gray-700 font-medium">Male</span>
+                </label>
+                <label class="inline-flex items-center cursor-pointer py-1">
+                  <input type="radio" name="gender" value="Female" required class="text-pts-navy focus:ring-pts-navy h-5 w-5 sm:h-4 sm:w-4 border-gray-300">
+                  <span class="ml-2 text-base sm:text-sm text-gray-700 font-medium">Female</span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="pinSection" class="bg-blue-50/60 p-4 sm:p-5 rounded-xl border border-blue-200">
+          <h3 class="text-sm font-bold text-pts-navy uppercase tracking-wider mb-1"><i class="fa-solid fa-key mr-2"></i> Create Your Security PIN <span class="text-red-500 font-bold">*</span></h3>
+          <p class="text-xs text-gray-600 mb-4">Choose a PIN so you can access and update your details later.</p>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+            <div>
+              <label class="block text-xs font-semibold text-gray-700 uppercase">Choose Security PIN</label>
+              <input type="password" inputmode="numeric" id="userPin" name="userPin" maxlength="6" placeholder="••••" required class="mt-1 w-full rounded-lg border-gray-300 border p-3 sm:p-2.5 text-center text-lg font-mono tracking-widest focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-gray-700 uppercase">Confirm Security PIN</label>
+              <input type="password" inputmode="numeric" id="confirmPin" maxlength="6" placeholder="••••" required class="mt-1 w-full rounded-lg border-gray-300 border p-3 sm:p-2.5 text-center text-lg font-mono tracking-widest focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
+              <span id="pinErr" class="text-xs text-red-500 hidden mt-1"><i class="fa-solid fa-circle-exclamation mr-1"></i> Security PINs do not match.</span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="flex items-center justify-between border-b pb-2 mb-4">
+            <h3 class="text-base sm:text-lg font-semibold text-pts-navy"><i class="fa-solid fa-building mr-2"></i> Company Information</h3>
+            <span id="autofillBadge" class="hidden text-xs bg-blue-100 text-blue-800 font-semibold px-2.5 py-1 rounded-full"><i class="fa-solid fa-magic mr-1"></i> Auto-filled from colleague</span>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6">
+            <div class="md:col-span-2 lg:col-span-4">
+              <label class="block text-sm font-medium text-gray-700">Company Name <span class="text-red-500 font-bold">*</span></label>
+              <input type="text" id="company" name="company" autocomplete="organization" required class="mt-1 w-full rounded-lg border-gray-300 border p-3 sm:p-2.5 text-base sm:text-sm focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">City <span class="text-red-500 font-bold">*</span></label>
+              <input type="text" id="city" name="city" autocomplete="address-level2" required class="mt-1 w-full rounded-lg border-gray-300 border p-3 sm:p-2.5 text-base sm:text-sm focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
+              <span id="cityErr" class="text-xs text-red-500 hidden mt-1"><i class="fa-solid fa-circle-exclamation mr-1"></i> City should not contain numbers.</span>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">State / Province</label>
+              <input type="text" id="state" name="state" autocomplete="address-level1" class="mt-1 w-full rounded-lg border-gray-300 border p-3 sm:p-2.5 text-base sm:text-sm focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Country <span class="text-red-500 font-bold">*</span></label>
+              <select id="country" name="country" autocomplete="country-name" required class="mt-1 w-full rounded-lg border-gray-300 border p-3 sm:p-2.5 text-base sm:text-sm focus:ring-2 focus:ring-pts-navy focus:outline-none bg-white transition">
+                <option value="">Select Country / Territory...</option>
+                <option value="United States">United States</option>
+                <option value="United Kingdom">United Kingdom</option>
+                <option value="Canada">Canada</option>
+                <option value="Germany">Germany</option>
+                <option value="France">France</option>
+                <option value="Australia">Australia</option>
+                <option value="Netherlands">Netherlands</option>
+                <option value="United Arab Emirates">United Arab Emirates</option>
+                <option value="China">China</option>
+                <option value="India">India</option>
+                <option value="Brazil">Brazil</option>
+                <option value="Belgium">Belgium</option>
+                <option value="Spain">Spain</option>
+                <option value="Japan">Japan</option>
+                <option value="Singapore">Singapore</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Postal / ZIP Code</label>
+              <input type="text" id="postalCode" name="postalCode" autocomplete="postal-code" placeholder="e.g. 90210" class="mt-1 w-full rounded-lg border-gray-300 border p-3 sm:p-2.5 text-base sm:text-sm focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="text-base sm:text-lg font-semibold text-pts-navy border-b pb-2 mb-4"><i class="fa-solid fa-heart-pulse mr-2"></i> Logistics & Emergency Contact</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Emergency Contact Name <span class="text-red-500 font-bold">*</span></label>
+              <input type="text" id="emergencyName" name="emergencyName" required class="mt-1 w-full rounded-lg border-gray-300 border p-3 sm:p-2.5 text-base sm:text-sm focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
+              <span id="emergencyNameErr" class="text-xs text-red-500 hidden mt-1"><i class="fa-solid fa-circle-exclamation mr-1"></i> Emergency contact cannot be yourself.</span>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Emergency Contact Phone <span class="text-red-500 font-bold">*</span></label>
+              <input type="tel" id="emergencyPhone" name="emergencyPhone" placeholder="+1 555 000 0000" required class="mt-1 w-full rounded-lg border-gray-300 border p-3 sm:p-2.5 text-base sm:text-sm focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
+              <span id="emergencyPhoneErr" class="text-xs text-red-500 hidden mt-1"><i class="fa-solid fa-circle-exclamation mr-1"></i> Emergency phone cannot be your own phone number.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-4">
+          <h3 class="text-base sm:text-lg font-semibold text-pts-navy border-b pb-2"><i class="fa-solid fa-file-contract mr-2"></i> Terms & Waivers</h3>
+          <div class="bg-gray-50 p-3.5 sm:p-4 rounded-lg border border-gray-200 text-xs text-gray-600 leading-relaxed">
+            <strong>Photo/Video Release:</strong> I certify that I am over 18 years old and agree to this Photo & Video Release. I authorize Paramount Transportation Systems to photograph and record me during the Charity 5K Fun Run/Walk and allow both the International Association of Movers and/or Paramount to place my picture/video on their website/in their newsletters and use my image for any promotional purposes without compensation.
+          </div>
+          <label class="flex items-start sm:items-center text-sm font-medium text-gray-700 cursor-pointer py-1">
+            <input type="checkbox" id="photoRelease" name="photoRelease" value="Yes" required class="rounded text-pts-navy focus:ring-pts-navy h-5 w-5 sm:h-4 sm:w-4 mt-0.5 sm:mt-0 flex-shrink-0">
+            <span class="ml-2.5 sm:ml-2">I certify that I am over 18 years old and agree to the Photo & Video Release. <span class="text-red-500 font-bold">*</span></span>
+          </label>
+
+          <div class="bg-gray-50 p-3.5 sm:p-4 rounded-lg border border-gray-200 text-xs text-gray-600 leading-relaxed mt-4">
+            <strong>Liability Statement:</strong> I certify that I am over 18 years old and I acknowledge that participating in a 5K involves physical activity and assume all risks associated with participation. I release and hold harmless the event organizers, sponsors, the property owners, their employees and my employer from liability for injuries or damages arising from my participation.
+          </div>
+          <label class="flex items-start sm:items-center text-sm font-medium text-gray-700 cursor-pointer py-1">
+            <input type="checkbox" id="liabilityWaiver" name="liabilityWaiver" value="Yes" required class="rounded text-pts-navy focus:ring-pts-navy h-5 w-5 sm:h-4 sm:w-4 mt-0.5 sm:mt-0 flex-shrink-0">
+            <span class="ml-2.5 sm:ml-2">I have read and agree to the Liability Waiver above. <span class="text-red-500 font-bold">*</span></span>
+          </label>
+
+          <div id="privacyScrollBox" class="bg-gray-50 p-3.5 sm:p-4 rounded-lg border border-gray-200 text-xs text-gray-600 leading-relaxed mt-4 max-h-56 overflow-y-auto space-y-2">
+            <p class="font-bold text-gray-800 text-sm">5K Registration Privacy Notice</p>
+            <p>Paramount Transportation Systems, Inc. (“Paramount”) respects your privacy. The personal information collected through this registration form is used to register you for and administer the IAM & Paramount Charity 5K Fun Run/Walk.</p>
+          </div>
+
+          <div id="privacyScrollPrompt" class="text-xs text-amber-700 bg-amber-50 border border-amber-200 px-3 py-2 rounded-lg flex items-center gap-2">
+            <i class="fa-solid fa-circle-down flex-shrink-0"></i>
+            <span>Please scroll through to the very bottom of the Privacy Notice above to unlock this checkbox.</span>
+          </div>
+
+          <label id="privacyLabel" class="flex items-start sm:items-center text-sm font-medium text-gray-400 cursor-not-allowed select-none transition-colors py-1">
+            <input type="checkbox" id="privacyNotice" name="privacyNotice" value="Yes" disabled required class="rounded text-pts-navy focus:ring-pts-navy h-5 w-5 sm:h-4 sm:w-4 mt-0.5 sm:mt-0 cursor-not-allowed flex-shrink-0">
+            <span class="ml-2.5 sm:ml-2">I have read and agree to the 5K Registration Privacy Notice. <span class="text-red-500 font-bold">*</span></span>
+          </label>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6 pt-2">
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Participant Electronic Signature (Full Name) <span class="text-red-500 font-bold">*</span></label>
+              <input type="text" id="signature" name="signature" placeholder="Must match First + Last Name above" required class="mt-1 w-full rounded-lg border-gray-300 border p-3 sm:p-2.5 text-base sm:text-sm focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
+              <span id="sigMatchError" class="text-xs text-red-500 hidden mt-1"><i class="fa-solid fa-triangle-exclamation mr-1"></i> Signature must match First Name + Last Name</span>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Date <span class="text-red-500 font-bold">*</span></label>
+              <input type="date" id="sigDate" name="sigDate" readonly required tabindex="-1" class="mt-1 w-full rounded-lg border-gray-300 border p-3 sm:p-2.5 text-base sm:text-sm bg-gray-100 cursor-not-allowed text-gray-600 transition">
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-4 border-t border-gray-200 space-y-4">
+          <button type="submit" id="submitBtn" disabled class="w-full bg-gray-300 text-gray-500 font-bold py-4 px-6 rounded-xl shadow transition duration-200 flex items-center justify-center text-base sm:text-lg cursor-not-allowed">
+            <span id="btnText">Proceed to USD 75.00 Registration Payment</span>
+            <i class="fa-solid fa-arrow-right ml-2"></i>
+          </button>
+
+          <div class="w-full bg-pts-light rounded-2xl p-4 border border-blue-200 text-center shadow-md">
+            <span class="text-xs sm:text-sm font-bold uppercase tracking-wider text-pts-navy block mb-2">
+              <i class="fa-solid fa-heart text-pts-accent mr-1"></i> Not Running or Walking?
+            </span>
+            <a href="https://donate.stripe.com/eVq6oz1MEdinausaBR3gk02" target="_blank" rel="noopener noreferrer" class="inline-block w-full max-w-md bg-pts-accent active:bg-red-800 hover:bg-red-700 text-white font-bold py-3 sm:py-2.5 px-4 rounded-xl text-sm shadow transition">
+              Donate Any Amount to Charities
+            </a>
+          </div>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <script>
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwO7ItQ6sTOC3wbyGDk2hU8qEjD4voEKbNYfdOQU_t_X53AE1FjRZ6fiDDQkywQDBsU/exec";
+    const STRIPE_PAYMENT_LINK = "https://buy.stripe.com/6oU14ffDuemrfOM11h3gk01";
+
+    let pendingRedirectUrl = "";
+    const hiddenIframe = document.getElementById('hidden_iframe');
+    document.getElementById('regForm').action = SCRIPT_URL;
+
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('sigDate').value = today;
+
+    // --- AUTO-HIDE REGISTRATION 15 MINUTES BEFORE RACE START (Oct 23, 2026 at 7:15 AM PST) ---
+    const raceStartTime = new Date("October 23, 2026 07:30:00 PST").getTime();
+    const hideRegThreshold = raceStartTime - (15 * 60 * 1000); // 7:15 AM PST
+
+    function checkRaceDayMode() {
+      const now = new Date().getTime();
+      if (now >= hideRegThreshold) {
+        document.getElementById('registrationCardWrapper').classList.add('hidden');
+        document.getElementById('raceDayActiveBanner').classList.remove('hidden');
+      }
+    }
+    checkRaceDayMode();
+    setInterval(checkRaceDayMode, 30000);
+
+    // =========================================================================
+    // PARTICIPANT ROSTER VERIFICATION (GOOGLE SHEETS LOOKUP)
+    // =========================================================================
+    let verifiedRunnerData = null;
+
+    async function verifyParticipantProfile() {
+      const q = document.getElementById('trackerEmailOrName').value.trim();
+      const msg = document.getElementById('trackerAuthMsg');
+      if (!q) {
+        msg.innerText = "Please enter your email or name first.";
+        return;
+      }
+      msg.innerText = "Searching roster...";
+
+      try {
+        const res = await fetch(`${SCRIPT_URL}?action=lookup&query=${encodeURIComponent(q)}&pin=`);
+        const json = await res.json();
+        if (json.status === 'found' || json.status === 'denied') {
+          // If found or denied (meaning record exists, we can grab their name & regId)
+          verifiedRunnerData = json.data || { regId: 'PTS-MEMBER', firstName: q, lastName: '' };
+          document.getElementById('verifiedRunnerName').innerText = `${verifiedRunnerData.firstName || q} (${verifiedRunnerData.regId || 'Verified'})`;
+          document.getElementById('unverifiedState').classList.add('hidden');
+          document.getElementById('verifiedState').classList.remove('hidden');
+          localStorage.setItem('pts_5k_runner', JSON.stringify(verifiedRunnerData));
+        } else {
+          // Fallback guest profile
+          verifiedRunnerData = { regId: 'GUEST', firstName: q, lastName: '' };
+          document.getElementById('verifiedRunnerName').innerText = q;
+          document.getElementById('unverifiedState').classList.add('hidden');
+          document.getElementById('verifiedState').classList.remove('hidden');
+        }
+      } catch (e) {
+        verifiedRunnerData = { regId: 'GUEST', firstName: q, lastName: '' };
+        document.getElementById('verifiedRunnerName').innerText = q;
+        document.getElementById('unverifiedState').classList.add('hidden');
+        document.getElementById('verifiedState').classList.remove('hidden');
+      }
+    }
+
+    function resetParticipantProfile() {
+      verifiedRunnerData = null;
+      document.getElementById('verifiedState').classList.add('hidden');
+      document.getElementById('unverifiedState').classList.remove('hidden');
+      document.getElementById('trackerEmailOrName').value = '';
+      localStorage.removeItem('pts_5k_runner');
+    }
+
+    // =========================================================================
+    // LIVE GPS RUNNER TRACKER (HAUPT / STRAVA-STYLE IN-BROWSER ENGINE)
+    // =========================================================================
+    let gpsWatchId = null;
+    let runStartTime = null;
+    let elapsedTimerInterval = null;
+    let totalMetersCovered = 0;
+    let lastLat = null;
+    let lastLng = null;
+    let gpsBreadcrumbs = [];
+    let personalTrailLine = null;
+    let wakeLockObj = null;
+
+    const COURSE_COORDS = [
+      [32.70820, -117.17009], [32.70801, -117.17010], [32.70779, -117.17010], [32.70756, -117.17008],
+      [32.70736, -117.17005], [32.70720, -117.17000], [32.70707, -117.16985], [32.70692, -117.16964],
+      [32.70676, -117.16939], [32.70656, -117.16910], [32.70635, -117.16878], [32.70613, -117.16845],
+      [32.70594, -117.16816], [32.70582, -117.16795], [32.70578, -117.16784], [32.70580, -117.16768],
+      [32.70583, -117.16754], [32.70589, -117.16745], [32.70601, -117.16741], [32.70614, -117.16741],
+      [32.70626, -117.16746], [32.70634, -117.16759], [32.70641, -117.16781], [32.70649, -117.16801],
+      [32.70661, -117.16817], [32.70673, -117.16824], [32.70686, -117.16835], [32.70701, -117.16856],
+      [32.70718, -117.16880], [32.70736, -117.16902], [32.70752, -117.16917], [32.70768, -117.16922],
+      [32.70786, -117.16923], [32.70806, -117.16921], [32.70826, -117.16920], [32.70846, -117.16919],
+      [32.70847, -117.16880], [32.70847, -117.16837], [32.70847, -117.16794], [32.70846, -117.16757],
+      [32.70844, -117.16738], [32.70834, -117.16716], [32.70815, -117.16689], [32.70793, -117.16660],
+      [32.70782, -117.16644], [32.70752, -117.16602], [32.70714, -117.16552], [32.70676, -117.16499],
+      [32.70637, -117.16445], [32.70602, -117.16396], [32.70574, -117.16357], [32.70561, -117.16340],
+      [32.70535, -117.16365], [32.70507, -117.16396], [32.70479, -117.16426], [32.70458, -117.16449],
+      [32.70448, -117.16467], [32.70454, -117.16487], [32.70467, -117.16510], [32.70486, -117.16537],
+      [32.70502, -117.16560], [32.70510, -117.16579], [32.70510, -117.16598], [32.70501, -117.16615],
+      [32.70486, -117.16626], [32.70468, -117.16627], [32.70452, -117.16620], [32.70431, -117.16600],
+      [32.70405, -117.16571], [32.70381, -117.16541], [32.70359, -117.16503], [32.70333, -117.16464],
+      [32.70309, -117.16426], [32.70291, -117.16393], [32.70286, -117.16373], [32.70293, -117.16354],
+      [32.70302, -117.16336], [32.70331, -117.16306], [32.70358, -117.16279], [32.70373, -117.16269],
+      [32.70390, -117.16270], [32.70415, -117.16296], [32.70441, -117.16327], [32.70467, -117.16357],
+      [32.70502, -117.16319], [32.70538, -117.16282], [32.70516, -117.16250], [32.70486, -117.16208],
+      [32.70454, -117.16163], [32.70419, -117.16113], [32.70386, -117.16063], [32.70354, -117.16014],
+      [32.70331, -117.15973], [32.70354, -117.16014], [32.70386, -117.16063], [32.70419, -117.16113],
+      [32.70454, -117.16163], [32.70486, -117.16208], [32.70516, -117.16250], [32.70538, -117.16282],
+      [32.70561, -117.16315], [32.70578, -117.16340], [32.70589, -117.16357], [32.70611, -117.16396],
+      [32.70642, -117.16445], [32.70679, -117.16499], [32.70716, -117.16552], [32.70752, -117.16602],
+      [32.70782, -117.16644], [32.70793, -117.16660], [32.70815, -117.16689], [32.70834, -117.16716],
+      [32.70844, -117.16738], [32.70846, -117.16757], [32.70847, -117.16794], [32.70847, -117.16837],
+      [32.70847, -117.16880], [32.70846, -117.16919], [32.70846, -117.16964], [32.70852, -117.17015],
+      [32.70853, -117.17038], [32.70853, -117.17065], [32.70854, -117.17092], [32.70855, -117.17113],
+      [32.70859, -117.17129], [32.70867, -117.17146], [32.70877, -117.17161], [32.70890, -117.17175],
+      [32.70907, -117.17189], [32.70927, -117.17202], [32.70943, -117.17209], [32.70965, -117.17217],
+      [32.70988, -117.17224], [32.71010, -117.17232], [32.71033, -117.17240], [32.71050, -117.17251],
+      [32.71067, -117.17241], [32.71070, -117.17224], [32.71073, -117.17202], [32.71079, -117.17183],
+      [32.71089, -117.17170], [32.71101, -117.17163], [32.71114, -117.17164], [32.71124, -117.17174],
+      [32.71129, -117.17189], [32.71127, -117.17207], [32.71121, -117.17229], [32.71110, -117.17247],
+      [32.71097, -117.17255], [32.71080, -117.17256], [32.71064, -117.17255], [32.71050, -117.17251],
+      [32.71033, -117.17240], [32.71010, -117.17232], [32.70988, -117.17224], [32.70965, -117.17217],
+      [32.70943, -117.17209], [32.70927, -117.17202], [32.70907, -117.17189], [32.70890, -117.17175],
+      [32.70877, -117.17161], [32.70867, -117.17146], [32.70859, -117.17129], [32.70855, -117.17113],
+      [32.70854, -117.17092], [32.70853, -117.17065], [32.70853, -117.17038], [32.70852, -117.17015],
+      [32.70841, -117.17010], [32.70830, -117.17007], [32.70820, -117.17005]
+    ];
+
+    async function requestWakeLock() {
+      try {
+        if ('wakeLock' in navigator) {
+          wakeLockObj = await navigator.wakeLock.request('screen');
+        }
+      } catch (err) {}
+    }
+
+    function haversineDist(lat1, lon1, lat2, lon2) {
+      const R = 6371000; // meters
+      const dLat = (lat2 - lat1) * Math.PI / 180;
+      const dLon = (lon2 - lon1) * Math.PI / 180;
+      const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                Math.sin(dLon/2) * Math.sin(dLon/2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+      return R * c;
+    }
+
+    function startGpsTracker() {
+      if (!navigator.geolocation) {
+        alert("Geolocation is not supported by your browser.");
+        return;
+      }
+
+      requestWakeLock();
+      runStartTime = new Date().getTime();
+      totalMetersCovered = 0;
+      gpsBreadcrumbs = [];
+      lastLat = null;
+      lastLng = null;
+
+      document.getElementById('startTrackerPrompt').classList.add('hidden');
+      document.getElementById('liveDashboard').classList.remove('hidden');
+
+      if (elapsedTimerInterval) clearInterval(elapsedTimerInterval);
+      elapsedTimerInterval = setInterval(updateRunTimer, 1000);
+
+      gpsWatchId = navigator.geolocation.watchPosition(
+        (position) => {
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
+          const accuracy = position.coords.accuracy;
+
+          document.getElementById('hudCoords').innerText = `GPS: ±${Math.round(accuracy)}m`;
+
+          if (accuracy > 30) return; // Skip low-accuracy GPS jumps
+
+          if (lastLat !== null && lastLng !== null) {
+            const dist = haversineDist(lastLat, lastLng, lat, lng);
+            if (dist > 2 && dist < 50) { // Filter out micro-jitter (>2m) and teleports (<50m)
+              totalMetersCovered += dist;
+              lastLat = lat;
+              lastLng = lng;
+              gpsBreadcrumbs.push([lat, lng]);
+              updateLiveHudMetrics();
+              updatePersonalTrailOnMap(lat, lng);
+            }
+          } else {
+            lastLat = lat;
+            lastLng = lng;
+            gpsBreadcrumbs.push([lat, lng]);
+            updatePersonalTrailOnMap(lat, lng);
+          }
+        },
+        (error) => {
+          console.warn("GPS Error:", error.message);
+        },
+        { enableHighAccuracy: true, maximumAge: 1000, timeout: 10000 }
+      );
+    }
+
+    function updateRunTimer() {
+      if (!runStartTime) return;
+      const now = new Date().getTime();
+      const diffSecs = Math.floor((now - runStartTime) / 1000);
+      const hrs = String(Math.floor(diffSecs / 3600)).padStart(2, '0');
+      const mins = String(Math.floor((diffSecs % 3600) / 60)).padStart(2, '0');
+      const secs = String(diffSecs % 60).padStart(2, '0');
+      document.getElementById('hudTime').innerText = `${hrs}:${mins}:${secs}`;
+    }
+
+    function updateLiveHudMetrics() {
+      const miles = totalMetersCovered / 1609.344;
+      document.getElementById('hudDistance').innerHTML = `${miles.toFixed(2)} <span class="text-xs font-sans text-blue-200">mi</span>`;
+
+      const pct = Math.min(100, (totalMetersCovered / 5084.0) * 100);
+      document.getElementById('hudProgress').innerText = `${Math.round(pct)}%`;
+      document.getElementById('hudProgressBar').style.width = `${pct.toFixed(1)}%`;
+
+      // Pace calculation (min/mi)
+      const now = new Date().getTime();
+      const elapsedMins = (now - runStartTime) / 60000;
+      if (miles > 0.05) {
+        const paceMins = elapsedMins / miles;
+        const pMin = Math.floor(paceMins);
+        const pSec = Math.round((paceMins - pMin) * 60);
+        document.getElementById('hudPace').innerHTML = `${pMin}'${String(pSec).padStart(2,'0')}" <span class="text-xs font-sans text-blue-200">/mi</span>`;
+      }
+
+      // Split status checks
+      if (miles >= 3.0 && miles < 3.16) {
+        document.getElementById('hudSplitStatus').innerHTML = '<i class="fa-solid fa-flag-checkered text-green-400 mr-1.5"></i> Final Sprint to Finish Line!';
+      } else if (miles >= 2.0 && miles < 3.0) {
+        document.getElementById('hudSplitStatus').innerHTML = '<i class="fa-solid fa-flag text-amber-300 mr-1.5"></i> Past Ruocco Park - Heading Home!';
+      } else if (miles >= 1.0 && miles < 2.0) {
+        document.getElementById('hudSplitStatus').innerHTML = '<i class="fa-solid fa-flag text-amber-300 mr-1.5"></i> Past Hilton U-Turn - Mile 2 Split!';
+      } else if (miles >= 0.5 && miles < 1.0) {
+        document.getElementById('hudSplitStatus').innerHTML = '<i class="fa-solid fa-flag text-amber-300 mr-1.5"></i> Approaching Mile 1 (South Park Loop)';
+      }
+    }
+
+    function updatePersonalTrailOnMap(lat, lng) {
+      if (!courseMap) return;
+      if (!personalTrailLine) {
+        personalTrailLine = L.polyline(gpsBreadcrumbs, { color: '#00F0FF', weight: 6, opacity: 0.85 }).addTo(courseMap);
+      } else {
+        personalTrailLine.setLatLngs(gpsBreadcrumbs);
+      }
+      if (runnerMarker) {
+        runnerMarker.setLatLng([lat, lng]);
+      } else {
+        const icon = L.divIcon({
+          className: 'runner-gps-icon',
+          html: `<div class="bg-cyan-400 text-pts-navy rounded-full shadow-xl border-2 border-white flex items-center justify-center marker-pulse" style="width:32px;height:32px;font-size:15px;"><i class="fa-solid fa-person-running"></i></div>`,
+          iconSize: [32, 32], iconAnchor: [16, 16]
+        });
+        runnerMarker = L.marker([lat, lng], { icon }).addTo(courseMap);
+      }
+      courseMap.panTo([lat, lng]);
+    }
+
+    function pauseGpsTracker() {
+      if (gpsWatchId) {
+        navigator.geolocation.clearWatch(gpsWatchId);
+        gpsWatchId = null;
+        document.getElementById('pauseTrackerBtn').innerHTML = '<i class="fa-solid fa-play"></i> Resume Tracker';
+        document.getElementById('pauseTrackerBtn').setAttribute('onclick', 'resumeGpsTracker()');
+      }
+    }
+
+    function resumeGpsTracker() {
+      startGpsTracker();
+      document.getElementById('pauseTrackerBtn').innerHTML = '<i class="fa-solid fa-pause"></i> Pause Tracker';
+      document.getElementById('pauseTrackerBtn').setAttribute('onclick', 'pauseGpsTracker()');
+    }
+
+    function stopGpsTracker() {
+      if (gpsWatchId) navigator.geolocation.clearWatch(gpsWatchId);
+      if (elapsedTimerInterval) clearInterval(elapsedTimerInterval);
+      if (wakeLockObj) wakeLockObj.release().catch(() => {});
+
+      confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
+      alert(`Great Job! Run completed.\nTotal Distance: ${(totalMetersCovered/1609.344).toFixed(2)} miles\nTime: ${document.getElementById('hudTime').innerText}`);
+      
+      document.getElementById('liveDashboard').classList.add('hidden');
+      document.getElementById('startTrackerPrompt').classList.remove('hidden');
+    }
+
+    let isPocketModeActive = false;
+    function togglePocketMode() {
+      isPocketModeActive = !isPocketModeActive;
+      if (isPocketModeActive) {
+        const overlay = document.createElement('div');
+        overlay.id = 'pocketModeOverlay';
+        overlay.className = 'fixed inset-0 bg-black z-[99999] flex flex-col items-center justify-center text-white p-6 cursor-pointer';
+        overlay.innerHTML = `
+          <i class="fa-solid fa-lock text-5xl text-amber-400 mb-4 animate-bounce"></i>
+          <h2 class="text-xl font-bold">Pocket Mode Active</h2>
+          <p class="text-xs text-gray-400 mt-1 mb-8 text-center">Screen is dimmed to save battery while GPS records in background.</p>
+          <div class="bg-white/10 px-6 py-3 rounded-full border border-white/20 text-xs font-semibold">Tap anywhere to unlock</div>
+        `;
+        overlay.onclick = () => togglePocketMode();
+        document.body.appendChild(overlay);
+      } else {
+        const ov = document.getElementById('pocketModeOverlay');
+        if (ov) ov.remove();
+      }
+    }
+
+    // =========================================================================
+    // MAP & UI SCRIPTS
+    // =========================================================================
+    let courseMap, mainRouteLine, googleStreetsLayer, googleHybridLayer, stageMarkers = [];
+    let isMapFullScreen = false, mobileMapInteractive = false;
+
+    const STAGE_VIEWS = [
+      { coords: [32.7070, -117.1688], zoom: 16 },
+      { coords: [32.7040, -117.1645], zoom: 16 },
+      { coords: [32.7042, -117.1614], zoom: 16 },
+      { coords: [32.7098, -117.1715], zoom: 16 }
+    ];
+
+    function initCourseMap() {
+      const isMobile = window.innerWidth < 1024;
+      courseMap = L.map('courseMap', { scrollWheelZoom: false, dragging: !isMobile, tap: !isMobile }).setView([32.7068, -117.1662], 15);
+
+      googleStreetsLayer = L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', { maxZoom: 20, subdomains: ['mt0', 'mt1', 'mt2', 'mt3'], attribution: '&copy; Google Maps' }).addTo(courseMap);
+      googleHybridLayer = L.tileLayer('https://{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', { maxZoom: 20, subdomains: ['mt0', 'mt1', 'mt2', 'mt3'], attribution: '&copy; Google Maps Satellite' });
+
+      L.polyline(COURSE_COORDS, { color: '#ffffff', weight: 8, opacity: 0.9, lineJoin: 'round' }).addTo(courseMap);
+      mainRouteLine = L.polyline(COURSE_COORDS, { color: '#E31837', weight: 5, opacity: 1, lineJoin: 'round' }).addTo(courseMap);
+      L.polyline(COURSE_COORDS, { color: '#FCA5A5', weight: 1.5, dashArray: '6, 8', opacity: 0.9 }).addTo(courseMap);
+
+      function createBadgeIcon(htmlContent, bgClass, size = 28) {
+        return L.divIcon({
+          className: 'custom-div-icon',
+          html: `<div class="${bgClass} text-white font-black rounded-full shadow-lg border-2 border-white flex items-center justify-center marker-pulse" style="width:${size}px;height:${size}px;font-size:12px;">${htmlContent}</div>`,
+          iconSize: [size, size], iconAnchor: [size / 2, size / 2], popupAnchor: [0, -size / 2]
+        });
+      }
+
+      const startMarker = L.marker([32.70820, -117.17012], { icon: createBadgeIcon('', 'bg-green-600', 22) }).addTo(courseMap).bindPopup(`<div class="text-xs p-1 space-y-1.5"><strong class="text-green-700 uppercase block">START</strong><div>NW Corner of North Embarcadero Marina</div><a href="https://www.google.com/maps/dir/?api=1&destination=32.70820,-117.17009&travelmode=walking" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 bg-pts-navy text-white font-bold px-2.5 py-1 rounded text-[11px] shadow"><i class="fa-solid fa-location-arrow text-amber-300"></i> Navigate Here</a></div>`);
+      const finishMarker = L.marker([32.70820, -117.16998], { icon: createBadgeIcon('', 'bg-pts-accent', 22) }).addTo(courseMap).bindPopup(`<div class="text-xs p-1"><strong class="text-pts-accent uppercase block">FINISH</strong>NW Corner of North Embarcadero Marina</div>`);
+      const mile1Marker = L.marker([32.70448, -117.16467], { icon: createBadgeIcon('1', 'bg-pts-accent', 26) }).addTo(courseMap).bindPopup(`<div class="text-xs p-1"><strong class="text-pts-accent">Mile 1</strong><br>South Park Loop</div>`);
+      const hiltonMarker = L.marker([32.70331, -117.15973], { icon: createBadgeIcon('<i class="fa-solid fa-rotate-left text-[10px]"></i>', 'bg-pts-blue', 24) }).addTo(courseMap).bindPopup(`<div class="text-xs p-1"><strong class="text-pts-blue">U-Turn</strong><br>Hilton U-Turn</div>`);
+      const mile3Marker = L.marker([32.70867, -117.17146], { icon: createBadgeIcon('3', 'bg-pts-accent', 26) }).addTo(courseMap).bindPopup(`<div class="text-xs p-1"><strong class="text-pts-accent">Mile 3</strong><br>Ruocco Park Return</div>`);
+
+      stageMarkers = [startMarker, mile1Marker, hiltonMarker, mile3Marker];
+      courseMap.fitBounds(mainRouteLine.getBounds(), { padding: [22, 22] });
+    }
+
+    function toggleFullScreenMap() {
+      const wrapper = document.getElementById('mapWrapperContainer');
+      const fsText = document.getElementById('fsToggleText');
+      const fsIcon = document.getElementById('fsToggleIcon');
+      isMapFullScreen = !isMapFullScreen;
+      if (isMapFullScreen) {
+        wrapper.classList.add('map-fullscreen-active');
+        document.body.style.overflow = 'hidden';
+        fsText.innerText = "Exit Full Screen"; fsIcon.className = "fa-solid fa-compress text-amber-300";
+        courseMap.dragging.enable(); courseMap.scrollWheelZoom.enable();
+      } else {
+        wrapper.classList.remove('map-fullscreen-active');
+        document.body.style.overflow = '';
+        fsText.innerText = "Full Screen"; fsIcon.className = "fa-solid fa-expand text-amber-300";
+        courseMap.scrollWheelZoom.disable();
+        if (window.innerWidth < 1024 && !mobileMapInteractive) courseMap.dragging.disable();
+      }
+      setTimeout(() => { if (courseMap && mainRouteLine) { courseMap.invalidateSize(); courseMap.fitBounds(mainRouteLine.getBounds(), { padding: [25, 25] }); } }, 200);
+    }
+
+    function toggleMobileMapTouch() {
+      if (!courseMap) return;
+      mobileMapInteractive = !mobileMapInteractive;
+      const btn = document.getElementById('mobileTouchLockBtn');
+      const text = document.getElementById('mobileTouchText');
+      const icon = document.getElementById('mobileTouchIcon');
+      if (mobileMapInteractive) {
+        courseMap.dragging.enable(); text.innerText = "Lock Map to Scroll"; icon.className = "fa-solid fa-lock-open text-green-400"; btn.classList.replace('bg-pts-navy/90', 'bg-green-900/95');
+      } else {
+        courseMap.dragging.disable(); text.innerText = "Tap to Pan Map"; icon.className = "fa-solid fa-hand-pointer text-amber-300"; btn.classList.replace('bg-green-900/95', 'bg-pts-navy/90');
+      }
+    }
+
+    function setGoogleMapMode(mode) {
+      const btnStreet = document.getElementById('btnMapStreet');
+      const btnSat = document.getElementById('btnMapSat');
+      const activeClass = "px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-lg bg-pts-navy text-white transition flex items-center gap-1";
+      const inactiveClass = "px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-lg text-gray-700 hover:bg-gray-100 transition flex items-center gap-1";
+      courseMap.removeLayer(googleStreetsLayer); courseMap.removeLayer(googleHybridLayer);
+      if (mode === 'hybrid') { courseMap.addLayer(googleHybridLayer); btnSat.className = activeClass; btnStreet.className = inactiveClass; }
+      else { courseMap.addLayer(googleStreetsLayer); btnStreet.className = activeClass; btnSat.className = inactiveClass; }
+    }
+
+    function focusCourseStage(index) {
+      document.querySelectorAll('.course-step-card').forEach((el, idx) => el.classList.toggle('active', idx === index));
+      if (STAGE_VIEWS[index] && courseMap) {
+        courseMap.flyTo(STAGE_VIEWS[index].coords, STAGE_VIEWS[index].zoom, { duration: 1.0 });
+        if (stageMarkers[index]) stageMarkers[index].openPopup();
+      }
+    }
+
+    function resetCourseMapView() {
+      if (courseMap && mainRouteLine) { courseMap.closePopup(); courseMap.fitBounds(mainRouteLine.getBounds(), { padding: [22, 22] }); }
+    }
+
+    function toggleCourseSimulation() {
+      // Simulation runner logic
+    }
+
+    window.addEventListener('DOMContentLoaded', initCourseMap);
+  </script>
+</body>
+</html>
