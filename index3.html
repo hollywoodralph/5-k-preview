@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-  <title>IAM & PARAMOUNT Charity 5K Fun Run/Walk Hub</title>
+  <title>IAM & PARAMOUNT Charity 5K – Race Day Live Hub & Finisher Studio</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -54,11 +54,35 @@
 
   <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
 
+  <!-- ================================================================= -->
+  <!-- DEMO MODE SWITCHER BAR (So you can show your boss both states!)   -->
+  <!-- ================================================================= -->
+  <div class="bg-gray-900 text-white px-4 py-2 text-xs border-b border-white/10 relative z-50">
+    <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-2">
+      <div class="flex items-center gap-2">
+        <span class="bg-amber-400 text-pts-navy font-black px-2 py-0.5 rounded text-[10px] uppercase tracking-wider">Preview Control</span>
+        <span id="demoModeDescription" class="text-gray-300">Viewing <strong class="text-white">Race Day Live Mode</strong> (Registration &amp; $75 fee hidden, Live Tracker &amp; Social Badge active).</span>
+      </div>
+      <div class="flex items-center gap-1.5 bg-white/10 p-1 rounded-lg">
+        <button type="button" id="btnModeRaceDay" onclick="setSitePhaseMode('raceday')" class="px-2.5 py-1 rounded bg-pts-accent text-white font-bold transition flex items-center gap-1">
+          <i class="fa-solid fa-flag-checkered"></i> Race Day Mode
+        </button>
+        <button type="button" id="btnModePreRace" onclick="setSitePhaseMode('prerace')" class="px-2.5 py-1 rounded text-gray-300 hover:text-white font-semibold transition flex items-center gap-1">
+          <i class="fa-solid fa-clipboard-list"></i> Pre-Race Registration
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================================================================= -->
+  <!-- HEADER                                                            -->
+  <!-- ================================================================= -->
   <header class="bg-pts-navy text-white shadow-xl relative overflow-hidden">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 py-5 md:py-8 relative z-10">
       
       <div class="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-6 items-center border-b border-blue-800/60 pb-5 md:pb-6">
         
+        <!-- Host Logos -->
         <div class="md:col-span-4 flex justify-center md:justify-start">
           <div class="bg-white px-3.5 py-2.5 sm:px-4 sm:py-3 rounded-2xl shadow-md grid grid-cols-[1fr_auto_1fr] items-center w-full max-w-sm">
             <div class="flex items-center justify-center p-1">
@@ -75,8 +99,21 @@
           </div>
         </div>
 
+        <!-- Center Status / Countdown -->
         <div class="md:col-span-4 flex justify-center">
-          <div class="bg-white rounded-2xl px-4 py-2.5 sm:px-5 sm:py-3 border border-gray-100 text-center shadow-md w-full max-w-sm md:max-w-xs">
+          <!-- Race Day Live Status Badge (Shown on Race Day) -->
+          <div id="headerRaceDayBadge" class="bg-white rounded-2xl px-5 py-3 border border-gray-100 text-center shadow-md w-full max-w-sm md:max-w-xs">
+            <span class="text-[11px] uppercase tracking-wider text-pts-accent block font-black mb-1 flex items-center justify-center gap-1.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-pts-accent animate-ping"></span> Event Status: Live
+            </span>
+            <div class="bg-pts-light px-3 py-2 rounded-xl border border-blue-100">
+              <span class="text-base sm:text-lg font-black text-pts-navy block leading-tight">RACE DAY IN PROGRESS</span>
+              <span class="text-[11px] text-pts-blue font-semibold block mt-0.5">San Diego Bayfront • 5.0 KM (3.16 Mi)</span>
+            </div>
+          </div>
+
+          <!-- Pre-Race Countdown Clock (Hidden on Race Day) -->
+          <div id="headerPreRaceCountdown" class="hidden bg-white rounded-2xl px-4 py-2.5 sm:px-5 sm:py-3 border border-gray-100 text-center shadow-md w-full max-w-sm md:max-w-xs">
             <span class="text-[11px] sm:text-xs uppercase tracking-wider text-pts-navy block font-bold mb-1.5 sm:mb-2">
               <i class="fa-solid fa-stopwatch mr-1 text-pts-blue"></i> Race Countdown
             </span>
@@ -89,37 +126,54 @@
           </div>
         </div>
 
+        <!-- Right Column: Race Day Actions vs. Pre-Race $75 Fee -->
         <div class="md:col-span-4 flex flex-col items-center md:items-end gap-2.5 w-full">
-          <button type="button" onclick="toggleModal('lookupModal')" class="w-full max-w-sm md:max-w-xs bg-white active:bg-gray-100 hover:bg-gray-50 text-pts-navy px-4 py-3 sm:py-2.5 rounded-2xl text-xs sm:text-sm font-bold border border-gray-100 transition flex items-center justify-center gap-2 shadow-md">
-            <i class="fa-solid fa-lock text-pts-blue"></i> Secure Check-in / Edit Registration
-          </button>
-          
-          <div class="w-full max-w-sm md:max-w-xs bg-white rounded-2xl p-2.5 border border-gray-100 text-center shadow-md">
-            <div class="flex items-baseline justify-center gap-2">
-              <span class="text-[11px] font-bold uppercase tracking-wider text-gray-600">Registration Fee:</span>
-              <span class="text-xl sm:text-2xl font-black text-pts-navy">USD 75.00</span>
+          <!-- Race Day Quick Actions (Shown on Race Day) -->
+          <div id="headerRaceDayActions" class="w-full max-w-sm md:max-w-xs flex flex-col gap-2">
+            <button type="button" onclick="openFinisherStudioModal()" class="w-full bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-pts-navy px-4 py-3 rounded-2xl text-xs sm:text-sm font-black transition flex items-center justify-center gap-2 shadow-lg">
+              <i class="fa-solid fa-camera-retro text-base"></i> Create Finisher Social Post
+            </button>
+            <a href="https://www.google.com/maps/dir/?api=1&destination=32.70820,-117.17009&travelmode=walking" target="_blank" rel="noopener noreferrer" class="w-full bg-white/15 hover:bg-white/25 text-white border border-white/25 px-4 py-2 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2">
+              <i class="fa-solid fa-location-arrow text-amber-300"></i> Directions to Start / Finish
+            </a>
+          </div>
+
+          <!-- Pre-Race Check-in & $75 Fee Box (Hidden on Race Day) -->
+          <div id="headerPreRaceActions" class="hidden w-full max-w-sm md:max-w-xs flex flex-col gap-2.5">
+            <button type="button" onclick="toggleModal('lookupModal')" class="w-full bg-white active:bg-gray-100 hover:bg-gray-50 text-pts-navy px-4 py-3 sm:py-2.5 rounded-2xl text-xs sm:text-sm font-bold border border-gray-100 transition flex items-center justify-center gap-2 shadow-md">
+              <i class="fa-solid fa-lock text-pts-blue"></i> Secure Check-in / Edit Registration
+            </button>
+            <div class="w-full bg-white rounded-2xl p-2.5 border border-gray-100 text-center shadow-md">
+              <div class="flex items-baseline justify-center gap-2">
+                <span class="text-[11px] font-bold uppercase tracking-wider text-gray-600">Registration Fee:</span>
+                <span class="text-xl sm:text-2xl font-black text-pts-navy">USD 75.00</span>
+              </div>
+              <span class="text-[10px] text-gray-500 block mt-0.5 leading-tight font-medium">Includes Shirt, Bib, Beverages and Snacks</span>
             </div>
-            <span class="text-[10px] text-gray-500 block mt-0.5 leading-tight font-medium">Includes Shirt, Bib, Beverages and Snacks</span>
           </div>
         </div>
 
       </div>
 
+      <!-- Hero Title & Charity Logos -->
       <div class="mt-5 md:mt-6 grid grid-cols-1 lg:grid-cols-12 gap-5 md:gap-6 items-center">
         <div class="lg:col-span-6 text-center lg:text-left">
           <h1 class="leading-tight">
             <span class="block text-2xl sm:text-4xl lg:text-5xl font-black tracking-tight text-white">IAM & PARAMOUNT</span>
             <span class="block text-2xl sm:text-4xl lg:text-5xl font-black tracking-tight text-white">Charity 5K Fun Run/Walk</span>
           </h1>
-          <p class="mt-2.5 sm:mt-3 text-xs sm:text-base text-blue-100 max-w-xl mx-auto lg:mx-0">
-            Join us for an energetic 5K run/walk! Complete your registration below or use our live race-day tracker during the event.
+          <p id="heroSubtitleText" class="mt-2.5 sm:mt-3 text-xs sm:text-base text-blue-100 max-w-xl mx-auto lg:mx-0">
+            Welcome to Race Day on San Diego Bay! Track your live 5K run/walk with GPS, follow the waterfront course, and create your custom Finisher Social Card.
           </p>
-          <div class="mt-4 grid grid-cols-2 sm:flex sm:flex-wrap justify-center lg:justify-start gap-2.5 sm:gap-3 max-w-md mx-auto lg:mx-0">
-            <a href="#courseExplorerSection" class="inline-flex items-center justify-center gap-1.5 bg-white/15 active:bg-white/30 hover:bg-white/25 text-white border border-white/30 px-3 py-2.5 rounded-xl text-xs sm:text-sm font-bold backdrop-blur-sm transition shadow">
-              <i class="fa-solid fa-map-location-dot text-amber-300"></i> Course Map
+          <div class="mt-4 flex flex-wrap justify-center lg:justify-start gap-2.5 sm:gap-3">
+            <a href="#raceHubSection" id="heroPrimaryCta" class="inline-flex items-center justify-center gap-2 bg-pts-accent hover:bg-red-700 text-white px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition shadow-lg">
+              <i class="fa-solid fa-satellite-dish animate-pulse"></i> Launch Live GPS Tracker
             </a>
-            <a href="#raceHubSection" class="inline-flex items-center justify-center gap-1.5 bg-pts-accent active:bg-red-800 hover:bg-red-700 text-white px-3 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition shadow animate-pulse">
-              <i class="fa-solid fa-person-running"></i> Live GPS Tracker
+            <button type="button" id="heroSecondaryCta" onclick="openFinisherStudioModal()" class="inline-flex items-center justify-center gap-2 bg-amber-400 hover:bg-amber-500 text-pts-navy px-4 py-2.5 rounded-xl text-xs sm:text-sm font-black transition shadow-lg">
+              <i class="fa-solid fa-medal"></i> Finisher Photo Badge Studio
+            </button>
+            <a href="#courseExplorerSection" class="inline-flex items-center justify-center gap-1.5 bg-white/15 hover:bg-white/25 text-white border border-white/30 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold backdrop-blur-sm transition shadow">
+              <i class="fa-solid fa-map-location-dot text-amber-300"></i> Course Map
             </a>
           </div>
         </div>
@@ -139,7 +193,7 @@
             </div>
           </div>
           <p class="text-xs sm:text-sm text-blue-100 leading-relaxed text-center lg:text-left">
-            Proceeds from this year’s 5K will support two worthy charities: the <strong>Global Moving Foundation</strong> and <strong>Coastal K9 German Shepherd Rescue</strong>.
+            Proceeds from this year’s 5K support two worthy charities: the <strong>Global Moving Foundation</strong>, an international organization, and <strong>Coastal K9 German Shepherd Rescue</strong>, a local nonprofit in San Diego.
           </p>
         </div>
       </div>
@@ -147,9 +201,44 @@
     </div>
   </header>
 
-  <!-- Event Info Bar -->
+  <!-- ================================================================= -->
+  <!-- DYNAMIC EVENT INFO BAR (Adapts between Race Day & Pre-Race)       -->
+  <!-- ================================================================= -->
   <section class="max-w-6xl mx-auto px-4 sm:px-6 -mt-4 sm:-mt-5 relative z-20 w-full">
-    <div class="bg-white rounded-xl shadow-lg border border-gray-100 p-4 sm:p-5 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-5 gap-3.5 sm:gap-4 text-xs sm:text-sm">
+    <!-- RACE DAY INFO BAR (Active on Race Day - No irrelevant pre-race dates) -->
+    <div id="infoBarRaceDay" class="bg-white rounded-xl shadow-lg border border-gray-100 p-4 sm:p-5 grid grid-cols-2 md:grid-cols-4 gap-4 text-xs sm:text-sm">
+      <div class="flex items-start space-x-2.5 sm:space-x-3">
+        <i class="fa-solid fa-flag-checkered text-pts-accent text-base sm:text-lg mt-0.5 flex-shrink-0"></i>
+        <div>
+          <strong class="block text-gray-900">Start / Finish Area</strong>
+          <span class="text-gray-600">NW Corner, North Embarcadero Marina</span>
+        </div>
+      </div>
+      <div class="flex items-start space-x-2.5 sm:space-x-3">
+        <i class="fa-solid fa-clock text-pts-navy text-base sm:text-lg mt-0.5 flex-shrink-0"></i>
+        <div>
+          <strong class="block text-gray-900">Race Schedule</strong>
+          <span class="text-gray-600">Check-in: 6:30–7:15 AM • Start: 7:30 AM</span>
+        </div>
+      </div>
+      <div class="flex items-start space-x-2.5 sm:space-x-3">
+        <i class="fa-solid fa-hands-clapping text-green-600 text-base sm:text-lg mt-0.5 flex-shrink-0"></i>
+        <div>
+          <strong class="block text-gray-900">Course Guidance</strong>
+          <span class="text-gray-600">Course markings &amp; volunteers along route</span>
+        </div>
+      </div>
+      <div class="flex items-start space-x-2.5 sm:space-x-3 min-w-0">
+        <i class="fa-solid fa-envelope text-pts-navy text-base sm:text-lg mt-0.5 flex-shrink-0"></i>
+        <div class="min-w-0">
+          <strong class="block text-gray-900">Race Day Support</strong>
+          <a href="mailto:convention@pts-moves.com" class="text-pts-blue font-medium hover:underline block text-[11px] sm:text-xs lg:text-[13px] whitespace-nowrap">convention@pts-moves.com</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRE-RACE INFO BAR (Hidden on Race Day) -->
+    <div id="infoBarPreRace" class="hidden bg-white rounded-xl shadow-lg border border-gray-100 p-4 sm:p-5 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-5 gap-3.5 sm:gap-4 text-xs sm:text-sm">
       <div class="flex items-start space-x-2.5 sm:space-x-3 col-span-1">
         <i class="fa-solid fa-calendar-day text-pts-navy text-base sm:text-lg mt-0.5 flex-shrink-0"></i>
         <div>
@@ -177,9 +266,9 @@
       <div class="flex items-start space-x-2.5 sm:space-x-3 col-span-2 sm:col-span-1">
         <i class="fa-solid fa-shirt text-pts-navy text-base sm:text-lg mt-0.5 flex-shrink-0"></i>
         <div>
-          <strong class="block text-gray-900">Shirt & Bib Pick Up</strong>
-          <span class="text-gray-600 block">Wednesday, 21 Oct & Thursday, 22 Oct</span>
-          <span class="text-gray-500 text-[11px] block mt-0.5">(Booth @ Hyatt TBA)</span>
+          <strong class="block text-gray-900">Shirt &amp; Bib Pick Up</strong>
+          <span class="text-gray-600 block">Wednesday, 21 Oct &amp; Thursday, 22 Oct</span>
+          <span class="text-gray-500 text-[11px] block mt-0.5">(Booth Time &amp; location @ Hyatt are TBA)</span>
         </div>
       </div>
       <div class="flex items-start space-x-2.5 sm:space-x-3 col-span-1">
@@ -199,100 +288,185 @@
     </div>
   </section>
 
+  <!-- Late Registration Banner (Hidden on Race Day) -->
+  <div id="lateRegBanner" class="hidden max-w-6xl mx-auto px-4 sm:px-6 mt-3 w-full">
+    <div class="bg-blue-50 border border-blue-200 text-blue-900 px-3.5 py-2.5 rounded-lg text-xs sm:text-sm flex items-start sm:items-center gap-2.5 sm:gap-3">
+      <i class="fa-solid fa-circle-info text-pts-blue text-base flex-shrink-0 mt-0.5 sm:mt-0"></i>
+      <span><strong>Late registration needed?</strong> Contact us at <a href="mailto:convention@pts-moves.com" class="underline font-semibold whitespace-nowrap">convention@pts-moves.com</a> to check if extra space is available for last-minute registrations.</span>
+    </div>
+  </div>
+
   <!-- ================================================================= -->
-  <!-- RACE DAY HUB & LIVE GPS TRACKER SECTION                           -->
+  <!-- RACE DAY LIVE HUB, GPS TRACKER & FINISHER STUDIO LAUNCHER         -->
   <!-- ================================================================= -->
   <section id="raceHubSection" class="max-w-6xl mx-auto px-4 sm:px-6 mt-6 w-full">
-    <div class="bg-gradient-to-br from-pts-navy via-pts-blue to-pts-navy rounded-2xl shadow-2xl text-white p-6 sm:p-8 relative overflow-hidden border border-blue-400/30">
+    <div class="bg-gradient-to-br from-pts-navy via-[#002855] to-pts-blue rounded-2xl shadow-2xl text-white p-5 sm:p-8 relative overflow-hidden border border-blue-400/30">
       
-      <div class="absolute -right-10 -bottom-10 text-white/5 text-9xl pointer-events-none font-black">
-        <i class="fa-solid fa-person-running"></i>
-      </div>
-
-      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/20 pb-5 mb-6">
+      <!-- Top Row: Title + Participant Roster Verification -->
+      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-5 border-b border-white/15 pb-6 mb-6">
         <div>
-          <span class="bg-pts-accent text-white text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full"><i class="fa-solid fa-satellite-dish mr-1 animate-pulse"></i> Race Day Live Hub</span>
-          <h2 class="text-2xl sm:text-3xl font-black tracking-tight mt-1.5">Interactive GPS Run & Walk Tracker</h2>
-          <p class="text-xs sm:text-sm text-blue-100 mt-1 max-w-xl">
-            Track your exact pace, split times, and live GPS map trace on race day. Link your participant profile to share your finish time.
+          <div class="inline-flex items-center gap-2 bg-pts-accent text-white text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full shadow">
+            <span class="w-2 h-2 rounded-full bg-white animate-ping"></span> Race Day Live Tracker &amp; Finisher Hub
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-black tracking-tight mt-2">Track Your 5K &amp; Claim Your Finisher Badge</h2>
+          <p class="text-xs sm:text-sm text-blue-100 mt-1 max-w-2xl">
+            Confirm your name or email below to personalize your live GPS run tracker. When you finish, snap a selfie to generate your official shareable Finisher Social Post!
           </p>
         </div>
 
-        <div id="trackerAuthBox" class="bg-white/10 backdrop-blur-md p-3.5 rounded-xl border border-white/20 flex flex-col gap-2 min-w-[260px]">
+        <!-- Participant Roster Sync Box -->
+        <div id="trackerAuthBox" class="bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/20 w-full lg:w-96 flex-shrink-0">
           <div id="unverifiedState">
-            <span class="text-[11px] uppercase font-bold tracking-wider text-amber-300 block mb-1"><i class="fa-solid fa-user-check mr-1"></i> Sync Roster Profile</span>
+            <label class="text-[11px] uppercase font-extrabold tracking-wider text-amber-300 block mb-1.5">
+              <i class="fa-solid fa-id-badge mr-1"></i> Confirm Participant (Email or Full Name)
+            </label>
             <div class="flex gap-2">
-              <input type="text" id="trackerEmailOrName" placeholder="Enter Email or Name..." class="bg-white/20 text-white placeholder-blue-200 text-xs rounded-lg px-3 py-2 border border-white/30 focus:outline-none focus:bg-white/30 w-full">
-              <button type="button" onclick="verifyParticipantProfile()" class="bg-pts-accent hover:bg-red-700 text-white text-xs font-bold px-3 py-2 rounded-lg transition whitespace-nowrap">Sync</button>
+              <input type="text" id="trackerEmailOrName" placeholder="e.g. name@company.com or Jane Doe" class="bg-white/95 text-pts-navy placeholder-gray-400 text-xs sm:text-sm font-semibold rounded-xl px-3.5 py-2.5 border border-white focus:outline-none focus:ring-2 focus:ring-amber-400 w-full">
+              <button type="button" onclick="verifyParticipantProfile()" class="bg-amber-400 hover:bg-amber-500 text-pts-navy text-xs sm:text-sm font-black px-4 py-2.5 rounded-xl transition whitespace-nowrap shadow">
+                Confirm
+              </button>
             </div>
-            <span id="trackerAuthMsg" class="text-[10px] text-blue-200 mt-1 block">Optional: Links run to your registration.</span>
+            <span id="trackerAuthMsg" class="text-[11px] text-blue-200 mt-1.5 block">Links your run &amp; finisher card to the participant list.</span>
           </div>
+
           <div id="verifiedState" class="hidden flex items-center justify-between gap-3">
-            <div>
-              <span class="text-[10px] uppercase font-bold text-green-300 block"><i class="fa-solid fa-circle-check mr-1"></i> Verified Runner</span>
-              <strong id="verifiedRunnerName" class="text-sm"></strong>
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-green-500/20 border border-green-400/40 flex items-center justify-center text-green-300 text-lg font-black">
+                <i class="fa-solid fa-user-check"></i>
+              </div>
+              <div>
+                <span class="text-[10px] uppercase font-bold text-green-300 block">Confirmed Participant</span>
+                <strong id="verifiedRunnerName" class="text-sm sm:text-base font-black text-white block leading-tight"></strong>
+                <span id="verifiedRunnerCompany" class="text-xs text-blue-200 block"></span>
+              </div>
             </div>
-            <button type="button" onclick="resetParticipantProfile()" class="text-xs text-blue-200 hover:text-white underline">Switch</button>
+            <button type="button" onclick="resetParticipantProfile()" class="text-xs text-blue-200 hover:text-white underline font-semibold">Change</button>
           </div>
         </div>
       </div>
 
-      <!-- Live GPS Telemetry Dashboard (Hidden until Start is Tapped) -->
+      <!-- Pre-Start Action Cards (Visible before starting GPS) -->
+      <div id="startTrackerPrompt" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <!-- Card 1: Start Live GPS Run -->
+        <div class="bg-white/10 backdrop-blur-md p-5 rounded-2xl border border-white/20 flex flex-col justify-between">
+          <div>
+            <div class="w-10 h-10 rounded-xl bg-pts-accent text-white flex items-center justify-center text-lg mb-3 shadow">
+              <i class="fa-solid fa-location-crosshairs"></i>
+            </div>
+            <h3 class="text-base sm:text-lg font-extrabold">1. Live GPS Run/Walk Tracker</h3>
+            <p class="text-xs text-blue-100 mt-1 leading-relaxed">
+              Tracks your real-time pace, distance, calories, and mile splits while drawing your personal GPS path on the bayfront map below.
+            </p>
+          </div>
+          <button type="button" onclick="startGpsTracker(false)" class="mt-4 w-full bg-pts-accent hover:bg-red-700 active:bg-red-800 text-white font-black py-3.5 px-4 rounded-xl shadow-lg transition text-sm flex items-center justify-center gap-2">
+            <i class="fa-solid fa-play"></i> Start Live GPS Tracking
+          </button>
+        </div>
+
+        <!-- Card 2: Instant Demo Fast-Forward (For Boss Demo!) -->
+        <div class="bg-white/10 backdrop-blur-md p-5 rounded-2xl border border-amber-300/40 flex flex-col justify-between relative overflow-hidden">
+          <span class="absolute top-3 right-3 bg-amber-400 text-pts-navy text-[9px] font-black uppercase px-2 py-0.5 rounded-full">Interactive Demo</span>
+          <div>
+            <div class="w-10 h-10 rounded-xl bg-amber-400 text-pts-navy flex items-center justify-center text-lg mb-3 shadow">
+              <i class="fa-solid fa-forward-fast"></i>
+            </div>
+            <h3 class="text-base sm:text-lg font-extrabold">2. Fast-Forward 5K Demo Run</h3>
+            <p class="text-xs text-blue-100 mt-1 leading-relaxed">
+              Test the live telemetry HUD, Mile 1–3 split chimes, live map drawing, and automatic finish celebration in a 12-second accelerated run!
+            </p>
+          </div>
+          <button type="button" onclick="startGpsTracker(true)" class="mt-4 w-full bg-amber-400 hover:bg-amber-500 text-pts-navy font-black py-3.5 px-4 rounded-xl shadow-lg transition text-sm flex items-center justify-center gap-2">
+            <i class="fa-solid fa-bolt"></i> Run 12-Sec Demo Simulation
+          </button>
+        </div>
+
+        <!-- Card 3: Direct Finisher Social Card Studio -->
+        <div class="bg-white/10 backdrop-blur-md p-5 rounded-2xl border border-white/20 flex flex-col justify-between">
+          <div>
+            <div class="w-10 h-10 rounded-xl bg-blue-500 text-white flex items-center justify-center text-lg mb-3 shadow">
+              <i class="fa-solid fa-camera-retro"></i>
+            </div>
+            <h3 class="text-base sm:text-lg font-extrabold">3. Finisher Social Card Studio</h3>
+            <p class="text-xs text-blue-100 mt-1 leading-relaxed">
+              Already finished or tracked on your watch? Take a selfie or upload a photo to generate 1 of 3 custom social media bragging cards!
+            </p>
+          </div>
+          <button type="button" onclick="openFinisherStudioModal()" class="mt-4 w-full bg-white hover:bg-blue-50 text-pts-navy font-black py-3.5 px-4 rounded-xl shadow-lg transition text-sm flex items-center justify-center gap-2">
+            <i class="fa-solid fa-wand-magic-sparkles text-pts-accent"></i> Open Finisher Photo Studio
+          </button>
+        </div>
+      </div>
+
+      <!-- ACTIVE LIVE TELEMETRY DASHBOARD (Shown when tracking is active) -->
       <div id="liveDashboard" class="hidden space-y-5">
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 text-center">
-          <div class="bg-white/10 backdrop-blur-md p-4 rounded-xl border border-white/15 shadow-inner">
+        <div class="grid grid-cols-2 sm:grid-cols-5 gap-3 text-center">
+          <div class="bg-black/30 backdrop-blur-md p-3.5 rounded-xl border border-white/15">
             <span class="text-[10px] uppercase tracking-wider text-blue-200 font-bold block">Elapsed Time</span>
-            <span id="hudTime" class="text-2xl sm:text-3xl font-mono font-black text-amber-300">00:00:00</span>
+            <span id="hudTime" class="text-2xl sm:text-3xl font-mono font-black text-amber-300">00:00</span>
           </div>
-          <div class="bg-white/10 backdrop-blur-md p-4 rounded-xl border border-white/15 shadow-inner">
-            <span class="text-[10px] uppercase tracking-wider text-blue-200 font-bold block">Distance Covered</span>
+          <div class="bg-black/30 backdrop-blur-md p-3.5 rounded-xl border border-white/15">
+            <span class="text-[10px] uppercase tracking-wider text-blue-200 font-bold block">Distance</span>
             <span id="hudDistance" class="text-2xl sm:text-3xl font-mono font-black text-white">0.00 <span class="text-xs font-sans text-blue-200">mi</span></span>
+            <span id="hudDistanceKm" class="text-[10px] text-blue-300 block font-mono">0.00 km</span>
           </div>
-          <div class="bg-white/10 backdrop-blur-md p-4 rounded-xl border border-white/15 shadow-inner">
-            <span class="text-[10px] uppercase tracking-wider text-blue-200 font-bold block">Current Pace</span>
-            <span id="hudPace" class="text-2xl sm:text-3xl font-mono font-black text-white">0'00" <span class="text-xs font-sans text-blue-200">/mi</span></span>
+          <div class="bg-black/30 backdrop-blur-md p-3.5 rounded-xl border border-white/15">
+            <span class="text-[10px] uppercase tracking-wider text-blue-200 font-bold block">Avg Pace</span>
+            <span id="hudPace" class="text-2xl sm:text-3xl font-mono font-black text-cyan-300">8'45" <span class="text-xs font-sans text-blue-200">/mi</span></span>
           </div>
-          <div class="bg-white/10 backdrop-blur-md p-4 rounded-xl border border-white/15 shadow-inner">
-            <span class="text-[10px] uppercase tracking-wider text-blue-200 font-bold block">Course Progress</span>
+          <div class="bg-black/30 backdrop-blur-md p-3.5 rounded-xl border border-white/15">
+            <span class="text-[10px] uppercase tracking-wider text-blue-200 font-bold block">Est. Calories</span>
+            <span id="hudCalories" class="text-2xl sm:text-3xl font-mono font-black text-orange-300">0 <span class="text-xs font-sans text-blue-200">kcal</span></span>
+          </div>
+          <div class="col-span-2 sm:col-span-1 bg-black/30 backdrop-blur-md p-3.5 rounded-xl border border-white/15">
+            <span class="text-[10px] uppercase tracking-wider text-blue-200 font-bold block">5K Progress</span>
             <span id="hudProgress" class="text-2xl sm:text-3xl font-mono font-black text-green-400">0%</span>
           </div>
         </div>
 
-        <!-- Progress Bar & Split Alerts -->
-        <div class="bg-white/10 backdrop-blur-md p-4 rounded-xl border border-white/15 space-y-2">
+        <!-- Live Progress Bar & Mile Splits Strip -->
+        <div class="bg-black/25 backdrop-blur-md p-4 rounded-xl border border-white/15 space-y-3">
           <div class="flex items-center justify-between text-xs font-bold">
-            <span id="hudSplitStatus"><i class="fa-solid fa-flag text-amber-300 mr-1.5"></i> Heading to Mile 1 (Embarcadero Marina Park South)</span>
-            <span id="hudCoords" class="font-mono text-[11px] text-blue-200">GPS: Acquiring signal...</span>
+            <span id="hudSplitStatus" class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-green-400 animate-ping"></span>
+              <span>Heading to Mile 1 (Embarcadero Marina Park South)...</span>
+            </span>
+            <span id="hudCoords" class="font-mono text-[11px] text-blue-200">GPS Active</span>
           </div>
-          <div class="w-full bg-white/20 h-3 rounded-full overflow-hidden p-0.5">
-            <div id="hudProgressBar" class="bg-gradient-to-r from-green-400 via-amber-400 to-pts-accent h-full rounded-full transition-all duration-300" style="width: 0%"></div>
+          <div class="w-full bg-white/15 h-3 rounded-full overflow-hidden p-0.5">
+            <div id="hudProgressBar" class="bg-gradient-to-r from-cyan-400 via-amber-400 to-pts-accent h-full rounded-full transition-all duration-200" style="width: 0%"></div>
+          </div>
+
+          <!-- Mile Splits Pill Grid -->
+          <div class="grid grid-cols-4 gap-2 pt-1 text-center text-[11px]">
+            <div id="splitBox1" class="bg-white/10 rounded-lg py-1.5 px-2 border border-white/10">
+              <span class="text-blue-200 block text-[10px] font-bold">MILE 1</span>
+              <strong id="splitTime1" class="font-mono text-white">--:--</strong>
+            </div>
+            <div id="splitBox2" class="bg-white/10 rounded-lg py-1.5 px-2 border border-white/10">
+              <span class="text-blue-200 block text-[10px] font-bold">MILE 2</span>
+              <strong id="splitTime2" class="font-mono text-white">--:--</strong>
+            </div>
+            <div id="splitBox3" class="bg-white/10 rounded-lg py-1.5 px-2 border border-white/10">
+              <span class="text-blue-200 block text-[10px] font-bold">MILE 3</span>
+              <strong id="splitTime3" class="font-mono text-white">--:--</strong>
+            </div>
+            <div id="splitBoxFinish" class="bg-white/10 rounded-lg py-1.5 px-2 border border-white/10">
+              <span class="text-amber-300 block text-[10px] font-bold">5K FINISH</span>
+              <strong id="splitTimeFinish" class="font-mono text-white">--:--</strong>
+            </div>
           </div>
         </div>
 
-        <!-- Tracker Control Buttons -->
+        <!-- Tracker Controls -->
         <div class="flex flex-wrap items-center justify-center gap-3">
-          <button type="button" id="pauseTrackerBtn" onclick="pauseGpsTracker()" class="bg-amber-500 hover:bg-amber-600 text-pts-navy font-bold px-6 py-3 rounded-xl shadow transition text-sm flex items-center gap-2">
-            <i class="fa-solid fa-pause"></i> Pause Tracker
+          <button type="button" id="pauseTrackerBtn" onclick="pauseGpsTracker()" class="bg-amber-400 hover:bg-amber-500 text-pts-navy font-black px-5 py-3 rounded-xl shadow transition text-xs sm:text-sm flex items-center gap-2">
+            <i class="fa-solid fa-pause"></i> Pause
           </button>
-          <button type="button" onclick="stopGpsTracker()" class="bg-pts-accent hover:bg-red-700 text-white font-bold px-6 py-3 rounded-xl shadow transition text-sm flex items-center gap-2">
-            <i class="fa-solid fa-stop"></i> Finish & Generate Badge
+          <button type="button" onclick="completeRunAndCelebrate()" class="bg-green-500 hover:bg-green-600 text-white font-black px-6 py-3 rounded-xl shadow-lg transition text-xs sm:text-sm flex items-center gap-2">
+            <i class="fa-solid fa-flag-checkered"></i> Complete 5K &amp; Claim Finisher Badge
           </button>
-          <button type="button" onclick="togglePocketMode()" class="bg-white/20 hover:bg-white/30 text-white font-semibold px-4 py-3 rounded-xl transition text-sm flex items-center gap-2">
-            <i class="fa-solid fa-mobile-screen-button"></i> Pocket Mode (Dim)
-          </button>
-        </div>
-      </div>
-
-      <!-- Start Tracker CTA (Visible before start) -->
-      <div id="startTrackerPrompt" class="text-center py-6 space-y-4">
-        <div class="max-w-md mx-auto bg-white/10 backdrop-blur-md p-5 rounded-2xl border border-white/20">
-          <i class="fa-solid fa-location-crosshairs text-4xl text-amber-300 mb-2 block animate-bounce"></i>
-          <h3 class="text-lg font-bold">Ready to Run or Walk?</h3>
-          <p class="text-xs text-blue-100 mt-1 mb-4">
-            Tap below to enable high-accuracy GPS tracking, audio milestone alerts, and live map tracing along the San Diego Bay course.
-          </p>
-          <button type="button" onclick="startGpsTracker()" class="w-full bg-pts-accent hover:bg-red-700 active:bg-red-800 text-white font-black py-4 px-6 rounded-xl shadow-xl transition text-base flex items-center justify-center gap-2 cursor-pointer">
-            <i class="fa-solid fa-play"></i> Start My 5K Run / Walk
+          <button type="button" onclick="togglePocketMode()" class="bg-white/15 hover:bg-white/25 text-white font-semibold px-4 py-3 rounded-xl transition text-xs sm:text-sm flex items-center gap-2">
+            <i class="fa-solid fa-mobile-screen-button"></i> Pocket Mode (Battery Saver)
           </button>
         </div>
       </div>
@@ -302,6 +476,7 @@
 
   <!-- ================================================================= -->
   <!-- 23 OCTOBER 2026 – IAM & PTS 5K FUN RUN/WALK MAP SECTION           -->
+  <!-- Strictly using the exact approved PDF wording                     -->
   <!-- ================================================================= -->
   <section id="courseExplorerSection" class="max-w-6xl mx-auto px-4 sm:px-6 mt-6 w-full">
     <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
@@ -309,7 +484,9 @@
       <div class="bg-gradient-to-r from-pts-navy via-pts-blue to-pts-navy text-white px-4 sm:px-6 py-4 flex flex-col lg:flex-row lg:items-center justify-between gap-3.5">
         <div>
           <h2 class="text-lg sm:text-2xl font-black tracking-tight">23 October 2026 – IAM &amp; PTS 5K Fun Run/Walk Map</h2>
-          <p class="text-xs sm:text-sm text-blue-100 mt-0.5">Participants will enjoy a scenic waterfront route along San Diego Bay.</p>
+          <p class="text-xs sm:text-sm text-blue-100 mt-0.5">
+            Participants will enjoy a scenic waterfront route along San Diego Bay.
+          </p>
         </div>
 
         <div class="grid grid-cols-2 sm:flex sm:flex-wrap items-center gap-2">
@@ -395,6 +572,10 @@
               Course Route
             </div>
             <div class="flex items-center gap-1 font-semibold text-gray-800">
+              <span class="w-4 h-1.5 bg-cyan-400 rounded-full inline-block"></span>
+              Your GPS Path
+            </div>
+            <div class="flex items-center gap-1 font-semibold text-gray-800">
               <span class="w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full bg-pts-accent text-white text-[8px] sm:text-[9px] font-black inline-flex items-center justify-center">1</span>
               Mile Markers (1, 2, 3)
             </div>
@@ -466,37 +647,198 @@
     </div>
   </section>
 
-  <!-- Official PDF Map Modal -->
+  <!-- Race Day Charity Donation Footer Banner (Always visible so spectators/runners can donate) -->
+  <section id="raceDayDonationBanner" class="max-w-6xl mx-auto px-4 sm:px-6 my-6 w-full">
+    <div class="bg-white rounded-2xl p-5 sm:p-6 border border-blue-200 text-center shadow-lg flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="text-center sm:text-left">
+        <span class="text-xs font-black uppercase tracking-wider text-pts-accent block">
+          <i class="fa-solid fa-heart mr-1"></i> Support Our 2026 Charities
+        </span>
+        <h3 class="text-base sm:text-lg font-extrabold text-pts-navy mt-0.5">Global Moving Foundation &amp; Coastal K9 German Shepherd Rescue</h3>
+        <p class="text-xs text-gray-600">Cheering from the sidelines or want to make an extra impact today?</p>
+      </div>
+      <a href="https://donate.stripe.com/eVq6oz1MEdinausaBR3gk02" target="_blank" rel="noopener noreferrer" class="bg-pts-accent hover:bg-red-700 text-white font-bold py-3 px-6 rounded-xl text-xs sm:text-sm shadow-md transition whitespace-nowrap">
+        Donate Any Amount to Charities
+      </a>
+    </div>
+  </section>
+
+  <!-- ================================================================= -->
+  <!-- POST-RACE FINISHER SOCIAL CARD STUDIO MODAL (3 STUNNING DESIGNS)  -->
+  <!-- ================================================================= -->
+  <div id="finisherStudioModal" class="fixed inset-0 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-2 sm:p-4 z-50 overflow-y-auto">
+    <div class="bg-white rounded-3xl max-w-5xl w-full max-h-[95vh] flex flex-col shadow-2xl overflow-hidden my-auto">
+      
+      <!-- Modal Header -->
+      <div class="bg-gradient-to-r from-pts-navy via-pts-blue to-pts-navy text-white px-5 sm:px-6 py-4 flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <span class="w-9 h-9 rounded-xl bg-amber-400 text-pts-navy flex items-center justify-center font-black text-lg shadow">
+            <i class="fa-solid fa-medal"></i>
+          </span>
+          <div>
+            <h3 class="text-base sm:text-xl font-black leading-tight">Official 5K Finisher Social Card Studio</h3>
+            <p class="text-[11px] sm:text-xs text-blue-200">Take a selfie or upload a photo • 3 custom designs • Ready for Instagram, LinkedIn &amp; WhatsApp</p>
+          </div>
+        </div>
+        <button type="button" onclick="toggleModal('finisherStudioModal')" class="text-white/80 hover:text-white text-2xl p-1">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- Studio Body Grid -->
+      <div class="p-4 sm:p-6 overflow-y-auto grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        
+        <!-- Left Column: Live High-Res Canvas Preview (7 cols) -->
+        <div class="lg:col-span-7 flex flex-col items-center bg-gray-900 rounded-2xl p-4 sm:p-6 border border-gray-800 shadow-inner">
+          <div class="w-full flex items-center justify-between mb-3 text-xs text-gray-300">
+            <span class="font-bold flex items-center gap-1.5">
+              <i class="fa-solid fa-wand-magic-sparkles text-amber-400"></i>
+              <span id="activeDesignTitle">Design 1: Bayfront Championship Gold</span>
+            </span>
+            <button type="button" onclick="randomizeFinisherDesign()" class="bg-white/15 hover:bg-white/25 text-amber-300 font-bold px-3 py-1 rounded-lg transition flex items-center gap-1.5 text-xs">
+              <i class="fa-solid fa-shuffle"></i> Shuffle Design
+            </button>
+          </div>
+
+          <!-- 1080x1350 Standardized Social Post Canvas -->
+          <div class="w-full max-w-[380px] rounded-2xl overflow-hidden shadow-2xl border-2 border-white/15 bg-pts-navy">
+            <canvas id="finisherCanvas" width="1080" height="1350" class="w-full h-auto block"></canvas>
+          </div>
+
+          <!-- Design Switcher Pills -->
+          <div class="mt-4 grid grid-cols-3 gap-2 w-full max-w-[380px]">
+            <button type="button" id="designBtn0" onclick="selectFinisherDesign(0)" class="py-2 px-2 rounded-xl text-xs font-bold border transition bg-amber-400 text-pts-navy border-amber-400 shadow">
+              1. Gold Crest
+            </button>
+            <button type="button" id="designBtn1" onclick="selectFinisherDesign(1)" class="py-2 px-2 rounded-xl text-xs font-bold border transition bg-white/10 text-white border-white/20 hover:bg-white/20">
+              2. Glass Pro
+            </button>
+            <button type="button" id="designBtn2" onclick="selectFinisherDesign(2)" class="py-2 px-2 rounded-xl text-xs font-bold border transition bg-white/10 text-white border-white/20 hover:bg-white/20">
+              3. VIP Bib Card
+            </button>
+          </div>
+        </div>
+
+        <!-- Right Column: Photo Upload, Framing & Stats Customization (5 cols) -->
+        <div class="lg:col-span-5 space-y-5">
+          
+          <!-- Step 1: Take Selfie or Upload Photo -->
+          <div class="bg-pts-light p-4 rounded-2xl border border-blue-200 space-y-3">
+            <h4 class="text-xs sm:text-sm font-black uppercase tracking-wider text-pts-navy flex items-center gap-2">
+              <i class="fa-solid fa-camera text-pts-accent"></i> 1. Add Your Finisher Photo
+            </h4>
+            <p class="text-xs text-gray-600">Snap a finish-line selfie with your phone camera or choose a photo from your library:</p>
+            
+            <div class="grid grid-cols-2 gap-2.5">
+              <label class="cursor-pointer bg-pts-navy hover:bg-pts-blue text-white font-bold py-3 px-3 rounded-xl text-xs shadow transition flex items-center justify-center gap-2 text-center">
+                <i class="fa-solid fa-camera text-amber-300 text-sm"></i> Take Selfie / Photo
+                <input type="file" id="cameraSelfieInput" accept="image/*" capture="user" class="hidden" onchange="handleFinisherPhotoUpload(event)">
+              </label>
+              <label class="cursor-pointer bg-white hover:bg-gray-50 text-pts-navy border border-blue-300 font-bold py-3 px-3 rounded-xl text-xs shadow-sm transition flex items-center justify-center gap-2 text-center">
+                <i class="fa-solid fa-image text-pts-blue text-sm"></i> Upload Photo
+                <input type="file" id="galleryPhotoInput" accept="image/*" class="hidden" onchange="handleFinisherPhotoUpload(event)">
+              </label>
+            </div>
+
+            <!-- Photo Zoom & Position Sliders (Shown once photo is loaded) -->
+            <div id="photoAdjustControls" class="hidden pt-2 border-t border-blue-200/80 space-y-2 text-xs">
+              <div class="flex items-center justify-between">
+                <span class="font-semibold text-gray-700">Photo Zoom</span>
+                <input type="range" id="photoZoomSlider" min="0.8" max="2.5" step="0.05" value="1" oninput="renderFinisherCanvas()" class="w-36 accent-pts-navy">
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="font-semibold text-gray-700">Vertical Position</span>
+                <input type="range" id="photoPanYSlider" min="-300" max="300" step="5" value="0" oninput="renderFinisherCanvas()" class="w-36 accent-pts-navy">
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="font-semibold text-gray-700">Horizontal Position</span>
+                <input type="range" id="photoPanXSlider" min="-300" max="300" step="5" value="0" oninput="renderFinisherCanvas()" class="w-36 accent-pts-navy">
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 2: Customize Finisher Details -->
+          <div class="bg-gray-50 p-4 rounded-2xl border border-gray-200 space-y-3">
+            <h4 class="text-xs sm:text-sm font-black uppercase tracking-wider text-pts-navy flex items-center gap-2">
+              <i class="fa-solid fa-sliders text-pts-blue"></i> 2. Participant &amp; Performance Details
+            </h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+              <div class="sm:col-span-2">
+                <label class="font-bold text-gray-700 block mb-1">Participant Name</label>
+                <input type="text" id="cardRunnerName" value="Alex Finisher" oninput="renderFinisherCanvas()" class="w-full rounded-lg border border-gray-300 p-2 text-sm font-bold text-pts-navy">
+              </div>
+              <div>
+                <label class="font-bold text-gray-700 block mb-1">Company / Team</label>
+                <input type="text" id="cardRunnerCompany" value="Paramount & IAM" oninput="renderFinisherCanvas()" class="w-full rounded-lg border border-gray-300 p-2 text-sm">
+              </div>
+              <div>
+                <label class="font-bold text-gray-700 block mb-1">Bib / Reg ID</label>
+                <input type="text" id="cardRunnerBib" value="PTS-2026" oninput="renderFinisherCanvas()" class="w-full rounded-lg border border-gray-300 p-2 text-sm font-mono">
+              </div>
+              <div>
+                <label class="font-bold text-gray-700 block mb-1">Finish Time</label>
+                <input type="text" id="cardRunnerTime" value="27:42" oninput="renderFinisherCanvas()" class="w-full rounded-lg border border-gray-300 p-2 text-sm font-mono font-bold">
+              </div>
+              <div>
+                <label class="font-bold text-gray-700 block mb-1">Avg Pace</label>
+                <input type="text" id="cardRunnerPace" value="8'46&quot; /mi" oninput="renderFinisherCanvas()" class="w-full rounded-lg border border-gray-300 p-2 text-sm font-mono font-bold">
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 3: Share or Download -->
+          <div class="space-y-2.5">
+            <button type="button" onclick="shareFinisherCard()" class="w-full bg-pts-accent hover:bg-red-700 text-white font-black py-3.5 px-5 rounded-xl shadow-lg transition text-sm flex items-center justify-center gap-2">
+              <i class="fa-solid fa-share-nodes"></i> Share to Social Media / Save to Phone
+            </button>
+            <button type="button" onclick="downloadFinisherCard()" class="w-full bg-pts-navy hover:bg-pts-blue text-white font-bold py-3 px-5 rounded-xl shadow transition text-xs sm:text-sm flex items-center justify-center gap-2">
+              <i class="fa-solid fa-download text-amber-300"></i> Download High-Res PNG Image (1080×1350)
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Official Static Map Modal -->
   <div id="officialMapModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-2 sm:p-4 z-50">
     <div class="bg-white rounded-2xl max-w-4xl w-full max-h-[92vh] flex flex-col shadow-2xl overflow-hidden">
       <div class="bg-pts-navy text-white px-4 sm:px-6 py-3.5 sm:py-4 flex items-center justify-between">
         <h3 class="text-sm sm:text-lg font-bold truncate pr-2"><i class="fa-solid fa-map mr-1.5 text-amber-300"></i> 23 October 2026 – IAM &amp; PTS 5K Fun Run/Walk Map</h3>
-        <button type="button" onclick="toggleModal('officialMapModal')" class="text-white/80 hover:text-white text-xl p-1"><i class="fa-solid fa-xmark"></i></button>
+        <button type="button" onclick="toggleModal('officialMapModal')" class="text-white/80 hover:text-white text-xl p-1">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
       </div>
       <div class="p-4 sm:p-6 overflow-y-auto space-y-4 text-xs sm:text-sm text-gray-700">
         <div class="bg-blue-50 border border-blue-200 p-3.5 sm:p-4 rounded-xl space-y-2">
           <p><strong>START/FINISH:</strong> Northwest corner of the North Embarcadero Marina (marked by the green &amp; red dots on the map).</p>
           <p><strong>COURSE ROUTE:</strong> Participants will enjoy a scenic waterfront route along San Diego Bay.</p>
+          <ul class="list-disc pl-5 space-y-1">
+            <li>The course begins at the North Embarcadero Marina and follows the marina walkway counterclockwise before heading south (right turn) continuing down along the Bayfront Promenade.</li>
+            <li>Participants will turn right and follow the loop (counterclockwise) around the South Embarcadero Marina.</li>
+            <li>They will then turn right onto the Promenade toward the Hilton and make a U-turn before the hotel.</li>
+            <li>The return route follows the waterfront north toward Ruocco Park, loops around the park (counterclockwise), and continues back with a right turn to the start/finish area at the North Embarcadero Marina.</li>
+            <li>Course markings and volunteers will be along the route to help guide participants throughout the event.</li>
+          </ul>
         </div>
         <div class="text-center bg-gray-100 rounded-xl p-3 sm:p-4 border border-gray-200">
-          <img src="5K_Course_Map.png" alt="Official Course Map" class="max-h-[460px] w-auto mx-auto rounded-lg shadow" onerror="this.onerror=null;this.src='5K_Course_Map.jpg';">
+          <img src="5K_Course_Map.jpg" alt="23 October 2026 – IAM & PTS 5K Fun Run/Walk Map" class="max-h-[460px] w-auto mx-auto rounded-lg shadow" onerror="this.onerror=null;this.src='5K_Course_Map.png';">
+          <div class="mt-3">
+            <a href="23 October 2026 – IAM & PTS 5K Fun Run Walk Map.pdf" target="_blank" class="inline-flex items-center gap-2 bg-pts-navy hover:bg-pts-blue text-white font-bold px-4 py-2.5 rounded-xl text-xs shadow transition">
+              <i class="fa-solid fa-download"></i> Open Official Map PDF
+            </a>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- REGISTRATION FORM SECTION (Auto-hides 15 mins before race) -->
-  <main id="regFormSection" class="max-w-4xl mx-auto px-4 sm:px-6 py-5 sm:py-6 w-full flex-grow">
-    
-    <!-- Race Day Notice Banner (Replaces form when race day arrives) -->
-    <div id="raceDayActiveBanner" class="hidden bg-pts-navy text-white p-8 rounded-2xl shadow-xl text-center space-y-4 mb-6">
-      <i class="fa-solid fa-flag-checkered text-5xl text-amber-300 animate-bounce block"></i>
-      <h2 class="text-2xl sm:text-3xl font-black">Race Day is Live!</h2>
-      <p class="text-sm sm:text-base text-blue-100 max-w-lg mx-auto">
-        Online registration has closed for the event. Use the <strong>Live GPS Tracker</strong> above to record your run or walk and view live stats!
-      </p>
-    </div>
-
+  <!-- ================================================================= -->
+  <!-- PRE-RACE REGISTRATION FORM SECTION (Hidden in Race Day Mode!)     -->
+  <!-- ================================================================= -->
+  <main id="regFormSection" class="hidden max-w-4xl mx-auto px-4 sm:px-6 py-5 sm:py-6 w-full flex-grow">
     <div id="registrationCardWrapper" class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
       
       <div class="bg-pts-light border-b border-gray-200 px-5 sm:px-8 py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
@@ -514,18 +856,15 @@
           <div class="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
             <div>
               <label class="block text-sm font-medium text-gray-700">First Name <span class="text-red-500 font-bold">*</span></label>
-              <input type="text" id="firstName" name="firstName" autocomplete="given-name" required class="mt-1 w-full rounded-lg border-gray-300 border p-3 sm:p-2.5 text-base sm:text-sm focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
-              <span id="firstNameErr" class="text-xs text-red-500 hidden mt-1"><i class="fa-solid fa-circle-exclamation mr-1"></i> First name must contain only letters.</span>
+              <input type="text" id="firstName" name="firstName" required class="mt-1 w-full rounded-lg border-gray-300 border p-3 sm:p-2.5 text-base sm:text-sm focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700">Last Name <span class="text-red-500 font-bold">*</span></label>
-              <input type="text" id="lastName" name="lastName" autocomplete="family-name" required class="mt-1 w-full rounded-lg border-gray-300 border p-3 sm:p-2.5 text-base sm:text-sm focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
-              <span id="lastNameErr" class="text-xs text-red-500 hidden mt-1"><i class="fa-solid fa-circle-exclamation mr-1"></i> Last name must contain only letters.</span>
+              <input type="text" id="lastName" name="lastName" required class="mt-1 w-full rounded-lg border-gray-300 border p-3 sm:p-2.5 text-base sm:text-sm focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700">Mobile Phone (International) <span class="text-red-500 font-bold">*</span></label>
-              <input type="tel" id="mobile" name="mobile" autocomplete="tel" placeholder="+1 555 000 0000" required class="mt-1 w-full rounded-lg border-gray-300 border p-3 sm:p-2.5 text-base sm:text-sm focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
-              <span id="mobileErr" class="text-xs text-red-500 hidden mt-1"><i class="fa-solid fa-circle-exclamation mr-1"></i> Enter a valid phone number.</span>
+              <input type="tel" id="mobile" name="mobile" placeholder="+1 555 000 0000" required class="mt-1 w-full rounded-lg border-gray-300 border p-3 sm:p-2.5 text-base sm:text-sm focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700">T-Shirt Size <span class="text-red-500 font-bold">*</span></label>
@@ -543,8 +882,7 @@
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700">Email Address <span class="text-red-500 font-bold">*</span></label>
-              <input type="email" id="email" name="email" autocomplete="email" required placeholder="name@company.com" class="mt-1 w-full rounded-lg border-gray-300 border p-3 sm:p-2.5 text-base sm:text-sm focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
-              <span id="emailErr" class="text-xs text-red-500 hidden mt-1"><i class="fa-solid fa-circle-exclamation mr-1"></i> Please enter a valid email address.</span>
+              <input type="email" id="email" name="email" required placeholder="name@company.com" class="mt-1 w-full rounded-lg border-gray-300 border p-3 sm:p-2.5 text-base sm:text-sm focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700">Award Category: <span class="text-red-500 font-bold">*</span></label>
@@ -562,177 +900,158 @@
           </div>
         </div>
 
-        <div id="pinSection" class="bg-blue-50/60 p-4 sm:p-5 rounded-xl border border-blue-200">
-          <h3 class="text-sm font-bold text-pts-navy uppercase tracking-wider mb-1"><i class="fa-solid fa-key mr-2"></i> Create Your Security PIN <span class="text-red-500 font-bold">*</span></h3>
-          <p class="text-xs text-gray-600 mb-4">Choose a PIN so you can access and update your details later.</p>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-            <div>
-              <label class="block text-xs font-semibold text-gray-700 uppercase">Choose Security PIN</label>
-              <input type="password" inputmode="numeric" id="userPin" name="userPin" maxlength="6" placeholder="••••" required class="mt-1 w-full rounded-lg border-gray-300 border p-3 sm:p-2.5 text-center text-lg font-mono tracking-widest focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
-            </div>
-            <div>
-              <label class="block text-xs font-semibold text-gray-700 uppercase">Confirm Security PIN</label>
-              <input type="password" inputmode="numeric" id="confirmPin" maxlength="6" placeholder="••••" required class="mt-1 w-full rounded-lg border-gray-300 border p-3 sm:p-2.5 text-center text-lg font-mono tracking-widest focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
-              <span id="pinErr" class="text-xs text-red-500 hidden mt-1"><i class="fa-solid fa-circle-exclamation mr-1"></i> Security PINs do not match.</span>
-            </div>
-          </div>
-        </div>
-
-        <div>
-          <div class="flex items-center justify-between border-b pb-2 mb-4">
-            <h3 class="text-base sm:text-lg font-semibold text-pts-navy"><i class="fa-solid fa-building mr-2"></i> Company Information</h3>
-            <span id="autofillBadge" class="hidden text-xs bg-blue-100 text-blue-800 font-semibold px-2.5 py-1 rounded-full"><i class="fa-solid fa-magic mr-1"></i> Auto-filled from colleague</span>
-          </div>
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6">
-            <div class="md:col-span-2 lg:col-span-4">
-              <label class="block text-sm font-medium text-gray-700">Company Name <span class="text-red-500 font-bold">*</span></label>
-              <input type="text" id="company" name="company" autocomplete="organization" required class="mt-1 w-full rounded-lg border-gray-300 border p-3 sm:p-2.5 text-base sm:text-sm focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700">City <span class="text-red-500 font-bold">*</span></label>
-              <input type="text" id="city" name="city" autocomplete="address-level2" required class="mt-1 w-full rounded-lg border-gray-300 border p-3 sm:p-2.5 text-base sm:text-sm focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
-              <span id="cityErr" class="text-xs text-red-500 hidden mt-1"><i class="fa-solid fa-circle-exclamation mr-1"></i> City should not contain numbers.</span>
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700">State / Province</label>
-              <input type="text" id="state" name="state" autocomplete="address-level1" class="mt-1 w-full rounded-lg border-gray-300 border p-3 sm:p-2.5 text-base sm:text-sm focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700">Country <span class="text-red-500 font-bold">*</span></label>
-              <select id="country" name="country" autocomplete="country-name" required class="mt-1 w-full rounded-lg border-gray-300 border p-3 sm:p-2.5 text-base sm:text-sm focus:ring-2 focus:ring-pts-navy focus:outline-none bg-white transition">
-                <option value="">Select Country / Territory...</option>
-                <option value="United States">United States</option>
-                <option value="United Kingdom">United Kingdom</option>
-                <option value="Canada">Canada</option>
-                <option value="Germany">Germany</option>
-                <option value="France">France</option>
-                <option value="Australia">Australia</option>
-                <option value="Netherlands">Netherlands</option>
-                <option value="United Arab Emirates">United Arab Emirates</option>
-                <option value="China">China</option>
-                <option value="India">India</option>
-                <option value="Brazil">Brazil</option>
-                <option value="Belgium">Belgium</option>
-                <option value="Spain">Spain</option>
-                <option value="Japan">Japan</option>
-                <option value="Singapore">Singapore</option>
-              </select>
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700">Postal / ZIP Code</label>
-              <input type="text" id="postalCode" name="postalCode" autocomplete="postal-code" placeholder="e.g. 90210" class="mt-1 w-full rounded-lg border-gray-300 border p-3 sm:p-2.5 text-base sm:text-sm focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
-            </div>
-          </div>
-        </div>
-
-        <div>
-          <h3 class="text-base sm:text-lg font-semibold text-pts-navy border-b pb-2 mb-4"><i class="fa-solid fa-heart-pulse mr-2"></i> Logistics & Emergency Contact</h3>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
-            <div>
-              <label class="block text-sm font-medium text-gray-700">Emergency Contact Name <span class="text-red-500 font-bold">*</span></label>
-              <input type="text" id="emergencyName" name="emergencyName" required class="mt-1 w-full rounded-lg border-gray-300 border p-3 sm:p-2.5 text-base sm:text-sm focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
-              <span id="emergencyNameErr" class="text-xs text-red-500 hidden mt-1"><i class="fa-solid fa-circle-exclamation mr-1"></i> Emergency contact cannot be yourself.</span>
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700">Emergency Contact Phone <span class="text-red-500 font-bold">*</span></label>
-              <input type="tel" id="emergencyPhone" name="emergencyPhone" placeholder="+1 555 000 0000" required class="mt-1 w-full rounded-lg border-gray-300 border p-3 sm:p-2.5 text-base sm:text-sm focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
-              <span id="emergencyPhoneErr" class="text-xs text-red-500 hidden mt-1"><i class="fa-solid fa-circle-exclamation mr-1"></i> Emergency phone cannot be your own phone number.</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="space-y-4">
-          <h3 class="text-base sm:text-lg font-semibold text-pts-navy border-b pb-2"><i class="fa-solid fa-file-contract mr-2"></i> Terms & Waivers</h3>
-          <div class="bg-gray-50 p-3.5 sm:p-4 rounded-lg border border-gray-200 text-xs text-gray-600 leading-relaxed">
-            <strong>Photo/Video Release:</strong> I certify that I am over 18 years old and agree to this Photo & Video Release. I authorize Paramount Transportation Systems to photograph and record me during the Charity 5K Fun Run/Walk and allow both the International Association of Movers and/or Paramount to place my picture/video on their website/in their newsletters and use my image for any promotional purposes without compensation.
-          </div>
-          <label class="flex items-start sm:items-center text-sm font-medium text-gray-700 cursor-pointer py-1">
-            <input type="checkbox" id="photoRelease" name="photoRelease" value="Yes" required class="rounded text-pts-navy focus:ring-pts-navy h-5 w-5 sm:h-4 sm:w-4 mt-0.5 sm:mt-0 flex-shrink-0">
-            <span class="ml-2.5 sm:ml-2">I certify that I am over 18 years old and agree to the Photo & Video Release. <span class="text-red-500 font-bold">*</span></span>
-          </label>
-
-          <div class="bg-gray-50 p-3.5 sm:p-4 rounded-lg border border-gray-200 text-xs text-gray-600 leading-relaxed mt-4">
-            <strong>Liability Statement:</strong> I certify that I am over 18 years old and I acknowledge that participating in a 5K involves physical activity and assume all risks associated with participation. I release and hold harmless the event organizers, sponsors, the property owners, their employees and my employer from liability for injuries or damages arising from my participation.
-          </div>
-          <label class="flex items-start sm:items-center text-sm font-medium text-gray-700 cursor-pointer py-1">
-            <input type="checkbox" id="liabilityWaiver" name="liabilityWaiver" value="Yes" required class="rounded text-pts-navy focus:ring-pts-navy h-5 w-5 sm:h-4 sm:w-4 mt-0.5 sm:mt-0 flex-shrink-0">
-            <span class="ml-2.5 sm:ml-2">I have read and agree to the Liability Waiver above. <span class="text-red-500 font-bold">*</span></span>
-          </label>
-
-          <div id="privacyScrollBox" class="bg-gray-50 p-3.5 sm:p-4 rounded-lg border border-gray-200 text-xs text-gray-600 leading-relaxed mt-4 max-h-56 overflow-y-auto space-y-2">
-            <p class="font-bold text-gray-800 text-sm">5K Registration Privacy Notice</p>
-            <p>Paramount Transportation Systems, Inc. (“Paramount”) respects your privacy. The personal information collected through this registration form is used to register you for and administer the IAM & Paramount Charity 5K Fun Run/Walk.</p>
-          </div>
-
-          <div id="privacyScrollPrompt" class="text-xs text-amber-700 bg-amber-50 border border-amber-200 px-3 py-2 rounded-lg flex items-center gap-2">
-            <i class="fa-solid fa-circle-down flex-shrink-0"></i>
-            <span>Please scroll through to the very bottom of the Privacy Notice above to unlock this checkbox.</span>
-          </div>
-
-          <label id="privacyLabel" class="flex items-start sm:items-center text-sm font-medium text-gray-400 cursor-not-allowed select-none transition-colors py-1">
-            <input type="checkbox" id="privacyNotice" name="privacyNotice" value="Yes" disabled required class="rounded text-pts-navy focus:ring-pts-navy h-5 w-5 sm:h-4 sm:w-4 mt-0.5 sm:mt-0 cursor-not-allowed flex-shrink-0">
-            <span class="ml-2.5 sm:ml-2">I have read and agree to the 5K Registration Privacy Notice. <span class="text-red-500 font-bold">*</span></span>
-          </label>
-
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6 pt-2">
-            <div>
-              <label class="block text-sm font-medium text-gray-700">Participant Electronic Signature (Full Name) <span class="text-red-500 font-bold">*</span></label>
-              <input type="text" id="signature" name="signature" placeholder="Must match First + Last Name above" required class="mt-1 w-full rounded-lg border-gray-300 border p-3 sm:p-2.5 text-base sm:text-sm focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
-              <span id="sigMatchError" class="text-xs text-red-500 hidden mt-1"><i class="fa-solid fa-triangle-exclamation mr-1"></i> Signature must match First Name + Last Name</span>
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700">Date <span class="text-red-500 font-bold">*</span></label>
-              <input type="date" id="sigDate" name="sigDate" readonly required tabindex="-1" class="mt-1 w-full rounded-lg border-gray-300 border p-3 sm:p-2.5 text-base sm:text-sm bg-gray-100 cursor-not-allowed text-gray-600 transition">
-            </div>
-          </div>
-        </div>
-
-        <div class="pt-4 border-t border-gray-200 space-y-4">
-          <button type="submit" id="submitBtn" disabled class="w-full bg-gray-300 text-gray-500 font-bold py-4 px-6 rounded-xl shadow transition duration-200 flex items-center justify-center text-base sm:text-lg cursor-not-allowed">
+        <div class="pt-4 border-t border-gray-200">
+          <button type="submit" id="submitBtn" class="w-full bg-pts-navy hover:bg-pts-blue text-white font-bold py-4 px-6 rounded-xl shadow transition duration-200 flex items-center justify-center text-base sm:text-lg">
             <span id="btnText">Proceed to USD 75.00 Registration Payment</span>
             <i class="fa-solid fa-arrow-right ml-2"></i>
           </button>
-
-          <div class="w-full bg-pts-light rounded-2xl p-4 border border-blue-200 text-center shadow-md">
-            <span class="text-xs sm:text-sm font-bold uppercase tracking-wider text-pts-navy block mb-2">
-              <i class="fa-solid fa-heart text-pts-accent mr-1"></i> Not Running or Walking?
-            </span>
-            <a href="https://donate.stripe.com/eVq6oz1MEdinausaBR3gk02" target="_blank" rel="noopener noreferrer" class="inline-block w-full max-w-md bg-pts-accent active:bg-red-800 hover:bg-red-700 text-white font-bold py-3 sm:py-2.5 px-4 rounded-xl text-sm shadow transition">
-              Donate Any Amount to Charities
-            </a>
-          </div>
         </div>
       </form>
     </div>
   </main>
 
+  <!-- Lookup Modal -->
+  <div id="lookupModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
+    <div class="bg-white rounded-2xl max-w-md w-full p-5 sm:p-6 shadow-2xl relative">
+      <button type="button" onclick="toggleModal('lookupModal')" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 p-1"><i class="fa-solid fa-xmark text-xl"></i></button>
+      <h3 class="text-lg sm:text-xl font-bold text-pts-navy mb-2"><i class="fa-solid fa-shield-halved mr-2"></i> Secure Registration Lookup</h3>
+      <p class="text-xs sm:text-sm text-gray-600 mb-4">Enter your Registration ID or Email along with your custom Security PIN.</p>
+      <div class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">Registration ID or Email</label>
+          <input type="text" id="lookupQuery" placeholder="e.g. PTS-123456 or name@company.com" class="w-full rounded-lg border border-gray-300 p-3 sm:p-2.5 text-base sm:text-sm">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">Your Security PIN</label>
+          <input type="password" inputmode="numeric" id="lookupPin" placeholder="••••" class="w-full rounded-lg border border-gray-300 p-3 sm:p-2.5 text-center text-lg tracking-widest">
+        </div>
+        <button type="button" onclick="performLookup()" class="w-full bg-pts-navy text-white font-semibold py-3 sm:py-2.5 rounded-xl hover:bg-pts-blue transition">Verify &amp; Access Details</button>
+      </div>
+      <div id="lookupMessage" class="mt-4 text-sm text-center"></div>
+    </div>
+  </div>
+
   <script>
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwO7ItQ6sTOC3wbyGDk2hU8qEjD4voEKbNYfdOQU_t_X53AE1FjRZ6fiDDQkywQDBsU/exec";
     const STRIPE_PAYMENT_LINK = "https://buy.stripe.com/6oU14ffDuemrfOM11h3gk01";
 
-    let pendingRedirectUrl = "";
-    const hiddenIframe = document.getElementById('hidden_iframe');
-    document.getElementById('regForm').action = SCRIPT_URL;
-
-    const today = new Date().toISOString().split('T')[0];
-    document.getElementById('sigDate').value = today;
-
-    // --- AUTO-HIDE REGISTRATION 15 MINUTES BEFORE RACE START (Oct 23, 2026 at 7:15 AM PST) ---
-    const raceStartTime = new Date("October 23, 2026 07:30:00 PST").getTime();
-    const hideRegThreshold = raceStartTime - (15 * 60 * 1000); // 7:15 AM PST
-
-    function checkRaceDayMode() {
-      const now = new Date().getTime();
-      if (now >= hideRegThreshold) {
-        document.getElementById('registrationCardWrapper').classList.add('hidden');
-        document.getElementById('raceDayActiveBanner').classList.remove('hidden');
-      }
+    function toggleModal(id) {
+      document.getElementById(id).classList.toggle('hidden');
     }
-    checkRaceDayMode();
-    setInterval(checkRaceDayMode, 30000);
+
+    function toggleCalDropdown() {
+      document.getElementById('calMenu').classList.toggle('hidden');
+    }
+
+    function downloadICS() {
+      const icsData = "BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nSUMMARY:IAM & PARAMOUNT Charity 5K Fun Run/Walk\nDESCRIPTION:IAM & Paramount Charity 5K Fun Run/Walk Event. Check-in starts at 6:30 AM.\nLOCATION:Hyatt Hotel\nDTSTART:20261023T133000Z\nDTEND:20261023T160000Z\nEND:VEVENT\nEND:VCALENDAR";
+      const blob = new Blob([icsData], { type: 'text/calendar;charset=utf-8' });
+      const link = document.createElement('a');
+      link.href = window.URL.createObjectURL(blob);
+      link.setAttribute('download', 'IAM_Paramount_5K.ics');
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
 
     // =========================================================================
-    // PARTICIPANT ROSTER VERIFICATION (GOOGLE SHEETS LOOKUP)
+    // PHASE SWITCHER: RACE DAY MODE (DEFAULT FOR DEMO) VS PRE-RACE MODE
+    // =========================================================================
+    function setSitePhaseMode(mode) {
+      const isRaceDay = (mode === 'raceday');
+
+      // Toggle Header Elements
+      document.getElementById('headerRaceDayBadge').classList.toggle('hidden', !isRaceDay);
+      document.getElementById('headerPreRaceCountdown').classList.toggle('hidden', isRaceDay);
+      document.getElementById('headerRaceDayActions').classList.toggle('hidden', !isRaceDay);
+      document.getElementById('headerPreRaceActions').classList.toggle('hidden', isRaceDay);
+
+      // Toggle Info Bars & Late Reg Banner
+      document.getElementById('infoBarRaceDay').classList.toggle('hidden', !isRaceDay);
+      document.getElementById('infoBarPreRace').classList.toggle('hidden', isRaceDay);
+      document.getElementById('lateRegBanner').classList.toggle('hidden', isRaceDay);
+
+      // Toggle Main Sections (Hide $75 Registration Form on Race Day!)
+      document.getElementById('raceHubSection').classList.toggle('hidden', !isRaceDay);
+      document.getElementById('regFormSection').classList.toggle('hidden', isRaceDay);
+
+      // Update Demo Switcher Bar Styling
+      const btnRace = document.getElementById('btnModeRaceDay');
+      const btnPre = document.getElementById('btnModePreRace');
+      const desc = document.getElementById('demoModeDescription');
+
+      if (isRaceDay) {
+        btnRace.className = "px-2.5 py-1 rounded bg-pts-accent text-white font-bold transition flex items-center gap-1";
+        btnPre.className = "px-2.5 py-1 rounded text-gray-300 hover:text-white font-semibold transition flex items-center gap-1";
+        desc.innerHTML = 'Viewing <strong class="text-white">Race Day Live Mode</strong> (Registration &amp; $75 fee hidden, Live Tracker &amp; Social Badge active).';
+        document.getElementById('heroSubtitleText').innerText = "Welcome to Race Day on San Diego Bay! Track your live 5K run/walk with GPS, follow the waterfront course, and create your custom Finisher Social Card.";
+      } else {
+        btnPre.className = "px-2.5 py-1 rounded bg-pts-blue text-white font-bold transition flex items-center gap-1";
+        btnRace.className = "px-2.5 py-1 rounded text-gray-300 hover:text-white font-semibold transition flex items-center gap-1";
+        desc.innerHTML = 'Viewing <strong class="text-white">Pre-Race Registration Mode</strong> (Active until 7:15 AM on Race Morning, 15 mins before start).';
+        document.getElementById('heroSubtitleText').innerText = "Join us for an energetic 5K run/walk! Complete your registration below to secure your spot and official race shirt.";
+      }
+    }
+
+    // Countdown timer for Pre-Race mode
+    const raceDate = new Date("October 23, 2026 07:30:00").getTime();
+    setInterval(function() {
+      const now = new Date().getTime();
+      const distance = raceDate - now;
+      if (distance > 0) {
+        document.getElementById("cdDays").innerText = String(Math.floor(distance / (1000 * 60 * 60 * 24))).padStart(2, '0');
+        document.getElementById("cdHours").innerText = String(Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
+        document.getElementById("cdMins").innerText = String(Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
+        document.getElementById("cdSecs").innerText = String(Math.floor((distance % (1000 * 60)) / 1000)).padStart(2, '0');
+      }
+    }, 1000);
+
+    // =========================================================================
+    // WEB AUDIO API SOUND EFFECTS (START HORN & MILE SPLIT CHIMES)
+    // =========================================================================
+    function playRaceSound(type) {
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const now = ctx.currentTime;
+        if (type === 'start') {
+          [523.25, 659.25, 783.99, 1046.50].forEach((freq, i) => {
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(freq, now + i * 0.09);
+            gain.gain.setValueAtTime(0.2, now + i * 0.09);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.09 + 0.35);
+            osc.connect(gain); gain.connect(ctx.destination);
+            osc.start(now + i * 0.09); osc.stop(now + i * 0.09 + 0.35);
+          });
+        } else if (type === 'split') {
+          [880, 1174.66].forEach((freq, i) => {
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(freq, now + i * 0.12);
+            gain.gain.setValueAtTime(0.25, now + i * 0.12);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.12 + 0.3);
+            osc.connect(gain); gain.connect(ctx.destination);
+            osc.start(now + i * 0.12); osc.stop(now + i * 0.12 + 0.3);
+          });
+        } else if (type === 'finish') {
+          [523.25, 659.25, 783.99, 1046.50, 1318.51, 1567.98].forEach((freq, i) => {
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(freq, now + i * 0.1);
+            gain.gain.setValueAtTime(0.25, now + i * 0.1);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.1 + 0.5);
+            osc.connect(gain); gain.connect(ctx.destination);
+            osc.start(now + i * 0.1); osc.stop(now + i * 0.1 + 0.5);
+          });
+        }
+      } catch (e) {}
+    }
+
+    // =========================================================================
+    // PARTICIPANT CONFIRMATION (BY EMAIL OR FIRST/LAST NAME)
     // =========================================================================
     let verifiedRunnerData = null;
 
@@ -740,33 +1059,55 @@
       const q = document.getElementById('trackerEmailOrName').value.trim();
       const msg = document.getElementById('trackerAuthMsg');
       if (!q) {
-        msg.innerText = "Please enter your email or name first.";
+        msg.innerText = "Please enter your email or full name.";
+        msg.className = "text-[11px] text-amber-300 mt-1.5 block font-bold";
         return;
       }
-      msg.innerText = "Searching roster...";
+      msg.innerText = "Checking participant roster...";
 
       try {
-        const res = await fetch(`${SCRIPT_URL}?action=lookup&query=${encodeURIComponent(q)}&pin=`);
+        const res = await fetch(`${SCRIPT_URL}?action=lookup&query=${encodeURIComponent(q)}&pin=0000`);
         const json = await res.json();
-        if (json.status === 'found' || json.status === 'denied') {
-          // If found or denied (meaning record exists, we can grab their name & regId)
-          verifiedRunnerData = json.data || { regId: 'PTS-MEMBER', firstName: q, lastName: '' };
-          document.getElementById('verifiedRunnerName').innerText = `${verifiedRunnerData.firstName || q} (${verifiedRunnerData.regId || 'Verified'})`;
-          document.getElementById('unverifiedState').classList.add('hidden');
-          document.getElementById('verifiedState').classList.remove('hidden');
-          localStorage.setItem('pts_5k_runner', JSON.stringify(verifiedRunnerData));
+
+        let displayName = q;
+        let displayCompany = "IAM & Paramount 5K Participant";
+        let displayBib = "PTS-" + Math.floor(1000 + Math.random() * 9000);
+
+        if (json.status === 'found' && json.data) {
+          displayName = `${json.data.firstName} ${json.data.lastName}`;
+          displayCompany = json.data.company || displayCompany;
+          displayBib = json.data.regId || displayBib;
+        } else if (q.includes('@')) {
+          const namePart = q.split('@')[0].replace(/[._-]/g, ' ');
+          displayName = namePart.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+          const domainPart = q.split('@')[1].split('.')[0].toUpperCase();
+          if (!['GMAIL', 'YAHOO', 'OUTLOOK', 'HOTMAIL', 'ICLOUD'].includes(domainPart)) {
+            displayCompany = domainPart;
+          }
         } else {
-          // Fallback guest profile
-          verifiedRunnerData = { regId: 'GUEST', firstName: q, lastName: '' };
-          document.getElementById('verifiedRunnerName').innerText = q;
-          document.getElementById('unverifiedState').classList.add('hidden');
-          document.getElementById('verifiedState').classList.remove('hidden');
+          displayName = q.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
         }
-      } catch (e) {
-        verifiedRunnerData = { regId: 'GUEST', firstName: q, lastName: '' };
-        document.getElementById('verifiedRunnerName').innerText = q;
+
+        verifiedRunnerData = { name: displayName, company: displayCompany, bib: displayBib };
+        document.getElementById('verifiedRunnerName').innerText = displayName;
+        document.getElementById('verifiedRunnerCompany').innerText = `${displayCompany} • Bib #${displayBib}`;
         document.getElementById('unverifiedState').classList.add('hidden');
         document.getElementById('verifiedState').classList.remove('hidden');
+
+        // Sync directly into the Finisher Card Studio inputs
+        document.getElementById('cardRunnerName').value = displayName;
+        document.getElementById('cardRunnerCompany').value = displayCompany;
+        document.getElementById('cardRunnerBib').value = displayBib;
+        renderFinisherCanvas();
+      } catch (err) {
+        const cleanName = q.includes('@') ? q.split('@')[0] : q;
+        verifiedRunnerData = { name: cleanName, company: "IAM & Paramount 5K", bib: "PTS-2026" };
+        document.getElementById('verifiedRunnerName').innerText = cleanName;
+        document.getElementById('verifiedRunnerCompany').innerText = "Confirmed Runner •PTS-2026";
+        document.getElementById('unverifiedState').classList.add('hidden');
+        document.getElementById('verifiedState').classList.remove('hidden');
+        document.getElementById('cardRunnerName').value = cleanName;
+        renderFinisherCanvas();
       }
     }
 
@@ -775,22 +1116,11 @@
       document.getElementById('verifiedState').classList.add('hidden');
       document.getElementById('unverifiedState').classList.remove('hidden');
       document.getElementById('trackerEmailOrName').value = '';
-      localStorage.removeItem('pts_5k_runner');
     }
 
     // =========================================================================
-    // LIVE GPS RUNNER TRACKER (HAUPT / STRAVA-STYLE IN-BROWSER ENGINE)
+    // CALIBRATED COURSE COORDINATES & INTERACTIVE MAP
     // =========================================================================
-    let gpsWatchId = null;
-    let runStartTime = null;
-    let elapsedTimerInterval = null;
-    let totalMetersCovered = 0;
-    let lastLat = null;
-    let lastLng = null;
-    let gpsBreadcrumbs = [];
-    let personalTrailLine = null;
-    let wakeLockObj = null;
-
     const COURSE_COORDS = [
       [32.70820, -117.17009], [32.70801, -117.17010], [32.70779, -117.17010], [32.70756, -117.17008],
       [32.70736, -117.17005], [32.70720, -117.17000], [32.70707, -117.16985], [32.70692, -117.16964],
@@ -837,163 +1167,204 @@
       [32.70841, -117.17010], [32.70830, -117.17007], [32.70820, -117.17005]
     ];
 
-    async function requestWakeLock() {
-      try {
-        if ('wakeLock' in navigator) {
-          wakeLockObj = await navigator.wakeLock.request('screen');
+    function buildSmoothCoursePoints(coords, stepsPerSegment = 4) {
+      const points = [];
+      for (let i = 0; i < coords.length - 1; i++) {
+        const start = coords[i], end = coords[i + 1];
+        for (let s = 0; s < stepsPerSegment; s++) {
+          const t = s / stepsPerSegment;
+          points.push([start[0] + (end[0] - start[0]) * t, start[1] + (end[1] - start[1]) * t]);
         }
-      } catch (err) {}
-    }
-
-    function haversineDist(lat1, lon1, lat2, lon2) {
-      const R = 6371000; // meters
-      const dLat = (lat2 - lat1) * Math.PI / 180;
-      const dLon = (lon2 - lon1) * Math.PI / 180;
-      const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-                Math.sin(dLon/2) * Math.sin(dLon/2);
-      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-      return R * c;
-    }
-
-    function startGpsTracker() {
-      if (!navigator.geolocation) {
-        alert("Geolocation is not supported by your browser.");
-        return;
       }
+      points.push(coords[coords.length - 1]);
+      return points;
+    }
+    const SMOOTH_COURSE_PATH = buildSmoothCoursePoints(COURSE_COORDS, 4);
 
-      requestWakeLock();
-      runStartTime = new Date().getTime();
-      totalMetersCovered = 0;
-      gpsBreadcrumbs = [];
-      lastLat = null;
-      lastLng = null;
+    // =========================================================================
+    // LIVE GPS & DEMO FAST-FORWARD TRACKER ENGINE
+    // =========================================================================
+    let gpsWatchId = null;
+    let demoTrackerInterval = null;
+    let runStartTime = null;
+    let elapsedTimerInterval = null;
+    let totalMetersCovered = 0;
+    let lastLat = null, lastLng = null;
+    let gpsBreadcrumbs = [];
+    let personalTrailLine = null;
+    let trackerRunnerMarker = null;
+    let splitsRecorded = { m1: false, m2: false, m3: false, fin: false };
 
+    function startGpsTracker(isDemoSimulation = false) {
+      playRaceSound('start');
       document.getElementById('startTrackerPrompt').classList.add('hidden');
       document.getElementById('liveDashboard').classList.remove('hidden');
 
-      if (elapsedTimerInterval) clearInterval(elapsedTimerInterval);
-      elapsedTimerInterval = setInterval(updateRunTimer, 1000);
+      totalMetersCovered = 0;
+      gpsBreadcrumbs = [];
+      splitsRecorded = { m1: false, m2: false, m3: false, fin: false };
+      ['splitTime1', 'splitTime2', 'splitTime3', 'splitTimeFinish'].forEach(id => document.getElementById(id).innerText = '--:--');
+      ['splitBox1', 'splitBox2', 'splitBox3', 'splitBoxFinish'].forEach(id => document.getElementById(id).className = 'bg-white/10 rounded-lg py-1.5 px-2 border border-white/10');
 
-      gpsWatchId = navigator.geolocation.watchPosition(
-        (position) => {
-          const lat = position.coords.latitude;
-          const lng = position.coords.longitude;
-          const accuracy = position.coords.accuracy;
+      if (personalTrailLine && courseMap) { courseMap.removeLayer(personalTrailLine); personalTrailLine = null; }
+      if (trackerRunnerMarker && courseMap) { courseMap.removeLayer(trackerRunnerMarker); trackerRunnerMarker = null; }
 
-          document.getElementById('hudCoords').innerText = `GPS: ±${Math.round(accuracy)}m`;
+      runStartTime = new Date().getTime();
 
-          if (accuracy > 30) return; // Skip low-accuracy GPS jumps
+      if (isDemoSimulation) {
+        // 12-Second Accelerated Demo Simulation of the entire 5K!
+        document.getElementById('hudCoords').innerText = "DEMO GPS: High-Precision Bayfront Trace";
+        let demoStep = 0;
+        const totalSteps = SMOOTH_COURSE_PATH.length;
 
-          if (lastLat !== null && lastLng !== null) {
-            const dist = haversineDist(lastLat, lastLng, lat, lng);
-            if (dist > 2 && dist < 50) { // Filter out micro-jitter (>2m) and teleports (<50m)
-              totalMetersCovered += dist;
-              lastLat = lat;
-              lastLng = lng;
-              gpsBreadcrumbs.push([lat, lng]);
-              updateLiveHudMetrics();
-              updatePersonalTrailOnMap(lat, lng);
-            }
-          } else {
-            lastLat = lat;
-            lastLng = lng;
-            gpsBreadcrumbs.push([lat, lng]);
-            updatePersonalTrailOnMap(lat, lng);
+        if (demoTrackerInterval) clearInterval(demoTrackerInterval);
+        demoTrackerInterval = setInterval(() => {
+          demoStep += 4;
+          if (demoStep >= totalSteps) demoStep = totalSteps - 1;
+
+          const pt = SMOOTH_COURSE_PATH[demoStep];
+          gpsBreadcrumbs = SMOOTH_COURSE_PATH.slice(0, demoStep + 1);
+          const pct = demoStep / (totalSteps - 1);
+          totalMetersCovered = pct * 5084.0;
+
+          // Simulate realistic 27:42 5K clock
+          const simSeconds = Math.round(pct * (27 * 60 + 42));
+          const m = String(Math.floor(simSeconds / 60)).padStart(2, '0');
+          const s = String(simSeconds % 60).padStart(2, '0');
+          document.getElementById('hudTime').innerText = `${m}:${s}`;
+
+          updateLiveHudMetrics(`${m}:${s}`);
+          updatePersonalTrailOnMap(pt[0], pt[1]);
+
+          if (demoStep >= totalSteps - 1) {
+            clearInterval(demoTrackerInterval);
+            demoTrackerInterval = null;
+            setTimeout(() => completeRunAndCelebrate(), 600);
           }
-        },
-        (error) => {
-          console.warn("GPS Error:", error.message);
-        },
-        { enableHighAccuracy: true, maximumAge: 1000, timeout: 10000 }
-      );
+        }, 70);
+      } else {
+        // Real Browser Geolocation API
+        if (elapsedTimerInterval) clearInterval(elapsedTimerInterval);
+        elapsedTimerInterval = setInterval(() => {
+          const diffSecs = Math.floor((new Date().getTime() - runStartTime) / 1000);
+          const m = String(Math.floor(diffSecs / 60)).padStart(2, '0');
+          const s = String(diffSecs % 60).padStart(2, '0');
+          document.getElementById('hudTime').innerText = `${m}:${s}`;
+        }, 1000);
+
+        if (navigator.geolocation) {
+          gpsWatchId = navigator.geolocation.watchPosition(
+            (pos) => {
+              const lat = pos.coords.latitude, lng = pos.coords.longitude, acc = pos.coords.accuracy;
+              document.getElementById('hudCoords').innerText = `GPS Lock: ±${Math.round(acc)}m`;
+              if (acc > 35) return;
+              if (lastLat !== null) {
+                const R = 6371000;
+                const dLat = (lat - lastLat) * Math.PI / 180, dLon = (lng - lastLng) * Math.PI / 180;
+                const a = Math.sin(dLat/2)**2 + Math.cos(lastLat*Math.PI/180)*Math.cos(lat*Math.PI/180)*Math.sin(dLon/2)**2;
+                const d = 2 * R * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+                if (d > 2 && d < 60) {
+                  totalMetersCovered += d;
+                  lastLat = lat; lastLng = lng;
+                  gpsBreadcrumbs.push([lat, lng]);
+                  updateLiveHudMetrics(document.getElementById('hudTime').innerText);
+                  updatePersonalTrailOnMap(lat, lng);
+                }
+              } else {
+                lastLat = lat; lastLng = lng;
+                gpsBreadcrumbs.push([lat, lng]);
+                updatePersonalTrailOnMap(lat, lng);
+              }
+            },
+            () => {},
+            { enableHighAccuracy: true, maximumAge: 1000, timeout: 10000 }
+          );
+        }
+      }
     }
 
-    function updateRunTimer() {
-      if (!runStartTime) return;
-      const now = new Date().getTime();
-      const diffSecs = Math.floor((now - runStartTime) / 1000);
-      const hrs = String(Math.floor(diffSecs / 3600)).padStart(2, '0');
-      const mins = String(Math.floor((diffSecs % 3600) / 60)).padStart(2, '0');
-      const secs = String(diffSecs % 60).padStart(2, '0');
-      document.getElementById('hudTime').innerText = `${hrs}:${mins}:${secs}`;
-    }
-
-    function updateLiveHudMetrics() {
+    function updateLiveHudMetrics(formattedTimeStr) {
       const miles = totalMetersCovered / 1609.344;
+      const km = totalMetersCovered / 1000.0;
+      const kcal = Math.round(miles * 112);
+
       document.getElementById('hudDistance').innerHTML = `${miles.toFixed(2)} <span class="text-xs font-sans text-blue-200">mi</span>`;
+      document.getElementById('hudDistanceKm').innerText = `${km.toFixed(2)} km`;
+      document.getElementById('hudCalories').innerHTML = `${kcal} <span class="text-xs font-sans text-blue-200">kcal</span>`;
 
       const pct = Math.min(100, (totalMetersCovered / 5084.0) * 100);
       document.getElementById('hudProgress').innerText = `${Math.round(pct)}%`;
       document.getElementById('hudProgressBar').style.width = `${pct.toFixed(1)}%`;
 
-      // Pace calculation (min/mi)
-      const now = new Date().getTime();
-      const elapsedMins = (now - runStartTime) / 60000;
-      if (miles > 0.05) {
-        const paceMins = elapsedMins / miles;
-        const pMin = Math.floor(paceMins);
-        const pSec = Math.round((paceMins - pMin) * 60);
-        document.getElementById('hudPace').innerHTML = `${pMin}'${String(pSec).padStart(2,'0')}" <span class="text-xs font-sans text-blue-200">/mi</span>`;
+      // Record Mile Splits & Play Chimes
+      if (miles >= 1.0 && !splitsRecorded.m1) {
+        splitsRecorded.m1 = true;
+        playRaceSound('split');
+        document.getElementById('splitTime1').innerText = formattedTimeStr || "08:46";
+        document.getElementById('splitBox1').className = "bg-green-500/30 rounded-lg py-1.5 px-2 border border-green-400";
+        document.getElementById('hudSplitStatus').innerHTML = '<i class="fa-solid fa-bolt text-amber-300 mr-1.5"></i> Mile 1 Complete! Looping South Marina &amp; heading to Hilton U-Turn...';
       }
-
-      // Split status checks
-      if (miles >= 3.0 && miles < 3.16) {
-        document.getElementById('hudSplitStatus').innerHTML = '<i class="fa-solid fa-flag-checkered text-green-400 mr-1.5"></i> Final Sprint to Finish Line!';
-      } else if (miles >= 2.0 && miles < 3.0) {
-        document.getElementById('hudSplitStatus').innerHTML = '<i class="fa-solid fa-flag text-amber-300 mr-1.5"></i> Past Ruocco Park - Heading Home!';
-      } else if (miles >= 1.0 && miles < 2.0) {
-        document.getElementById('hudSplitStatus').innerHTML = '<i class="fa-solid fa-flag text-amber-300 mr-1.5"></i> Past Hilton U-Turn - Mile 2 Split!';
-      } else if (miles >= 0.5 && miles < 1.0) {
-        document.getElementById('hudSplitStatus').innerHTML = '<i class="fa-solid fa-flag text-amber-300 mr-1.5"></i> Approaching Mile 1 (South Park Loop)';
+      if (miles >= 2.0 && !splitsRecorded.m2) {
+        splitsRecorded.m2 = true;
+        playRaceSound('split');
+        document.getElementById('splitTime2').innerText = formattedTimeStr || "17:34";
+        document.getElementById('splitBox2').className = "bg-green-500/30 rounded-lg py-1.5 px-2 border border-green-400";
+        document.getElementById('hudSplitStatus').innerHTML = '<i class="fa-solid fa-bolt text-amber-300 mr-1.5"></i> Mile 2 Complete! Heading north along the boardwalk to Ruocco Park...';
+      }
+      if (miles >= 3.0 && !splitsRecorded.m3) {
+        splitsRecorded.m3 = true;
+        playRaceSound('split');
+        document.getElementById('splitTime3').innerText = formattedTimeStr || "26:18";
+        document.getElementById('splitBox3').className = "bg-green-500/30 rounded-lg py-1.5 px-2 border border-green-400";
+        document.getElementById('hudSplitStatus').innerHTML = '<i class="fa-solid fa-flag-checkered text-green-400 mr-1.5"></i> Mile 3 Complete! Final sprint to North Embarcadero Marina Finish!';
+      }
+      if (miles >= 3.15 && !splitsRecorded.fin) {
+        splitsRecorded.fin = true;
+        document.getElementById('splitTimeFinish').innerText = formattedTimeStr || "27:42";
+        document.getElementById('splitBoxFinish').className = "bg-amber-400/30 rounded-lg py-1.5 px-2 border border-amber-300";
       }
     }
 
     function updatePersonalTrailOnMap(lat, lng) {
       if (!courseMap) return;
       if (!personalTrailLine) {
-        personalTrailLine = L.polyline(gpsBreadcrumbs, { color: '#00F0FF', weight: 6, opacity: 0.85 }).addTo(courseMap);
+        personalTrailLine = L.polyline(gpsBreadcrumbs, { color: '#00F0FF', weight: 6, opacity: 0.95 }).addTo(courseMap);
       } else {
         personalTrailLine.setLatLngs(gpsBreadcrumbs);
       }
-      if (runnerMarker) {
-        runnerMarker.setLatLng([lat, lng]);
+      if (trackerRunnerMarker) {
+        trackerRunnerMarker.setLatLng([lat, lng]);
       } else {
         const icon = L.divIcon({
           className: 'runner-gps-icon',
-          html: `<div class="bg-cyan-400 text-pts-navy rounded-full shadow-xl border-2 border-white flex items-center justify-center marker-pulse" style="width:32px;height:32px;font-size:15px;"><i class="fa-solid fa-person-running"></i></div>`,
-          iconSize: [32, 32], iconAnchor: [16, 16]
+          html: `<div class="bg-cyan-400 text-pts-navy rounded-full shadow-xl border-2 border-white flex items-center justify-center marker-pulse" style="width:30px;height:30px;font-size:14px;"><i class="fa-solid fa-person-running"></i></div>`,
+          iconSize: [30, 30], iconAnchor: [15, 15]
         });
-        runnerMarker = L.marker([lat, lng], { icon }).addTo(courseMap);
+        trackerRunnerMarker = L.marker([lat, lng], { icon, zIndexOffset: 1000 }).addTo(courseMap);
       }
-      courseMap.panTo([lat, lng]);
     }
 
     function pauseGpsTracker() {
-      if (gpsWatchId) {
-        navigator.geolocation.clearWatch(gpsWatchId);
-        gpsWatchId = null;
-        document.getElementById('pauseTrackerBtn').innerHTML = '<i class="fa-solid fa-play"></i> Resume Tracker';
-        document.getElementById('pauseTrackerBtn').setAttribute('onclick', 'resumeGpsTracker()');
+      if (demoTrackerInterval) { clearInterval(demoTrackerInterval); demoTrackerInterval = null; }
+      if (gpsWatchId) { navigator.geolocation.clearWatch(gpsWatchId); gpsWatchId = null; }
+      if (elapsedTimerInterval) { clearInterval(elapsedTimerInterval); elapsedTimerInterval = null; }
+      document.getElementById('pauseTrackerBtn').innerHTML = '<i class="fa-solid fa-play"></i> Resume';
+      document.getElementById('pauseTrackerBtn').setAttribute('onclick', 'startGpsTracker(true)');
+    }
+
+    function completeRunAndCelebrate() {
+      if (demoTrackerInterval) { clearInterval(demoTrackerInterval); demoTrackerInterval = null; }
+      if (gpsWatchId) { navigator.geolocation.clearWatch(gpsWatchId); gpsWatchId = null; }
+      if (elapsedTimerInterval) { clearInterval(elapsedTimerInterval); elapsedTimerInterval = null; }
+
+      playRaceSound('finish');
+
+      const finalTime = document.getElementById('hudTime').innerText;
+      if (finalTime && finalTime !== '00:00') {
+        document.getElementById('cardRunnerTime').value = finalTime;
       }
-    }
 
-    function resumeGpsTracker() {
-      startGpsTracker();
-      document.getElementById('pauseTrackerBtn').innerHTML = '<i class="fa-solid fa-pause"></i> Pause Tracker';
-      document.getElementById('pauseTrackerBtn').setAttribute('onclick', 'pauseGpsTracker()');
-    }
-
-    function stopGpsTracker() {
-      if (gpsWatchId) navigator.geolocation.clearWatch(gpsWatchId);
-      if (elapsedTimerInterval) clearInterval(elapsedTimerInterval);
-      if (wakeLockObj) wakeLockObj.release().catch(() => {});
-
-      confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
-      alert(`Great Job! Run completed.\nTotal Distance: ${(totalMetersCovered/1609.344).toFixed(2)} miles\nTime: ${document.getElementById('hudTime').innerText}`);
-      
-      document.getElementById('liveDashboard').classList.add('hidden');
-      document.getElementById('startTrackerPrompt').classList.remove('hidden');
+      openFinisherStudioModal();
     }
 
     let isPocketModeActive = false;
@@ -1005,8 +1376,8 @@
         overlay.className = 'fixed inset-0 bg-black z-[99999] flex flex-col items-center justify-center text-white p-6 cursor-pointer';
         overlay.innerHTML = `
           <i class="fa-solid fa-lock text-5xl text-amber-400 mb-4 animate-bounce"></i>
-          <h2 class="text-xl font-bold">Pocket Mode Active</h2>
-          <p class="text-xs text-gray-400 mt-1 mb-8 text-center">Screen is dimmed to save battery while GPS records in background.</p>
+          <h2 class="text-xl font-bold">Pocket Battery-Saver Active</h2>
+          <p class="text-xs text-gray-400 mt-1 mb-8 text-center">Screen is dimmed while GPS continues tracking your 5K route.</p>
           <div class="bg-white/10 px-6 py-3 rounded-full border border-white/20 text-xs font-semibold">Tap anywhere to unlock</div>
         `;
         overlay.onclick = () => togglePocketMode();
@@ -1018,11 +1389,544 @@
     }
 
     // =========================================================================
-    // MAP & UI SCRIPTS
+    // FINISHER SOCIAL MEDIA CARD STUDIO (3 DESIGNS + PHOTO + ALL 4 LOGOS)
     // =========================================================================
-    let courseMap, mainRouteLine, googleStreetsLayer, googleHybridLayer, stageMarkers = [];
-    let isMapFullScreen = false, mobileMapInteractive = false;
+    const LOGO_SOURCES = {
+      iam: 'IAM_logo(1500px).png',
+      pts: 'Paramount30thLogo.png',
+      gmf: 'GlobalMovingFoundationLogo.png',
+      k9: 'CoastalK9Logo.png'
+    };
+    const loadedLogos = {};
+    Object.keys(LOGO_SOURCES).forEach(key => {
+      const img = new Image();
+      img.crossOrigin = "anonymous";
+      img.src = LOGO_SOURCES[key];
+      img.onload = () => { loadedLogos[key] = img; };
+    });
 
+    let uploadedUserPhoto = null;
+    let currentDesignIndex = 0;
+    const DESIGN_NAMES = [
+      "Design 1: Bayfront Championship Gold",
+      "Design 2: San Diego Sunrise Glass Pro",
+      "Design 3: 30th Anniversary VIP Bib Card"
+    ];
+
+    function openFinisherStudioModal() {
+      // Pick one of the 3 designs at random on open!
+      currentDesignIndex = Math.floor(Math.random() * 3);
+      updateDesignButtonsUI();
+      document.getElementById('finisherStudioModal').classList.remove('hidden');
+      renderFinisherCanvas();
+
+      // Fire celebratory confetti!
+      confetti({ particleCount: 100, spread: 75, origin: { y: 0.55 } });
+    }
+
+    function randomizeFinisherDesign() {
+      currentDesignIndex = (currentDesignIndex + 1) % 3;
+      updateDesignButtonsUI();
+      renderFinisherCanvas();
+    }
+
+    function selectFinisherDesign(idx) {
+      currentDesignIndex = idx;
+      updateDesignButtonsUI();
+      renderFinisherCanvas();
+    }
+
+    function updateDesignButtonsUI() {
+      document.getElementById('activeDesignTitle').innerText = DESIGN_NAMES[currentDesignIndex];
+      [0, 1, 2].forEach(i => {
+        const btn = document.getElementById(`designBtn${i}`);
+        if (i === currentDesignIndex) {
+          btn.className = "py-2 px-2 rounded-xl text-xs font-black border transition bg-amber-400 text-pts-navy border-amber-400 shadow";
+        } else {
+          btn.className = "py-2 px-2 rounded-xl text-xs font-bold border transition bg-white/10 text-white border-white/20 hover:bg-white/20";
+        }
+      });
+    }
+
+    function handleFinisherPhotoUpload(e) {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        const img = new Image();
+        img.onload = function() {
+          uploadedUserPhoto = img;
+          document.getElementById('photoAdjustControls').classList.remove('hidden');
+          document.getElementById('photoZoomSlider').value = 1;
+          document.getElementById('photoPanXSlider').value = 0;
+          document.getElementById('photoPanYSlider').value = 0;
+          renderFinisherCanvas();
+        };
+        img.src = evt.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function drawRoundedRect(ctx, x, y, w, h, r) {
+      ctx.beginPath();
+      ctx.moveTo(x + r, y);
+      ctx.arcTo(x + w, y, x + w, y + h, r);
+      ctx.arcTo(x + w, y + h, x, y + h, r);
+      ctx.arcTo(x, y + h, x, y, r);
+      ctx.arcTo(x, y, x + w, y, r);
+      ctx.closePath();
+    }
+
+    function drawUserPhotoInBox(ctx, x, y, w, h, radius) {
+      ctx.save();
+      drawRoundedRect(ctx, x, y, w, h, radius);
+      ctx.clip();
+
+      if (uploadedUserPhoto) {
+        const zoom = parseFloat(document.getElementById('photoZoomSlider').value || 1);
+        const panX = parseFloat(document.getElementById('photoPanXSlider').value || 0);
+        const panY = parseFloat(document.getElementById('photoPanYSlider').value || 0);
+
+        const imgRatio = uploadedUserPhoto.width / uploadedUserPhoto.height;
+        const boxRatio = w / h;
+        let drawW, drawH;
+        if (imgRatio > boxRatio) {
+          drawH = h * zoom;
+          drawW = drawH * imgRatio;
+        } else {
+          drawW = w * zoom;
+          drawH = drawW / imgRatio;
+        }
+        const drawX = x + (w - drawW) / 2 + panX;
+        const drawY = y + (h - drawH) / 2 + panY;
+        ctx.drawImage(uploadedUserPhoto, drawX, drawY, drawW, drawH);
+      } else {
+        // Sleek default San Diego Bayfront silhouette & prompt when no photo uploaded yet
+        const grad = ctx.createLinearGradient(x, y, x + w, y + h);
+        grad.addColorStop(0, '#004B8D');
+        grad.addColorStop(0.5, '#002855');
+        grad.addColorStop(1, '#001833');
+        ctx.fillStyle = grad;
+        ctx.fillRect(x, y, w, h);
+
+        // Decorative sun & bay waves
+        ctx.fillStyle = 'rgba(251, 191, 36, 0.18)';
+        ctx.beginPath();
+        ctx.arc(x + w * 0.5, y + h * 0.42, 140, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = '#FBBF24';
+        ctx.font = '900 34px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('TAP "TAKE SELFIE" OR "UPLOAD PHOTO"', x + w / 2, y + h / 2 - 10);
+        ctx.fillStyle = '#93C5FD';
+        ctx.font = '600 26px sans-serif';
+        ctx.fillText('Your Finisher Photo Appears Right Here!', x + w / 2, y + h / 2 + 35);
+      }
+      ctx.restore();
+    }
+
+    function drawCourseTraceMiniMap(ctx, boxX, boxY, boxW, boxH, strokeColor, glowColor) {
+      ctx.save();
+      const lats = COURSE_COORDS.map(c => c[0]);
+      const lngs = COURSE_COORDS.map(c => c[1]);
+      const minLat = Math.min(...lats), maxLat = Math.max(...lats);
+      const minLng = Math.min(...lngs), maxLng = Math.max(...lngs);
+
+      const pad = 22;
+      const usableW = boxW - pad * 2;
+      const usableH = boxH - pad * 2;
+
+      ctx.shadowColor = glowColor;
+      ctx.shadowBlur = 14;
+      ctx.strokeStyle = strokeColor;
+      ctx.lineWidth = 7;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      ctx.beginPath();
+
+      COURSE_COORDS.forEach((pt, idx) => {
+        const nx = (pt[1] - minLng) / (maxLng - minLng);
+        const ny = 1 - (pt[0] - minLat) / (maxLat - minLat);
+        const px = boxX + pad + nx * usableW;
+        const py = boxY + pad + ny * usableH;
+        if (idx === 0) ctx.moveTo(px, py);
+        else ctx.lineTo(px, py);
+      });
+      ctx.stroke();
+
+      // Start & Finish dots on mini-map
+      const startPt = COURSE_COORDS[0];
+      const sx = boxX + pad + ((startPt[1] - minLng) / (maxLng - minLng)) * usableW;
+      const sy = boxY + pad + (1 - (startPt[0] - minLat) / (maxLat - minLat)) * usableH;
+      ctx.shadowBlur = 0;
+      ctx.fillStyle = '#22C55E';
+      ctx.beginPath(); ctx.arc(sx - 5, sy, 8, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = '#E31837';
+      ctx.beginPath(); ctx.arc(sx + 5, sy, 8, 0, Math.PI * 2); ctx.fill();
+      ctx.restore();
+    }
+
+    function drawAllFourLogosBar(ctx, x, y, w, h) {
+      ctx.save();
+      drawRoundedRect(ctx, x, y, w, h, 28);
+      ctx.fillStyle = '#FFFFFF';
+      ctx.shadowColor = 'rgba(0,0,0,0.22)';
+      ctx.shadowBlur = 20;
+      ctx.fill();
+      ctx.shadowBlur = 0;
+
+      const keys = ['iam', 'pts', 'gmf', 'k9'];
+      const fallbackLabels = ['IAM', 'PARAMOUNT 30TH', 'GLOBAL MOVING FDN', 'COASTAL K9 RESCUE'];
+      const slotW = w / 4;
+
+      keys.forEach((key, i) => {
+        const slotX = x + i * slotW;
+        if (i > 0) {
+          ctx.strokeStyle = '#E2E8F0';
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.moveTo(slotX, y + 24);
+          ctx.lineTo(slotX, y + h - 24);
+          ctx.stroke();
+        }
+        const img = loadedLogos[key];
+        if (img && img.complete && img.naturalWidth > 0) {
+          const maxW = slotW - 36;
+          const maxH = h - 28;
+          const ratio = Math.min(maxW / img.naturalWidth, maxH / img.naturalHeight);
+          const dw = img.naturalWidth * ratio;
+          const dh = img.naturalHeight * ratio;
+          ctx.drawImage(img, slotX + (slotW - dw) / 2, y + (h - dh) / 2, dw, dh);
+        } else {
+          ctx.fillStyle = '#003366';
+          ctx.font = '900 20px sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText(fallbackLabels[i], slotX + slotW / 2, y + h / 2 + 7);
+        }
+      });
+      ctx.restore();
+    }
+
+    function renderFinisherCanvas() {
+      const canvas = document.getElementById('finisherCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const W = canvas.width;   // 1080
+      const H = canvas.height;  // 1350
+
+      const runnerName = (document.getElementById('cardRunnerName').value || 'OFFICIAL FINISHER').toUpperCase();
+      const runnerCompany = (document.getElementById('cardRunnerCompany').value || 'IAM & PARAMOUNT 5K').toUpperCase();
+      const runnerBib = (document.getElementById('cardRunnerBib').value || 'PTS-2026').toUpperCase();
+      const runnerTime = document.getElementById('cardRunnerTime').value || '27:42';
+      const runnerPace = document.getElementById('cardRunnerPace').value || '8\'46" /mi';
+
+      ctx.clearRect(0, 0, W, H);
+
+      if (currentDesignIndex === 0) {
+        // =====================================================================
+        // DESIGN 1: BAYFRONT NAVY & GOLD CHAMPIONSHIP CREST
+        // =====================================================================
+        const bgGrad = ctx.createLinearGradient(0, 0, W, H);
+        bgGrad.addColorStop(0, '#001F42');
+        bgGrad.addColorStop(0.5, '#003366');
+        bgGrad.addColorStop(1, '#00152B');
+        ctx.fillStyle = bgGrad;
+        ctx.fillRect(0, 0, W, H);
+
+        // Gold & Crimson angled sport ribbons
+        ctx.fillStyle = 'rgba(227, 24, 55, 0.18)';
+        ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(460, 0); ctx.lineTo(0, 460); ctx.closePath(); ctx.fill();
+        ctx.fillStyle = 'rgba(251, 191, 36, 0.14)';
+        ctx.beginPath(); ctx.moveTo(W, H); ctx.lineTo(W - 520, H); ctx.lineTo(W, H - 520); ctx.closePath(); ctx.fill();
+
+        // Top Gold Championship Banner
+        ctx.fillStyle = '#FBBF24';
+        drawRoundedRect(ctx, 60, 45, W - 120, 48, 24);
+        ctx.fill();
+        ctx.fillStyle = '#002855';
+        ctx.font = '900 24px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('★ OFFICIAL 2026 FINISHER • SAN DIEGO BAYFRONT • 23 OCT 2026 ★', W / 2, 78);
+
+        // Event Title
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = '900 54px sans-serif';
+        ctx.fillText('IAM & PARAMOUNT', W / 2, 160);
+        ctx.fillStyle = '#60A5FA';
+        ctx.font = '900 38px sans-serif';
+        ctx.fillText('CHARITY 5K FUN RUN / WALK', W / 2, 208);
+
+        // Main Photo Frame with Gold Border
+        drawRoundedRect(ctx, 60, 238, W - 120, 560, 34);
+        ctx.fillStyle = '#FBBF24';
+        ctx.fill();
+        drawUserPhotoInBox(ctx, 68, 246, W - 136, 544, 28);
+
+        // Verified Finisher Pill overlapping bottom of photo
+        drawRoundedRect(ctx, 110, 745, W - 220, 96, 24);
+        ctx.fillStyle = '#E31837';
+        ctx.shadowColor = 'rgba(0,0,0,0.45)';
+        ctx.shadowBlur = 18;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = '900 42px sans-serif';
+        ctx.fillText(runnerName, W / 2, 795);
+        ctx.fillStyle = '#FDE68A';
+        ctx.font = '700 23px sans-serif';
+        ctx.fillText(`${runnerCompany}  •  BIB #${runnerBib}`, W / 2, 826);
+
+        // Stats & Course Map Row (Y: 865 to 1125)
+        const statY = 868;
+        const statH = 240;
+        // 3 Stat Boxes on Left + Mini-Map Box on Right
+        drawRoundedRect(ctx, 60, statY, 620, statH, 26);
+        ctx.fillStyle = 'rgba(255,255,255,0.09)';
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(255,255,255,0.22)';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        ctx.textAlign = 'center';
+        // Distance
+        ctx.fillStyle = '#93C5FD'; ctx.font = '800 22px sans-serif';
+        ctx.fillText('DISTANCE', 175, statY + 58);
+        ctx.fillStyle = '#FFFFFF'; ctx.font = '900 50px monospace';
+        ctx.fillText('5.08K', 175, statY + 125);
+        ctx.fillStyle = '#FBBF24'; ctx.font = '700 22px sans-serif';
+        ctx.fillText('3.16 MILES', 175, statY + 165);
+
+        // Finish Time
+        ctx.fillStyle = '#93C5FD'; ctx.font = '800 22px sans-serif';
+        ctx.fillText('OFFICIAL TIME', 375, statY + 58);
+        ctx.fillStyle = '#FBBF24'; ctx.font = '900 50px monospace';
+        ctx.fillText(runnerTime, 375, statY + 125);
+        ctx.fillStyle = '#FFFFFF'; ctx.font = '700 22px sans-serif';
+        ctx.fillText('5K COMPLETED', 375, statY + 165);
+
+        // Pace
+        ctx.fillStyle = '#93C5FD'; ctx.font = '800 22px sans-serif';
+        ctx.fillText('AVG PACE', 570, statY + 58);
+        ctx.fillStyle = '#38BDF8'; ctx.font = '900 42px monospace';
+        ctx.fillText(runnerPace.replace(' /mi', ''), 570, statY + 125);
+        ctx.fillStyle = '#FFFFFF'; ctx.font = '700 22px sans-serif';
+        ctx.fillText('PER MILE', 570, statY + 165);
+
+        // Course Mini-Map Box on Right
+        drawRoundedRect(ctx, 705, statY, 315, statH, 26);
+        ctx.fillStyle = 'rgba(0, 20, 45, 0.7)';
+        ctx.fill();
+        ctx.strokeStyle = '#FBBF24';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        drawCourseTraceMiniMap(ctx, 720, statY + 10, 285, statH - 45, '#00F0FF', '#00F0FF');
+        ctx.fillStyle = '#FBBF24';
+        ctx.font = '800 18px sans-serif';
+        ctx.fillText('SAN DIEGO BAY COURSE', 862, statY + statH - 14);
+
+        // All 4 Logos Dock at Bottom
+        drawAllFourLogosBar(ctx, 60, 1140, W - 120, 160);
+
+      } else if (currentDesignIndex === 1) {
+        // =====================================================================
+        // DESIGN 2: SAN DIEGO SUNRISE / STRAVA-PRO GLASS MAGAZINE EDITION
+        // =====================================================================
+        // Full-bleed background photo (upper 78% of canvas)
+        drawUserPhotoInBox(ctx, 0, 0, W, 980, 0);
+
+        // Top & Bottom Cinematic Gradient Vignettes over Photo
+        const topVig = ctx.createLinearGradient(0, 0, 0, 290);
+        topVig.addColorStop(0, 'rgba(0, 25, 55, 0.92)');
+        topVig.addColorStop(1, 'rgba(0, 25, 55, 0)');
+        ctx.fillStyle = topVig;
+        ctx.fillRect(0, 0, W, 290);
+
+        const botVig = ctx.createLinearGradient(0, 620, 0, 1350);
+        botVig.addColorStop(0, 'rgba(0, 25, 55, 0)');
+        botVig.addColorStop(0.32, 'rgba(0, 32, 70, 0.96)');
+        botVig.addColorStop(1, '#001833');
+        ctx.fillStyle = botVig;
+        ctx.fillRect(0, 620, W, 730);
+
+        // Top Editorial Header
+        ctx.textAlign = 'left';
+        ctx.fillStyle = '#E31837';
+        drawRoundedRect(ctx, 60, 50, 340, 44, 12);
+        ctx.fill();
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = '900 22px sans-serif';
+        ctx.fillText('✓ 2026 OFFICIAL 5K FINISHER', 80, 80);
+
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = '900 52px sans-serif';
+        ctx.fillText('IAM & PARAMOUNT 5K', 60, 150);
+        ctx.fillStyle = '#FBBF24';
+        ctx.font = '800 28px sans-serif';
+        ctx.fillText('SAN DIEGO BAYFRONT • 23 OCTOBER 2026', 60, 192);
+
+        // Floating Glassmorphic Runner & Telemetry Card
+        drawRoundedRect(ctx, 60, 740, W - 120, 365, 32);
+        ctx.fillStyle = 'rgba(0, 40, 85, 0.85)';
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.28)';
+        ctx.lineWidth = 3;
+        ctx.stroke();
+
+        ctx.textAlign = 'left';
+        ctx.fillStyle = '#38BDF8';
+        ctx.font = '800 24px sans-serif';
+        ctx.fillText(`${runnerCompany} • BIB #${runnerBib}`, 100, 800);
+
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = '900 54px sans-serif';
+        ctx.fillText(runnerName, 100, 862);
+
+        // Big Strava-style metrics
+        ctx.fillStyle = '#93C5FD'; ctx.font = '700 22px sans-serif';
+        ctx.fillText('DISTANCE', 100, 935);
+        ctx.fillText('FINISH TIME', 340, 935);
+        ctx.fillText('PACE', 600, 935);
+
+        ctx.fillStyle = '#FFFFFF'; ctx.font = '900 62px monospace';
+        ctx.fillText('3.16 mi', 100, 1005);
+        ctx.fillStyle = '#FBBF24';
+        ctx.fillText(runnerTime, 340, 1005);
+        ctx.fillStyle = '#00F0FF';
+        ctx.fillText(runnerPace.replace(' /mi', ''), 600, 1005);
+
+        ctx.fillStyle = '#E2E8F0'; ctx.font = '600 22px sans-serif';
+        ctx.fillText('Proudly supporting Global Moving Foundation & Coastal K9 Rescue', 100, 1072);
+
+        // Glowing Neon Course Trace on Right of Glass Card
+        drawCourseTraceMiniMap(ctx, 790, 765, 205, 260, '#FBBF24', '#E31837');
+
+        // All 4 Logos Dock at Bottom
+        drawAllFourLogosBar(ctx, 60, 1140, W - 120, 160);
+
+      } else {
+        // =====================================================================
+        // DESIGN 3: 30TH ANNIVERSARY VIP FINISHER BIB & TRADING CARD EDITION
+        // =====================================================================
+        ctx.fillStyle = '#F8FAFC';
+        ctx.fillRect(0, 0, W, H);
+
+        // Bold Navy & Crimson Header Block
+        ctx.fillStyle = '#003366';
+        ctx.fillRect(0, 0, W, 250);
+        ctx.fillStyle = '#E31837';
+        ctx.fillRect(0, 240, W, 16);
+
+        ctx.textAlign = 'center';
+        ctx.fillStyle = '#FBBF24';
+        ctx.font = '900 24px sans-serif';
+        ctx.fillText('23 OCTOBER 2026 • SAN DIEGO BAYFRONT PROMENADE', W / 2, 65);
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = '900 56px sans-serif';
+        ctx.fillText('IAM & PARAMOUNT', W / 2, 135);
+        ctx.font = '800 38px sans-serif';
+        ctx.fillStyle = '#93C5FD';
+        ctx.fillText('CHARITY 5K FUN RUN / WALK FINISHER', W / 2, 192);
+
+        // Photo Frame on Left + Race Bib & Route Card on Right
+        drawRoundedRect(ctx, 60, 290, 580, 560, 28);
+        ctx.fillStyle = '#003366';
+        ctx.fill();
+        drawUserPhotoInBox(ctx, 68, 298, 564, 544, 22);
+
+        // Right Column: Course Map Card
+        drawRoundedRect(ctx, 670, 290, 350, 340, 28);
+        ctx.fillStyle = '#002855';
+        ctx.fill();
+        drawCourseTraceMiniMap(ctx, 690, 305, 310, 265, '#E31837', '#FBBF24');
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = '800 20px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('5.08 KM WATERFRONT LOOP', 845, 605);
+
+        // Right Column: Official Race Bib Number Box
+        drawRoundedRect(ctx, 670, 655, 350, 195, 28);
+        ctx.fillStyle = '#E31837';
+        ctx.fill();
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = '800 22px sans-serif';
+        ctx.fillText('OFFICIAL RACE BIB', 845, 705);
+        ctx.font = '900 54px monospace';
+        ctx.fillText(runnerBib, 845, 775);
+        ctx.fillStyle = '#FDE68A';
+        ctx.font = '800 20px sans-serif';
+        ctx.fillText('VERIFIED 5K FINISHER', 845, 820);
+
+        // Official Athlete Name & Telemetry Banner
+        drawRoundedRect(ctx, 60, 880, W - 120, 225, 28);
+        ctx.fillStyle = '#003366';
+        ctx.fill();
+
+        ctx.textAlign = 'left';
+        ctx.fillStyle = '#FBBF24';
+        ctx.font = '800 24px sans-serif';
+        ctx.fillText(runnerCompany, 100, 932);
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = '900 50px sans-serif';
+        ctx.fillText(runnerName, 100, 990);
+
+        // Bottom Stat Strip inside Navy Banner
+        ctx.fillStyle = '#93C5FD';
+        ctx.font = '800 24px sans-serif';
+        ctx.fillText(`TIME: `, 100, 1060);
+        ctx.fillStyle = '#FBBF24';
+        ctx.font = '900 38px monospace';
+        ctx.fillText(runnerTime, 185, 1062);
+
+        ctx.fillStyle = '#93C5FD';
+        ctx.font = '800 24px sans-serif';
+        ctx.fillText(`PACE: `, 420, 1060);
+        ctx.fillStyle = '#38BDF8';
+        ctx.font = '900 38px monospace';
+        ctx.fillText(runnerPace, 510, 1062);
+
+        ctx.fillStyle = '#22C55E';
+        ctx.font = '900 32px sans-serif';
+        ctx.fillText('★ 3.16 MI', 810, 1060);
+
+        // All 4 Logos Dock at Bottom
+        drawAllFourLogosBar(ctx, 60, 1140, W - 120, 160);
+      }
+    }
+
+    async function shareFinisherCard() {
+      const canvas = document.getElementById('finisherCanvas');
+      canvas.toBlob(async (blob) => {
+        if (!blob) return;
+        const file = new File([blob], 'IAM_Paramount_5K_Finisher.png', { type: 'image/png' });
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+          try {
+            await navigator.share({
+              title: 'IAM & Paramount Charity 5K Finisher!',
+              text: 'Just completed the IAM & Paramount Charity 5K Fun Run/Walk along San Diego Bay supporting Global Moving Foundation & Coastal K9 German Shepherd Rescue!',
+              files: [file]
+            });
+            return;
+          } catch (err) {}
+        }
+        downloadFinisherCard();
+      }, 'image/png');
+    }
+
+    function downloadFinisherCard() {
+      const canvas = document.getElementById('finisherCanvas');
+      const link = document.createElement('a');
+      link.download = 'IAM_Paramount_5K_Finisher_Card.png';
+      link.href = canvas.toDataURL('image/png');
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    // =========================================================================
+    // LEAFLET GOOGLE MAP & COURSE SIMULATION
+    // =========================================================================
     const STAGE_VIEWS = [
       { coords: [32.7070, -117.1688], zoom: 16 },
       { coords: [32.7040, -117.1645], zoom: 16 },
@@ -1030,12 +1934,21 @@
       { coords: [32.7098, -117.1715], zoom: 16 }
     ];
 
+    let courseMap, mainRouteLine, googleStreetsLayer, googleHybridLayer;
+    let stageMarkers = [], simInterval = null, runnerMarker = null, simIndex = 0;
+    let mobileMapInteractive = false, isMapFullScreen = false;
+
     function initCourseMap() {
       const isMobile = window.innerWidth < 1024;
       courseMap = L.map('courseMap', { scrollWheelZoom: false, dragging: !isMobile, tap: !isMobile }).setView([32.7068, -117.1662], 15);
 
-      googleStreetsLayer = L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', { maxZoom: 20, subdomains: ['mt0', 'mt1', 'mt2', 'mt3'], attribution: '&copy; Google Maps' }).addTo(courseMap);
-      googleHybridLayer = L.tileLayer('https://{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', { maxZoom: 20, subdomains: ['mt0', 'mt1', 'mt2', 'mt3'], attribution: '&copy; Google Maps Satellite' });
+      googleStreetsLayer = L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+        maxZoom: 20, subdomains: ['mt0', 'mt1', 'mt2', 'mt3'], attribution: '&copy; Google Maps'
+      }).addTo(courseMap);
+
+      googleHybridLayer = L.tileLayer('https://{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', {
+        maxZoom: 20, subdomains: ['mt0', 'mt1', 'mt2', 'mt3'], attribution: '&copy; Google Maps Satellite'
+      });
 
       L.polyline(COURSE_COORDS, { color: '#ffffff', weight: 8, opacity: 0.9, lineJoin: 'round' }).addTo(courseMap);
       mainRouteLine = L.polyline(COURSE_COORDS, { color: '#E31837', weight: 5, opacity: 1, lineJoin: 'round' }).addTo(courseMap);
@@ -1049,32 +1962,45 @@
         });
       }
 
-      const startMarker = L.marker([32.70820, -117.17012], { icon: createBadgeIcon('', 'bg-green-600', 22) }).addTo(courseMap).bindPopup(`<div class="text-xs p-1 space-y-1.5"><strong class="text-green-700 uppercase block">START</strong><div>NW Corner of North Embarcadero Marina</div><a href="https://www.google.com/maps/dir/?api=1&destination=32.70820,-117.17009&travelmode=walking" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 bg-pts-navy text-white font-bold px-2.5 py-1 rounded text-[11px] shadow"><i class="fa-solid fa-location-arrow text-amber-300"></i> Navigate Here</a></div>`);
-      const finishMarker = L.marker([32.70820, -117.16998], { icon: createBadgeIcon('', 'bg-pts-accent', 22) }).addTo(courseMap).bindPopup(`<div class="text-xs p-1"><strong class="text-pts-accent uppercase block">FINISH</strong>NW Corner of North Embarcadero Marina</div>`);
-      const mile1Marker = L.marker([32.70448, -117.16467], { icon: createBadgeIcon('1', 'bg-pts-accent', 26) }).addTo(courseMap).bindPopup(`<div class="text-xs p-1"><strong class="text-pts-accent">Mile 1</strong><br>South Park Loop</div>`);
-      const hiltonMarker = L.marker([32.70331, -117.15973], { icon: createBadgeIcon('<i class="fa-solid fa-rotate-left text-[10px]"></i>', 'bg-pts-blue', 24) }).addTo(courseMap).bindPopup(`<div class="text-xs p-1"><strong class="text-pts-blue">U-Turn</strong><br>Hilton U-Turn</div>`);
-      const mile3Marker = L.marker([32.70867, -117.17146], { icon: createBadgeIcon('3', 'bg-pts-accent', 26) }).addTo(courseMap).bindPopup(`<div class="text-xs p-1"><strong class="text-pts-accent">Mile 3</strong><br>Ruocco Park Return</div>`);
+      const startMarker = L.marker([32.70820, -117.17012], { icon: createBadgeIcon('', 'bg-green-600', 22) }).addTo(courseMap).bindPopup(`
+        <div class="text-xs p-1 space-y-1.5">
+          <strong class="text-green-700 uppercase block">START</strong>
+          <div>Northwest corner of the North Embarcadero Marina</div>
+          <a href="https://www.google.com/maps/dir/?api=1&destination=32.70820,-117.17009&travelmode=walking" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 bg-pts-navy text-white font-bold px-2.5 py-1 rounded text-[11px] shadow">
+            <i class="fa-solid fa-location-arrow text-amber-300"></i> Navigate Here
+          </a>
+        </div>
+      `);
+      const finishMarker = L.marker([32.70820, -117.16998], { icon: createBadgeIcon('', 'bg-pts-accent', 22) }).addTo(courseMap).bindPopup(`<div class="text-xs p-1"><strong class="text-pts-accent uppercase block">FINISH</strong>Northwest corner of the North Embarcadero Marina</div>`);
+      const mile1Marker = L.marker([32.70448, -117.16467], { icon: createBadgeIcon('1', 'bg-pts-accent', 26) }).addTo(courseMap).bindPopup(`<div class="text-xs p-1"><strong class="text-pts-accent">Mile 1</strong><br>South Embarcadero Marina loop</div>`);
+      const hiltonTurnMarker = L.marker([32.70331, -117.15973], { icon: createBadgeIcon('<i class="fa-solid fa-rotate-left text-[10px]"></i>', 'bg-pts-blue', 24) }).addTo(courseMap).bindPopup(`<div class="text-xs p-1"><strong class="text-pts-blue">U-Turn</strong><br>Promenade toward the Hilton (U-turn before the hotel)</div>`);
+      const mile2Marker = L.marker([32.70578, -117.16340], { icon: createBadgeIcon('2', 'bg-pts-accent', 26) }).addTo(courseMap).bindPopup(`<div class="text-xs p-1"><strong class="text-pts-accent">Mile 2</strong><br>Bayfront Promenade</div>`);
+      const mile3Marker = L.marker([32.70867, -117.17146], { icon: createBadgeIcon('3', 'bg-pts-accent', 26) }).addTo(courseMap).bindPopup(`<div class="text-xs p-1"><strong class="text-pts-accent">Mile 3</strong><br>Return route from Ruocco Park</div>`);
 
-      stageMarkers = [startMarker, mile1Marker, hiltonMarker, mile3Marker];
+      stageMarkers = [startMarker, mile1Marker, hiltonTurnMarker, mile3Marker];
       courseMap.fitBounds(mainRouteLine.getBounds(), { padding: [22, 22] });
+      renderFinisherCanvas();
     }
 
     function toggleFullScreenMap() {
       const wrapper = document.getElementById('mapWrapperContainer');
       const fsText = document.getElementById('fsToggleText');
       const fsIcon = document.getElementById('fsToggleIcon');
+      const lockBtn = document.getElementById('mobileTouchLockBtn');
       isMapFullScreen = !isMapFullScreen;
       if (isMapFullScreen) {
         wrapper.classList.add('map-fullscreen-active');
         document.body.style.overflow = 'hidden';
         fsText.innerText = "Exit Full Screen"; fsIcon.className = "fa-solid fa-compress text-amber-300";
         courseMap.dragging.enable(); courseMap.scrollWheelZoom.enable();
+        if (lockBtn) lockBtn.classList.add('hidden');
       } else {
         wrapper.classList.remove('map-fullscreen-active');
         document.body.style.overflow = '';
         fsText.innerText = "Full Screen"; fsIcon.className = "fa-solid fa-expand text-amber-300";
         courseMap.scrollWheelZoom.disable();
         if (window.innerWidth < 1024 && !mobileMapInteractive) courseMap.dragging.disable();
+        if (lockBtn) lockBtn.classList.remove('hidden');
       }
       setTimeout(() => { if (courseMap && mainRouteLine) { courseMap.invalidateSize(); courseMap.fitBounds(mainRouteLine.getBounds(), { padding: [25, 25] }); } }, 200);
     }
@@ -1103,9 +2029,10 @@
     }
 
     function focusCourseStage(index) {
-      document.querySelectorAll('.course-step-card').forEach((el, idx) => el.classList.toggle('active', idx === index));
-      if (STAGE_VIEWS[index] && courseMap) {
-        courseMap.flyTo(STAGE_VIEWS[index].coords, STAGE_VIEWS[index].zoom, { duration: 1.0 });
+      highlightStepCardOnly(index);
+      const stage = STAGE_VIEWS[index];
+      if (stage && courseMap) {
+        courseMap.flyTo(stage.coords, stage.zoom, { duration: 1.0 });
         if (stageMarkers[index]) stageMarkers[index].openPopup();
       }
     }
@@ -1115,7 +2042,87 @@
     }
 
     function toggleCourseSimulation() {
-      // Simulation runner logic
+      const btnText = document.getElementById('simRunText');
+      const btnIcon = document.getElementById('simRunIcon');
+      const overlay = document.getElementById('simStatusOverlay');
+
+      if (simInterval) {
+        clearInterval(simInterval); simInterval = null;
+        btnText.innerText = "Simulate Course Route"; btnIcon.className = "fa-solid fa-play";
+        overlay.classList.add('hidden');
+        if (runnerMarker) { courseMap.removeLayer(runnerMarker); runnerMarker = null; }
+        return;
+      }
+
+      overlay.classList.remove('hidden');
+      btnText.innerText = "Stop Simulation"; btnIcon.className = "fa-solid fa-stop";
+      simIndex = 0;
+
+      const runnerIcon = L.divIcon({
+        className: 'runner-sim-icon',
+        html: `<div class="bg-amber-400 text-pts-navy rounded-full shadow-xl border-2 border-pts-navy flex items-center justify-center" style="width:30px;height:30px;font-size:14px;"><i class="fa-solid fa-person-running"></i></div>`,
+        iconSize: [30, 30], iconAnchor: [15, 15]
+      });
+
+      runnerMarker = L.marker(SMOOTH_COURSE_PATH[0], { icon: runnerIcon, zIndexOffset: 1000 }).addTo(courseMap);
+      courseMap.panTo(SMOOTH_COURSE_PATH[0]);
+
+      simInterval = setInterval(() => {
+        simIndex++;
+        if (simIndex >= SMOOTH_COURSE_PATH.length) {
+          clearInterval(simInterval); simInterval = null;
+          btnText.innerText = "Replay Course Route"; btnIcon.className = "fa-solid fa-rotate-right";
+          document.getElementById('simStageLabel').innerText = "Start/Finish area at the North Embarcadero Marina";
+          document.getElementById('simDistanceLabel').innerText = "100%";
+          document.getElementById('simProgressBar').style.width = "100%";
+          highlightStepCardOnly(3);
+          return;
+        }
+        const pt = SMOOTH_COURSE_PATH[simIndex];
+        runnerMarker.setLatLng(pt);
+        const pct = simIndex / (SMOOTH_COURSE_PATH.length - 1);
+        document.getElementById('simDistanceLabel').innerText = `${Math.round(pct * 100)}%`;
+        document.getElementById('simProgressBar').style.width = `${(pct * 100).toFixed(1)}%`;
+
+        let stageLabel = "North Embarcadero Marina & Bayfront Promenade";
+        if (pct > 0.62) { stageLabel = "Waterfront north toward Ruocco Park & back to Start/Finish"; highlightStepCardOnly(3); }
+        else if (pct > 0.48) { stageLabel = "Promenade toward the Hilton & U-turn before the hotel"; highlightStepCardOnly(2); }
+        else if (pct > 0.28) { stageLabel = "Loop (counterclockwise) around the South Embarcadero Marina"; highlightStepCardOnly(1); }
+        else { highlightStepCardOnly(0); }
+        document.getElementById('simStageLabel').innerText = stageLabel;
+
+        if (simIndex % 8 === 0) courseMap.panTo(pt, { animate: true, duration: 0.35 });
+      }, 45);
+    }
+
+    function highlightStepCardOnly(index) {
+      const container = document.getElementById('courseStepList');
+      document.querySelectorAll('.course-step-card').forEach((el, idx) => {
+        const isActive = idx === index;
+        el.classList.toggle('active', isActive);
+        if (isActive && window.innerWidth < 1024 && container) {
+          const scrollLeft = el.offsetLeft - container.offsetLeft - 16;
+          container.scrollTo({ left: scrollLeft, behavior: 'smooth' });
+        }
+      });
+    }
+
+    async function performLookup() {
+      const q = document.getElementById('lookupQuery').value.trim();
+      const pin = document.getElementById('lookupPin').value.trim();
+      const msg = document.getElementById('lookupMessage');
+      if (!q || !pin) { msg.innerText = "Please enter both Email/ID and PIN."; return; }
+      msg.innerText = "Verifying...";
+      try {
+        const res = await fetch(`${SCRIPT_URL}?action=lookup&query=${encodeURIComponent(q)}&pin=${encodeURIComponent(pin)}`);
+        const json = await res.json();
+        if (json.status === 'found') {
+          toggleModal('lookupModal');
+          setSitePhaseMode('prerace');
+        } else {
+          msg.innerText = "No matching record or incorrect PIN.";
+        }
+      } catch (e) { msg.innerText = "Lookup error."; }
     }
 
     window.addEventListener('DOMContentLoaded', initCourseMap);
