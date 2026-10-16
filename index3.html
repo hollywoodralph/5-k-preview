@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-  <title>IAM & PARAMOUNT Charity 5K – Race Day Live Hub & Finisher Studio</title>
+  <title>IAM & PARAMOUNT Charity 5K Fun Run/Walk Registration & Race Day Hub</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -30,24 +30,48 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
   <style>
-    .leaflet-container { font-family: inherit; z-index: 10; }
+    .leaflet-container {
+      font-family: inherit;
+      z-index: 10;
+    }
     @keyframes pulse-ring {
       0% { transform: scale(0.8); opacity: 0.8; }
       100% { transform: scale(2.2); opacity: 0; }
     }
     .marker-pulse::before {
-      content: ''; position: absolute; inset: -6px; border-radius: 9999px;
-      background-color: inherit; animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite; z-index: -1;
+      content: '';
+      position: absolute;
+      inset: -6px;
+      border-radius: 9999px;
+      background-color: inherit;
+      animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+      z-index: -1;
     }
     .course-step-card.active {
-      border-color: #E31837; background-color: #FFF5F5; box-shadow: 0 8px 15px -3px rgba(227, 24, 55, 0.15);
+      border-color: #E31837;
+      background-color: #FFF5F5;
+      box-shadow: 0 8px 15px -3px rgba(227, 24, 55, 0.15);
     }
+    /* Fullscreen Map Container Mode */
     .map-fullscreen-active {
-      position: fixed !important; inset: 0 !important; width: 100vw !important; height: 100vh !important; z-index: 9999 !important;
+      position: fixed !important;
+      inset: 0 !important;
+      width: 100vw !important;
+      height: 100vh !important;
+      z-index: 9999 !important;
     }
-    .no-scrollbar::-webkit-scrollbar { display: none; }
-    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-    * { -webkit-tap-highlight-color: transparent; }
+    /* Hide scrollbar for Chrome, Safari and Opera on horizontal mobile carousel */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    /* Prevent iOS tap highlight flash */
+    * {
+      -webkit-tap-highlight-color: transparent;
+    }
   </style>
 </head>
 <body class="bg-gray-50 text-gray-800 font-sans antialiased min-h-screen flex flex-col">
@@ -55,7 +79,7 @@
   <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
 
   <!-- ================================================================= -->
-  <!-- DEMO MODE SWITCHER BAR (So you can show your boss both states!)   -->
+  <!-- DEMO MODE SWITCHER BAR (Toggle between Race Day & Pre-Race)       -->
   <!-- ================================================================= -->
   <div class="bg-gray-900 text-white px-4 py-2 text-xs border-b border-white/10 relative z-50">
     <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-2">
@@ -82,7 +106,6 @@
       
       <div class="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-6 items-center border-b border-blue-800/60 pb-5 md:pb-6">
         
-        <!-- Host Logos -->
         <div class="md:col-span-4 flex justify-center md:justify-start">
           <div class="bg-white px-3.5 py-2.5 sm:px-4 sm:py-3 rounded-2xl shadow-md grid grid-cols-[1fr_auto_1fr] items-center w-full max-w-sm">
             <div class="flex items-center justify-center p-1">
@@ -93,15 +116,14 @@
             <div class="h-10 sm:h-16 w-px bg-gray-300 mx-2 sm:mx-3"></div>
             <div class="flex items-center justify-center p-1">
               <a href="https://pts-moves.com/" target="_blank" rel="noopener noreferrer" class="hover:opacity-85 transition-opacity flex items-center justify-center">
-                <img src="Paramount30thLogo.png" alt="Paramount Transportation Systems" class="h-14 sm:h-18 md:h-24 w-auto max-w-full object-contain">
+                <img src="Paramount30thLogo.png" alt="Paramount Transportation Systems - 30th Anniversary" class="h-14 sm:h-18 md:h-24 w-auto max-w-full object-contain">
               </a>
             </div>
           </div>
         </div>
 
-        <!-- Center Status / Countdown -->
         <div class="md:col-span-4 flex justify-center">
-          <!-- Race Day Live Status Badge (Shown on Race Day) -->
+          <!-- Race Day Live Status Badge (Shown in Race Day Mode) -->
           <div id="headerRaceDayBadge" class="bg-white rounded-2xl px-5 py-3 border border-gray-100 text-center shadow-md w-full max-w-sm md:max-w-xs">
             <span class="text-[11px] uppercase tracking-wider text-pts-accent block font-black mb-1 flex items-center justify-center gap-1.5">
               <span class="w-2.5 h-2.5 rounded-full bg-pts-accent animate-ping"></span> Event Status: Live
@@ -112,7 +134,7 @@
             </div>
           </div>
 
-          <!-- Pre-Race Countdown Clock (Hidden on Race Day) -->
+          <!-- Pre-Race Countdown Clock (Shown in Pre-Race Mode) -->
           <div id="headerPreRaceCountdown" class="hidden bg-white rounded-2xl px-4 py-2.5 sm:px-5 sm:py-3 border border-gray-100 text-center shadow-md w-full max-w-sm md:max-w-xs">
             <span class="text-[11px] sm:text-xs uppercase tracking-wider text-pts-navy block font-bold mb-1.5 sm:mb-2">
               <i class="fa-solid fa-stopwatch mr-1 text-pts-blue"></i> Race Countdown
@@ -126,9 +148,8 @@
           </div>
         </div>
 
-        <!-- Right Column: Race Day Actions vs. Pre-Race $75 Fee -->
         <div class="md:col-span-4 flex flex-col items-center md:items-end gap-2.5 w-full">
-          <!-- Race Day Quick Actions (Shown on Race Day) -->
+          <!-- Race Day Header Actions (Shown in Race Day Mode) -->
           <div id="headerRaceDayActions" class="w-full max-w-sm md:max-w-xs flex flex-col gap-2">
             <button type="button" onclick="openFinisherStudioModal()" class="w-full bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-pts-navy px-4 py-3 rounded-2xl text-xs sm:text-sm font-black transition flex items-center justify-center gap-2 shadow-lg">
               <i class="fa-solid fa-camera-retro text-base"></i> Create Finisher Social Post
@@ -138,11 +159,12 @@
             </a>
           </div>
 
-          <!-- Pre-Race Check-in & $75 Fee Box (Hidden on Race Day) -->
+          <!-- Pre-Race Check-In & $75 Fee Card (Shown in Pre-Race Mode) -->
           <div id="headerPreRaceActions" class="hidden w-full max-w-sm md:max-w-xs flex flex-col gap-2.5">
             <button type="button" onclick="toggleModal('lookupModal')" class="w-full bg-white active:bg-gray-100 hover:bg-gray-50 text-pts-navy px-4 py-3 sm:py-2.5 rounded-2xl text-xs sm:text-sm font-bold border border-gray-100 transition flex items-center justify-center gap-2 shadow-md">
               <i class="fa-solid fa-lock text-pts-blue"></i> Secure Check-in / Edit Registration
             </button>
+            
             <div class="w-full bg-white rounded-2xl p-2.5 border border-gray-100 text-center shadow-md">
               <div class="flex items-baseline justify-center gap-2">
                 <span class="text-[11px] font-bold uppercase tracking-wider text-gray-600">Registration Fee:</span>
@@ -155,7 +177,6 @@
 
       </div>
 
-      <!-- Hero Title & Charity Logos -->
       <div class="mt-5 md:mt-6 grid grid-cols-1 lg:grid-cols-12 gap-5 md:gap-6 items-center">
         <div class="lg:col-span-6 text-center lg:text-left">
           <h1 class="leading-tight">
@@ -165,15 +186,27 @@
           <p id="heroSubtitleText" class="mt-2.5 sm:mt-3 text-xs sm:text-base text-blue-100 max-w-xl mx-auto lg:mx-0">
             Welcome to Race Day on San Diego Bay! Track your live 5K run/walk with GPS, follow the waterfront course, and create your custom Finisher Social Card.
           </p>
-          <div class="mt-4 flex flex-wrap justify-center lg:justify-start gap-2.5 sm:gap-3">
-            <a href="#raceHubSection" id="heroPrimaryCta" class="inline-flex items-center justify-center gap-2 bg-pts-accent hover:bg-red-700 text-white px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition shadow-lg">
+
+          <!-- Race Day Hero Buttons -->
+          <div id="heroButtonsRaceDay" class="mt-4 flex flex-wrap justify-center lg:justify-start gap-2.5 sm:gap-3">
+            <a href="#raceHubSection" class="inline-flex items-center justify-center gap-2 bg-pts-accent hover:bg-red-700 text-white px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition shadow-lg">
               <i class="fa-solid fa-satellite-dish animate-pulse"></i> Launch Live GPS Tracker
             </a>
-            <button type="button" id="heroSecondaryCta" onclick="openFinisherStudioModal()" class="inline-flex items-center justify-center gap-2 bg-amber-400 hover:bg-amber-500 text-pts-navy px-4 py-2.5 rounded-xl text-xs sm:text-sm font-black transition shadow-lg">
+            <button type="button" onclick="openFinisherStudioModal()" class="inline-flex items-center justify-center gap-2 bg-amber-400 hover:bg-amber-500 text-pts-navy px-4 py-2.5 rounded-xl text-xs sm:text-sm font-black transition shadow-lg">
               <i class="fa-solid fa-medal"></i> Finisher Photo Badge Studio
             </button>
             <a href="#courseExplorerSection" class="inline-flex items-center justify-center gap-1.5 bg-white/15 hover:bg-white/25 text-white border border-white/30 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold backdrop-blur-sm transition shadow">
-              <i class="fa-solid fa-map-location-dot text-amber-300"></i> Course Map
+              <i class="fa-solid fa-map-location-dot text-amber-300"></i> 5K Course Map
+            </a>
+          </div>
+
+          <!-- Pre-Race Hero Buttons -->
+          <div id="heroButtonsPreRace" class="hidden mt-4 grid grid-cols-2 sm:flex sm:flex-wrap justify-center lg:justify-start gap-2.5 sm:gap-3 max-w-md mx-auto lg:mx-0">
+            <a href="#courseExplorerSection" class="inline-flex items-center justify-center gap-1.5 bg-white/15 active:bg-white/30 hover:bg-white/25 text-white border border-white/30 px-3 py-2.5 rounded-xl text-xs sm:text-sm font-bold backdrop-blur-sm transition shadow">
+              <i class="fa-solid fa-map-location-dot text-amber-300"></i> 5K Course Map
+            </a>
+            <a href="#regFormSection" class="inline-flex items-center justify-center gap-1.5 bg-pts-accent active:bg-red-800 hover:bg-red-700 text-white px-3 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition shadow">
+              <i class="fa-solid fa-person-running"></i> Register Now
             </a>
           </div>
         </div>
@@ -185,15 +218,18 @@
                 <img src="GlobalMovingFoundationLogo.png" alt="Global Moving Foundation" class="h-full w-auto max-w-none object-contain block">
               </a>
             </div>
+
             <div class="h-12 sm:h-18 md:h-20 w-px bg-gray-300 flex-shrink-0"></div>
+
             <div class="flex items-center justify-center h-14 sm:h-20 md:h-24">
               <a href="https://www.coastalk9gsr.org/" target="_blank" rel="noopener noreferrer" class="hover:opacity-85 transition-opacity flex items-center justify-center h-full">
                 <img src="CoastalK9Logo.png" alt="Coastal K9 German Shepherd Rescue" class="h-full w-auto max-w-none object-contain block scale-110">
               </a>
             </div>
           </div>
+          
           <p class="text-xs sm:text-sm text-blue-100 leading-relaxed text-center lg:text-left">
-            Proceeds from this year’s 5K support two worthy charities: the <strong>Global Moving Foundation</strong>, an international organization, and <strong>Coastal K9 German Shepherd Rescue</strong>, a local nonprofit in San Diego.
+            Proceeds from this year’s 5K will support two worthy charities: the <strong>Global Moving Foundation</strong>, an international organization, and <strong>Coastal K9 German Shepherd Rescue</strong>, a local nonprofit in San Diego.
           </p>
         </div>
       </div>
@@ -202,10 +238,10 @@
   </header>
 
   <!-- ================================================================= -->
-  <!-- DYNAMIC EVENT INFO BAR (Adapts between Race Day & Pre-Race)       -->
+  <!-- DYNAMIC EVENT INFO BAR                                            -->
   <!-- ================================================================= -->
   <section class="max-w-6xl mx-auto px-4 sm:px-6 -mt-4 sm:-mt-5 relative z-20 w-full">
-    <!-- RACE DAY INFO BAR (Active on Race Day - No irrelevant pre-race dates) -->
+    <!-- Race Day Info Bar -->
     <div id="infoBarRaceDay" class="bg-white rounded-xl shadow-lg border border-gray-100 p-4 sm:p-5 grid grid-cols-2 md:grid-cols-4 gap-4 text-xs sm:text-sm">
       <div class="flex items-start space-x-2.5 sm:space-x-3">
         <i class="fa-solid fa-flag-checkered text-pts-accent text-base sm:text-lg mt-0.5 flex-shrink-0"></i>
@@ -231,25 +267,26 @@
       <div class="flex items-start space-x-2.5 sm:space-x-3 min-w-0">
         <i class="fa-solid fa-envelope text-pts-navy text-base sm:text-lg mt-0.5 flex-shrink-0"></i>
         <div class="min-w-0">
-          <strong class="block text-gray-900">Race Day Support</strong>
+          <strong class="block text-gray-900">Contact Host</strong>
           <a href="mailto:convention@pts-moves.com" class="text-pts-blue font-medium hover:underline block text-[11px] sm:text-xs lg:text-[13px] whitespace-nowrap">convention@pts-moves.com</a>
         </div>
       </div>
     </div>
 
-    <!-- PRE-RACE INFO BAR (Hidden on Race Day) -->
+    <!-- Pre-Race Info Bar (Identical to index.html) -->
     <div id="infoBarPreRace" class="hidden bg-white rounded-xl shadow-lg border border-gray-100 p-4 sm:p-5 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-5 gap-3.5 sm:gap-4 text-xs sm:text-sm">
       <div class="flex items-start space-x-2.5 sm:space-x-3 col-span-1">
         <i class="fa-solid fa-calendar-day text-pts-navy text-base sm:text-lg mt-0.5 flex-shrink-0"></i>
         <div>
           <strong class="block text-gray-900">Date</strong>
           <span class="text-gray-600">Friday, 23 Oct 2026</span>
+          
           <div class="relative mt-1.5">
             <button type="button" onclick="toggleCalDropdown()" class="text-[11px] bg-pts-light hover:bg-blue-100 text-pts-navy font-semibold px-2 py-1 rounded border border-blue-200 flex items-center gap-1 transition">
               <i class="fa-regular fa-calendar-plus"></i> Add Calendar
             </button>
             <div id="calMenu" class="hidden absolute top-8 left-0 bg-white border border-gray-200 rounded-lg shadow-xl z-30 py-1.5 w-44 text-xs">
-              <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=IAM+%26+PARAMOUNT+Charity+5K+Fun+Run%2FWalk&dates=20261023T133000Z/20261023T160000Z&details=IAM+%26+Paramount+Charity+5K+Fun+Run%2FWalk.+Check-in+starts+at+6%3A30+AM.&location=Hyatt+Hotel" target="_blank" class="block px-3 py-2 hover:bg-blue-50 text-gray-700 flex items-center gap-2"><i class="fa-brands fa-google text-blue-500"></i> Google Calendar</a>
+              <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=IAM+%26+PARAMOUNT+Charity+5K+Fun+Run%2FWalk&dates=20261023T133000Z/20261023T160000Z&details=IAM+%26+Paramount+Charity+5K+Fun+Run%2FWalk.+Check-in+starts+at+6%3A30+AM.+Race+starts+at+7%3A30+AM.&location=Hyatt+Hotel" target="_blank" class="block px-3 py-2 hover:bg-blue-50 text-gray-700 flex items-center gap-2"><i class="fa-brands fa-google text-blue-500"></i> Google Calendar</a>
               <a href="javascript:downloadICS()" class="block px-3 py-2 hover:bg-blue-50 text-gray-700 flex items-center gap-2"><i class="fa-brands fa-apple text-gray-800"></i> Apple / Outlook (.ics)</a>
             </div>
           </div>
@@ -288,7 +325,7 @@
     </div>
   </section>
 
-  <!-- Late Registration Banner (Hidden on Race Day) -->
+  <!-- Pre-Race Late Registration Info Banner (Hidden in Race Day Mode) -->
   <div id="lateRegBanner" class="hidden max-w-6xl mx-auto px-4 sm:px-6 mt-3 w-full">
     <div class="bg-blue-50 border border-blue-200 text-blue-900 px-3.5 py-2.5 rounded-lg text-xs sm:text-sm flex items-start sm:items-center gap-2.5 sm:gap-3">
       <i class="fa-solid fa-circle-info text-pts-blue text-base flex-shrink-0 mt-0.5 sm:mt-0"></i>
@@ -302,7 +339,6 @@
   <section id="raceHubSection" class="max-w-6xl mx-auto px-4 sm:px-6 mt-6 w-full">
     <div class="bg-gradient-to-br from-pts-navy via-[#002855] to-pts-blue rounded-2xl shadow-2xl text-white p-5 sm:p-8 relative overflow-hidden border border-blue-400/30">
       
-      <!-- Top Row: Title + Participant Roster Verification -->
       <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-5 border-b border-white/15 pb-6 mb-6">
         <div>
           <div class="inline-flex items-center gap-2 bg-pts-accent text-white text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full shadow">
@@ -314,7 +350,6 @@
           </p>
         </div>
 
-        <!-- Participant Roster Sync Box -->
         <div id="trackerAuthBox" class="bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/20 w-full lg:w-96 flex-shrink-0">
           <div id="unverifiedState">
             <label class="text-[11px] uppercase font-extrabold tracking-wider text-amber-300 block mb-1.5">
@@ -345,9 +380,8 @@
         </div>
       </div>
 
-      <!-- Pre-Start Action Cards (Visible before starting GPS) -->
+      <!-- Pre-Start Action Cards -->
       <div id="startTrackerPrompt" class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <!-- Card 1: Start Live GPS Run -->
         <div class="bg-white/10 backdrop-blur-md p-5 rounded-2xl border border-white/20 flex flex-col justify-between">
           <div>
             <div class="w-10 h-10 rounded-xl bg-pts-accent text-white flex items-center justify-center text-lg mb-3 shadow">
@@ -363,7 +397,6 @@
           </button>
         </div>
 
-        <!-- Card 2: Instant Demo Fast-Forward (For Boss Demo!) -->
         <div class="bg-white/10 backdrop-blur-md p-5 rounded-2xl border border-amber-300/40 flex flex-col justify-between relative overflow-hidden">
           <span class="absolute top-3 right-3 bg-amber-400 text-pts-navy text-[9px] font-black uppercase px-2 py-0.5 rounded-full">Interactive Demo</span>
           <div>
@@ -380,7 +413,6 @@
           </button>
         </div>
 
-        <!-- Card 3: Direct Finisher Social Card Studio -->
         <div class="bg-white/10 backdrop-blur-md p-5 rounded-2xl border border-white/20 flex flex-col justify-between">
           <div>
             <div class="w-10 h-10 rounded-xl bg-blue-500 text-white flex items-center justify-center text-lg mb-3 shadow">
@@ -397,7 +429,7 @@
         </div>
       </div>
 
-      <!-- ACTIVE LIVE TELEMETRY DASHBOARD (Shown when tracking is active) -->
+      <!-- Active Live Telemetry Dashboard -->
       <div id="liveDashboard" class="hidden space-y-5">
         <div class="grid grid-cols-2 sm:grid-cols-5 gap-3 text-center">
           <div class="bg-black/30 backdrop-blur-md p-3.5 rounded-xl border border-white/15">
@@ -423,7 +455,6 @@
           </div>
         </div>
 
-        <!-- Live Progress Bar & Mile Splits Strip -->
         <div class="bg-black/25 backdrop-blur-md p-4 rounded-xl border border-white/15 space-y-3">
           <div class="flex items-center justify-between text-xs font-bold">
             <span id="hudSplitStatus" class="flex items-center gap-2">
@@ -436,7 +467,6 @@
             <div id="hudProgressBar" class="bg-gradient-to-r from-cyan-400 via-amber-400 to-pts-accent h-full rounded-full transition-all duration-200" style="width: 0%"></div>
           </div>
 
-          <!-- Mile Splits Pill Grid -->
           <div class="grid grid-cols-4 gap-2 pt-1 text-center text-[11px]">
             <div id="splitBox1" class="bg-white/10 rounded-lg py-1.5 px-2 border border-white/10">
               <span class="text-blue-200 block text-[10px] font-bold">MILE 1</span>
@@ -457,7 +487,6 @@
           </div>
         </div>
 
-        <!-- Tracker Controls -->
         <div class="flex flex-wrap items-center justify-center gap-3">
           <button type="button" id="pauseTrackerBtn" onclick="pauseGpsTracker()" class="bg-amber-400 hover:bg-amber-500 text-pts-navy font-black px-5 py-3 rounded-xl shadow transition text-xs sm:text-sm flex items-center gap-2">
             <i class="fa-solid fa-pause"></i> Pause
@@ -476,9 +505,8 @@
 
   <!-- ================================================================= -->
   <!-- 23 OCTOBER 2026 – IAM & PTS 5K FUN RUN/WALK MAP SECTION           -->
-  <!-- Strictly using the exact approved PDF wording                     -->
   <!-- ================================================================= -->
-  <section id="courseExplorerSection" class="max-w-6xl mx-auto px-4 sm:px-6 mt-6 w-full">
+  <section id="courseExplorerSection" class="max-w-6xl mx-auto px-4 sm:px-6 mt-5 sm:mt-6 w-full">
     <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
       
       <div class="bg-gradient-to-r from-pts-navy via-pts-blue to-pts-navy text-white px-4 sm:px-6 py-4 flex flex-col lg:flex-row lg:items-center justify-between gap-3.5">
@@ -530,6 +558,7 @@
               <i id="fsToggleIcon" class="fa-solid fa-expand text-amber-300"></i>
               <span id="fsToggleText">Full Screen</span>
             </button>
+
             <button type="button" id="mobileTouchLockBtn" onclick="toggleMobileMapTouch()" class="lg:hidden bg-pts-navy/90 text-white backdrop-blur-sm px-2.5 py-1.5 rounded-xl shadow-lg border border-white/20 text-[11px] font-bold flex items-center gap-1.5">
               <i id="mobileTouchIcon" class="fa-solid fa-hand-pointer text-amber-300"></i>
               <span id="mobileTouchText">Tap to Pan Map</span>
@@ -570,10 +599,6 @@
             <div class="flex items-center gap-1 font-semibold text-gray-800">
               <span class="w-4 h-1.5 bg-pts-accent rounded-full inline-block"></span>
               Course Route
-            </div>
-            <div class="flex items-center gap-1 font-semibold text-gray-800">
-              <span class="w-4 h-1.5 bg-cyan-400 rounded-full inline-block"></span>
-              Your GPS Path
             </div>
             <div class="flex items-center gap-1 font-semibold text-gray-800">
               <span class="w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full bg-pts-accent text-white text-[8px] sm:text-[9px] font-black inline-flex items-center justify-center">1</span>
@@ -647,7 +672,7 @@
     </div>
   </section>
 
-  <!-- Race Day Charity Donation Footer Banner (Always visible so spectators/runners can donate) -->
+  <!-- Race Day Charity Donation Footer Banner (Shown in Race Day Mode) -->
   <section id="raceDayDonationBanner" class="max-w-6xl mx-auto px-4 sm:px-6 my-6 w-full">
     <div class="bg-white rounded-2xl p-5 sm:p-6 border border-blue-200 text-center shadow-lg flex flex-col sm:flex-row items-center justify-between gap-4">
       <div class="text-center sm:text-left">
@@ -664,12 +689,505 @@
   </section>
 
   <!-- ================================================================= -->
+  <!-- COMPLETE PRE-RACE REGISTRATION FORM SECTION                       -->
+  <!-- 100% Identical to index.html when Pre-Race Mode is selected       -->
+  <!-- ================================================================= -->
+  <main id="regFormSection" class="hidden max-w-4xl mx-auto px-4 sm:px-6 py-5 sm:py-6 w-full flex-grow">
+    <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+      
+      <div class="bg-pts-light border-b border-gray-200 px-5 sm:px-8 py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+        <h2 id="formTitle" class="text-lg sm:text-xl font-bold text-pts-navy">Participant Registration</h2>
+        <div id="paymentBadge" class="hidden flex flex-wrap items-center gap-2 sm:gap-3"></div>
+      </div>
+
+      <form id="regForm" method="POST" target="hidden_iframe" class="p-5 sm:p-8 space-y-7 sm:space-y-8" novalidate>
+        <input type="hidden" id="regId" name="regId" value="">
+        <input type="hidden" id="generatedRegId" name="generatedRegId" value="">
+        <input type="hidden" id="currentPaymentStatus" value="Pending Payment">
+
+        <div>
+          <h3 class="text-base sm:text-lg font-semibold text-pts-navy border-b pb-2 mb-4"><i class="fa-solid fa-user mr-2"></i> Participant Details</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
+            <div>
+              <label class="block text-sm font-medium text-gray-700">First Name <span class="text-red-500 font-bold">*</span></label>
+              <input type="text" id="firstName" name="firstName" autocomplete="given-name" required class="mt-1 w-full rounded-lg border-gray-300 border p-3 sm:p-2.5 text-base sm:text-sm focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
+              <span id="firstNameErr" class="text-xs text-red-500 hidden mt-1"><i class="fa-solid fa-circle-exclamation mr-1"></i> First name must contain only letters.</span>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Last Name <span class="text-red-500 font-bold">*</span></label>
+              <input type="text" id="lastName" name="lastName" autocomplete="family-name" required class="mt-1 w-full rounded-lg border-gray-300 border p-3 sm:p-2.5 text-base sm:text-sm focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
+              <span id="lastNameErr" class="text-xs text-red-500 hidden mt-1"><i class="fa-solid fa-circle-exclamation mr-1"></i> Last name must contain only letters.</span>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Mobile Phone (International) <span class="text-red-500 font-bold">*</span></label>
+              <input type="tel" id="mobile" name="mobile" autocomplete="tel" placeholder="+1 555 000 0000" required class="mt-1 w-full rounded-lg border-gray-300 border p-3 sm:p-2.5 text-base sm:text-sm focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
+              <span id="mobileErr" class="text-xs text-red-500 hidden mt-1"><i class="fa-solid fa-circle-exclamation mr-1"></i> Enter a valid phone number (digits and optional +).</span>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">T-Shirt Size <span class="text-red-500 font-bold">*</span></label>
+              <select id="tshirtSize" name="tshirtSize" required class="mt-1 w-full rounded-lg border-gray-300 border p-3 sm:p-2.5 text-base sm:text-sm bg-white focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
+                <option value="">Select Size...</option>
+                <option value="Mens XS">Mens XS</option>
+                <option value="Mens S">Mens S</option>
+                <option value="Mens M">Mens M</option>
+                <option value="Mens L">Mens L</option>
+                <option value="Mens XL">Mens XL</option>
+                <option value="Mens XXL">Mens XXL</option>
+                <option value="Mens 3XL">Mens 3XL</option>
+                <option value="Mens 4XL">Mens 4XL</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Email Address <span class="text-red-500 font-bold">*</span></label>
+              <input type="email" id="email" name="email" autocomplete="email" required placeholder="name@company.com" class="mt-1 w-full rounded-lg border-gray-300 border p-3 sm:p-2.5 text-base sm:text-sm focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
+              <span id="emailErr" class="text-xs text-red-500 hidden mt-1"><i class="fa-solid fa-circle-exclamation mr-1"></i> Please enter a valid email address.</span>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Award Category: <span class="text-red-500 font-bold">*</span></label>
+              <div class="mt-2.5 flex items-center space-x-6">
+                <label class="inline-flex items-center cursor-pointer py-1">
+                  <input type="radio" name="gender" value="Male" required class="text-pts-navy focus:ring-pts-navy h-5 w-5 sm:h-4 sm:w-4 border-gray-300">
+                  <span class="ml-2 text-base sm:text-sm text-gray-700 font-medium">Male</span>
+                </label>
+                <label class="inline-flex items-center cursor-pointer py-1">
+                  <input type="radio" name="gender" value="Female" required class="text-pts-navy focus:ring-pts-navy h-5 w-5 sm:h-4 sm:w-4 border-gray-300">
+                  <span class="ml-2 text-base sm:text-sm text-gray-700 font-medium">Female</span>
+                </label>
+              </div>
+              <span class="text-[11px] text-gray-500 block mt-1.5 leading-snug">Awards will be presented to the top three male and top three female finishers</span>
+            </div>
+          </div>
+        </div>
+
+        <div id="pinSection" class="bg-blue-50/60 p-4 sm:p-5 rounded-xl border border-blue-200">
+          <h3 class="text-sm font-bold text-pts-navy uppercase tracking-wider mb-1"><i class="fa-solid fa-key mr-2"></i> Create Your Security PIN <span class="text-red-500 font-bold">*</span></h3>
+          <p class="text-xs text-gray-600 mb-4">Choose a PIN so you can access and update your details later.</p>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+            <div>
+              <label class="block text-xs font-semibold text-gray-700 uppercase">Choose Security PIN</label>
+              <input type="password" inputmode="numeric" id="userPin" name="userPin" maxlength="6" placeholder="••••" required class="mt-1 w-full rounded-lg border-gray-300 border p-3 sm:p-2.5 text-center text-lg font-mono tracking-widest focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-gray-700 uppercase">Confirm Security PIN</label>
+              <input type="password" inputmode="numeric" id="confirmPin" maxlength="6" placeholder="••••" required class="mt-1 w-full rounded-lg border-gray-300 border p-3 sm:p-2.5 text-center text-lg font-mono tracking-widest focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
+              <span id="pinErr" class="text-xs text-red-500 hidden mt-1"><i class="fa-solid fa-circle-exclamation mr-1"></i> Security PINs do not match.</span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="flex items-center justify-between border-b pb-2 mb-4">
+            <h3 class="text-base sm:text-lg font-semibold text-pts-navy"><i class="fa-solid fa-building mr-2"></i> Company Information</h3>
+            <span id="autofillBadge" class="hidden text-xs bg-blue-100 text-blue-800 font-semibold px-2.5 py-1 rounded-full"><i class="fa-solid fa-magic mr-1"></i> Auto-filled from colleague</span>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6">
+            <div class="md:col-span-2 lg:col-span-4">
+              <label class="block text-sm font-medium text-gray-700">Company Name <span class="text-red-500 font-bold">*</span></label>
+              <input type="text" id="company" name="company" autocomplete="organization" required class="mt-1 w-full rounded-lg border-gray-300 border p-3 sm:p-2.5 text-base sm:text-sm focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">City <span class="text-red-500 font-bold">*</span></label>
+              <input type="text" id="city" name="city" autocomplete="address-level2" required class="mt-1 w-full rounded-lg border-gray-300 border p-3 sm:p-2.5 text-base sm:text-sm focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
+              <span id="cityErr" class="text-xs text-red-500 hidden mt-1"><i class="fa-solid fa-circle-exclamation mr-1"></i> City should not contain numbers.</span>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">State / Province</label>
+              <input type="text" id="state" name="state" autocomplete="address-level1" class="mt-1 w-full rounded-lg border-gray-300 border p-3 sm:p-2.5 text-base sm:text-sm focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Country <span class="text-red-500 font-bold">*</span></label>
+              <select id="country" name="country" autocomplete="country-name" required class="mt-1 w-full rounded-lg border-gray-300 border p-3 sm:p-2.5 text-base sm:text-sm focus:ring-2 focus:ring-pts-navy focus:outline-none bg-white transition">
+                <option value="">Select Country / Territory...</option>
+                <option value="United States">United States</option>
+                <option value="United Kingdom">United Kingdom</option>
+                <option value="Canada">Canada</option>
+                <option value="Germany">Germany</option>
+                <option value="France">France</option>
+                <option value="Australia">Australia</option>
+                <option value="Netherlands">Netherlands</option>
+                <option value="United Arab Emirates">United Arab Emirates</option>
+                <option value="China">China</option>
+                <option value="India">India</option>
+                <option value="Brazil">Brazil</option>
+                <option value="Belgium">Belgium</option>
+                <option value="Spain">Spain</option>
+                <option value="Japan">Japan</option>
+                <option value="Singapore">Singapore</option>
+                <option value="" disabled>------------------------------------</option>
+                <option value="Afghanistan">Afghanistan</option>
+                <option value="Albania">Albania</option>
+                <option value="Algeria">Algeria</option>
+                <option value="American Samoa">American Samoa</option>
+                <option value="Andorra">Andorra</option>
+                <option value="Angola">Angola</option>
+                <option value="Anguilla">Anguilla</option>
+                <option value="Antarctica">Antarctica</option>
+                <option value="Antigua and Barbuda">Antigua and Barbuda</option>
+                <option value="Argentina">Argentina</option>
+                <option value="Armenia">Armenia</option>
+                <option value="Aruba">Aruba</option>
+                <option value="Australia">Australia</option>
+                <option value="Austria">Austria</option>
+                <option value="Azerbaijan">Azerbaijan</option>
+                <option value="Bahamas">Bahamas</option>
+                <option value="Bahrain">Bahrain</option>
+                <option value="Bangladesh">Bangladesh</option>
+                <option value="Barbados">Barbados</option>
+                <option value="Belarus">Belarus</option>
+                <option value="Belgium">Belgium</option>
+                <option value="Belize">Belize</option>
+                <option value="Benin">Benin</option>
+                <option value="Bermuda">Bermuda</option>
+                <option value="Bhutan">Bhutan</option>
+                <option value="Bolivia">Bolivia</option>
+                <option value="Bonaire, Sint Eustatius and Saba">Bonaire, Sint Eustatius and Saba</option>
+                <option value="Bosnia and Herzegovina">Bosnia and Herzegovina</option>
+                <option value="Botswana">Botswana</option>
+                <option value="Brazil">Brazil</option>
+                <option value="British Virgin Islands">British Virgin Islands</option>
+                <option value="Brunei">Brunei</option>
+                <option value="Bulgaria">Bulgaria</option>
+                <option value="Burkina Faso">Burkina Faso</option>
+                <option value="Burundi">Burundi</option>
+                <option value="Cabo Verde">Cabo Verde</option>
+                <option value="Cambodia">Cambodia</option>
+                <option value="Cameroon">Cameroon</option>
+                <option value="Canada">Canada</option>
+                <option value="Cayman Islands">Cayman Islands</option>
+                <option value="Central African Republic">Central African Republic</option>
+                <option value="Chad">Chad</option>
+                <option value="Chile">Chile</option>
+                <option value="China">China</option>
+                <option value="Christmas Island">Christmas Island</option>
+                <option value="Cocos (Keeling) Islands">Cocos (Keeling) Islands</option>
+                <option value="Colombia">Colombia</option>
+                <option value="Comoros">Comoros</option>
+                <option value="Congo">Congo</option>
+                <option value="Congo (Democratic Republic)">Congo (Democratic Republic)</option>
+                <option value="Cook Islands">Cook Islands</option>
+                <option value="Costa Rica">Costa Rica</option>
+                <option value="Croatia">Croatia</option>
+                <option value="Cuba">Cuba</option>
+                <option value="Curaçao">Curaçao</option>
+                <option value="Cyprus">Cyprus</option>
+                <option value="Czech Republic">Czech Republic</option>
+                <option value="Denmark">Denmark</option>
+                <option value="Djibouti">Djibouti</option>
+                <option value="Dominica">Dominica</option>
+                <option value="Dominican Republic">Dominican Republic</option>
+                <option value="Ecuador">Ecuador</option>
+                <option value="Egypt">Egypt</option>
+                <option value="El Salvador">El Salvador</option>
+                <option value="Equatorial Guinea">Equatorial Guinea</option>
+                <option value="Eritrea">Eritrea</option>
+                <option value="Estonia">Estonia</option>
+                <option value="Eswatini">Eswatini</option>
+                <option value="Ethiopia">Ethiopia</option>
+                <option value="Falkland Islands">Falkland Islands</option>
+                <option value="Faroe Islands">Faroe Islands</option>
+                <option value="Fiji">Fiji</option>
+                <option value="Finland">Finland</option>
+                <option value="France">France</option>
+                <option value="French Guiana">French Guiana</option>
+                <option value="French Polynesia">French Polynesia</option>
+                <option value="Gabon">Gabon</option>
+                <option value="Gambia">Gambia</option>
+                <option value="Georgia">Georgia</option>
+                <option value="Germany">Germany</option>
+                <option value="Ghana">Ghana</option>
+                <option value="Gibraltar">Gibraltar</option>
+                <option value="Greece">Greece</option>
+                <option value="Greenland">Greenland</option>
+                <option value="Grenada">Grenada</option>
+                <option value="Guadeloupe">Guadeloupe</option>
+                <option value="Guam">Guam</option>
+                <option value="Guatemala">Guatemala</option>
+                <option value="Guernsey">Guernsey</option>
+                <option value="Guinea">Guinea</option>
+                <option value="Guinea-Bissau">Guinea-Bissau</option>
+                <option value="Guyana">Guyana</option>
+                <option value="Haiti">Haiti</option>
+                <option value="Honduras">Honduras</option>
+                <option value="Hong Kong">Hong Kong</option>
+                <option value="Hungary">Hungary</option>
+                <option value="Iceland">Iceland</option>
+                <option value="India">India</option>
+                <option value="Indonesia">Indonesia</option>
+                <option value="Iran">Iran</option>
+                <option value="Iraq">Iraq</option>
+                <option value="Ireland">Ireland</option>
+                <option value="Isle of Man">Isle of Man</option>
+                <option value="Israel">Israel</option>
+                <option value="Italy">Italy</option>
+                <option value="Ivory Coast">Ivory Coast</option>
+                <option value="Jamaica">Jamaica</option>
+                <option value="Japan">Japan</option>
+                <option value="Jersey">Jersey</option>
+                <option value="Jordan">Jordan</option>
+                <option value="Kazakhstan">Kazakhstan</option>
+                <option value="Kenya">Kenya</option>
+                <option value="Kiribati">Kiribati</option>
+                <option value="Kosovo">Kosovo</option>
+                <option value="Kuwait">Kuwait</option>
+                <option value="Kyrgyzstan">Kyrgyzstan</option>
+                <option value="Laos">Laos</option>
+                <option value="Latvia">Latvia</option>
+                <option value="Lebanon">Lebanon</option>
+                <option value="Lesotho">Lesotho</option>
+                <option value="Liberia">Liberia</option>
+                <option value="Libya">Libya</option>
+                <option value="Liechtenstein">Liechtenstein</option>
+                <option value="Lithuania">Lithuania</option>
+                <option value="Luxembourg">Luxembourg</option>
+                <option value="Macau">Macau</option>
+                <option value="Madagascar">Madagascar</option>
+                <option value="Malawi">Malawi</option>
+                <option value="Malaysia">Malaysia</option>
+                <option value="Maldives">Maldives</option>
+                <option value="Mali">Mali</option>
+                <option value="Malta">Malta</option>
+                <option value="Marshall Islands">Marshall Islands</option>
+                <option value="Martinique">Martinique</option>
+                <option value="Mauritania">Mauritania</option>
+                <option value="Mauritius">Mauritius</option>
+                <option value="Mayotte">Mayotte</option>
+                <option value="Mexico">Mexico</option>
+                <option value="Micronesia">Micronesia</option>
+                <option value="Moldova">Moldova</option>
+                <option value="Monaco">Monaco</option>
+                <option value="Mongolia">Mongolia</option>
+                <option value="Montenegro">Montenegro</option>
+                <option value="Montserrat">Montserrat</option>
+                <option value="Morocco">Morocco</option>
+                <option value="Mozambique">Mozambique</option>
+                <option value="Myanmar">Myanmar</option>
+                <option value="Namibia">Namibia</option>
+                <option value="Nauru">Nauru</option>
+                <option value="Nepal">Nepal</option>
+                <option value="Netherlands">Netherlands</option>
+                <option value="New Caledonia">New Caledonia</option>
+                <option value="New Zealand">New Zealand</option>
+                <option value="Nicaragua">Nicaragua</option>
+                <option value="Niger">Niger</option>
+                <option value="Nigeria">Nigeria</option>
+                <option value="Niue">Niue</option>
+                <option value="Norfolk Island">Norfolk Island</option>
+                <option value="North Korea">North Korea</option>
+                <option value="North Macedonia">North Macedonia</option>
+                <option value="Northern Mariana Islands">Northern Mariana Islands</option>
+                <option value="Norway">Norway</option>
+                <option value="Oman">Oman</option>
+                <option value="Pakistan">Pakistan</option>
+                <option value="Palau">Palau</option>
+                <option value="Palestine">Palestine</option>
+                <option value="Panama">Panama</option>
+                <option value="Papua New Guinea">Papua New Guinea</option>
+                <option value="Paraguay">Paraguay</option>
+                <option value="Peru">Peru</option>
+                <option value="Philippines">Philippines</option>
+                <option value="Poland">Poland</option>
+                <option value="Portugal">Portugal</option>
+                <option value="Puerto Rico">Puerto Rico</option>
+                <option value="Qatar">Qatar</option>
+                <option value="Réunion">Réunion</option>
+                <option value="Romania">Romania</option>
+                <option value="Russia">Russia</option>
+                <option value="Rwanda">Rwanda</option>
+                <option value="Saint Barthélemy">Saint Barthélemy</option>
+                <option value="Saint Helena">Saint Helena</option>
+                <option value="Saint Kitts and Nevis">Saint Kitts and Nevis</option>
+                <option value="Saint Lucia">Saint Lucia</option>
+                <option value="Saint Martin">Saint Martin</option>
+                <option value="Saint Pierre and Miquelon">Saint Pierre and Miquelon</option>
+                <option value="Saint Vincent and the Grenadines">Saint Vincent and the Grenadines</option>
+                <option value="Samoa">Samoa</option>
+                <option value="San Marino">San Marino</option>
+                <option value="Sao Tome and Principe">Sao Tome and Principe</option>
+                <option value="Saudi Arabia">Saudi Arabia</option>
+                <option value="Senegal">Senegal</option>
+                <option value="Serbia">Serbia</option>
+                <option value="Seychelles">Seychelles</option>
+                <option value="Sierra Leone">Sierra Leone</option>
+                <option value="Singapore">Singapore</option>
+                <option value="Sint Maarten">Sint Maarten</option>
+                <option value="Slovakia">Slovakia</option>
+                <option value="Slovenia">Slovenia</option>
+                <option value="Solomon Islands">Solomon Islands</option>
+                <option value="Somalia">Somalia</option>
+                <option value="South Africa">South Africa</option>
+                <option value="South Korea">South Korea</option>
+                <option value="South Sudan">South Sudan</option>
+                <option value="Spain">Spain</option>
+                <option value="Sri Lanka">Sri Lanka</option>
+                <option value="Sudan">Sudan</option>
+                <option value="Suriname">Suriname</option>
+                <option value="Sweden">Sweden</option>
+                <option value="Switzerland">Switzerland</option>
+                <option value="Syria">Syria</option>
+                <option value="Taiwan">Taiwan</option>
+                <option value="Tajikistan">Tajikistan</option>
+                <option value="Tanzania">Tanzania</option>
+                <option value="Thailand">Thailand</option>
+                <option value="Timor-Leste">Timor-Leste</option>
+                <option value="Togo">Togo</option>
+                <option value="Tokelau">Tokelau</option>
+                <option value="Tonga">Tonga</option>
+                <option value="Trinidad and Tobago">Trinidad and Tobago</option>
+                <option value="Tunisia">Tunisia</option>
+                <option value="Turkey">Turkey</option>
+                <option value="Turkmenistan">Turkmenistan</option>
+                <option value="Turks and Caicos Islands">Turks and Caicos Islands</option>
+                <option value="Tuvalu">Tuvalu</option>
+                <option value="U.S. Virgin Islands">U.S. Virgin Islands</option>
+                <option value="Uganda">Uganda</option>
+                <option value="Ukraine">Ukraine</option>
+                <option value="United Arab Emirates">United Arab Emirates</option>
+                <option value="United Kingdom">United Kingdom</option>
+                <option value="United States">United States</option>
+                <option value="Uruguay">Uruguay</option>
+                <option value="Uzbekistan">Uzbekistan</option>
+                <option value="Vanuatu">Vanuatu</option>
+                <option value="Vatican City">Vatican City</option>
+                <option value="Venezuela">Venezuela</option>
+                <option value="Vietnam">Vietnam</option>
+                <option value="Wallis and Futuna">Wallis and Futuna</option>
+                <option value="Yemen">Yemen</option>
+                <option value="Zambia">Zambia</option>
+                <option value="Zimbabwe">Zimbabwe</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Postal / ZIP Code</label>
+              <input type="text" id="postalCode" name="postalCode" autocomplete="postal-code" placeholder="e.g. 90210" class="mt-1 w-full rounded-lg border-gray-300 border p-3 sm:p-2.5 text-base sm:text-sm focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="text-base sm:text-lg font-semibold text-pts-navy border-b pb-2 mb-4"><i class="fa-solid fa-heart-pulse mr-2"></i> Logistics &amp; Emergency Contact</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Emergency Contact Name <span class="text-red-500 font-bold">*</span></label>
+              <input type="text" id="emergencyName" name="emergencyName" required class="mt-1 w-full rounded-lg border-gray-300 border p-3 sm:p-2.5 text-base sm:text-sm focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
+              <span id="emergencyNameErr" class="text-xs text-red-500 hidden mt-1"><i class="fa-solid fa-circle-exclamation mr-1"></i> Emergency contact cannot be yourself.</span>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Emergency Contact Phone <span class="text-red-500 font-bold">*</span></label>
+              <input type="tel" id="emergencyPhone" name="emergencyPhone" placeholder="+1 555 000 0000" required class="mt-1 w-full rounded-lg border-gray-300 border p-3 sm:p-2.5 text-base sm:text-sm focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
+              <span id="emergencyPhoneErr" class="text-xs text-red-500 hidden mt-1"><i class="fa-solid fa-circle-exclamation mr-1"></i> Emergency phone cannot be your own phone number.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-4">
+          <h3 class="text-base sm:text-lg font-semibold text-pts-navy border-b pb-2"><i class="fa-solid fa-file-contract mr-2"></i> Terms &amp; Waivers</h3>
+          
+          <div class="bg-gray-50 p-3.5 sm:p-4 rounded-lg border border-gray-200 text-xs text-gray-600 leading-relaxed">
+            <strong>Photo/Video Release:</strong> I certify that I am over 18 years old and agree to this Photo &amp; Video Release. I authorize Paramount Transportation Systems to photograph and record me during the Charity 5K Fun Run/Walk and allow both the International Association of Movers and/or Paramount to place my picture/video on their website/in their newsletters and use my image for any promotional purposes without compensation.
+          </div>
+          <label class="flex items-start sm:items-center text-sm font-medium text-gray-700 cursor-pointer py-1">
+            <input type="checkbox" id="photoRelease" name="photoRelease" value="Yes" required class="rounded text-pts-navy focus:ring-pts-navy h-5 w-5 sm:h-4 sm:w-4 mt-0.5 sm:mt-0 flex-shrink-0">
+            <span class="ml-2.5 sm:ml-2">I certify that I am over 18 years old and agree to the Photo &amp; Video Release. <span class="text-red-500 font-bold">*</span></span>
+          </label>
+
+          <div class="bg-gray-50 p-3.5 sm:p-4 rounded-lg border border-gray-200 text-xs text-gray-600 leading-relaxed mt-4">
+            <strong>Liability Statement:</strong> I certify that I am over 18 years old and I acknowledge that participating in a 5K involves physical activity and assume all risks associated with participation. I release and hold harmless the event organizers, sponsors, the property owners, their employees and my employer from liability for injuries or damages arising from my participation.
+          </div>
+          <label class="flex items-start sm:items-center text-sm font-medium text-gray-700 cursor-pointer py-1">
+            <input type="checkbox" id="liabilityWaiver" name="liabilityWaiver" value="Yes" required class="rounded text-pts-navy focus:ring-pts-navy h-5 w-5 sm:h-4 sm:w-4 mt-0.5 sm:mt-0 flex-shrink-0">
+            <span class="ml-2.5 sm:ml-2">I have read and agree to the Liability Waiver above. <span class="text-red-500 font-bold">*</span></span>
+          </label>
+
+          <!-- Complete Scrollable Privacy Notice Box with Scroll Enforcement -->
+          <div id="privacyScrollBox" class="bg-gray-50 p-3.5 sm:p-4 rounded-lg border border-gray-200 text-xs text-gray-600 leading-relaxed mt-4 max-h-56 overflow-y-auto space-y-2">
+            <p class="font-bold text-gray-800 text-sm">5K Registration Privacy Notice</p>
+            <p>Paramount Transportation Systems, Inc. (“Paramount”) respects your privacy. The personal information collected through this registration form is used to register you for and administer the IAM &amp; Paramount Charity 5K Fun Run/Walk.</p>
+            
+            <p class="font-bold text-gray-700 pt-1">Information We Collect</p>
+            <p>As part of your registration, we may collect your name, contact information, company and location, T-shirt size, award category, emergency contact information, electronic signature, and other information you voluntarily provide in connection with the event.</p>
+            
+            <p class="font-bold text-gray-700 pt-1">How We Use Your Information</p>
+            <ul class="list-disc pl-5 space-y-0.5">
+              <li>Process and manage your event registration;</li>
+              <li>Communicate with you regarding the event;</li>
+              <li>Provide event materials, including your shirt and race bib;</li>
+              <li>Administer race categories and awards;</li>
+              <li>Assist with event logistics, safety, and emergency situations;</li>
+              <li>Maintain appropriate event and registration records; and</li>
+              <li>Comply with applicable legal requirements.</li>
+            </ul>
+            
+            <p class="font-bold text-gray-700 pt-1">Payment Information</p>
+            <p>The USD 75.00 registration fee is processed separately through a third-party payment provider. Paramount does not collect or store your complete credit card information through this registration form. Payment information submitted to the payment provider is subject to that provider's applicable privacy and security practices.</p>
+            
+            <p class="font-bold text-gray-700 pt-1">Sharing of Information</p>
+            <p>Paramount does not sell your personal information. Information may be shared only as reasonably necessary to administer the event, including with the International Association of Movers, event organizers and service providers assisting with registration, payment processing, event operations or related services, or when required by law.</p>
+            <p>We do not provide participant information to vendors, clients, prospective clients or other event participants for their independent marketing purposes.</p>
+            
+            <p class="font-bold text-gray-700 pt-1">Photos and Videos</p>
+            <p>If you agree to the Photo &amp; Video Release on this registration form, photographs and video recordings taken during the event may be used by Paramount and/or the International Association of Movers as described in that release.</p>
+            
+            <p class="font-bold text-gray-700 pt-1">Data Retention and Security</p>
+            <p>Paramount maintains reasonable safeguards designed to protect personal information. Registration information will be retained only for as long as reasonably necessary for event administration, recordkeeping, legal and legitimate business purposes, and will thereafter be securely deleted, anonymized or otherwise disposed of as appropriate.</p>
+            
+            <p class="font-bold text-gray-700 pt-1">Your Privacy Rights</p>
+            <p>Depending on where you reside, you may have certain rights regarding your personal information, including the right to request access, correction or deletion of your information, subject to applicable law.</p>
+            <p>For privacy questions or requests regarding your 5K registration information, please contact <a href="mailto:privacy@pts-moves.com" class="text-pts-blue underline">privacy@pts-moves.com</a>.</p>
+            <p>For general information about Paramount's privacy and data-protection practices, please see our <a href="https://pts-moves.com/privacy-policy/" target="_blank" rel="noopener noreferrer" class="text-pts-blue underline">Privacy Statement</a>.</p>
+          </div>
+
+          <div id="privacyScrollPrompt" class="text-xs text-amber-700 bg-amber-50 border border-amber-200 px-3 py-2 rounded-lg flex items-center gap-2">
+            <i class="fa-solid fa-circle-down flex-shrink-0"></i>
+            <span>Please scroll through to the very bottom of the Privacy Notice above to unlock this checkbox.</span>
+          </div>
+
+          <label id="privacyLabel" class="flex items-start sm:items-center text-sm font-medium text-gray-400 cursor-not-allowed select-none transition-colors py-1">
+            <input type="checkbox" id="privacyNotice" name="privacyNotice" value="Yes" disabled required class="rounded text-pts-navy focus:ring-pts-navy h-5 w-5 sm:h-4 sm:w-4 mt-0.5 sm:mt-0 cursor-not-allowed flex-shrink-0">
+            <span class="ml-2.5 sm:ml-2">I have read and agree to the 5K Registration Privacy Notice. <span class="text-red-500 font-bold">*</span></span>
+          </label>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6 pt-2">
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Participant Electronic Signature (Full Name) <span class="text-red-500 font-bold">*</span></label>
+              <input type="text" id="signature" name="signature" placeholder="Must match First + Last Name above" required class="mt-1 w-full rounded-lg border-gray-300 border p-3 sm:p-2.5 text-base sm:text-sm focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
+              <span id="sigMatchError" class="text-xs text-red-500 hidden mt-1"><i class="fa-solid fa-triangle-exclamation mr-1"></i> Signature must match First Name + Last Name</span>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Date <span class="text-red-500 font-bold">*</span></label>
+              <input type="date" id="sigDate" name="sigDate" readonly required tabindex="-1" onkeydown="return false;" class="mt-1 w-full rounded-lg border-gray-300 border p-3 sm:p-2.5 text-base sm:text-sm bg-gray-100 cursor-not-allowed pointer-events-none select-none focus:outline-none text-gray-600 transition">
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-4 border-t border-gray-200 space-y-4">
+          <button type="submit" id="submitBtn" disabled class="w-full bg-gray-300 text-gray-500 font-bold py-4 px-6 rounded-xl shadow transition duration-200 flex items-center justify-center text-base sm:text-lg cursor-not-allowed">
+            <span id="btnText">Proceed to USD 75.00 Registration Payment</span>
+            <i class="fa-solid fa-arrow-right ml-2"></i>
+          </button>
+
+          <!-- Donation Container at End of Form -->
+          <div class="w-full bg-pts-light rounded-2xl p-4 border border-blue-200 text-center shadow-md">
+            <span class="text-xs sm:text-sm font-bold uppercase tracking-wider text-pts-navy block mb-2">
+              <i class="fa-solid fa-heart text-pts-accent mr-1"></i> Not Running or Walking?
+            </span>
+            <a href="https://donate.stripe.com/eVq6oz1MEdinausaBR3gk02" target="_blank" rel="noopener noreferrer" class="inline-block w-full max-w-md bg-pts-accent active:bg-red-800 hover:bg-red-700 text-white font-bold py-3 sm:py-2.5 px-4 rounded-xl text-sm shadow transition">
+              Donate Any Amount to Charities
+            </a>
+          </div>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <!-- ================================================================= -->
   <!-- POST-RACE FINISHER SOCIAL CARD STUDIO MODAL (3 STUNNING DESIGNS)  -->
   <!-- ================================================================= -->
   <div id="finisherStudioModal" class="fixed inset-0 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-2 sm:p-4 z-50 overflow-y-auto">
     <div class="bg-white rounded-3xl max-w-5xl w-full max-h-[95vh] flex flex-col shadow-2xl overflow-hidden my-auto">
       
-      <!-- Modal Header -->
       <div class="bg-gradient-to-r from-pts-navy via-pts-blue to-pts-navy text-white px-5 sm:px-6 py-4 flex items-center justify-between">
         <div class="flex items-center gap-2.5">
           <span class="w-9 h-9 rounded-xl bg-amber-400 text-pts-navy flex items-center justify-center font-black text-lg shadow">
@@ -685,10 +1203,8 @@
         </button>
       </div>
 
-      <!-- Studio Body Grid -->
       <div class="p-4 sm:p-6 overflow-y-auto grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         
-        <!-- Left Column: Live High-Res Canvas Preview (7 cols) -->
         <div class="lg:col-span-7 flex flex-col items-center bg-gray-900 rounded-2xl p-4 sm:p-6 border border-gray-800 shadow-inner">
           <div class="w-full flex items-center justify-between mb-3 text-xs text-gray-300">
             <span class="font-bold flex items-center gap-1.5">
@@ -700,12 +1216,10 @@
             </button>
           </div>
 
-          <!-- 1080x1350 Standardized Social Post Canvas -->
           <div class="w-full max-w-[380px] rounded-2xl overflow-hidden shadow-2xl border-2 border-white/15 bg-pts-navy">
             <canvas id="finisherCanvas" width="1080" height="1350" class="w-full h-auto block"></canvas>
           </div>
 
-          <!-- Design Switcher Pills -->
           <div class="mt-4 grid grid-cols-3 gap-2 w-full max-w-[380px]">
             <button type="button" id="designBtn0" onclick="selectFinisherDesign(0)" class="py-2 px-2 rounded-xl text-xs font-bold border transition bg-amber-400 text-pts-navy border-amber-400 shadow">
               1. Gold Crest
@@ -719,10 +1233,8 @@
           </div>
         </div>
 
-        <!-- Right Column: Photo Upload, Framing & Stats Customization (5 cols) -->
         <div class="lg:col-span-5 space-y-5">
           
-          <!-- Step 1: Take Selfie or Upload Photo -->
           <div class="bg-pts-light p-4 rounded-2xl border border-blue-200 space-y-3">
             <h4 class="text-xs sm:text-sm font-black uppercase tracking-wider text-pts-navy flex items-center gap-2">
               <i class="fa-solid fa-camera text-pts-accent"></i> 1. Add Your Finisher Photo
@@ -740,7 +1252,6 @@
               </label>
             </div>
 
-            <!-- Photo Zoom & Position Sliders (Shown once photo is loaded) -->
             <div id="photoAdjustControls" class="hidden pt-2 border-t border-blue-200/80 space-y-2 text-xs">
               <div class="flex items-center justify-between">
                 <span class="font-semibold text-gray-700">Photo Zoom</span>
@@ -757,7 +1268,6 @@
             </div>
           </div>
 
-          <!-- Step 2: Customize Finisher Details -->
           <div class="bg-gray-50 p-4 rounded-2xl border border-gray-200 space-y-3">
             <h4 class="text-xs sm:text-sm font-black uppercase tracking-wider text-pts-navy flex items-center gap-2">
               <i class="fa-solid fa-sliders text-pts-blue"></i> 2. Participant &amp; Performance Details
@@ -786,7 +1296,6 @@
             </div>
           </div>
 
-          <!-- Step 3: Share or Download -->
           <div class="space-y-2.5">
             <button type="button" onclick="shareFinisherCard()" class="w-full bg-pts-accent hover:bg-red-700 text-white font-black py-3.5 px-5 rounded-xl shadow-lg transition text-sm flex items-center justify-center gap-2">
               <i class="fa-solid fa-share-nodes"></i> Share to Social Media / Save to Phone
@@ -835,105 +1344,78 @@
     </div>
   </div>
 
-  <!-- ================================================================= -->
-  <!-- PRE-RACE REGISTRATION FORM SECTION (Hidden in Race Day Mode!)     -->
-  <!-- ================================================================= -->
-  <main id="regFormSection" class="hidden max-w-4xl mx-auto px-4 sm:px-6 py-5 sm:py-6 w-full flex-grow">
-    <div id="registrationCardWrapper" class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
-      
-      <div class="bg-pts-light border-b border-gray-200 px-5 sm:px-8 py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-        <h2 id="formTitle" class="text-lg sm:text-xl font-bold text-pts-navy">Participant Registration</h2>
-        <div id="paymentBadge" class="hidden flex flex-wrap items-center gap-2 sm:gap-3"></div>
-      </div>
-
-      <form id="regForm" method="POST" target="hidden_iframe" class="p-5 sm:p-8 space-y-7 sm:space-y-8" novalidate>
-        <input type="hidden" id="regId" name="regId" value="">
-        <input type="hidden" id="generatedRegId" name="generatedRegId" value="">
-        <input type="hidden" id="currentPaymentStatus" value="Pending Payment">
-
-        <div>
-          <h3 class="text-base sm:text-lg font-semibold text-pts-navy border-b pb-2 mb-4"><i class="fa-solid fa-user mr-2"></i> Participant Details</h3>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
-            <div>
-              <label class="block text-sm font-medium text-gray-700">First Name <span class="text-red-500 font-bold">*</span></label>
-              <input type="text" id="firstName" name="firstName" required class="mt-1 w-full rounded-lg border-gray-300 border p-3 sm:p-2.5 text-base sm:text-sm focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700">Last Name <span class="text-red-500 font-bold">*</span></label>
-              <input type="text" id="lastName" name="lastName" required class="mt-1 w-full rounded-lg border-gray-300 border p-3 sm:p-2.5 text-base sm:text-sm focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700">Mobile Phone (International) <span class="text-red-500 font-bold">*</span></label>
-              <input type="tel" id="mobile" name="mobile" placeholder="+1 555 000 0000" required class="mt-1 w-full rounded-lg border-gray-300 border p-3 sm:p-2.5 text-base sm:text-sm focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700">T-Shirt Size <span class="text-red-500 font-bold">*</span></label>
-              <select id="tshirtSize" name="tshirtSize" required class="mt-1 w-full rounded-lg border-gray-300 border p-3 sm:p-2.5 text-base sm:text-sm bg-white focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
-                <option value="">Select Size...</option>
-                <option value="Mens XS">Mens XS</option>
-                <option value="Mens S">Mens S</option>
-                <option value="Mens M">Mens M</option>
-                <option value="Mens L">Mens L</option>
-                <option value="Mens XL">Mens XL</option>
-                <option value="Mens XXL">Mens XXL</option>
-                <option value="Mens 3XL">Mens 3XL</option>
-                <option value="Mens 4XL">Mens 4XL</option>
-              </select>
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700">Email Address <span class="text-red-500 font-bold">*</span></label>
-              <input type="email" id="email" name="email" required placeholder="name@company.com" class="mt-1 w-full rounded-lg border-gray-300 border p-3 sm:p-2.5 text-base sm:text-sm focus:ring-2 focus:ring-pts-navy focus:outline-none transition">
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700">Award Category: <span class="text-red-500 font-bold">*</span></label>
-              <div class="mt-2.5 flex items-center space-x-6">
-                <label class="inline-flex items-center cursor-pointer py-1">
-                  <input type="radio" name="gender" value="Male" required class="text-pts-navy focus:ring-pts-navy h-5 w-5 sm:h-4 sm:w-4 border-gray-300">
-                  <span class="ml-2 text-base sm:text-sm text-gray-700 font-medium">Male</span>
-                </label>
-                <label class="inline-flex items-center cursor-pointer py-1">
-                  <input type="radio" name="gender" value="Female" required class="text-pts-navy focus:ring-pts-navy h-5 w-5 sm:h-4 sm:w-4 border-gray-300">
-                  <span class="ml-2 text-base sm:text-sm text-gray-700 font-medium">Female</span>
-                </label>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="pt-4 border-t border-gray-200">
-          <button type="submit" id="submitBtn" class="w-full bg-pts-navy hover:bg-pts-blue text-white font-bold py-4 px-6 rounded-xl shadow transition duration-200 flex items-center justify-center text-base sm:text-lg">
-            <span id="btnText">Proceed to USD 75.00 Registration Payment</span>
-            <i class="fa-solid fa-arrow-right ml-2"></i>
-          </button>
-        </div>
-      </form>
-    </div>
-  </main>
-
   <!-- Lookup Modal -->
   <div id="lookupModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
     <div class="bg-white rounded-2xl max-w-md w-full p-5 sm:p-6 shadow-2xl relative">
       <button type="button" onclick="toggleModal('lookupModal')" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 p-1"><i class="fa-solid fa-xmark text-xl"></i></button>
       <h3 class="text-lg sm:text-xl font-bold text-pts-navy mb-2"><i class="fa-solid fa-shield-halved mr-2"></i> Secure Registration Lookup</h3>
       <p class="text-xs sm:text-sm text-gray-600 mb-4">Enter your Registration ID or Email along with your custom Security PIN.</p>
+      
       <div class="space-y-4">
         <div>
           <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">Registration ID or Email</label>
-          <input type="text" id="lookupQuery" placeholder="e.g. PTS-123456 or name@company.com" class="w-full rounded-lg border border-gray-300 p-3 sm:p-2.5 text-base sm:text-sm">
+          <input type="text" id="lookupQuery" placeholder="e.g. PTS-123456 or name@company.com" class="w-full rounded-lg border border-gray-300 p-3 sm:p-2.5 text-base sm:text-sm focus:ring-2 focus:ring-pts-navy focus:outline-none">
         </div>
         <div>
           <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">Your Security PIN</label>
-          <input type="password" inputmode="numeric" id="lookupPin" placeholder="••••" class="w-full rounded-lg border border-gray-300 p-3 sm:p-2.5 text-center text-lg tracking-widest">
+          <input type="password" inputmode="numeric" id="lookupPin" placeholder="••••" class="w-full rounded-lg border border-gray-300 p-3 sm:p-2.5 text-center text-lg tracking-widest focus:ring-2 focus:ring-pts-navy focus:outline-none">
         </div>
-        <button type="button" onclick="performLookup()" class="w-full bg-pts-navy text-white font-semibold py-3 sm:py-2.5 rounded-xl hover:bg-pts-blue transition">Verify &amp; Access Details</button>
+        <button type="button" onclick="performLookup()" class="w-full bg-pts-navy active:bg-blue-950 text-white font-semibold py-3 sm:py-2.5 rounded-xl hover:bg-pts-blue transition">Verify &amp; Access Details</button>
       </div>
       <div id="lookupMessage" class="mt-4 text-sm text-center"></div>
+    </div>
+  </div>
+
+  <!-- PDF Pass Template -->
+  <div class="hidden">
+    <div id="pdfPassTemplate" class="p-8 bg-white text-gray-800 font-sans max-w-xl">
+      <div class="border-b-2 border-blue-900 pb-4 mb-6 flex justify-between items-center">
+        <div>
+          <h1 class="text-2xl font-extrabold text-blue-900">IAM &amp; PARAMOUNT Charity 5K RUN/WALK</h1>
+          <p class="text-xs text-gray-500 font-semibold uppercase">Official Registration Confirmation Pass</p>
+        </div>
+        <div class="text-right">
+          <span class="bg-green-100 text-green-800 text-xs font-bold px-3 py-1 rounded-full inline-block">PAID &amp; CONFIRMED</span>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4 text-sm mb-6 bg-gray-50 p-4 rounded-xl border border-gray-200">
+        <div><strong class="text-gray-500 text-xs uppercase block">Registration ID:</strong> <span id="pdfRegId" class="font-bold text-blue-900 text-lg"></span></div>
+        <div><strong class="text-gray-500 text-xs uppercase block">Runner Name:</strong> <span id="pdfName" class="font-bold"></span></div>
+        <div><strong class="text-gray-500 text-xs uppercase block">Email:</strong> <span id="pdfEmail"></span></div>
+        <div><strong class="text-gray-500 text-xs uppercase block">Company:</strong> <span id="pdfCompany"></span></div>
+        <div><strong class="text-gray-500 text-xs uppercase block">Award Category:</strong> <span id="pdfGender" class="font-bold text-blue-900"></span></div>
+        <div><strong class="text-gray-500 text-xs uppercase block">T-Shirt Size:</strong> <span id="pdfShirt" class="font-bold text-blue-900"></span></div>
+        <div><strong class="text-gray-500 text-xs uppercase block">Emergency Phone:</strong> <span id="pdfEmergPhone"></span></div>
+      </div>
+
+      <div class="border-t border-gray-200 pt-4 text-xs text-gray-600 space-y-1">
+        <p><strong>Race Date:</strong> Friday, 23 October 2026</p>
+        <p><strong>Check-In:</strong> 6:30 AM – 7:15 AM | <strong>Start:</strong> 7:30 AM</p>
+        <p><strong>START/FINISH:</strong> Northwest corner of the North Embarcadero Marina</p>
+        <p><strong>Packet Pick Up:</strong> Oct 21 &amp; 22 @ Hyatt Hotel</p>
+        <p class="mt-4 text-[10px] text-gray-400">Present this digital or printed pass at race check-in to collect your bib and T-shirt.</p>
+      </div>
     </div>
   </div>
 
   <script>
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwO7ItQ6sTOC3wbyGDk2hU8qEjD4voEKbNYfdOQU_t_X53AE1FjRZ6fiDDQkywQDBsU/exec";
     const STRIPE_PAYMENT_LINK = "https://buy.stripe.com/6oU14ffDuemrfOM11h3gk01";
+
+    let pendingRedirectUrl = "";
+    const hiddenIframe = document.getElementById('hidden_iframe');
+
+    document.getElementById('regForm').action = SCRIPT_URL;
+
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('sigDate').value = today;
+
+    hiddenIframe.addEventListener('load', function() {
+      if (pendingRedirectUrl) {
+        window.location.href = pendingRedirectUrl;
+      }
+    });
 
     function toggleModal(id) {
       document.getElementById(id).classList.toggle('hidden');
@@ -965,14 +1447,17 @@
       document.getElementById('headerPreRaceCountdown').classList.toggle('hidden', isRaceDay);
       document.getElementById('headerRaceDayActions').classList.toggle('hidden', !isRaceDay);
       document.getElementById('headerPreRaceActions').classList.toggle('hidden', isRaceDay);
+      document.getElementById('heroButtonsRaceDay').classList.toggle('hidden', !isRaceDay);
+      document.getElementById('heroButtonsPreRace').classList.toggle('hidden', isRaceDay);
 
       // Toggle Info Bars & Late Reg Banner
       document.getElementById('infoBarRaceDay').classList.toggle('hidden', !isRaceDay);
       document.getElementById('infoBarPreRace').classList.toggle('hidden', isRaceDay);
       document.getElementById('lateRegBanner').classList.toggle('hidden', isRaceDay);
 
-      // Toggle Main Sections (Hide $75 Registration Form on Race Day!)
+      // Toggle Main Sections (Hide $75 Registration Form on Race Day, Show Full Form on Pre-Race!)
       document.getElementById('raceHubSection').classList.toggle('hidden', !isRaceDay);
+      document.getElementById('raceDayDonationBanner').classList.toggle('hidden', !isRaceDay);
       document.getElementById('regFormSection').classList.toggle('hidden', isRaceDay);
 
       // Update Demo Switcher Bar Styling
@@ -988,12 +1473,11 @@
       } else {
         btnPre.className = "px-2.5 py-1 rounded bg-pts-blue text-white font-bold transition flex items-center gap-1";
         btnRace.className = "px-2.5 py-1 rounded text-gray-300 hover:text-white font-semibold transition flex items-center gap-1";
-        desc.innerHTML = 'Viewing <strong class="text-white">Pre-Race Registration Mode</strong> (Active until 7:15 AM on Race Morning, 15 mins before start).';
+        desc.innerHTML = 'Viewing <strong class="text-white">Pre-Race Registration Mode</strong> (Full registration form, waivers &amp; $75 payment active until 15 mins before start).';
         document.getElementById('heroSubtitleText').innerText = "Join us for an energetic 5K run/walk! Complete your registration below to secure your spot and official race shirt.";
       }
     }
 
-    // Countdown timer for Pre-Race mode
     const raceDate = new Date("October 23, 2026 07:30:00").getTime();
     setInterval(function() {
       const now = new Date().getTime();
@@ -1007,7 +1491,7 @@
     }, 1000);
 
     // =========================================================================
-    // WEB AUDIO API SOUND EFFECTS (START HORN & MILE SPLIT CHIMES)
+    // WEB AUDIO API SOUND EFFECTS
     // =========================================================================
     function playRaceSound(type) {
       try {
@@ -1015,8 +1499,7 @@
         const now = ctx.currentTime;
         if (type === 'start') {
           [523.25, 659.25, 783.99, 1046.50].forEach((freq, i) => {
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
+            const osc = ctx.createOscillator(), gain = ctx.createGain();
             osc.type = 'triangle';
             osc.frequency.setValueAtTime(freq, now + i * 0.09);
             gain.gain.setValueAtTime(0.2, now + i * 0.09);
@@ -1026,8 +1509,7 @@
           });
         } else if (type === 'split') {
           [880, 1174.66].forEach((freq, i) => {
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
+            const osc = ctx.createOscillator(), gain = ctx.createGain();
             osc.type = 'sine';
             osc.frequency.setValueAtTime(freq, now + i * 0.12);
             gain.gain.setValueAtTime(0.25, now + i * 0.12);
@@ -1037,8 +1519,7 @@
           });
         } else if (type === 'finish') {
           [523.25, 659.25, 783.99, 1046.50, 1318.51, 1567.98].forEach((freq, i) => {
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
+            const osc = ctx.createOscillator(), gain = ctx.createGain();
             osc.type = 'triangle';
             osc.frequency.setValueAtTime(freq, now + i * 0.1);
             gain.gain.setValueAtTime(0.25, now + i * 0.1);
@@ -1094,7 +1575,6 @@
         document.getElementById('unverifiedState').classList.add('hidden');
         document.getElementById('verifiedState').classList.remove('hidden');
 
-        // Sync directly into the Finisher Card Studio inputs
         document.getElementById('cardRunnerName').value = displayName;
         document.getElementById('cardRunnerCompany').value = displayCompany;
         document.getElementById('cardRunnerBib').value = displayBib;
@@ -1103,7 +1583,7 @@
         const cleanName = q.includes('@') ? q.split('@')[0] : q;
         verifiedRunnerData = { name: cleanName, company: "IAM & Paramount 5K", bib: "PTS-2026" };
         document.getElementById('verifiedRunnerName').innerText = cleanName;
-        document.getElementById('verifiedRunnerCompany').innerText = "Confirmed Runner •PTS-2026";
+        document.getElementById('verifiedRunnerCompany').innerText = "Confirmed Runner • PTS-2026";
         document.getElementById('unverifiedState').classList.add('hidden');
         document.getElementById('verifiedState').classList.remove('hidden');
         document.getElementById('cardRunnerName').value = cleanName;
@@ -1119,7 +1599,7 @@
     }
 
     // =========================================================================
-    // CALIBRATED COURSE COORDINATES & INTERACTIVE MAP
+    // CALIBRATED COURSE COORDINATES & LIVE GPS / DEMO TRACKER
     // =========================================================================
     const COURSE_COORDS = [
       [32.70820, -117.17009], [32.70801, -117.17010], [32.70779, -117.17010], [32.70756, -117.17008],
@@ -1181,18 +1661,9 @@
     }
     const SMOOTH_COURSE_PATH = buildSmoothCoursePoints(COURSE_COORDS, 4);
 
-    // =========================================================================
-    // LIVE GPS & DEMO FAST-FORWARD TRACKER ENGINE
-    // =========================================================================
-    let gpsWatchId = null;
-    let demoTrackerInterval = null;
-    let runStartTime = null;
-    let elapsedTimerInterval = null;
-    let totalMetersCovered = 0;
-    let lastLat = null, lastLng = null;
-    let gpsBreadcrumbs = [];
-    let personalTrailLine = null;
-    let trackerRunnerMarker = null;
+    let gpsWatchId = null, demoTrackerInterval = null, runStartTime = null, elapsedTimerInterval = null;
+    let totalMetersCovered = 0, lastLat = null, lastLng = null, gpsBreadcrumbs = [];
+    let personalTrailLine = null, trackerRunnerMarker = null;
     let splitsRecorded = { m1: false, m2: false, m3: false, fin: false };
 
     function startGpsTracker(isDemoSimulation = false) {
@@ -1212,7 +1683,6 @@
       runStartTime = new Date().getTime();
 
       if (isDemoSimulation) {
-        // 12-Second Accelerated Demo Simulation of the entire 5K!
         document.getElementById('hudCoords').innerText = "DEMO GPS: High-Precision Bayfront Trace";
         let demoStep = 0;
         const totalSteps = SMOOTH_COURSE_PATH.length;
@@ -1227,7 +1697,6 @@
           const pct = demoStep / (totalSteps - 1);
           totalMetersCovered = pct * 5084.0;
 
-          // Simulate realistic 27:42 5K clock
           const simSeconds = Math.round(pct * (27 * 60 + 42));
           const m = String(Math.floor(simSeconds / 60)).padStart(2, '0');
           const s = String(simSeconds % 60).padStart(2, '0');
@@ -1243,7 +1712,6 @@
           }
         }, 70);
       } else {
-        // Real Browser Geolocation API
         if (elapsedTimerInterval) clearInterval(elapsedTimerInterval);
         elapsedTimerInterval = setInterval(() => {
           const diffSecs = Math.floor((new Date().getTime() - runStartTime) / 1000);
@@ -1296,7 +1764,6 @@
       document.getElementById('hudProgress').innerText = `${Math.round(pct)}%`;
       document.getElementById('hudProgressBar').style.width = `${pct.toFixed(1)}%`;
 
-      // Record Mile Splits & Play Chimes
       if (miles >= 1.0 && !splitsRecorded.m1) {
         splitsRecorded.m1 = true;
         playRaceSound('split');
@@ -1414,13 +1881,10 @@
     ];
 
     function openFinisherStudioModal() {
-      // Pick one of the 3 designs at random on open!
       currentDesignIndex = Math.floor(Math.random() * 3);
       updateDesignButtonsUI();
       document.getElementById('finisherStudioModal').classList.remove('hidden');
       renderFinisherCanvas();
-
-      // Fire celebratory confetti!
       confetti({ particleCount: 100, spread: 75, origin: { y: 0.55 } });
     }
 
@@ -1501,7 +1965,6 @@
         const drawY = y + (h - drawH) / 2 + panY;
         ctx.drawImage(uploadedUserPhoto, drawX, drawY, drawW, drawH);
       } else {
-        // Sleek default San Diego Bayfront silhouette & prompt when no photo uploaded yet
         const grad = ctx.createLinearGradient(x, y, x + w, y + h);
         grad.addColorStop(0, '#004B8D');
         grad.addColorStop(0.5, '#002855');
@@ -1509,7 +1972,6 @@
         ctx.fillStyle = grad;
         ctx.fillRect(x, y, w, h);
 
-        // Decorative sun & bay waves
         ctx.fillStyle = 'rgba(251, 191, 36, 0.18)';
         ctx.beginPath();
         ctx.arc(x + w * 0.5, y + h * 0.42, 140, 0, Math.PI * 2);
@@ -1555,7 +2017,6 @@
       });
       ctx.stroke();
 
-      // Start & Finish dots on mini-map
       const startPt = COURSE_COORDS[0];
       const sx = boxX + pad + ((startPt[1] - minLng) / (maxLng - minLng)) * usableW;
       const sy = boxY + pad + (1 - (startPt[0] - minLat) / (maxLat - minLat)) * usableH;
@@ -1612,8 +2073,7 @@
       const canvas = document.getElementById('finisherCanvas');
       if (!canvas) return;
       const ctx = canvas.getContext('2d');
-      const W = canvas.width;   // 1080
-      const H = canvas.height;  // 1350
+      const W = canvas.width, H = canvas.height;
 
       const runnerName = (document.getElementById('cardRunnerName').value || 'OFFICIAL FINISHER').toUpperCase();
       const runnerCompany = (document.getElementById('cardRunnerCompany').value || 'IAM & PARAMOUNT 5K').toUpperCase();
@@ -1624,9 +2084,6 @@
       ctx.clearRect(0, 0, W, H);
 
       if (currentDesignIndex === 0) {
-        // =====================================================================
-        // DESIGN 1: BAYFRONT NAVY & GOLD CHAMPIONSHIP CREST
-        // =====================================================================
         const bgGrad = ctx.createLinearGradient(0, 0, W, H);
         bgGrad.addColorStop(0, '#001F42');
         bgGrad.addColorStop(0.5, '#003366');
@@ -1634,13 +2091,11 @@
         ctx.fillStyle = bgGrad;
         ctx.fillRect(0, 0, W, H);
 
-        // Gold & Crimson angled sport ribbons
         ctx.fillStyle = 'rgba(227, 24, 55, 0.18)';
         ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(460, 0); ctx.lineTo(0, 460); ctx.closePath(); ctx.fill();
         ctx.fillStyle = 'rgba(251, 191, 36, 0.14)';
         ctx.beginPath(); ctx.moveTo(W, H); ctx.lineTo(W - 520, H); ctx.lineTo(W, H - 520); ctx.closePath(); ctx.fill();
 
-        // Top Gold Championship Banner
         ctx.fillStyle = '#FBBF24';
         drawRoundedRect(ctx, 60, 45, W - 120, 48, 24);
         ctx.fill();
@@ -1649,7 +2104,6 @@
         ctx.textAlign = 'center';
         ctx.fillText('★ OFFICIAL 2026 FINISHER • SAN DIEGO BAYFRONT • 23 OCT 2026 ★', W / 2, 78);
 
-        // Event Title
         ctx.fillStyle = '#FFFFFF';
         ctx.font = '900 54px sans-serif';
         ctx.fillText('IAM & PARAMOUNT', W / 2, 160);
@@ -1657,13 +2111,11 @@
         ctx.font = '900 38px sans-serif';
         ctx.fillText('CHARITY 5K FUN RUN / WALK', W / 2, 208);
 
-        // Main Photo Frame with Gold Border
         drawRoundedRect(ctx, 60, 238, W - 120, 560, 34);
         ctx.fillStyle = '#FBBF24';
         ctx.fill();
         drawUserPhotoInBox(ctx, 68, 246, W - 136, 544, 28);
 
-        // Verified Finisher Pill overlapping bottom of photo
         drawRoundedRect(ctx, 110, 745, W - 220, 96, 24);
         ctx.fillStyle = '#E31837';
         ctx.shadowColor = 'rgba(0,0,0,0.45)';
@@ -1678,10 +2130,7 @@
         ctx.font = '700 23px sans-serif';
         ctx.fillText(`${runnerCompany}  •  BIB #${runnerBib}`, W / 2, 826);
 
-        // Stats & Course Map Row (Y: 865 to 1125)
-        const statY = 868;
-        const statH = 240;
-        // 3 Stat Boxes on Left + Mini-Map Box on Right
+        const statY = 868, statH = 240;
         drawRoundedRect(ctx, 60, statY, 620, statH, 26);
         ctx.fillStyle = 'rgba(255,255,255,0.09)';
         ctx.fill();
@@ -1690,7 +2139,6 @@
         ctx.stroke();
 
         ctx.textAlign = 'center';
-        // Distance
         ctx.fillStyle = '#93C5FD'; ctx.font = '800 22px sans-serif';
         ctx.fillText('DISTANCE', 175, statY + 58);
         ctx.fillStyle = '#FFFFFF'; ctx.font = '900 50px monospace';
@@ -1698,7 +2146,6 @@
         ctx.fillStyle = '#FBBF24'; ctx.font = '700 22px sans-serif';
         ctx.fillText('3.16 MILES', 175, statY + 165);
 
-        // Finish Time
         ctx.fillStyle = '#93C5FD'; ctx.font = '800 22px sans-serif';
         ctx.fillText('OFFICIAL TIME', 375, statY + 58);
         ctx.fillStyle = '#FBBF24'; ctx.font = '900 50px monospace';
@@ -1706,7 +2153,6 @@
         ctx.fillStyle = '#FFFFFF'; ctx.font = '700 22px sans-serif';
         ctx.fillText('5K COMPLETED', 375, statY + 165);
 
-        // Pace
         ctx.fillStyle = '#93C5FD'; ctx.font = '800 22px sans-serif';
         ctx.fillText('AVG PACE', 570, statY + 58);
         ctx.fillStyle = '#38BDF8'; ctx.font = '900 42px monospace';
@@ -1714,7 +2160,6 @@
         ctx.fillStyle = '#FFFFFF'; ctx.font = '700 22px sans-serif';
         ctx.fillText('PER MILE', 570, statY + 165);
 
-        // Course Mini-Map Box on Right
         drawRoundedRect(ctx, 705, statY, 315, statH, 26);
         ctx.fillStyle = 'rgba(0, 20, 45, 0.7)';
         ctx.fill();
@@ -1726,17 +2171,11 @@
         ctx.font = '800 18px sans-serif';
         ctx.fillText('SAN DIEGO BAY COURSE', 862, statY + statH - 14);
 
-        // All 4 Logos Dock at Bottom
         drawAllFourLogosBar(ctx, 60, 1140, W - 120, 160);
 
       } else if (currentDesignIndex === 1) {
-        // =====================================================================
-        // DESIGN 2: SAN DIEGO SUNRISE / STRAVA-PRO GLASS MAGAZINE EDITION
-        // =====================================================================
-        // Full-bleed background photo (upper 78% of canvas)
         drawUserPhotoInBox(ctx, 0, 0, W, 980, 0);
 
-        // Top & Bottom Cinematic Gradient Vignettes over Photo
         const topVig = ctx.createLinearGradient(0, 0, 0, 290);
         topVig.addColorStop(0, 'rgba(0, 25, 55, 0.92)');
         topVig.addColorStop(1, 'rgba(0, 25, 55, 0)');
@@ -1750,7 +2189,6 @@
         ctx.fillStyle = botVig;
         ctx.fillRect(0, 620, W, 730);
 
-        // Top Editorial Header
         ctx.textAlign = 'left';
         ctx.fillStyle = '#E31837';
         drawRoundedRect(ctx, 60, 50, 340, 44, 12);
@@ -1766,7 +2204,6 @@
         ctx.font = '800 28px sans-serif';
         ctx.fillText('SAN DIEGO BAYFRONT • 23 OCTOBER 2026', 60, 192);
 
-        // Floating Glassmorphic Runner & Telemetry Card
         drawRoundedRect(ctx, 60, 740, W - 120, 365, 32);
         ctx.fillStyle = 'rgba(0, 40, 85, 0.85)';
         ctx.fill();
@@ -1783,7 +2220,6 @@
         ctx.font = '900 54px sans-serif';
         ctx.fillText(runnerName, 100, 862);
 
-        // Big Strava-style metrics
         ctx.fillStyle = '#93C5FD'; ctx.font = '700 22px sans-serif';
         ctx.fillText('DISTANCE', 100, 935);
         ctx.fillText('FINISH TIME', 340, 935);
@@ -1799,20 +2235,13 @@
         ctx.fillStyle = '#E2E8F0'; ctx.font = '600 22px sans-serif';
         ctx.fillText('Proudly supporting Global Moving Foundation & Coastal K9 Rescue', 100, 1072);
 
-        // Glowing Neon Course Trace on Right of Glass Card
         drawCourseTraceMiniMap(ctx, 790, 765, 205, 260, '#FBBF24', '#E31837');
-
-        // All 4 Logos Dock at Bottom
         drawAllFourLogosBar(ctx, 60, 1140, W - 120, 160);
 
       } else {
-        // =====================================================================
-        // DESIGN 3: 30TH ANNIVERSARY VIP FINISHER BIB & TRADING CARD EDITION
-        // =====================================================================
         ctx.fillStyle = '#F8FAFC';
         ctx.fillRect(0, 0, W, H);
 
-        // Bold Navy & Crimson Header Block
         ctx.fillStyle = '#003366';
         ctx.fillRect(0, 0, W, 250);
         ctx.fillStyle = '#E31837';
@@ -1829,13 +2258,11 @@
         ctx.fillStyle = '#93C5FD';
         ctx.fillText('CHARITY 5K FUN RUN / WALK FINISHER', W / 2, 192);
 
-        // Photo Frame on Left + Race Bib & Route Card on Right
         drawRoundedRect(ctx, 60, 290, 580, 560, 28);
         ctx.fillStyle = '#003366';
         ctx.fill();
         drawUserPhotoInBox(ctx, 68, 298, 564, 544, 22);
 
-        // Right Column: Course Map Card
         drawRoundedRect(ctx, 670, 290, 350, 340, 28);
         ctx.fillStyle = '#002855';
         ctx.fill();
@@ -1845,7 +2272,6 @@
         ctx.textAlign = 'center';
         ctx.fillText('5.08 KM WATERFRONT LOOP', 845, 605);
 
-        // Right Column: Official Race Bib Number Box
         drawRoundedRect(ctx, 670, 655, 350, 195, 28);
         ctx.fillStyle = '#E31837';
         ctx.fill();
@@ -1858,7 +2284,6 @@
         ctx.font = '800 20px sans-serif';
         ctx.fillText('VERIFIED 5K FINISHER', 845, 820);
 
-        // Official Athlete Name & Telemetry Banner
         drawRoundedRect(ctx, 60, 880, W - 120, 225, 28);
         ctx.fillStyle = '#003366';
         ctx.fill();
@@ -1871,7 +2296,6 @@
         ctx.font = '900 50px sans-serif';
         ctx.fillText(runnerName, 100, 990);
 
-        // Bottom Stat Strip inside Navy Banner
         ctx.fillStyle = '#93C5FD';
         ctx.font = '800 24px sans-serif';
         ctx.fillText(`TIME: `, 100, 1060);
@@ -1890,7 +2314,6 @@
         ctx.font = '900 32px sans-serif';
         ctx.fillText('★ 3.16 MI', 810, 1060);
 
-        // All 4 Logos Dock at Bottom
         drawAllFourLogosBar(ctx, 60, 1140, W - 120, 160);
       }
     }
@@ -1987,23 +2410,42 @@
       const fsText = document.getElementById('fsToggleText');
       const fsIcon = document.getElementById('fsToggleIcon');
       const lockBtn = document.getElementById('mobileTouchLockBtn');
+
       isMapFullScreen = !isMapFullScreen;
+
       if (isMapFullScreen) {
         wrapper.classList.add('map-fullscreen-active');
         document.body.style.overflow = 'hidden';
-        fsText.innerText = "Exit Full Screen"; fsIcon.className = "fa-solid fa-compress text-amber-300";
-        courseMap.dragging.enable(); courseMap.scrollWheelZoom.enable();
+        fsText.innerText = "Exit Full Screen";
+        fsIcon.className = "fa-solid fa-compress text-amber-300";
+        courseMap.dragging.enable();
+        courseMap.scrollWheelZoom.enable();
         if (lockBtn) lockBtn.classList.add('hidden');
       } else {
         wrapper.classList.remove('map-fullscreen-active');
         document.body.style.overflow = '';
-        fsText.innerText = "Full Screen"; fsIcon.className = "fa-solid fa-expand text-amber-300";
+        fsText.innerText = "Full Screen";
+        fsIcon.className = "fa-solid fa-expand text-amber-300";
         courseMap.scrollWheelZoom.disable();
-        if (window.innerWidth < 1024 && !mobileMapInteractive) courseMap.dragging.disable();
+        if (window.innerWidth < 1024 && !mobileMapInteractive) {
+          courseMap.dragging.disable();
+        }
         if (lockBtn) lockBtn.classList.remove('hidden');
       }
-      setTimeout(() => { if (courseMap && mainRouteLine) { courseMap.invalidateSize(); courseMap.fitBounds(mainRouteLine.getBounds(), { padding: [25, 25] }); } }, 200);
+
+      setTimeout(() => {
+        if (courseMap && mainRouteLine) {
+          courseMap.invalidateSize();
+          courseMap.fitBounds(mainRouteLine.getBounds(), { padding: [25, 25] });
+        }
+      }, 200);
     }
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && isMapFullScreen) {
+        toggleFullScreenMap();
+      }
+    });
 
     function toggleMobileMapTouch() {
       if (!courseMap) return;
@@ -2011,21 +2453,39 @@
       const btn = document.getElementById('mobileTouchLockBtn');
       const text = document.getElementById('mobileTouchText');
       const icon = document.getElementById('mobileTouchIcon');
+
       if (mobileMapInteractive) {
-        courseMap.dragging.enable(); text.innerText = "Lock Map to Scroll"; icon.className = "fa-solid fa-lock-open text-green-400"; btn.classList.replace('bg-pts-navy/90', 'bg-green-900/95');
+        courseMap.dragging.enable();
+        text.innerText = "Lock Map to Scroll";
+        icon.className = "fa-solid fa-lock-open text-green-400";
+        btn.classList.replace('bg-pts-navy/90', 'bg-green-900/95');
       } else {
-        courseMap.dragging.disable(); text.innerText = "Tap to Pan Map"; icon.className = "fa-solid fa-hand-pointer text-amber-300"; btn.classList.replace('bg-green-900/95', 'bg-pts-navy/90');
+        courseMap.dragging.disable();
+        text.innerText = "Tap to Pan Map";
+        icon.className = "fa-solid fa-hand-pointer text-amber-300";
+        btn.classList.replace('bg-green-900/95', 'bg-pts-navy/90');
       }
     }
 
     function setGoogleMapMode(mode) {
       const btnStreet = document.getElementById('btnMapStreet');
       const btnSat = document.getElementById('btnMapSat');
+
       const activeClass = "px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-lg bg-pts-navy text-white transition flex items-center gap-1";
       const inactiveClass = "px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-lg text-gray-700 hover:bg-gray-100 transition flex items-center gap-1";
-      courseMap.removeLayer(googleStreetsLayer); courseMap.removeLayer(googleHybridLayer);
-      if (mode === 'hybrid') { courseMap.addLayer(googleHybridLayer); btnSat.className = activeClass; btnStreet.className = inactiveClass; }
-      else { courseMap.addLayer(googleStreetsLayer); btnStreet.className = activeClass; btnSat.className = inactiveClass; }
+
+      courseMap.removeLayer(googleStreetsLayer);
+      courseMap.removeLayer(googleHybridLayer);
+
+      if (mode === 'hybrid') {
+        courseMap.addLayer(googleHybridLayer);
+        btnSat.className = activeClass;
+        btnStreet.className = inactiveClass;
+      } else {
+        courseMap.addLayer(googleStreetsLayer);
+        btnStreet.className = activeClass;
+        btnSat.className = inactiveClass;
+      }
     }
 
     function focusCourseStage(index) {
@@ -2033,12 +2493,17 @@
       const stage = STAGE_VIEWS[index];
       if (stage && courseMap) {
         courseMap.flyTo(stage.coords, stage.zoom, { duration: 1.0 });
-        if (stageMarkers[index]) stageMarkers[index].openPopup();
+        if (stageMarkers[index]) {
+          stageMarkers[index].openPopup();
+        }
       }
     }
 
     function resetCourseMapView() {
-      if (courseMap && mainRouteLine) { courseMap.closePopup(); courseMap.fitBounds(mainRouteLine.getBounds(), { padding: [22, 22] }); }
+      if (courseMap && mainRouteLine) {
+        courseMap.closePopup();
+        courseMap.fitBounds(mainRouteLine.getBounds(), { padding: [22, 22] });
+      }
     }
 
     function toggleCourseSimulation() {
@@ -2047,21 +2512,28 @@
       const overlay = document.getElementById('simStatusOverlay');
 
       if (simInterval) {
-        clearInterval(simInterval); simInterval = null;
-        btnText.innerText = "Simulate Course Route"; btnIcon.className = "fa-solid fa-play";
+        clearInterval(simInterval);
+        simInterval = null;
+        btnText.innerText = "Simulate Course Route";
+        btnIcon.className = "fa-solid fa-play";
         overlay.classList.add('hidden');
-        if (runnerMarker) { courseMap.removeLayer(runnerMarker); runnerMarker = null; }
+        if (runnerMarker) {
+          courseMap.removeLayer(runnerMarker);
+          runnerMarker = null;
+        }
         return;
       }
 
       overlay.classList.remove('hidden');
-      btnText.innerText = "Stop Simulation"; btnIcon.className = "fa-solid fa-stop";
+      btnText.innerText = "Stop Simulation";
+      btnIcon.className = "fa-solid fa-stop";
       simIndex = 0;
 
       const runnerIcon = L.divIcon({
         className: 'runner-sim-icon',
         html: `<div class="bg-amber-400 text-pts-navy rounded-full shadow-xl border-2 border-pts-navy flex items-center justify-center" style="width:30px;height:30px;font-size:14px;"><i class="fa-solid fa-person-running"></i></div>`,
-        iconSize: [30, 30], iconAnchor: [15, 15]
+        iconSize: [30, 30],
+        iconAnchor: [15, 15]
       });
 
       runnerMarker = L.marker(SMOOTH_COURSE_PATH[0], { icon: runnerIcon, zIndexOffset: 1000 }).addTo(courseMap);
@@ -2070,28 +2542,42 @@
       simInterval = setInterval(() => {
         simIndex++;
         if (simIndex >= SMOOTH_COURSE_PATH.length) {
-          clearInterval(simInterval); simInterval = null;
-          btnText.innerText = "Replay Course Route"; btnIcon.className = "fa-solid fa-rotate-right";
+          clearInterval(simInterval);
+          simInterval = null;
+          btnText.innerText = "Replay Course Route";
+          btnIcon.className = "fa-solid fa-rotate-right";
           document.getElementById('simStageLabel').innerText = "Start/Finish area at the North Embarcadero Marina";
           document.getElementById('simDistanceLabel').innerText = "100%";
           document.getElementById('simProgressBar').style.width = "100%";
           highlightStepCardOnly(3);
           return;
         }
+
         const pt = SMOOTH_COURSE_PATH[simIndex];
         runnerMarker.setLatLng(pt);
+
         const pct = simIndex / (SMOOTH_COURSE_PATH.length - 1);
         document.getElementById('simDistanceLabel').innerText = `${Math.round(pct * 100)}%`;
         document.getElementById('simProgressBar').style.width = `${(pct * 100).toFixed(1)}%`;
 
         let stageLabel = "North Embarcadero Marina & Bayfront Promenade";
-        if (pct > 0.62) { stageLabel = "Waterfront north toward Ruocco Park & back to Start/Finish"; highlightStepCardOnly(3); }
-        else if (pct > 0.48) { stageLabel = "Promenade toward the Hilton & U-turn before the hotel"; highlightStepCardOnly(2); }
-        else if (pct > 0.28) { stageLabel = "Loop (counterclockwise) around the South Embarcadero Marina"; highlightStepCardOnly(1); }
-        else { highlightStepCardOnly(0); }
+        if (pct > 0.62) {
+          stageLabel = "Waterfront north toward Ruocco Park & back to Start/Finish";
+          highlightStepCardOnly(3);
+        } else if (pct > 0.48) {
+          stageLabel = "Promenade toward the Hilton & U-turn before the hotel";
+          highlightStepCardOnly(2);
+        } else if (pct > 0.28) {
+          stageLabel = "Loop (counterclockwise) around the South Embarcadero Marina";
+          highlightStepCardOnly(1);
+        } else {
+          highlightStepCardOnly(0);
+        }
         document.getElementById('simStageLabel').innerText = stageLabel;
 
-        if (simIndex % 8 === 0) courseMap.panTo(pt, { animate: true, duration: 0.35 });
+        if (simIndex % 8 === 0) {
+          courseMap.panTo(pt, { animate: true, duration: 0.35 });
+        }
       }, 45);
     }
 
@@ -2107,25 +2593,480 @@
       });
     }
 
+    window.addEventListener('DOMContentLoaded', initCourseMap);
+
+    // =========================================================================
+    // COMPLETE FORM VALIDATION & REGISTRATION LOGIC (FROM INDEX.HTML)
+    // =========================================================================
+    function autoCapitalize(e) {
+      const words = e.target.value.split(' ');
+      e.target.value = words.map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+    }
+    document.getElementById('firstName').addEventListener('keyup', autoCapitalize);
+    document.getElementById('lastName').addEventListener('keyup', autoCapitalize);
+    document.getElementById('city').addEventListener('keyup', autoCapitalize);
+
+    document.getElementById('userPin').addEventListener('input', function(e) {
+      if (e.target.value.length === 4 || e.target.value.length === 6) {
+        document.getElementById('confirmPin').focus();
+      }
+    });
+
+    // --- SCROLL TO ACCEPT PRIVACY NOTICE ---
+    const privacyBox = document.getElementById('privacyScrollBox');
+    const privacyCheckbox = document.getElementById('privacyNotice');
+    const privacyLabel = document.getElementById('privacyLabel');
+    const privacyPrompt = document.getElementById('privacyScrollPrompt');
+
+    function unlockPrivacyCheckbox() {
+      privacyCheckbox.disabled = false;
+      privacyCheckbox.classList.remove('cursor-not-allowed');
+      privacyCheckbox.classList.add('cursor-pointer');
+      privacyLabel.classList.remove('text-gray-400', 'cursor-not-allowed');
+      privacyLabel.classList.add('text-gray-700', 'cursor-pointer');
+
+      privacyPrompt.className = "text-xs text-green-700 bg-green-50 border border-green-200 px-3 py-2 rounded-lg flex items-center gap-2";
+      privacyPrompt.innerHTML = '<i class="fa-solid fa-circle-check flex-shrink-0"></i><span>Privacy Notice reviewed. You may now check the agreement box below.</span>';
+    }
+
+    privacyBox.addEventListener('scroll', function() {
+      if (privacyBox.scrollHeight - privacyBox.scrollTop - privacyBox.clientHeight <= 10) {
+        unlockPrivacyCheckbox();
+      }
+    });
+
+    const IGNORED_DOMAINS = ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com', 'icloud.com', 'aol.com', 'protonmail.com', 'me.com', 'live.com', 'msn.com'];
+
+    async function checkCompanyDomainAutoFill() {
+      const email = document.getElementById('email').value.trim();
+      if (!email || !email.includes('@')) return;
+
+      const domain = email.split('@')[1].toLowerCase();
+      if (IGNORED_DOMAINS.includes(domain)) return;
+
+      if (document.getElementById('company').value.trim()) return;
+
+      try {
+        const res = await fetch(`${SCRIPT_URL}?action=getCompanyByDomain&domain=${encodeURIComponent(domain)}`);
+        const json = await res.json();
+
+        if (json.status === 'found') {
+          if (json.company) document.getElementById('company').value = json.company;
+          if (json.city) document.getElementById('city').value = json.city;
+          if (json.state) document.getElementById('state').value = json.state;
+          if (json.country) document.getElementById('country').value = json.country;
+          if (json.postalCode) document.getElementById('postalCode').value = json.postalCode;
+
+          document.getElementById('autofillBadge').classList.remove('hidden');
+          checkFormValidity();
+        }
+      } catch (e) {
+      }
+    }
+
+    document.getElementById('email').addEventListener('blur', checkCompanyDomainAutoFill);
+
+    const nameRegex = /^[a-zA-Z\s\-']+$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const phoneRegex = /^\+?[0-9\s\-\(\)]{7,20}$/;
+
+    function validateField(inputEl, regex, errEl) {
+      const val = inputEl.value.trim();
+      if (!val) {
+        inputEl.classList.remove('border-red-500', 'ring-red-200');
+        if (errEl) errEl.classList.add('hidden');
+        return true;
+      }
+      
+      const isValid = regex.test(val);
+      if (!isValid) {
+        inputEl.classList.add('border-red-500', 'ring-2', 'ring-red-200');
+        if (errEl) errEl.classList.remove('hidden');
+      } else {
+        inputEl.classList.remove('border-red-500', 'ring-2', 'ring-red-200');
+        if (errEl) errEl.classList.add('hidden');
+      }
+      return isValid;
+    }
+
+    function attachFieldValidator(id, regex, errId) {
+      const el = document.getElementById(id);
+      const errEl = document.getElementById(errId);
+      el.addEventListener('blur', () => { validateField(el, regex, errEl); checkFormValidity(); });
+      el.addEventListener('input', () => { validateField(el, regex, errEl); checkFormValidity(); });
+    }
+
+    attachFieldValidator('firstName', nameRegex, 'firstNameErr');
+    attachFieldValidator('lastName', nameRegex, 'lastNameErr');
+    attachFieldValidator('email', emailRegex, 'emailErr');
+    attachFieldValidator('mobile', phoneRegex, 'mobileErr');
+    attachFieldValidator('city', nameRegex, 'cityErr');
+
+    function levenshteinDistance(a, b) {
+      if (a.length === 0) return b.length;
+      if (b.length === 0) return a.length;
+
+      const matrix = [];
+      for (let i = 0; i <= b.length; i++) matrix[i] = [i];
+      for (let j = 0; j <= a.length; j++) matrix[0][j] = j;
+
+      for (let i = 1; i <= b.length; i++) {
+        for (let j = 1; j <= a.length; j++) {
+          if (b.charAt(i - 1) === a.charAt(j - 1)) {
+            matrix[i][j] = matrix[i - 1][j - 1];
+          } else {
+            matrix[i][j] = Math.min(
+              matrix[i - 1][j - 1] + 1,
+              matrix[i][j - 1] + 1,
+              matrix[i - 1][j] + 1
+            );
+          }
+        }
+      }
+      return matrix[b.length][a.length];
+    }
+
+    function checkEmergencyContact() {
+      const fnRaw = document.getElementById('firstName').value.trim();
+      const lnRaw = document.getElementById('lastName').value.trim();
+      const emNameRaw = document.getElementById('emergencyName').value.trim();
+
+      const fnClean = fnRaw.toLowerCase().replace(/[^a-z0-9]/g, '');
+      const lnClean = lnRaw.toLowerCase().replace(/[^a-z0-9]/g, '');
+      const emNameClean = emNameRaw.toLowerCase().replace(/[^a-z0-9]/g, '');
+
+      const mobileDigits = document.getElementById('mobile').value.replace(/\D/g, '');
+      const emPhoneDigits = document.getElementById('emergencyPhone').value.replace(/\D/g, '');
+
+      const emNameEl = document.getElementById('emergencyName');
+      const emNameErr = document.getElementById('emergencyNameErr');
+      const emPhoneEl = document.getElementById('emergencyPhone');
+      const emPhoneErr = document.getElementById('emergencyPhoneErr');
+
+      let isValid = true;
+
+      if (emNameClean) {
+        const normalFullName = fnClean + lnClean;
+        const reverseFullName = lnClean + fnClean;
+
+        let isSelfMatch = false;
+
+        if (normalFullName && reverseFullName) {
+          if (emNameClean === normalFullName || emNameClean === reverseFullName) {
+            isSelfMatch = true;
+          }
+          else if ((fnClean && emNameClean === fnClean) || (lnClean && emNameClean === lnClean)) {
+            isSelfMatch = true;
+          }
+          else if (
+            levenshteinDistance(emNameClean, normalFullName) <= 2 ||
+            levenshteinDistance(emNameClean, reverseFullName) <= 2
+          ) {
+            isSelfMatch = true;
+          }
+        }
+
+        if (isSelfMatch) {
+          emNameEl.classList.add('border-red-500', 'ring-2', 'ring-red-200');
+          emNameErr.innerText = "Emergency contact cannot be yourself or a variation of your name.";
+          emNameErr.classList.remove('hidden');
+          isValid = false;
+        } else if (!nameRegex.test(emNameRaw)) {
+          emNameEl.classList.add('border-red-500', 'ring-2', 'ring-red-200');
+          emNameErr.innerText = "Name should contain only letters.";
+          emNameErr.classList.remove('hidden');
+          isValid = false;
+        } else {
+          emNameEl.classList.remove('border-red-500', 'ring-2', 'ring-red-200');
+          emNameErr.classList.add('hidden');
+        }
+      }
+
+      if (emPhoneDigits) {
+        if (mobileDigits && emPhoneDigits === mobileDigits) {
+          emPhoneEl.classList.add('border-red-500', 'ring-2', 'ring-red-200');
+          emPhoneErr.innerText = "Emergency phone cannot be your own phone number.";
+          emPhoneErr.classList.remove('hidden');
+          isValid = false;
+        } else if (!phoneRegex.test(document.getElementById('emergencyPhone').value.trim())) {
+          emPhoneEl.classList.add('border-red-500', 'ring-2', 'ring-red-200');
+          emPhoneErr.innerText = "Enter a valid phone number.";
+          emPhoneErr.classList.remove('hidden');
+          isValid = false;
+        } else {
+          emPhoneEl.classList.remove('border-red-500', 'ring-2', 'ring-red-200');
+          emPhoneErr.classList.add('hidden');
+        }
+      }
+
+      return isValid;
+    }
+
+    document.getElementById('emergencyName').addEventListener('blur', () => { checkEmergencyContact(); checkFormValidity(); });
+    document.getElementById('emergencyName').addEventListener('input', () => { checkEmergencyContact(); checkFormValidity(); });
+    document.getElementById('emergencyPhone').addEventListener('blur', () => { checkEmergencyContact(); checkFormValidity(); });
+    document.getElementById('emergencyPhone').addEventListener('input', () => { checkEmergencyContact(); checkFormValidity(); });
+    document.getElementById('firstName').addEventListener('blur', () => { checkEmergencyContact(); checkFormValidity(); });
+    document.getElementById('lastName').addEventListener('blur', () => { checkEmergencyContact(); checkFormValidity(); });
+    document.getElementById('mobile').addEventListener('blur', () => { checkEmergencyContact(); checkFormValidity(); });
+
+    function checkPinMatch() {
+      const pin = document.getElementById('userPin').value;
+      const confirm = document.getElementById('confirmPin').value;
+      const pinErr = document.getElementById('pinErr');
+      
+      if (confirm && pin !== confirm) {
+        document.getElementById('confirmPin').classList.add('border-red-500', 'ring-2', 'ring-red-200');
+        pinErr.classList.remove('hidden');
+        return false;
+      } else {
+        document.getElementById('confirmPin').classList.remove('border-red-500', 'ring-2', 'ring-red-200');
+        pinErr.classList.add('hidden');
+        return true;
+      }
+    }
+    document.getElementById('confirmPin').addEventListener('blur', () => { checkPinMatch(); checkFormValidity(); });
+    document.getElementById('confirmPin').addEventListener('input', () => { checkPinMatch(); checkFormValidity(); });
+    document.getElementById('userPin').addEventListener('input', () => { checkPinMatch(); checkFormValidity(); });
+
+    function checkSignatureMatch() {
+      const fn = document.getElementById('firstName').value.trim();
+      const ln = document.getElementById('lastName').value.trim();
+      const sig = document.getElementById('signature').value.trim();
+      const sigErr = document.getElementById('sigMatchError');
+      const sigEl = document.getElementById('signature');
+
+      if (!sig) {
+        sigEl.classList.remove('border-red-500', 'ring-2', 'ring-red-200');
+        sigErr.classList.add('hidden');
+        return false;
+      }
+
+      const expected = `${fn} ${ln}`.toLowerCase();
+      if (sig.toLowerCase() !== expected) {
+        sigEl.classList.add('border-red-500', 'ring-2', 'ring-red-200');
+        sigErr.classList.remove('hidden');
+        return false;
+      } else {
+        sigEl.classList.remove('border-red-500', 'ring-2', 'ring-red-200');
+        sigErr.classList.add('hidden');
+        return true;
+      }
+    }
+    document.getElementById('signature').addEventListener('blur', () => { checkSignatureMatch(); checkFormValidity(); });
+    document.getElementById('signature').addEventListener('input', () => { checkSignatureMatch(); checkFormValidity(); });
+
+    function checkFormValidity() {
+      const fn = document.getElementById('firstName').value.trim();
+      const ln = document.getElementById('lastName').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const mobile = document.getElementById('mobile').value.trim();
+      const genderChecked = document.querySelector('input[name="gender"]:checked');
+      const company = document.getElementById('company').value.trim();
+      const city = document.getElementById('city').value.trim();
+      const country = document.getElementById('country').value.trim();
+      const emName = document.getElementById('emergencyName').value.trim();
+      const emPhone = document.getElementById('emergencyPhone').value.trim();
+      const shirt = document.getElementById('tshirtSize').value.trim();
+      const photo = document.getElementById('photoRelease').checked;
+      const waiver = document.getElementById('liabilityWaiver').checked;
+      const privacy = document.getElementById('privacyNotice').checked;
+      const sig = document.getElementById('signature').value.trim();
+      const userPin = document.getElementById('userPin').value.trim();
+      const confirmPin = document.getElementById('confirmPin').value.trim();
+      const isEditing = Boolean(document.getElementById('regId').value);
+
+      const submitBtn = document.getElementById('submitBtn');
+
+      const isBaseValid = fn && ln && emailRegex.test(email) && phoneRegex.test(mobile) &&
+                          genderChecked && company && city && country && emName && phoneRegex.test(emPhone) &&
+                          shirt && photo && waiver && privacy && sig && (sig.toLowerCase() === `${fn} ${ln}`.toLowerCase()) &&
+                          checkEmergencyContact();
+
+      const isPinValid = isEditing || (userPin && confirmPin && userPin === confirmPin);
+
+      if (isBaseValid && isPinValid) {
+        submitBtn.disabled = false;
+        submitBtn.classList.remove('bg-gray-300', 'text-gray-500', 'cursor-not-allowed');
+        submitBtn.classList.add('bg-pts-navy', 'hover:bg-pts-blue', 'text-white', 'shadow-lg', 'cursor-pointer');
+      } else {
+        submitBtn.disabled = true;
+        submitBtn.classList.add('bg-gray-300', 'text-gray-500', 'cursor-not-allowed');
+        submitBtn.classList.remove('bg-pts-navy', 'hover:bg-pts-blue', 'text-white', 'shadow-lg', 'cursor-pointer');
+      }
+    }
+
+    document.getElementById('regForm').addEventListener('input', checkFormValidity);
+    document.getElementById('country').addEventListener('change', checkFormValidity);
+    document.getElementById('tshirtSize').addEventListener('change', checkFormValidity);
+    document.getElementById('photoRelease').addEventListener('change', checkFormValidity);
+    document.getElementById('liabilityWaiver').addEventListener('change', checkFormValidity);
+    document.getElementById('privacyNotice').addEventListener('change', checkFormValidity);
+    document.querySelectorAll('input[name="gender"]').forEach(el => el.addEventListener('change', checkFormValidity));
+
+    function generatePDFPass() {
+      const regId = document.getElementById('regId').value;
+      const fn = document.getElementById('firstName').value;
+      const ln = document.getElementById('lastName').value;
+      const genderEl = document.querySelector('input[name="gender"]:checked');
+      
+      document.getElementById('pdfRegId').innerText = regId;
+      document.getElementById('pdfName').innerText = `${fn} ${ln}`;
+      document.getElementById('pdfEmail').innerText = document.getElementById('email').value;
+      document.getElementById('pdfCompany').innerText = document.getElementById('company').value;
+      document.getElementById('pdfGender').innerText = genderEl ? genderEl.value : '';
+      document.getElementById('pdfShirt').innerText = document.getElementById('tshirtSize').value;
+      document.getElementById('pdfEmergPhone').innerText = document.getElementById('emergencyPhone').value;
+
+      const element = document.getElementById('pdfPassTemplate');
+      html2pdf().from(element).save(`${regId}_5K_Registration_Pass.pdf`);
+    }
+
+    document.getElementById('regForm').addEventListener('submit', function(e) {
+      if (!checkEmergencyContact()) {
+        e.preventDefault();
+        alert("Invalid Emergency Contact Details!\n\nYour emergency contact name and phone number cannot be your own details or a variation. Please provide someone else's contact info.");
+        document.getElementById('emergencyName').focus();
+        return;
+      }
+
+      const firstName = document.getElementById('firstName').value.trim();
+      const lastName = document.getElementById('lastName').value.trim();
+      const signature = document.getElementById('signature').value.trim();
+      const expectedFullName = `${firstName} ${lastName}`.toLowerCase();
+
+      if (signature.toLowerCase() !== expectedFullName) {
+        e.preventDefault();
+        document.getElementById('sigMatchError').classList.remove('hidden');
+        document.getElementById('signature').focus();
+        return;
+      }
+
+      const existingRegId = document.getElementById('regId').value;
+      const isEditing = Boolean(existingRegId);
+      const userPin = document.getElementById('userPin').value;
+      const confirmPin = document.getElementById('confirmPin').value;
+      const currentStatus = document.getElementById('currentPaymentStatus').value;
+
+      if (!isEditing && userPin !== confirmPin) {
+        e.preventDefault();
+        document.getElementById('pinErr').classList.remove('hidden');
+        document.getElementById('confirmPin').focus();
+        return;
+      }
+
+      const btnText = document.getElementById('btnText');
+      btnText.innerText = "Saving & Redirecting...";
+
+      const targetRegId = isEditing ? existingRegId : ('PTS-' + Math.floor(100000 + Math.random() * 900000));
+      document.getElementById('generatedRegId').value = targetRegId;
+
+      if (isEditing) {
+        if (currentStatus !== 'Paid') {
+          pendingRedirectUrl = `${STRIPE_PAYMENT_LINK}?client_reference_id=${targetRegId}`;
+        } else {
+          pendingRedirectUrl = "";
+          setTimeout(() => {
+            alert('Your registration details have been updated successfully!');
+            btnText.innerText = "Save Changes";
+          }, 1000);
+        }
+      } else {
+        pendingRedirectUrl = `${STRIPE_PAYMENT_LINK}?client_reference_id=${targetRegId}`;
+      }
+    });
+
     async function performLookup() {
-      const q = document.getElementById('lookupQuery').value.trim();
-      const pin = document.getElementById('lookupPin').value.trim();
+      const q = document.getElementById('lookupQuery').value;
+      const pin = document.getElementById('lookupPin').value;
       const msg = document.getElementById('lookupMessage');
-      if (!q || !pin) { msg.innerText = "Please enter both Email/ID and PIN."; return; }
+      
+      if (!q || !pin) {
+        msg.className = "mt-4 text-sm text-center text-red-500";
+        msg.innerText = "Please enter both Email/ID and Security PIN.";
+        return;
+      }
+
+      msg.className = "mt-4 text-sm text-center text-gray-500";
       msg.innerText = "Verifying...";
+
       try {
         const res = await fetch(`${SCRIPT_URL}?action=lookup&query=${encodeURIComponent(q)}&pin=${encodeURIComponent(pin)}`);
         const json = await res.json();
-        if (json.status === 'found') {
-          toggleModal('lookupModal');
-          setSitePhaseMode('prerace');
-        } else {
-          msg.innerText = "No matching record or incorrect PIN.";
-        }
-      } catch (e) { msg.innerText = "Lookup error."; }
-    }
 
-    window.addEventListener('DOMContentLoaded', initCourseMap);
+        if (json.status === 'found') {
+          setSitePhaseMode('prerace');
+          const d = json.data;
+          document.getElementById('regId').value = d.regId;
+          document.getElementById('userPin').value = d.pin;
+          document.getElementById('confirmPin').value = d.pin;
+          document.getElementById('currentPaymentStatus').value = d.paymentStatus;
+          
+          document.getElementById('pinSection').classList.add('hidden');
+
+          document.getElementById('firstName').value = d.firstName;
+          document.getElementById('lastName').value = d.lastName;
+          document.getElementById('email').value = d.email;
+          document.getElementById('mobile').value = d.mobile;
+          
+          if (d.gender) {
+            const genderRadio = document.querySelector(`input[name="gender"][value="${d.gender}"]`);
+            if (genderRadio) genderRadio.checked = true;
+          }
+
+          document.getElementById('company').value = d.company;
+          document.getElementById('city').value = d.city;
+          document.getElementById('state').value = d.state;
+          document.getElementById('country').value = d.country;
+          if (d.postalCode) document.getElementById('postalCode').value = d.postalCode;
+          document.getElementById('emergencyName').value = d.emergencyName;
+          document.getElementById('emergencyPhone').value = d.emergencyPhone;
+          document.getElementById('tshirtSize').value = d.tshirtSize;
+          document.getElementById('signature').value = d.signature;
+          
+          if (d.sigDate) {
+            document.getElementById('sigDate').value = d.sigDate.split('T')[0];
+          }
+
+          document.getElementById('photoRelease').checked = (d.photoRelease === true || d.photoRelease === 'Yes');
+          document.getElementById('liabilityWaiver').checked = (d.liabilityWaiver === true || d.liabilityWaiver === 'Yes');
+          
+          unlockPrivacyCheckbox();
+          if (d.privacyNotice !== undefined) {
+            document.getElementById('privacyNotice').checked = (d.privacyNotice === true || d.privacyNotice === 'Yes');
+          }
+
+          document.getElementById('formTitle').innerText = `Editing Registration (${d.regId})`;
+          
+          const badgeContainer = document.getElementById('paymentBadge');
+          badgeContainer.classList.remove('hidden');
+
+          if (d.paymentStatus === 'Paid') {
+            badgeContainer.innerHTML = `
+              <span class="bg-green-100 text-green-800 text-xs font-bold px-3 py-1.5 rounded-full"><i class="fa-solid fa-check mr-1"></i> Payment Complete</span>
+              <button type="button" onclick="generatePDFPass()" class="bg-pts-navy hover:bg-pts-blue text-white text-xs font-bold px-3 py-1.5 rounded-lg shadow transition flex items-center gap-1.5"><i class="fa-solid fa-file-pdf"></i> Download Official Pass</button>
+            `;
+            document.getElementById('btnText').innerText = "Save Changes";
+          } else {
+            badgeContainer.innerHTML = `<span class="bg-amber-100 text-amber-800 text-xs font-bold px-3 py-1 rounded-full"><i class="fa-solid fa-clock mr-1"></i> Payment Pending</span>`;
+            document.getElementById('btnText').innerText = "Save & Complete USD 75.00 Payment Now";
+          }
+
+          toggleModal('lookupModal');
+          msg.innerText = "";
+          checkFormValidity();
+        } else if (json.status === 'denied') {
+          msg.className = "mt-4 text-sm text-center text-red-600 font-semibold";
+          msg.innerText = "Access Denied: Incorrect Security PIN.";
+        } else {
+          msg.className = "mt-4 text-sm text-center text-red-500";
+          msg.innerText = "No matching registration found.";
+        }
+      } catch (e) {
+        msg.className = "mt-4 text-sm text-center text-red-500";
+        msg.innerText = "Error searching registration.";
+      }
+    }
   </script>
 </body>
 </html>
