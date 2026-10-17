@@ -195,29 +195,45 @@
   </header>
 
   <!-- ================================================================= -->
-  <!-- TOP PROMINENT DONATION HERO (ACTIVATES WHEN REGISTRATION CLOSED)   -->
+  <!-- GLOWING TOP CHARITY DONATION CALLOUT (ALWAYS VISIBLE & NOTICEABLE) -->
   <!-- ================================================================= -->
-  <div id="topDonationHero" class="hidden max-w-6xl mx-auto px-4 sm:px-6 pt-4 w-full">
-    <div class="bg-gradient-to-r from-red-600 via-pts-accent to-red-700 text-white rounded-2xl p-4 sm:p-5 shadow-xl flex flex-col md:flex-row items-center justify-between gap-4 border border-red-400">
-      <div class="flex items-center gap-3.5 text-center md:text-left">
-        <div class="w-12 h-12 rounded-2xl bg-white/20 flex items-center justify-center text-amber-300 text-2xl flex-shrink-0 shadow">
-          <i class="fa-solid fa-hand-holding-heart"></i>
+  <div id="prominentDonationBanner" class="max-w-6xl mx-auto px-4 sm:px-6 -mt-3 sm:-mt-4 relative z-30 w-full mb-3">
+    <div class="relative group">
+      <!-- Pulsing ambient glow aura -->
+      <div class="absolute -inset-1 bg-gradient-to-r from-red-600 via-amber-400 to-red-600 rounded-2xl blur-md opacity-85 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-pulse"></div>
+      
+      <div class="relative bg-gradient-to-r from-pts-navy via-blue-950 to-pts-navy border-2 border-amber-400 text-white p-4 sm:p-5 rounded-2xl shadow-2xl flex flex-col md:flex-row items-center justify-between gap-4">
+        <div class="flex items-center gap-3.5 text-center md:text-left">
+          <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-tr from-amber-400 to-red-500 text-pts-navy flex items-center justify-center text-2xl sm:text-3xl flex-shrink-0 shadow-lg animate-bounce">
+            <i class="fa-solid fa-heart text-pts-navy"></i>
+          </div>
+          <div>
+            <div class="flex items-center justify-center md:justify-start gap-2">
+              <span class="bg-amber-400 text-pts-navy text-[10px] sm:text-xs font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full shadow-sm">
+                Support Our Charities
+              </span>
+              <span class="text-amber-300 text-xs font-bold hidden sm:inline">• 100% Goes to Nonprofits</span>
+            </div>
+            <h3 class="text-base sm:text-xl font-black mt-1 text-white">
+              Not Running or Walking? You Can Still Make an Impact!
+            </h3>
+            <p class="text-xs sm:text-sm text-blue-100 mt-0.5">
+              Proceeds directly benefit the <strong>Global Moving Foundation</strong> &amp; <strong>Coastal K9 German Shepherd Rescue</strong>.
+            </p>
+          </div>
         </div>
-        <div>
-          <h3 class="text-base sm:text-lg font-black leading-snug">Online Registration is Closed — But You Can Still Support Our Charities!</h3>
-          <p class="text-xs sm:text-sm text-red-100 mt-0.5">100% of donations directly benefit Global Moving Foundation &amp; Coastal K9 German Shepherd Rescue.</p>
-        </div>
+
+        <a href="https://donate.stripe.com/eVq6oz1MEdinausaBR3gk02" target="_blank" rel="noopener noreferrer" class="w-full md:w-auto bg-gradient-to-r from-amber-400 via-amber-300 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-pts-navy font-black py-3 sm:py-3.5 px-6 rounded-xl text-sm sm:text-base shadow-xl transition-all transform hover:scale-105 active:scale-95 flex items-center justify-center gap-2 whitespace-nowrap flex-shrink-0">
+          <i class="fa-solid fa-hand-holding-dollar text-pts-accent text-lg"></i> Donate Any Amount Now
+        </a>
       </div>
-      <a href="https://donate.stripe.com/eVq6oz1MEdinausaBR3gk02" target="_blank" rel="noopener noreferrer" class="w-full md:w-auto bg-white text-pts-accent hover:bg-amber-300 hover:text-pts-navy font-black py-3 px-6 rounded-xl text-sm shadow-lg transition whitespace-nowrap flex items-center justify-center gap-2 flex-shrink-0">
-        <i class="fa-solid fa-heart text-pts-accent"></i> Donate Any Amount Now
-      </a>
     </div>
   </div>
 
   <!-- ================================================================= -->
   <!-- EVENT INFO BAR                                                    -->
   <!-- ================================================================= -->
-  <section class="max-w-6xl mx-auto px-4 sm:px-6 mt-4 sm:mt-5 relative z-20 w-full">
+  <section class="max-w-6xl mx-auto px-4 sm:px-6 relative z-20 w-full">
     <div class="bg-white rounded-xl shadow-lg border border-gray-100 p-4 sm:p-5 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-5 gap-3.5 sm:gap-4 text-xs sm:text-sm">
       <div class="flex items-start space-x-2.5 sm:space-x-3 col-span-1">
         <i class="fa-solid fa-calendar-day text-pts-navy text-base sm:text-lg mt-0.5 flex-shrink-0"></i>
@@ -279,7 +295,7 @@
   </div>
 
   <!-- ================================================================= -->
-  <!-- HIGH-VISIBILITY RACE DAY SOCIAL STUDIO CALLOUT (WHEN ACTIVE)      -->
+  <!-- HIGH-VISIBILITY RACE DAY SOCIAL STUDIO CALLOUT (WHEN CLOSED)      -->
   <!-- ================================================================= -->
   <div id="raceDayStudioBanner" class="hidden max-w-6xl mx-auto px-4 sm:px-6 mt-4 w-full">
     <div class="bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 text-pts-navy p-4 sm:p-5 rounded-2xl shadow-xl border-2 border-amber-300 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
@@ -349,7 +365,7 @@
         <div id="mapWrapperContainer" class="lg:col-span-7 relative bg-blue-950 h-[370px] sm:h-[460px] lg:h-auto lg:min-h-[540px] flex flex-col transition-all">
           <div id="courseMap" class="w-full h-full flex-grow"></div>
 
-          <!-- REPOSITIONED ON MOBILE: Stacks below Leaflet Zoom Buttons at top-20 to completely prevent overlap with top-right Map/Satellite buttons -->
+          <!-- Stacks cleanly below Leaflet zoom buttons on mobile -->
           <div class="absolute top-20 left-2.5 sm:top-3 sm:left-14 z-[400] flex flex-col sm:flex-row items-start sm:items-center gap-1.5">
             <button type="button" id="fsToggleBtn" onclick="toggleFullScreenMap()" class="bg-pts-navy/95 hover:bg-pts-blue text-white backdrop-blur-sm px-2.5 sm:px-3 py-1.5 rounded-xl shadow-lg border border-white/20 text-[10px] sm:text-xs font-bold flex items-center gap-1.5 transition">
               <i id="fsToggleIcon" class="fa-solid fa-expand text-amber-300"></i>
@@ -362,7 +378,7 @@
             </button>
           </div>
 
-          <!-- Top-Right: Map / Satellite / Reset (Clean and uncrowded on all screen widths) -->
+          <!-- Map / Satellite toggles in top-right with zero overlap -->
           <div class="absolute top-2.5 right-2.5 sm:top-3 sm:right-3 z-[400] bg-white/95 backdrop-blur-sm rounded-xl shadow-lg border border-gray-200 p-1 flex items-center gap-0.5 sm:gap-1 text-[11px] sm:text-xs font-bold">
             <button type="button" id="btnMapStreet" onclick="setGoogleMapMode('streets')" class="px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-lg bg-pts-navy text-white transition flex items-center gap-1">
               <i class="fa-solid fa-map"></i> Map
@@ -712,7 +728,7 @@
             <i class="fa-solid fa-arrow-right ml-2"></i>
           </button>
 
-          <!-- Always active donation container -->
+          <!-- Always active donation container at end of form -->
           <div class="w-full bg-pts-light rounded-2xl p-4 border border-blue-200 text-center shadow-md">
             <span class="text-xs sm:text-sm font-bold uppercase tracking-wider text-pts-navy block mb-2">
               <i class="fa-solid fa-heart text-pts-accent mr-1"></i> Not Running or Walking?
@@ -843,7 +859,7 @@
             </div>
           </div>
 
-          <!-- Sharing Notice / Status Helper -->
+          <!-- Sharing Status Helper -->
           <div id="cardShareLockedNotice" class="bg-amber-50 border border-amber-200 text-amber-800 p-3 rounded-xl text-xs flex items-center gap-2.5">
             <i class="fa-solid fa-circle-info text-amber-600 text-base flex-shrink-0"></i>
             <span>Add your selfie/photo and enter your name above to unlock sharing and photo saving.</span>
@@ -967,7 +983,7 @@
     // When "on": Registration is open, and "Finisher Social Badge Studio" is hidden.
     // Set to "off" to close registration: Disables registration fields, moves charity donation to top,
     // and unlocks the Finisher Social Card Studio prominently for Race Day!
-    const REGISTRATION_STATUS = "off"; // "on" | "off"
+    const REGISTRATION_STATUS = "on"; // "on" | "off"
 
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwO7ItQ6sTOC3wbyGDk2hU8qEjD4voEKbNYfdOQU_t_X53AE1FjRZ6fiDDQkywQDBsU/exec";
     const STRIPE_PAYMENT_LINK = "https://buy.stripe.com/6oU14ffDuemrfOM11h3gk01";
@@ -1013,7 +1029,6 @@
       const heroRegBtn = document.getElementById('heroRegBtn');
       const heroSocialStudioBtn = document.getElementById('heroSocialStudioBtn');
       const raceDayStudioBanner = document.getElementById('raceDayStudioBanner');
-      const topDonationHero = document.getElementById('topDonationHero');
       const formClosedAlert = document.getElementById('formClosedAlert');
       const submitBtn = document.getElementById('submitBtn');
       const btnText = document.getElementById('btnText');
@@ -1026,9 +1041,6 @@
 
         headerFee.classList.add('hidden');
         headerClosed.classList.remove('hidden');
-
-        // Bring donation banner to top of page
-        topDonationHero.classList.remove('hidden');
 
         // Reveal the Social Card Studio prominently for Race Day
         heroSocialStudioBtn.classList.remove('hidden');
@@ -1051,10 +1063,9 @@
         btnText.innerText = "Registration is Closed";
       } else {
         // --- OPEN / REGISTRATION ON MODE ---
-        // As instructed: when registration is on, do not show the Finisher Social Badge Studio
+        // Finisher Social Badge Studio is hidden while registration is open
         heroSocialStudioBtn.classList.add('hidden');
         raceDayStudioBanner.classList.add('hidden');
-        topDonationHero.classList.add('hidden');
         formClosedAlert.classList.add('hidden');
       }
     }
@@ -1401,6 +1412,22 @@
       img.onload = () => { loadedLogos[key] = img; renderFinisherCanvas(); };
     });
 
+    // Satellite Map Preload for Swiss Bento
+    let loadedSatelliteImage = null;
+    const satCandidates = ['5K_Satellite_Map.jpg', '5K_Course_Map.jpg', '5K_Course_Map.png'];
+    function tryLoadSatelliteImage(idx) {
+      if (idx >= satCandidates.length) return;
+      const img = new Image();
+      img.crossOrigin = "anonymous";
+      img.src = satCandidates[idx];
+      img.onload = () => {
+        loadedSatelliteImage = img;
+        renderFinisherCanvas();
+      };
+      img.onerror = () => tryLoadSatelliteImage(idx + 1);
+    }
+    tryLoadSatelliteImage(0);
+
     if (document.fonts && document.fonts.ready) {
       document.fonts.ready.then(() => renderFinisherCanvas());
     }
@@ -1746,6 +1773,102 @@
       ctx.restore();
     }
 
+    // Google Maps Satellite Image Overlay for Swiss Bento Design
+    function drawSatelliteCourseBento(ctx, x, y, w, h) {
+      ctx.save();
+      drawRoundedRect(ctx, x, y, w, h, 26);
+      ctx.clip();
+
+      const satImg = loadedSatelliteImage;
+      if (satImg && satImg.complete && satImg.naturalWidth > 0) {
+        // Draw photographic satellite aerial map
+        const imgRatio = satImg.naturalWidth / satImg.naturalHeight;
+        const boxRatio = w / h;
+        let dw, dh;
+        if (imgRatio > boxRatio) {
+          dh = h; dw = h * imgRatio;
+        } else {
+          dw = w; dh = w / imgRatio;
+        }
+        const dx = x + (w - dw) / 2;
+        const dy = y + (h - dh) / 2;
+        ctx.drawImage(satImg, dx, dy, dw, dh);
+
+        // High-contrast satellite color grade
+        const darkGrad = ctx.createLinearGradient(x, y, x, y + h);
+        darkGrad.addColorStop(0, 'rgba(4, 15, 30, 0.55)');
+        darkGrad.addColorStop(0.5, 'rgba(4, 15, 30, 0.25)');
+        darkGrad.addColorStop(1, 'rgba(4, 15, 30, 0.7)');
+        ctx.fillStyle = darkGrad;
+        ctx.fillRect(x, y, w, h);
+      } else {
+        // High-fidelity dark satellite harbor/bay rendering
+        const satGrad = ctx.createLinearGradient(x, y, x + w, y + h);
+        satGrad.addColorStop(0, '#0a233a');
+        satGrad.addColorStop(0.5, '#071626');
+        satGrad.addColorStop(1, '#040d17');
+        ctx.fillStyle = satGrad;
+        ctx.fillRect(x, y, w, h);
+
+        // Coastal contour
+        ctx.fillStyle = 'rgba(25, 45, 65, 0.85)';
+        ctx.beginPath();
+        ctx.moveTo(x + w * 0.45, y);
+        ctx.bezierCurveTo(x + w * 0.5, y + h * 0.3, x + w * 0.4, y + h * 0.7, x + w * 0.7, y + h);
+        ctx.lineTo(x + w, y + h);
+        ctx.lineTo(x + w, y);
+        ctx.closePath();
+        ctx.fill();
+
+        // Satellite coordinate grid
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.06)';
+        ctx.lineWidth = 1;
+        for (let gy = y; gy < y + h; gy += 45) {
+          ctx.beginPath(); ctx.moveTo(x, gy); ctx.lineTo(x + w, gy); ctx.stroke();
+        }
+        for (let gx = x; gx < x + w; gx += 45) {
+          ctx.beginPath(); ctx.moveTo(gx, y); ctx.lineTo(gx, y + h); ctx.stroke();
+        }
+      }
+
+      // Google Satellite Top Badge
+      drawRoundedRect(ctx, x + 14, y + 14, w - 28, 38, 12);
+      ctx.fillStyle = 'rgba(0, 20, 45, 0.88)';
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+
+      ctx.textAlign = 'center';
+      ctx.fillStyle = '#38BDF8';
+      ctx.font = '700 13px "Outfit", sans-serif';
+      ctx.fillText('🛰️ GOOGLE SATELLITE OVERLAY', x + w / 2, y + 38);
+
+      // Glowing Neon Route Trace over Satellite Imagery
+      drawCourseTraceMiniMap(ctx, x + 16, y + 65, w - 32, h - 165, '#E31837', '#FBBF24');
+
+      // Bottom Satellite Telemetry HUD
+      drawRoundedRect(ctx, x + 14, y + h - 84, w - 28, 68, 16);
+      ctx.fillStyle = 'rgba(3, 12, 28, 0.92)';
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(251, 191, 36, 0.45)';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      ctx.textAlign = 'center';
+      ctx.fillStyle = '#FBBF24';
+      ctx.font = '800 15px "Outfit", sans-serif';
+      ctx.fillText('5K WATERFRONT ROUTE', x + w / 2, y + h - 56);
+      ctx.fillStyle = '#E2E8F0';
+      ctx.font = '600 12px "Inter", sans-serif';
+      ctx.fillText('San Diego Bay • 5.08 km', x + w / 2, y + h - 35);
+      ctx.fillStyle = '#94A3B8';
+      ctx.font = '500 10px "Inter", sans-serif';
+      ctx.fillText('32.7082° N, 117.1701° W', x + w / 2, y + h - 20);
+
+      ctx.restore();
+    }
+
     function drawAllFourLogosBar(ctx, x, y, w, h) {
       ctx.save();
       drawRoundedRect(ctx, x, y, w, h, 24);
@@ -1840,7 +1963,7 @@
         ctx.font = '800 21px "Outfit", sans-serif';
         ctx.fillText('CHARITY 5K FUN RUN & WALK FINISHER', W / 2, topPillY + 152);
 
-        // Hero Photo Window (adapts to Post vs Story)
+        // Hero Photo Window
         const photoY = topPillY + 175;
         const photoH = isStory ? 1040 : 640;
         drawRoundedRect(ctx, 60, photoY, W - 120, photoH, 30);
@@ -1957,7 +2080,7 @@
 
       } else if (currentDesignIndex === 2) {
         // =====================================================================
-        // DESIGN 3: MODERN SWISS BENTO GRID
+        // DESIGN 3: MODERN SWISS BENTO GRID (WITH GOOGLE SATELLITE OVERLAY)
         // =====================================================================
         ctx.fillStyle = '#F1F5F9';
         ctx.fillRect(0, 0, W, H);
@@ -1987,18 +2110,8 @@
         ctx.fill();
         drawUserPhotoInBox(ctx, 56, bentoY + 8, 604, bentoH - 16, 24);
 
-        // Right Bento: Course Map Badge
-        drawRoundedRect(ctx, 690, bentoY, 342, bentoH, 30);
-        ctx.fillStyle = '#071936';
-        ctx.fill();
-        drawCourseTraceMiniMap(ctx, 712, bentoY + 30, 298, bentoH - 120, '#E31837', '#FBBF24');
-        ctx.textAlign = 'center';
-        ctx.fillStyle = '#FBBF24';
-        ctx.font = '800 20px "Outfit", sans-serif';
-        ctx.fillText('OFFICIAL 5K FINISHER', 861, bentoY + bentoH - 65);
-        ctx.fillStyle = '#FFFFFF';
-        ctx.font = '600 16px "Inter", sans-serif';
-        ctx.fillText('SAN DIEGO WATERFRONT', 861, bentoY + bentoH - 32);
+        // Right Bento: Enhanced Google Maps Satellite Overlay
+        drawSatelliteCourseBento(ctx, 690, bentoY, 342, bentoH);
 
         // Identity Bento
         const idY = bentoY + bentoH + 20;
