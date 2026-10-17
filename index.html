@@ -55,12 +55,22 @@
       background-color: #FFF5F5;
       box-shadow: 0 8px 15px -3px rgba(227, 24, 55, 0.15);
     }
+    /* Fullscreen Map Container Mode */
     .map-fullscreen-active {
       position: fixed !important;
       inset: 0 !important;
       width: 100vw !important;
       height: 100vh !important;
       z-index: 999 !important;
+    }
+    /* 3D Perspective Tilt Mode for Leaflet */
+    .map-3d-active .leaflet-map-pane {
+      transform: perspective(950px) rotateX(36deg) scale(1.12) !important;
+      transform-origin: 50% 65% !important;
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    }
+    .leaflet-map-pane {
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .no-scrollbar::-webkit-scrollbar {
       display: none;
@@ -199,7 +209,6 @@
   <!-- ================================================================= -->
   <div id="prominentDonationBanner" class="max-w-6xl mx-auto px-4 sm:px-6 -mt-3 sm:-mt-4 relative z-30 w-full mb-3">
     <div class="relative group">
-      <!-- Pulsing ambient glow aura -->
       <div class="absolute -inset-1 bg-gradient-to-r from-red-600 via-amber-400 to-red-600 rounded-2xl blur-md opacity-85 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-pulse"></div>
       
       <div class="relative bg-gradient-to-r from-pts-navy via-blue-950 to-pts-navy border-2 border-amber-400 text-white p-4 sm:p-5 rounded-2xl shadow-2xl flex flex-col md:flex-row items-center justify-between gap-4">
@@ -231,7 +240,7 @@
   </div>
 
   <!-- ================================================================= -->
-  <!-- EVENT INFO BAR (WITH UPDATED SHIRT & BIB PICK UP DETAILS)         -->
+  <!-- EVENT INFO BAR (WITH EXACT SHIRT & BIB PICK UP DETAILS)           -->
   <!-- ================================================================= -->
   <section class="max-w-6xl mx-auto px-4 sm:px-6 relative z-20 w-full">
     <div class="bg-white rounded-xl shadow-lg border border-gray-100 p-4 sm:p-5 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-5 gap-3.5 sm:gap-4 text-xs sm:text-sm">
@@ -362,14 +371,20 @@
 
       <div class="grid grid-cols-1 lg:grid-cols-12">
         
-        <div id="mapWrapperContainer" class="lg:col-span-7 relative bg-blue-950 h-[370px] sm:h-[460px] lg:h-auto lg:min-h-[540px] flex flex-col transition-all">
+        <div id="mapWrapperContainer" class="lg:col-span-7 relative bg-blue-950 h-[370px] sm:h-[460px] lg:h-auto lg:min-h-[540px] flex flex-col transition-all overflow-hidden">
           <div id="courseMap" class="w-full h-full flex-grow"></div>
 
-          <!-- Stacks cleanly below Leaflet zoom buttons on mobile -->
+          <!-- TOP-LEFT CONTROLS: Full Screen Toggle, Full-Screen Simulation Button & Touch Pan Lock -->
           <div class="absolute top-20 left-2.5 sm:top-3 sm:left-14 z-[400] flex flex-col sm:flex-row items-start sm:items-center gap-1.5">
             <button type="button" id="fsToggleBtn" onclick="toggleFullScreenMap()" class="bg-pts-navy/95 hover:bg-pts-blue text-white backdrop-blur-sm px-2.5 sm:px-3 py-1.5 rounded-xl shadow-lg border border-white/20 text-[10px] sm:text-xs font-bold flex items-center gap-1.5 transition">
               <i id="fsToggleIcon" class="fa-solid fa-expand text-amber-300"></i>
               <span id="fsToggleText">Full Screen</span>
+            </button>
+
+            <!-- FULL SCREEN RACE SIMULATION BUTTON -->
+            <button type="button" id="fsSimRunBtn" onclick="toggleCourseSimulation()" class="bg-pts-accent/95 hover:bg-red-700 text-white backdrop-blur-sm px-2.5 sm:px-3 py-1.5 rounded-xl shadow-lg border border-white/25 text-[10px] sm:text-xs font-bold flex items-center gap-1.5 transition">
+              <i id="fsSimRunIcon" class="fa-solid fa-play text-amber-300"></i>
+              <span id="fsSimRunText">Simulate Route</span>
             </button>
 
             <button type="button" id="mobileTouchLockBtn" onclick="toggleMobileMapTouch()" class="lg:hidden bg-pts-navy/90 text-white backdrop-blur-sm px-2.5 py-1.5 rounded-xl shadow-lg border border-white/20 text-[10px] font-bold flex items-center gap-1.5">
@@ -378,13 +393,16 @@
             </button>
           </div>
 
-          <!-- Map / Satellite toggles in top-right with zero overlap -->
+          <!-- TOP-RIGHT CONTROLS: Map | Satellite | 3D View | Reset Overview -->
           <div class="absolute top-2.5 right-2.5 sm:top-3 sm:right-3 z-[400] bg-white/95 backdrop-blur-sm rounded-xl shadow-lg border border-gray-200 p-1 flex items-center gap-0.5 sm:gap-1 text-[11px] sm:text-xs font-bold">
             <button type="button" id="btnMapStreet" onclick="setGoogleMapMode('streets')" class="px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-lg bg-pts-navy text-white transition flex items-center gap-1">
               <i class="fa-solid fa-map"></i> Map
             </button>
             <button type="button" id="btnMapSat" onclick="setGoogleMapMode('hybrid')" class="px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-lg text-gray-700 hover:bg-gray-100 transition flex items-center gap-1">
               <i class="fa-solid fa-satellite"></i> Satellite
+            </button>
+            <button type="button" id="btnMap3D" onclick="setGoogleMapMode('3d')" class="px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-lg text-gray-700 hover:bg-gray-100 transition flex items-center gap-1">
+              <i class="fa-solid fa-cube text-pts-accent"></i> 3D View
             </button>
             <button type="button" onclick="resetCourseMapView()" class="px-2 py-1 sm:py-1.5 rounded-lg text-pts-blue hover:bg-blue-50 transition flex items-center gap-1" title="Reset Map Overview">
               <i class="fa-solid fa-arrows-to-circle"></i>
@@ -1012,6 +1030,7 @@
     function downloadICS() {
       const icsData = "BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nSUMMARY:IAM & PARAMOUNT Charity 5K Fun Run/Walk\nDESCRIPTION:IAM & Paramount Charity 5K Fun Run/Walk Event. Check-in starts at 6:30 AM.\nLOCATION:Manchester Grand Hyatt Hotel\nDTSTART:20261023T133000Z\nDTEND:20261023T160000Z\nEND:VEVENT\nEND:VCALENDAR";
       const blob = new Blob([icsData], { type: 'text/calendar;charset=utf-8' });
+      const link = document.createElement('a');
       link.href = window.URL.createObjectURL(blob);
       link.setAttribute('download', 'IAM_Paramount_5K.ics');
       document.body.appendChild(link);
@@ -1033,7 +1052,6 @@
       const btnText = document.getElementById('btnText');
 
       if (isClosed) {
-        // --- CLOSED / RACE DAY MODE ---
         statusText.innerText = "Closed";
         statusText.className = "text-red-600 font-bold";
         statusIcon.className = "fa-solid fa-circle-xmark text-red-600 text-base sm:text-lg mt-0.5 flex-shrink-0";
@@ -1041,7 +1059,6 @@
         headerFee.classList.add('hidden');
         headerClosed.classList.remove('hidden');
 
-        // Reveal the Social Card Studio prominently for Race Day
         heroSocialStudioBtn.classList.remove('hidden');
         raceDayStudioBanner.classList.remove('hidden');
 
@@ -1051,7 +1068,6 @@
 
         formClosedAlert.classList.remove('hidden');
 
-        // Disable all form inputs
         document.querySelectorAll('#regForm input, #regForm select').forEach(el => {
           el.disabled = true;
           el.classList.add('bg-gray-100', 'cursor-not-allowed');
@@ -1061,7 +1077,6 @@
         submitBtn.className = "w-full bg-gray-300 text-gray-500 font-bold py-4 px-6 rounded-xl shadow flex items-center justify-center text-base sm:text-lg cursor-not-allowed";
         btnText.innerText = "Registration is Closed";
       } else {
-        // --- OPEN / REGISTRATION ON MODE ---
         heroSocialStudioBtn.classList.add('hidden');
         raceDayStudioBanner.classList.add('hidden');
         formClosedAlert.classList.add('hidden');
@@ -1266,24 +1281,44 @@
       }
     }
 
+    // 3D & Google Layer Mode Switcher
     function setGoogleMapMode(mode) {
+      const mapWrapper = document.getElementById('mapWrapperContainer');
       const btnStreet = document.getElementById('btnMapStreet');
       const btnSat = document.getElementById('btnMapSat');
-      const activeClass = "px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-lg bg-pts-navy text-white transition flex items-center gap-1";
+      const btn3D = document.getElementById('btnMap3D');
+
+      const activeClass = "px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-lg bg-pts-navy text-white transition flex items-center gap-1 shadow-sm";
       const inactiveClass = "px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-lg text-gray-700 hover:bg-gray-100 transition flex items-center gap-1";
 
       courseMap.removeLayer(googleStreetsLayer);
       courseMap.removeLayer(googleHybridLayer);
 
-      if (mode === 'hybrid') {
+      if (mode === '3d') {
+        courseMap.addLayer(googleHybridLayer);
+        mapWrapper.classList.add('map-3d-active');
+        btn3D.className = activeClass;
+        btnStreet.className = inactiveClass;
+        btnSat.className = inactiveClass;
+      } else if (mode === 'hybrid') {
+        mapWrapper.classList.remove('map-3d-active');
         courseMap.addLayer(googleHybridLayer);
         btnSat.className = activeClass;
         btnStreet.className = inactiveClass;
+        btn3D.className = inactiveClass;
       } else {
+        mapWrapper.classList.remove('map-3d-active');
         courseMap.addLayer(googleStreetsLayer);
         btnStreet.className = activeClass;
         btnSat.className = inactiveClass;
+        btn3D.className = inactiveClass;
       }
+
+      setTimeout(() => {
+        if (courseMap) {
+          courseMap.invalidateSize();
+        }
+      }, 300);
     }
 
     function focusCourseStage(index) {
@@ -1307,6 +1342,8 @@
     function toggleCourseSimulation() {
       const btnText = document.getElementById('simRunText');
       const btnIcon = document.getElementById('simRunIcon');
+      const fsBtnText = document.getElementById('fsSimRunText');
+      const fsBtnIcon = document.getElementById('fsSimRunIcon');
       const overlay = document.getElementById('simStatusOverlay');
 
       if (simInterval) {
@@ -1314,6 +1351,9 @@
         simInterval = null;
         btnText.innerText = "Simulate Course Route";
         btnIcon.className = "fa-solid fa-play";
+        if (fsBtnText) fsBtnText.innerText = "Simulate Route";
+        if (fsBtnIcon) fsBtnIcon.className = "fa-solid fa-play text-amber-300";
+
         overlay.classList.add('hidden');
         if (runnerMarker) {
           courseMap.removeLayer(runnerMarker);
@@ -1325,6 +1365,9 @@
       overlay.classList.remove('hidden');
       btnText.innerText = "Stop Simulation";
       btnIcon.className = "fa-solid fa-stop";
+      if (fsBtnText) fsBtnText.innerText = "Stop";
+      if (fsBtnIcon) fsBtnIcon.className = "fa-solid fa-stop text-amber-300";
+
       simIndex = 0;
 
       const runnerIcon = L.divIcon({
@@ -1344,6 +1387,9 @@
           simInterval = null;
           btnText.innerText = "Replay Course Route";
           btnIcon.className = "fa-solid fa-rotate-right";
+          if (fsBtnText) fsBtnText.innerText = "Replay";
+          if (fsBtnIcon) fsBtnIcon.className = "fa-solid fa-rotate-right text-amber-300";
+
           document.getElementById('simStageLabel').innerText = "Start/Finish area at the North Embarcadero Marina";
           document.getElementById('simDistanceLabel').innerText = "100%";
           document.getElementById('simProgressBar').style.width = "100%";
@@ -1418,7 +1464,7 @@
         if (isBlackBg) {
           for (let i = 0; i < d.length; i += 4) {
             if (d[i] < 25 && d[i+1] < 25 && d[i+2] < 25) {
-              d[i+3] = 0; // key out dark background
+              d[i+3] = 0;
             }
           }
           octx.putImageData(idata, 0, 0);
@@ -1894,17 +1940,17 @@
         ctx.font = '800 21px "Outfit", sans-serif';
         ctx.fillText('CHARITY 5K FUN RUN & WALK FINISHER', W / 2, topPillY + 152);
 
-        // Expanded Photo Window (Takes full advantage of Story height)
+        // Expanded Photo Window
         const photoY = topPillY + 175;
-        const photoH = isStory ? 1150 : 650;
+        const photoH = isStory ? 1080 : 640;
         drawRoundedRect(ctx, 60, photoY, W - 120, photoH, 30);
         ctx.fillStyle = '#D4AF37';
         ctx.fill();
         drawUserPhotoInBox(ctx, 64, photoY + 4, W - 128, photoH - 8, 27);
 
         // Identity Glass Bar
-        const idY = photoY + photoH + 20;
-        const idH = isStory ? 210 : 180;
+        const idY = photoY + photoH + (isStory ? 28 : 20);
+        const idH = isStory ? 230 : 185;
         drawRoundedRect(ctx, 60, idY, W - 120, idH, 26);
         ctx.fillStyle = 'rgba(6, 18, 38, 0.94)';
         ctx.fill();
@@ -1915,26 +1961,26 @@
         ctx.textAlign = 'left';
         if (runnerCompany) {
           ctx.fillStyle = '#D4AF37';
-          ctx.font = '700 21px "Outfit", sans-serif';
-          ctx.fillText(runnerCompany, 96, idY + 44);
+          ctx.font = '700 22px "Outfit", sans-serif';
+          ctx.fillText(runnerCompany, 96, idY + (isStory ? 52 : 46));
           ctx.fillStyle = '#FFFFFF';
-          ctx.font = '900 46px "Outfit", sans-serif';
-          ctx.fillText(runnerName, 96, idY + 98);
+          ctx.font = '900 48px "Outfit", sans-serif';
+          ctx.fillText(runnerName, 96, idY + (isStory ? 114 : 100));
         } else {
           ctx.fillStyle = '#FFFFFF';
-          ctx.font = '900 50px "Outfit", sans-serif';
-          ctx.fillText(runnerName, 96, idY + 76);
+          ctx.font = '900 52px "Outfit", sans-serif';
+          ctx.fillText(runnerName, 96, idY + (isStory ? 94 : 80));
         }
 
         ctx.fillStyle = '#93C5FD';
         ctx.font = '500 19px "Inter", sans-serif';
-        ctx.fillText('Supporting Global Moving Foundation & Coastal K9 Rescue', 96, idY + (runnerCompany ? 144 : 124));
+        ctx.fillText('Supporting Global Moving Foundation & Coastal K9 Rescue', 96, idY + (runnerCompany ? (isStory ? 168 : 146) : (isStory ? 152 : 128)));
 
         drawCourseTraceMiniMap(ctx, 835, idY + 14, 150, idH - 28, '#FDE68A', '#D4AF37');
 
         // Logos bar
-        const logoY = idY + idH + 18;
-        const logoH = isStory ? 180 : 155;
+        const logoY = idY + idH + (isStory ? 26 : 18);
+        const logoH = isStory ? 200 : 155;
         drawAllFourLogosBar(ctx, 60, logoY, W - 120, logoH);
 
       } else if (currentDesignIndex === 1) {
@@ -1950,7 +1996,7 @@
         ctx.fillStyle = topVig;
         ctx.fillRect(0, 0, W, 360);
 
-        const botVigStart = isStory ? 1340 : 760;
+        const botVigStart = isStory ? 1280 : 740;
         const botVig = ctx.createLinearGradient(0, botVigStart, 0, H);
         botVig.addColorStop(0, 'rgba(4, 13, 26, 0)');
         botVig.addColorStop(0.35, 'rgba(4, 15, 32, 0.95)');
@@ -1977,8 +2023,8 @@
         ctx.font = '700 20px "Outfit", sans-serif';
         ctx.fillText('CHARITY 5K FUN RUN & WALK  •  FRIDAY, 23 OCT 2026  •  SAN DIEGO BAY', 60, 222);
 
-        const idY = isStory ? 1450 : 890;
-        const idH = isStory ? 220 : 200;
+        const idY = isStory ? 1420 : 880;
+        const idH = isStory ? 240 : 200;
         drawRoundedRect(ctx, 60, idY, W - 120, idH, 28);
         ctx.fillStyle = 'rgba(10, 30, 60, 0.88)';
         ctx.fill();
@@ -1989,29 +2035,29 @@
         if (runnerCompany) {
           ctx.fillStyle = '#38BDF8';
           ctx.font = '700 22px "Outfit", sans-serif';
-          ctx.fillText(runnerCompany, 96, idY + 48);
+          ctx.fillText(runnerCompany, 96, idY + (isStory ? 54 : 48));
           ctx.fillStyle = '#FFFFFF';
           ctx.font = '900 48px "Outfit", sans-serif';
-          ctx.fillText(runnerName, 96, idY + 106);
+          ctx.fillText(runnerName, 96, idY + (isStory ? 116 : 106));
         } else {
           ctx.fillStyle = '#FFFFFF';
           ctx.font = '900 52px "Outfit", sans-serif';
-          ctx.fillText(runnerName, 96, idY + 84);
+          ctx.fillText(runnerName, 96, idY + (isStory ? 96 : 84));
         }
 
         ctx.fillStyle = '#CBD5E1';
         ctx.font = '500 19px "Inter", sans-serif';
-        ctx.fillText('5.08 KM Waterfront Promenade • Global Moving Foundation & Coastal K9 Rescue', 96, idY + (runnerCompany ? 156 : 136));
+        ctx.fillText('5.08 KM Waterfront Promenade • Global Moving Foundation & Coastal K9 Rescue', 96, idY + (runnerCompany ? (isStory ? 172 : 156) : (isStory ? 154 : 136)));
 
         drawCourseTraceMiniMap(ctx, 820, idY + 14, 160, idH - 28, '#00F0FF', '#00F0FF');
 
-        const logoY = idY + idH + 18;
-        const logoH = isStory ? 180 : 150;
+        const logoY = idY + idH + (isStory ? 26 : 18);
+        const logoH = isStory ? 200 : 150;
         drawAllFourLogosBar(ctx, 60, logoY, W - 120, logoH);
 
       } else if (currentDesignIndex === 2) {
         // =====================================================================
-        // DESIGN 3: SAN DIEGO BAY & CORONADO BRIDGE SKYLINE SILHOUETTE
+        // DESIGN 3: SAN DIEGO BAY & CORONADO BRIDGE SKYLINE (FIXED & UNCOVERED)
         // =====================================================================
         const bgGrad = ctx.createLinearGradient(0, 0, W, H);
         bgGrad.addColorStop(0, '#040d1a');
@@ -2046,41 +2092,39 @@
         ctx.font = '800 21px "Outfit", sans-serif';
         ctx.fillText('CORONADO BRIDGE & BAYFRONT FINISHER', W / 2, topPillY + 154);
 
-        // Towering Finisher Photo Frame
+        // 1. Photo Frame (Calculated precisely to give skyline room)
         const photoY = topPillY + 175;
-        const photoH = isStory ? 1040 : 580;
+        const photoH = isStory ? 920 : 510;
         drawRoundedRect(ctx, 60, photoY, W - 120, photoH, 30);
         ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
         ctx.shadowColor = 'rgba(0, 0, 0, 0.6)';
         ctx.shadowBlur = 28;
         ctx.fill();
         ctx.shadowBlur = 0;
-
         drawUserPhotoInBox(ctx, 66, photoY + 6, W - 132, photoH - 12, 26);
 
-        // PERSISTENT SAN DIEGO SKYLINE & CORONADO BRIDGE SILHOUETTE
-        const skyY = photoY + photoH - (isStory ? 80 : 65);
-        const skyH = isStory ? 290 : 220;
-        const skyW = W - 90;
-        const skyX = 45;
+        // 2. Persistent San Diego Skyline & Coronado Bridge Artwork (Fully Visible)
+        const skyY = isStory ? (photoY + photoH + 10) : (photoY + photoH - 15);
+        const skyH = isStory ? 320 : 250;
+        const skyW = W - 80;
+        const skyX = 40;
 
-        // Draw the transparent San Diego Skyline Silhouette Asset
         const skylineImg = loadedLogos['skyline'];
         if (skylineImg && skylineImg.complete && skylineImg.naturalWidth > 0) {
           ctx.save();
-          ctx.shadowColor = 'rgba(251, 191, 36, 0.45)';
-          ctx.shadowBlur = 16;
+          ctx.shadowColor = 'rgba(251, 191, 36, 0.5)';
+          ctx.shadowBlur = 18;
           ctx.drawImage(skylineImg, skyX, skyY, skyW, skyH);
           ctx.restore();
         }
 
-        // Floating Dark Glass Telemetry & Identity Bar (Anchored at the base)
-        const idY = skyY + skyH - (isStory ? 80 : 60);
-        const idH = isStory ? 210 : 180;
+        // 3. Identity Bar: Pushed down completely below the skyline artwork!
+        const idY = isStory ? 1475 : 955;
+        const idH = isStory ? 215 : 185;
         drawRoundedRect(ctx, 60, idY, W - 120, idH, 26);
         ctx.fillStyle = 'rgba(4, 13, 26, 0.95)';
         ctx.fill();
-        ctx.strokeStyle = 'rgba(251, 191, 36, 0.65)';
+        ctx.strokeStyle = 'rgba(251, 191, 36, 0.7)';
         ctx.lineWidth = 2;
         ctx.stroke();
 
@@ -2088,25 +2132,25 @@
         if (runnerCompany) {
           ctx.fillStyle = '#38BDF8';
           ctx.font = '800 22px "Outfit", sans-serif';
-          ctx.fillText(runnerCompany, 96, idY + 44);
+          ctx.fillText(runnerCompany, 96, idY + (isStory ? 52 : 44));
           ctx.fillStyle = '#FFFFFF';
           ctx.font = '900 48px "Outfit", sans-serif';
-          ctx.fillText(runnerName, 96, idY + 98);
+          ctx.fillText(runnerName, 96, idY + (isStory ? 112 : 98));
         } else {
           ctx.fillStyle = '#FFFFFF';
           ctx.font = '900 52px "Outfit", sans-serif';
-          ctx.fillText(runnerName, 96, idY + 76);
+          ctx.fillText(runnerName, 96, idY + (isStory ? 92 : 78));
         }
 
         ctx.fillStyle = '#FDE68A';
         ctx.font = '600 18px "Inter", sans-serif';
-        ctx.fillText('San Diego Bayfront Promenade • Global Moving Foundation & Coastal K9 Rescue', 96, idY + (runnerCompany ? 144 : 124));
+        ctx.fillText('San Diego Bayfront Promenade • Global Moving Foundation & Coastal K9 Rescue', 96, idY + (runnerCompany ? (isStory ? 168 : 144) : (isStory ? 150 : 126)));
 
         drawCourseTraceMiniMap(ctx, 835, idY + 14, 150, idH - 28, '#00F0FF', '#38BDF8');
 
-        // Full-Width Logos Bar
-        const logoY = idY + idH + 18;
-        const logoH = isStory ? 180 : 155;
+        // 4. Logos Bar: Anchored neatly at the base
+        const logoY = isStory ? 1715 : 1160;
+        const logoH = isStory ? 170 : 155;
         drawAllFourLogosBar(ctx, 60, logoY, W - 120, logoH);
 
       } else {
@@ -2147,7 +2191,7 @@
         ctx.fillText('Friday, 23 October 2026  •  San Diego Bayfront Promenade', W / 2, topPillY + 160);
 
         const photoY = topPillY + 180;
-        const photoH = isStory ? 1150 : 650;
+        const photoH = isStory ? 1080 : 640;
         drawRoundedRect(ctx, 60, photoY, W - 120, photoH, 34);
         ctx.fillStyle = '#FFFFFF';
         ctx.shadowColor = 'rgba(0,0,0,0.4)';
@@ -2156,8 +2200,8 @@
         ctx.shadowBlur = 0;
         drawUserPhotoInBox(ctx, 68, photoY + 8, W - 136, photoH - 16, 28);
 
-        const idY = photoY + photoH + 20;
-        const idH = isStory ? 210 : 180;
+        const idY = photoY + photoH + (isStory ? 28 : 20);
+        const idH = isStory ? 230 : 185;
         drawRoundedRect(ctx, 60, idY, W - 120, idH, 28);
         ctx.fillStyle = 'rgba(7, 25, 54, 0.92)';
         ctx.fill();
@@ -2169,24 +2213,24 @@
         if (runnerCompany) {
           ctx.fillStyle = '#FBBF24';
           ctx.font = '800 21px "Outfit", sans-serif';
-          ctx.fillText(runnerCompany, 96, idY + 44);
+          ctx.fillText(runnerCompany, 96, idY + (isStory ? 52 : 44));
           ctx.fillStyle = '#FFFFFF';
           ctx.font = '900 48px "Outfit", sans-serif';
-          ctx.fillText(runnerName, 96, idY + 98);
+          ctx.fillText(runnerName, 96, idY + (isStory ? 114 : 98));
         } else {
           ctx.fillStyle = '#FFFFFF';
           ctx.font = '900 52px "Outfit", sans-serif';
-          ctx.fillText(runnerName, 96, idY + 76);
+          ctx.fillText(runnerName, 96, idY + (isStory ? 94 : 76));
         }
 
         ctx.fillStyle = '#93C5FD';
         ctx.font = '600 20px "Inter", sans-serif';
-        ctx.fillText('Proudly supporting Global Moving Foundation & Coastal K9 Rescue', 96, idY + (runnerCompany ? 144 : 124));
+        ctx.fillText('Proudly supporting Global Moving Foundation & Coastal K9 Rescue', 96, idY + (runnerCompany ? (isStory ? 168 : 144) : (isStory ? 152 : 124)));
 
         drawCourseTraceMiniMap(ctx, 835, idY + 14, 150, idH - 28, '#FDE68A', '#E31837');
 
-        const logoY = idY + idH + 18;
-        const logoH = isStory ? 180 : 155;
+        const logoY = idY + idH + (isStory ? 26 : 18);
+        const logoH = isStory ? 200 : 155;
         drawAllFourLogosBar(ctx, 60, logoY, W - 120, logoH);
       }
     }
