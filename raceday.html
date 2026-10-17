@@ -593,7 +593,7 @@
 
         <div>
           <div class="flex items-center justify-between border-b pb-2 mb-4">
-            <h3 class="text-base sm:text-lg font-semibold text-pts-navy"><i class="fa-solid fa-building mr-2"></i> Company Information</h3>
+            <h3 class="text-base sm:text-lg font-semibold text-pts-navy border-b pb-2"><i class="fa-solid fa-building mr-2"></i> Company Information</h3>
             <span id="autofillBadge" class="hidden text-xs bg-blue-100 text-blue-800 font-semibold px-2.5 py-1 rounded-full"><i class="fa-solid fa-magic mr-1"></i> Auto-filled from colleague</span>
           </div>
 
@@ -828,7 +828,7 @@
               2. Magazine
             </button>
             <button type="button" id="designBtn2" onclick="selectFinisherDesign(2)" class="py-1.5 px-2 rounded-xl text-[11px] font-bold border transition bg-white/10 text-white border-white/20 hover:bg-white/20">
-              3. Swiss Bento
+              3. SD Skyline
             </button>
             <button type="button" id="designBtn3" onclick="selectFinisherDesign(3)" class="py-1.5 px-2 rounded-xl text-[11px] font-bold border transition bg-white/10 text-white border-white/20 hover:bg-white/20">
               4. Proud Finisher
@@ -1412,22 +1412,6 @@
       img.onload = () => { loadedLogos[key] = img; renderFinisherCanvas(); };
     });
 
-    // Satellite Map Preload for Swiss Bento
-    let loadedSatelliteImage = null;
-    const satCandidates = ['5K_Satellite_Map.jpg', '5K_Course_Map.jpg', '5K_Course_Map.png'];
-    function tryLoadSatelliteImage(idx) {
-      if (idx >= satCandidates.length) return;
-      const img = new Image();
-      img.crossOrigin = "anonymous";
-      img.src = satCandidates[idx];
-      img.onload = () => {
-        loadedSatelliteImage = img;
-        renderFinisherCanvas();
-      };
-      img.onerror = () => tryLoadSatelliteImage(idx + 1);
-    }
-    tryLoadSatelliteImage(0);
-
     if (document.fonts && document.fonts.ready) {
       document.fonts.ready.then(() => renderFinisherCanvas());
     }
@@ -1440,7 +1424,7 @@
     const DESIGN_NAMES = [
       "Design 1: Executive Gold Crest",
       "Design 2: San Diego Bay Magazine Cover",
-      "Design 3: Modern Swiss Bento Grid",
+      "Design 3: San Diego Bay & Coronado Bridge Skyline",
       "Design 4: Proud Finisher & Supporter"
     ];
 
@@ -1773,98 +1757,121 @@
       ctx.restore();
     }
 
-    // Google Maps Satellite Image Overlay for Swiss Bento Design
-    function drawSatelliteCourseBento(ctx, x, y, w, h) {
+    // =========================================================================
+    // SAN DIEGO BAY & CORONADO BRIDGE SKYLINE BACKDROP (DESIGN 3)
+    // =========================================================================
+    function drawSanDiegoSkylineBackdrop(ctx, W, H) {
       ctx.save();
-      drawRoundedRect(ctx, x, y, w, h, 26);
-      ctx.clip();
+      // Dusk twilight sky gradient
+      const skyGrad = ctx.createLinearGradient(0, 0, 0, H * 0.72);
+      skyGrad.addColorStop(0, '#040d1a');
+      skyGrad.addColorStop(0.35, '#0a2342');
+      skyGrad.addColorStop(0.68, '#1b3b6f');
+      skyGrad.addColorStop(0.88, '#e07a5f');
+      skyGrad.addColorStop(1, '#f4a261');
+      ctx.fillStyle = skyGrad;
+      ctx.fillRect(0, 0, W, H);
 
-      const satImg = loadedSatelliteImage;
-      if (satImg && satImg.complete && satImg.naturalWidth > 0) {
-        // Draw photographic satellite aerial map
-        const imgRatio = satImg.naturalWidth / satImg.naturalHeight;
-        const boxRatio = w / h;
-        let dw, dh;
-        if (imgRatio > boxRatio) {
-          dh = h; dw = h * imgRatio;
-        } else {
-          dw = w; dh = w / imgRatio;
-        }
-        const dx = x + (w - dw) / 2;
-        const dy = y + (h - dh) / 2;
-        ctx.drawImage(satImg, dx, dy, dw, dh);
+      // Water of San Diego Bay
+      const waterY = H * 0.70;
+      const waterGrad = ctx.createLinearGradient(0, waterY, 0, H);
+      waterGrad.addColorStop(0, '#09233f');
+      waterGrad.addColorStop(0.3, '#06172b');
+      waterGrad.addColorStop(1, '#020b14');
+      ctx.fillStyle = waterGrad;
+      ctx.fillRect(0, waterY, W, H - waterY);
 
-        // High-contrast satellite color grade
-        const darkGrad = ctx.createLinearGradient(x, y, x, y + h);
-        darkGrad.addColorStop(0, 'rgba(4, 15, 30, 0.55)');
-        darkGrad.addColorStop(0.5, 'rgba(4, 15, 30, 0.25)');
-        darkGrad.addColorStop(1, 'rgba(4, 15, 30, 0.7)');
-        ctx.fillStyle = darkGrad;
-        ctx.fillRect(x, y, w, h);
-      } else {
-        // High-fidelity dark satellite harbor/bay rendering
-        const satGrad = ctx.createLinearGradient(x, y, x + w, y + h);
-        satGrad.addColorStop(0, '#0a233a');
-        satGrad.addColorStop(0.5, '#071626');
-        satGrad.addColorStop(1, '#040d17');
-        ctx.fillStyle = satGrad;
-        ctx.fillRect(x, y, w, h);
+      // San Diego Downtown Skyline Silhouettes (Host Manchester Grand Hyatt + High Rises)
+      const baseLine = waterY;
+      ctx.fillStyle = '#051329';
 
-        // Coastal contour
-        ctx.fillStyle = 'rgba(25, 45, 65, 0.85)';
-        ctx.beginPath();
-        ctx.moveTo(x + w * 0.45, y);
-        ctx.bezierCurveTo(x + w * 0.5, y + h * 0.3, x + w * 0.4, y + h * 0.7, x + w * 0.7, y + h);
-        ctx.lineTo(x + w, y + h);
-        ctx.lineTo(x + w, y);
-        ctx.closePath();
-        ctx.fill();
+      // Distant downtown silhouettes
+      ctx.beginPath();
+      ctx.moveTo(0, baseLine);
+      ctx.lineTo(0, baseLine - 130);
+      ctx.lineTo(45, baseLine - 130);
+      ctx.lineTo(45, baseLine - 180);
+      ctx.lineTo(95, baseLine - 180);
+      ctx.lineTo(110, baseLine - 220); // Spire tower
+      ctx.lineTo(125, baseLine - 180);
+      ctx.lineTo(170, baseLine - 180);
+      ctx.lineTo(185, baseLine - 260); // One America Plaza pyramid top
+      ctx.lineTo(210, baseLine - 260);
+      ctx.lineTo(235, baseLine - 170);
 
-        // Satellite coordinate grid
-        ctx.strokeStyle = 'rgba(255, 255, 255, 0.06)';
-        ctx.lineWidth = 1;
-        for (let gy = y; gy < y + h; gy += 45) {
-          ctx.beginPath(); ctx.moveTo(x, gy); ctx.lineTo(x + w, gy); ctx.stroke();
-        }
-        for (let gx = x; gx < x + w; gx += 45) {
-          ctx.beginPath(); ctx.moveTo(gx, y); ctx.lineTo(gx, y + h); ctx.stroke();
-        }
-      }
+      // Manchester Grand Hyatt Twin Towers (Host Venue)
+      ctx.lineTo(260, baseLine - 275);
+      ctx.lineTo(310, baseLine - 275);
+      ctx.lineTo(325, baseLine - 310); // Tower 1 Peak
+      ctx.lineTo(340, baseLine - 275);
+      ctx.lineTo(365, baseLine - 275);
+      ctx.lineTo(380, baseLine - 295); // Tower 2 Peak
+      ctx.lineTo(395, baseLine - 275);
+      ctx.lineTo(440, baseLine - 275);
 
-      // Google Satellite Top Badge
-      drawRoundedRect(ctx, x + 14, y + 14, w - 28, 38, 12);
-      ctx.fillStyle = 'rgba(0, 20, 45, 0.88)';
+      // Seaport Village & Convention Center waterfront arches
+      ctx.lineTo(470, baseLine - 160);
+      ctx.lineTo(520, baseLine - 160);
+      ctx.lineTo(560, baseLine - 210);
+      ctx.lineTo(610, baseLine - 150);
+      ctx.lineTo(670, baseLine - 150);
+      ctx.lineTo(720, baseLine - 200);
+      ctx.lineTo(770, baseLine - 140);
+      ctx.lineTo(820, baseLine - 140);
+      ctx.lineTo(880, baseLine - 110);
+      ctx.lineTo(W, baseLine - 110);
+      ctx.lineTo(W, baseLine);
+      ctx.closePath();
       ctx.fill();
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
-      ctx.lineWidth = 1;
+
+      // Glowing pin-lights on towers
+      ctx.fillStyle = 'rgba(255, 235, 160, 0.75)';
+      const winPositions = [
+        [285, baseLine - 240], [300, baseLine - 210], [325, baseLine - 290],
+        [370, baseLine - 250], [385, baseLine - 220], [195, baseLine - 220],
+        [110, baseLine - 190], [540, baseLine - 180], [740, baseLine - 170]
+      ];
+      winPositions.forEach(p => {
+        ctx.fillRect(p[0], p[1], 4, 4);
+      });
+
+      // Iconic Coronado Bay Bridge (Curving gracefully across the bay)
+      ctx.save();
+      // Bridge Deck
+      ctx.beginPath();
+      ctx.moveTo(380, baseLine + 10);
+      ctx.bezierCurveTo(560, baseLine - 120, 860, baseLine - 95, W + 40, baseLine - 45);
+      ctx.strokeStyle = '#030a17';
+      ctx.lineWidth = 14;
       ctx.stroke();
 
-      ctx.textAlign = 'center';
-      ctx.fillStyle = '#38BDF8';
-      ctx.font = '700 13px "Outfit", sans-serif';
-      ctx.fillText('🛰️ GOOGLE SATELLITE OVERLAY', x + w / 2, y + 38);
-
-      // Glowing Neon Route Trace over Satellite Imagery
-      drawCourseTraceMiniMap(ctx, x + 16, y + 65, w - 32, h - 165, '#E31837', '#FBBF24');
-
-      // Bottom Satellite Telemetry HUD
-      drawRoundedRect(ctx, x + 14, y + h - 84, w - 28, 68, 16);
-      ctx.fillStyle = 'rgba(3, 12, 28, 0.92)';
-      ctx.fill();
-      ctx.strokeStyle = 'rgba(251, 191, 36, 0.45)';
-      ctx.lineWidth = 1.5;
+      // Glowing amber highway lights across bridge deck
+      ctx.beginPath();
+      ctx.moveTo(385, baseLine + 6);
+      ctx.bezierCurveTo(560, baseLine - 124, 860, baseLine - 99, W + 40, baseLine - 49);
+      ctx.strokeStyle = '#fbbf24';
+      ctx.lineWidth = 3;
+      ctx.shadowColor = '#f59e0b';
+      ctx.shadowBlur = 12;
       ctx.stroke();
+      ctx.shadowBlur = 0;
 
-      ctx.textAlign = 'center';
-      ctx.fillStyle = '#FBBF24';
-      ctx.font = '800 15px "Outfit", sans-serif';
-      ctx.fillText('5K WATERFRONT ROUTE', x + w / 2, y + h - 56);
-      ctx.fillStyle = '#E2E8F0';
-      ctx.font = '600 12px "Inter", sans-serif';
-      ctx.fillText('San Diego Bay • 5.08 km', x + w / 2, y + h - 35);
-      ctx.fillStyle = '#94A3B8';
-      ctx.font = '500 10px "Inter", sans-serif';
-      ctx.fillText('32.7082° N, 117.1701° W', x + w / 2, y + h - 20);
+      // Coronado Bridge Concrete Arched Piers dipping into water
+      const pierXs = [560, 680, 810, 940];
+      pierXs.forEach(px => {
+        const pierTopY = baseLine - 85 + (px > 700 ? (px - 680) * 0.15 : 0);
+        ctx.fillStyle = '#040d1c';
+        ctx.fillRect(px - 9, pierTopY, 18, baseLine + 40 - pierTopY);
+      });
+
+      // Water reflections
+      const rippleGrad = ctx.createLinearGradient(0, waterY, 0, waterY + 90);
+      rippleGrad.addColorStop(0, 'rgba(251, 191, 36, 0.35)');
+      rippleGrad.addColorStop(0.5, 'rgba(224, 122, 95, 0.18)');
+      rippleGrad.addColorStop(1, 'rgba(2, 11, 20, 0)');
+      ctx.fillStyle = rippleGrad;
+      ctx.fillRect(360, waterY, 680, 90);
+      ctx.restore();
 
       ctx.restore();
     }
@@ -1963,9 +1970,9 @@
         ctx.font = '800 21px "Outfit", sans-serif';
         ctx.fillText('CHARITY 5K FUN RUN & WALK FINISHER', W / 2, topPillY + 152);
 
-        // Hero Photo Window
+        // Expanded Photo Window (Takes full advantage of Story height)
         const photoY = topPillY + 175;
-        const photoH = isStory ? 1040 : 640;
+        const photoH = isStory ? 1150 : 650;
         drawRoundedRect(ctx, 60, photoY, W - 120, photoH, 30);
         ctx.fillStyle = '#D4AF37';
         ctx.fill();
@@ -1973,7 +1980,7 @@
 
         // Identity Glass Bar
         const idY = photoY + photoH + 20;
-        const idH = isStory ? 200 : 180;
+        const idH = isStory ? 210 : 180;
         drawRoundedRect(ctx, 60, idY, W - 120, idH, 26);
         ctx.fillStyle = 'rgba(6, 18, 38, 0.94)';
         ctx.fill();
@@ -2003,7 +2010,7 @@
 
         // Logos bar
         const logoY = idY + idH + 18;
-        const logoH = isStory ? 150 : 140;
+        const logoH = isStory ? 180 : 155;
         drawAllFourLogosBar(ctx, 60, logoY, W - 120, logoH);
 
       } else if (currentDesignIndex === 1) {
@@ -2012,14 +2019,14 @@
         // =====================================================================
         drawUserPhotoInBox(ctx, 0, 0, W, H, 0);
 
-        const topVig = ctx.createLinearGradient(0, 0, 0, 340);
+        const topVig = ctx.createLinearGradient(0, 0, 0, 360);
         topVig.addColorStop(0, 'rgba(4, 13, 26, 0.94)');
         topVig.addColorStop(0.7, 'rgba(4, 13, 26, 0.55)');
         topVig.addColorStop(1, 'rgba(4, 13, 26, 0)');
         ctx.fillStyle = topVig;
-        ctx.fillRect(0, 0, W, 340);
+        ctx.fillRect(0, 0, W, 360);
 
-        const botVigStart = isStory ? 1220 : 760;
+        const botVigStart = isStory ? 1340 : 760;
         const botVig = ctx.createLinearGradient(0, botVigStart, 0, H);
         botVig.addColorStop(0, 'rgba(4, 13, 26, 0)');
         botVig.addColorStop(0.35, 'rgba(4, 15, 32, 0.95)');
@@ -2046,8 +2053,8 @@
         ctx.font = '700 20px "Outfit", sans-serif';
         ctx.fillText('CHARITY 5K FUN RUN & WALK  •  FRIDAY, 23 OCT 2026  •  SAN DIEGO BAY', 60, 222);
 
-        const idY = isStory ? 1440 : 890;
-        const idH = isStory ? 230 : 200;
+        const idY = isStory ? 1450 : 890;
+        const idH = isStory ? 220 : 200;
         drawRoundedRect(ctx, 60, idY, W - 120, idH, 28);
         ctx.fillStyle = 'rgba(10, 30, 60, 0.88)';
         ctx.fill();
@@ -2075,75 +2082,86 @@
         drawCourseTraceMiniMap(ctx, 820, idY + 14, 160, idH - 28, '#00F0FF', '#00F0FF');
 
         const logoY = idY + idH + 18;
-        const logoH = isStory ? 150 : 140;
+        const logoH = isStory ? 180 : 150;
         drawAllFourLogosBar(ctx, 60, logoY, W - 120, logoH);
 
       } else if (currentDesignIndex === 2) {
         // =====================================================================
-        // DESIGN 3: MODERN SWISS BENTO GRID (WITH GOOGLE SATELLITE OVERLAY)
+        // DESIGN 3: SAN DIEGO BAY & CORONADO BRIDGE SKYLINE
         // =====================================================================
-        ctx.fillStyle = '#F1F5F9';
-        ctx.fillRect(0, 0, W, H);
+        // Paint the dramatic San Diego waterfront skyline & Coronado Bridge backdrop
+        drawSanDiegoSkylineBackdrop(ctx, W, H);
 
-        drawRoundedRect(ctx, 48, 48, W - 96, 175, 28);
-        ctx.fillStyle = '#002855';
+        const topPillY = isStory ? 75 : 55;
+        drawRoundedRect(ctx, 160, topPillY, W - 320, 44, 22);
+        ctx.fillStyle = 'rgba(4, 13, 26, 0.85)';
         ctx.fill();
+        ctx.strokeStyle = '#FBBF24';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
 
-        ctx.textAlign = 'left';
-        ctx.fillStyle = '#FBBF24';
-        ctx.font = '800 18px "Outfit", sans-serif';
-        ctx.fillText('FRIDAY, 23 OCTOBER 2026  •  SAN DIEGO BAYFRONT', 84, 90);
+        ctx.fillStyle = '#FDE68A';
+        ctx.font = '700 18px "Outfit", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('FRIDAY, 23 OCTOBER 2026  •  SAN DIEGO BAYFRONT', W / 2, topPillY + 28);
+
         ctx.fillStyle = '#FFFFFF';
         ctx.font = '900 38px "Outfit", sans-serif';
-        ctx.fillText('INTERNATIONAL ASSOCIATION OF MOVERS', 84, 138);
+        ctx.fillText('INTERNATIONAL ASSOCIATION OF MOVERS', W / 2, topPillY + 82);
         ctx.fillStyle = '#93C5FD';
-        ctx.font = '700 24px "Outfit", sans-serif';
-        ctx.fillText('& PARAMOUNT TRANSPORTATION SYSTEMS 5K', 84, 176);
+        ctx.font = '700 25px "Outfit", sans-serif';
+        ctx.fillText('& PARAMOUNT TRANSPORTATION SYSTEMS 5K', W / 2, topPillY + 118);
 
-        // Bento Grid arrangement
-        const bentoY = 246;
-        const bentoH = isStory ? 1160 : 640;
+        ctx.fillStyle = '#FBBF24';
+        ctx.font = '800 21px "Outfit", sans-serif';
+        ctx.fillText('CORONADO BRIDGE & BAYFRONT FINISHER', W / 2, topPillY + 154);
 
-        // Photo Bento
-        drawRoundedRect(ctx, 48, bentoY, 620, bentoH, 30);
-        ctx.fillStyle = '#FFFFFF';
-        ctx.fill();
-        drawUserPhotoInBox(ctx, 56, bentoY + 8, 604, bentoH - 16, 24);
-
-        // Right Bento: Enhanced Google Maps Satellite Overlay
-        drawSatelliteCourseBento(ctx, 690, bentoY, 342, bentoH);
-
-        // Identity Bento
-        const idY = bentoY + bentoH + 20;
-        const idH = isStory ? 200 : 180;
-        drawRoundedRect(ctx, 48, idY, W - 96, idH, 28);
-        ctx.fillStyle = '#FFFFFF';
-        ctx.shadowColor = 'rgba(0, 40, 85, 0.08)';
-        ctx.shadowBlur = 20;
+        // Towering Finisher Photo Frame (Skyline peeks through around the sides & bridge)
+        const photoY = topPillY + 175;
+        const photoH = isStory ? 1150 : 640;
+        drawRoundedRect(ctx, 60, photoY, W - 120, photoH, 30);
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.6)';
+        ctx.shadowBlur = 28;
         ctx.fill();
         ctx.shadowBlur = 0;
 
+        drawUserPhotoInBox(ctx, 66, photoY + 6, W - 132, photoH - 12, 26);
+
+        // Floating Dark Glass Telemetry & Identity Bar
+        const idY = photoY + photoH + 20;
+        const idH = isStory ? 210 : 180;
+        drawRoundedRect(ctx, 60, idY, W - 120, idH, 26);
+        ctx.fillStyle = 'rgba(4, 13, 26, 0.95)';
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(251, 191, 36, 0.65)';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
         ctx.textAlign = 'left';
         if (runnerCompany) {
-          ctx.fillStyle = '#00529B';
+          ctx.fillStyle = '#38BDF8';
           ctx.font = '800 22px "Outfit", sans-serif';
-          ctx.fillText(runnerCompany, 84, idY + 44);
-          ctx.fillStyle = '#002855';
+          ctx.fillText(runnerCompany, 96, idY + 44);
+          ctx.fillStyle = '#FFFFFF';
           ctx.font = '900 48px "Outfit", sans-serif';
-          ctx.fillText(runnerName, 84, idY + 98);
+          ctx.fillText(runnerName, 96, idY + 98);
         } else {
-          ctx.fillStyle = '#002855';
+          ctx.fillStyle = '#FFFFFF';
           ctx.font = '900 52px "Outfit", sans-serif';
-          ctx.fillText(runnerName, 84, idY + 78);
+          ctx.fillText(runnerName, 96, idY + 76);
         }
 
-        ctx.fillStyle = '#64748B';
-        ctx.font = '600 19px "Inter", sans-serif';
-        ctx.fillText('Proud Finisher & Supporter • Global Moving Foundation & Coastal K9 Rescue', 84, idY + (runnerCompany ? 144 : 124));
+        ctx.fillStyle = '#FDE68A';
+        ctx.font = '600 18px "Inter", sans-serif';
+        ctx.fillText('San Diego Bayfront Promenade • Global Moving Foundation & Coastal K9 Rescue', 96, idY + (runnerCompany ? 144 : 124));
 
+        drawCourseTraceMiniMap(ctx, 835, idY + 14, 150, idH - 28, '#00F0FF', '#38BDF8');
+
+        // Full-Width Logos Bar
         const logoY = idY + idH + 18;
-        const logoH = isStory ? 150 : 140;
-        drawAllFourLogosBar(ctx, 48, logoY, W - 96, logoH);
+        const logoH = isStory ? 180 : 155;
+        drawAllFourLogosBar(ctx, 60, logoY, W - 120, logoH);
 
       } else {
         // =====================================================================
@@ -2183,7 +2201,7 @@
         ctx.fillText('Friday, 23 October 2026  •  San Diego Bayfront Promenade', W / 2, topPillY + 160);
 
         const photoY = topPillY + 180;
-        const photoH = isStory ? 1040 : 640;
+        const photoH = isStory ? 1150 : 650;
         drawRoundedRect(ctx, 60, photoY, W - 120, photoH, 34);
         ctx.fillStyle = '#FFFFFF';
         ctx.shadowColor = 'rgba(0,0,0,0.4)';
@@ -2193,7 +2211,7 @@
         drawUserPhotoInBox(ctx, 68, photoY + 8, W - 136, photoH - 16, 28);
 
         const idY = photoY + photoH + 20;
-        const idH = isStory ? 200 : 180;
+        const idH = isStory ? 210 : 180;
         drawRoundedRect(ctx, 60, idY, W - 120, idH, 28);
         ctx.fillStyle = 'rgba(7, 25, 54, 0.92)';
         ctx.fill();
@@ -2222,7 +2240,7 @@
         drawCourseTraceMiniMap(ctx, 835, idY + 14, 150, idH - 28, '#FDE68A', '#E31837');
 
         const logoY = idY + idH + 18;
-        const logoH = isStory ? 150 : 140;
+        const logoH = isStory ? 180 : 155;
         drawAllFourLogosBar(ctx, 60, logoY, W - 120, logoH);
       }
     }
