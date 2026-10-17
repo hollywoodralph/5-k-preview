@@ -231,7 +231,7 @@
   </div>
 
   <!-- ================================================================= -->
-  <!-- EVENT INFO BAR                                                    -->
+  <!-- EVENT INFO BAR (WITH UPDATED SHIRT & BIB PICK UP DETAILS)         -->
   <!-- ================================================================= -->
   <section class="max-w-6xl mx-auto px-4 sm:px-6 relative z-20 w-full">
     <div class="bg-white rounded-xl shadow-lg border border-gray-100 p-4 sm:p-5 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-5 gap-3.5 sm:gap-4 text-xs sm:text-sm">
@@ -1012,7 +1012,6 @@
     function downloadICS() {
       const icsData = "BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nSUMMARY:IAM & PARAMOUNT Charity 5K Fun Run/Walk\nDESCRIPTION:IAM & Paramount Charity 5K Fun Run/Walk Event. Check-in starts at 6:30 AM.\nLOCATION:Manchester Grand Hyatt Hotel\nDTSTART:20261023T133000Z\nDTEND:20261023T160000Z\nEND:VEVENT\nEND:VCALENDAR";
       const blob = new Blob([icsData], { type: 'text/calendar;charset=utf-8' });
-      const link = document.createElement('a');
       link.href = window.URL.createObjectURL(blob);
       link.setAttribute('download', 'IAM_Paramount_5K.ics');
       document.body.appendChild(link);
@@ -1063,7 +1062,6 @@
         btnText.innerText = "Registration is Closed";
       } else {
         // --- OPEN / REGISTRATION ON MODE ---
-        // Finisher Social Badge Studio is hidden while registration is open
         heroSocialStudioBtn.classList.add('hidden');
         raceDayStudioBanner.classList.add('hidden');
         formClosedAlert.classList.add('hidden');
@@ -1402,14 +1400,60 @@
       iam: 'IAM_logo(1500px).png',
       pts: 'Paramount30thLogo.png',
       gmf: 'GlobalMovingFoundationLogo.png',
-      k9: 'CoastalK9Logo.png'
+      k9: 'CoastalK9Logo.png',
+      skyline: 'sd_skyline.png'
     };
+
+    function prepareSkylineImage(img) {
+      try {
+        const off = document.createElement('canvas');
+        off.width = img.naturalWidth || img.width;
+        off.height = img.naturalHeight || img.height;
+        if (!off.width || !off.height) return img;
+        const octx = off.getContext('2d');
+        octx.drawImage(img, 0, 0);
+        const idata = octx.getImageData(0, 0, off.width, off.height);
+        const d = idata.data;
+        const isBlackBg = (d[0] < 25 && d[1] < 25 && d[2] < 25 && d[3] > 200);
+        if (isBlackBg) {
+          for (let i = 0; i < d.length; i += 4) {
+            if (d[i] < 25 && d[i+1] < 25 && d[i+2] < 25) {
+              d[i+3] = 0; // key out dark background
+            }
+          }
+          octx.putImageData(idata, 0, 0);
+          const cleanImg = new Image();
+          cleanImg.src = off.toDataURL();
+          return cleanImg;
+        }
+      } catch(e) {}
+      return img;
+    }
+
     const loadedLogos = {};
     Object.keys(LOGO_SOURCES).forEach(key => {
       const img = new Image();
       img.crossOrigin = "anonymous";
       img.src = LOGO_SOURCES[key];
-      img.onload = () => { loadedLogos[key] = img; renderFinisherCanvas(); };
+      img.onload = () => { 
+        if (key === 'skyline') {
+          loadedLogos[key] = prepareSkylineImage(img);
+        } else {
+          loadedLogos[key] = img;
+        }
+        renderFinisherCanvas(); 
+      };
+      if (key === 'skyline') {
+        img.onerror = () => {
+          const fallbackJpg = new Image();
+          fallbackJpg.crossOrigin = "anonymous";
+          fallbackJpg.src = 'sd_skyline.jpg';
+          fallbackJpg.onload = () => {
+            loadedLogos['skyline'] = prepareSkylineImage(fallbackJpg);
+            renderFinisherCanvas();
+          };
+        };
+      }
     });
 
     if (document.fonts && document.fonts.ready) {
@@ -1429,7 +1473,6 @@
     ];
 
     function openFinisherStudioModal() {
-      // Sync names from registration form if user filled them
       const fn = document.getElementById('firstName').value.trim();
       const ln = document.getElementById('lastName').value.trim();
       const comp = document.getElementById('company').value.trim();
@@ -1757,125 +1800,6 @@
       ctx.restore();
     }
 
-    // =========================================================================
-    // SAN DIEGO BAY & CORONADO BRIDGE SKYLINE BACKDROP (DESIGN 3)
-    // =========================================================================
-    function drawSanDiegoSkylineBackdrop(ctx, W, H) {
-      ctx.save();
-      // Dusk twilight sky gradient
-      const skyGrad = ctx.createLinearGradient(0, 0, 0, H * 0.72);
-      skyGrad.addColorStop(0, '#040d1a');
-      skyGrad.addColorStop(0.35, '#0a2342');
-      skyGrad.addColorStop(0.68, '#1b3b6f');
-      skyGrad.addColorStop(0.88, '#e07a5f');
-      skyGrad.addColorStop(1, '#f4a261');
-      ctx.fillStyle = skyGrad;
-      ctx.fillRect(0, 0, W, H);
-
-      // Water of San Diego Bay
-      const waterY = H * 0.70;
-      const waterGrad = ctx.createLinearGradient(0, waterY, 0, H);
-      waterGrad.addColorStop(0, '#09233f');
-      waterGrad.addColorStop(0.3, '#06172b');
-      waterGrad.addColorStop(1, '#020b14');
-      ctx.fillStyle = waterGrad;
-      ctx.fillRect(0, waterY, W, H - waterY);
-
-      // San Diego Downtown Skyline Silhouettes (Host Manchester Grand Hyatt + High Rises)
-      const baseLine = waterY;
-      ctx.fillStyle = '#051329';
-
-      // Distant downtown silhouettes
-      ctx.beginPath();
-      ctx.moveTo(0, baseLine);
-      ctx.lineTo(0, baseLine - 130);
-      ctx.lineTo(45, baseLine - 130);
-      ctx.lineTo(45, baseLine - 180);
-      ctx.lineTo(95, baseLine - 180);
-      ctx.lineTo(110, baseLine - 220); // Spire tower
-      ctx.lineTo(125, baseLine - 180);
-      ctx.lineTo(170, baseLine - 180);
-      ctx.lineTo(185, baseLine - 260); // One America Plaza pyramid top
-      ctx.lineTo(210, baseLine - 260);
-      ctx.lineTo(235, baseLine - 170);
-
-      // Manchester Grand Hyatt Twin Towers (Host Venue)
-      ctx.lineTo(260, baseLine - 275);
-      ctx.lineTo(310, baseLine - 275);
-      ctx.lineTo(325, baseLine - 310); // Tower 1 Peak
-      ctx.lineTo(340, baseLine - 275);
-      ctx.lineTo(365, baseLine - 275);
-      ctx.lineTo(380, baseLine - 295); // Tower 2 Peak
-      ctx.lineTo(395, baseLine - 275);
-      ctx.lineTo(440, baseLine - 275);
-
-      // Seaport Village & Convention Center waterfront arches
-      ctx.lineTo(470, baseLine - 160);
-      ctx.lineTo(520, baseLine - 160);
-      ctx.lineTo(560, baseLine - 210);
-      ctx.lineTo(610, baseLine - 150);
-      ctx.lineTo(670, baseLine - 150);
-      ctx.lineTo(720, baseLine - 200);
-      ctx.lineTo(770, baseLine - 140);
-      ctx.lineTo(820, baseLine - 140);
-      ctx.lineTo(880, baseLine - 110);
-      ctx.lineTo(W, baseLine - 110);
-      ctx.lineTo(W, baseLine);
-      ctx.closePath();
-      ctx.fill();
-
-      // Glowing pin-lights on towers
-      ctx.fillStyle = 'rgba(255, 235, 160, 0.75)';
-      const winPositions = [
-        [285, baseLine - 240], [300, baseLine - 210], [325, baseLine - 290],
-        [370, baseLine - 250], [385, baseLine - 220], [195, baseLine - 220],
-        [110, baseLine - 190], [540, baseLine - 180], [740, baseLine - 170]
-      ];
-      winPositions.forEach(p => {
-        ctx.fillRect(p[0], p[1], 4, 4);
-      });
-
-      // Iconic Coronado Bay Bridge (Curving gracefully across the bay)
-      ctx.save();
-      // Bridge Deck
-      ctx.beginPath();
-      ctx.moveTo(380, baseLine + 10);
-      ctx.bezierCurveTo(560, baseLine - 120, 860, baseLine - 95, W + 40, baseLine - 45);
-      ctx.strokeStyle = '#030a17';
-      ctx.lineWidth = 14;
-      ctx.stroke();
-
-      // Glowing amber highway lights across bridge deck
-      ctx.beginPath();
-      ctx.moveTo(385, baseLine + 6);
-      ctx.bezierCurveTo(560, baseLine - 124, 860, baseLine - 99, W + 40, baseLine - 49);
-      ctx.strokeStyle = '#fbbf24';
-      ctx.lineWidth = 3;
-      ctx.shadowColor = '#f59e0b';
-      ctx.shadowBlur = 12;
-      ctx.stroke();
-      ctx.shadowBlur = 0;
-
-      // Coronado Bridge Concrete Arched Piers dipping into water
-      const pierXs = [560, 680, 810, 940];
-      pierXs.forEach(px => {
-        const pierTopY = baseLine - 85 + (px > 700 ? (px - 680) * 0.15 : 0);
-        ctx.fillStyle = '#040d1c';
-        ctx.fillRect(px - 9, pierTopY, 18, baseLine + 40 - pierTopY);
-      });
-
-      // Water reflections
-      const rippleGrad = ctx.createLinearGradient(0, waterY, 0, waterY + 90);
-      rippleGrad.addColorStop(0, 'rgba(251, 191, 36, 0.35)');
-      rippleGrad.addColorStop(0.5, 'rgba(224, 122, 95, 0.18)');
-      rippleGrad.addColorStop(1, 'rgba(2, 11, 20, 0)');
-      ctx.fillStyle = rippleGrad;
-      ctx.fillRect(360, waterY, 680, 90);
-      ctx.restore();
-
-      ctx.restore();
-    }
-
     function drawAllFourLogosBar(ctx, x, y, w, h) {
       ctx.save();
       drawRoundedRect(ctx, x, y, w, h, 24);
@@ -2087,10 +2011,16 @@
 
       } else if (currentDesignIndex === 2) {
         // =====================================================================
-        // DESIGN 3: SAN DIEGO BAY & CORONADO BRIDGE SKYLINE
+        // DESIGN 3: SAN DIEGO BAY & CORONADO BRIDGE SKYLINE SILHOUETTE
         // =====================================================================
-        // Paint the dramatic San Diego waterfront skyline & Coronado Bridge backdrop
-        drawSanDiegoSkylineBackdrop(ctx, W, H);
+        const bgGrad = ctx.createLinearGradient(0, 0, W, H);
+        bgGrad.addColorStop(0, '#040d1a');
+        bgGrad.addColorStop(0.35, '#0a2342');
+        bgGrad.addColorStop(0.7, '#1b3b6f');
+        bgGrad.addColorStop(0.9, '#e07a5f');
+        bgGrad.addColorStop(1, '#f4a261');
+        ctx.fillStyle = bgGrad;
+        ctx.fillRect(0, 0, W, H);
 
         const topPillY = isStory ? 75 : 55;
         drawRoundedRect(ctx, 160, topPillY, W - 320, 44, 22);
@@ -2116,9 +2046,9 @@
         ctx.font = '800 21px "Outfit", sans-serif';
         ctx.fillText('CORONADO BRIDGE & BAYFRONT FINISHER', W / 2, topPillY + 154);
 
-        // Towering Finisher Photo Frame (Skyline peeks through around the sides & bridge)
+        // Towering Finisher Photo Frame
         const photoY = topPillY + 175;
-        const photoH = isStory ? 1150 : 640;
+        const photoH = isStory ? 1040 : 580;
         drawRoundedRect(ctx, 60, photoY, W - 120, photoH, 30);
         ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
         ctx.shadowColor = 'rgba(0, 0, 0, 0.6)';
@@ -2128,8 +2058,24 @@
 
         drawUserPhotoInBox(ctx, 66, photoY + 6, W - 132, photoH - 12, 26);
 
-        // Floating Dark Glass Telemetry & Identity Bar
-        const idY = photoY + photoH + 20;
+        // PERSISTENT SAN DIEGO SKYLINE & CORONADO BRIDGE SILHOUETTE
+        const skyY = photoY + photoH - (isStory ? 80 : 65);
+        const skyH = isStory ? 290 : 220;
+        const skyW = W - 90;
+        const skyX = 45;
+
+        // Draw the transparent San Diego Skyline Silhouette Asset
+        const skylineImg = loadedLogos['skyline'];
+        if (skylineImg && skylineImg.complete && skylineImg.naturalWidth > 0) {
+          ctx.save();
+          ctx.shadowColor = 'rgba(251, 191, 36, 0.45)';
+          ctx.shadowBlur = 16;
+          ctx.drawImage(skylineImg, skyX, skyY, skyW, skyH);
+          ctx.restore();
+        }
+
+        // Floating Dark Glass Telemetry & Identity Bar (Anchored at the base)
+        const idY = skyY + skyH - (isStory ? 80 : 60);
         const idH = isStory ? 210 : 180;
         drawRoundedRect(ctx, 60, idY, W - 120, idH, 26);
         ctx.fillStyle = 'rgba(4, 13, 26, 0.95)';
@@ -2234,7 +2180,7 @@
         }
 
         ctx.fillStyle = '#93C5FD';
-        ctx.font = '600 19px "Inter", sans-serif';
+        ctx.font = '600 20px "Inter", sans-serif';
         ctx.fillText('Proudly supporting Global Moving Foundation & Coastal K9 Rescue', 96, idY + (runnerCompany ? 144 : 124));
 
         drawCourseTraceMiniMap(ctx, 835, idY + 14, 150, idH - 28, '#FDE68A', '#E31837');
@@ -2266,7 +2212,6 @@
             return;
           } catch (err) {}
         }
-        // Fallback for browsers without direct file sharing
         saveFinisherCardToPhotos();
       }, 'image/png');
     }
