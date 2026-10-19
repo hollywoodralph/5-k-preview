@@ -82,7 +82,7 @@
       user-select: none;
       -webkit-user-select: none;
     }
-    /* Masonry Photo Grid */
+    /* Masonry Photo Grid - Zero Crop Native Aspect Ratio */
     .masonry-grid {
       column-count: 1;
       column-gap: 1.25rem;
@@ -105,7 +105,6 @@
   <!-- POST-RACE HERO HEADER                                             -->
   <!-- ================================================================= -->
   <header class="bg-pts-navy text-white shadow-2xl relative overflow-hidden">
-    <!-- Subtle decorative radial light -->
     <div class="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-pts-blue/40 blur-3xl pointer-events-none"></div>
     <div class="absolute -bottom-24 -left-24 w-96 h-96 rounded-full bg-pts-accent/20 blur-3xl pointer-events-none"></div>
 
@@ -256,7 +255,7 @@
   </div>
 
   <!-- ================================================================= -->
-  <!-- CHAMPIONS PODIUM: TOP 3 MEN & TOP 3 WOMEN                         -->
+  <!-- CHAMPIONS PODIUM: TOP 3 MEN & TOP 3 WOMEN (ZERO-CROP THUMBNAILS)  -->
   <!-- ================================================================= -->
   <section id="podiumSection" class="max-w-6xl mx-auto px-4 sm:px-6 mt-6 sm:mt-8 w-full">
     <div class="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
@@ -346,30 +345,38 @@
         </div>
       </div>
 
-      <!-- Featured Spotlight Auto-Slideshow Banner -->
-      <div id="featuredCarouselWrapper" class="relative bg-gray-950 h-[280px] sm:h-[420px] md:h-[480px] w-full overflow-hidden group">
-        <img id="carouselHeroImg" src="" alt="Featured Race Highlight" class="w-full h-full object-cover object-center transition-all duration-700 cursor-pointer" onclick="openLightbox(currentCarouselIdx)">
-        <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent pointer-events-none"></div>
+      <!-- Featured Spotlight Auto-Slideshow Banner (ZERO-CROP ADAPTIVE PORTRAIT/LANDSCAPE ENGINE) -->
+      <div id="featuredCarouselWrapper" class="relative bg-slate-950 h-[360px] sm:h-[480px] md:h-[540px] w-full overflow-hidden group flex items-center justify-center">
+        
+        <!-- Layer 1: Ambient Blurred Backdrop (Fills empty sides when displaying vertical/portrait photos) -->
+        <img id="carouselBlurBg" src="" alt="" aria-hidden="true" class="absolute inset-0 w-full h-full object-cover object-center blur-2xl scale-110 opacity-50 transition-all duration-700 pointer-events-none select-none">
+        <div class="absolute inset-0 bg-slate-950/35 pointer-events-none"></div>
+
+        <!-- Layer 2: Uncropped Full-Frame Foreground Photo (object-contain guarantees 0% trimming for Portrait & Landscape) -->
+        <img id="carouselHeroImg" src="" alt="Featured Race Highlight" class="relative z-10 max-h-full max-w-full w-auto h-full object-contain object-center transition-all duration-500 cursor-pointer drop-shadow-[0_20px_35px_rgba(0,0,0,0.75)] pb-14 pt-3 px-3 sm:px-12" onclick="openLightbox(currentCarouselIdx)">
+
+        <!-- Layer 3: Bottom Gradient Vignette for Crisp Caption Readability -->
+        <div class="absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-black/95 via-black/55 to-transparent z-10 pointer-events-none"></div>
 
         <!-- Prev / Next Controls -->
-        <button type="button" onclick="stepCarousel(-1)" class="absolute left-3 sm:left-5 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black/50 hover:bg-pts-accent text-white backdrop-blur-md border border-white/20 flex items-center justify-center transition shadow-lg">
+        <button type="button" onclick="stepCarousel(-1)" class="absolute left-3 sm:left-5 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black/60 hover:bg-pts-accent text-white backdrop-blur-md border border-white/20 flex items-center justify-center transition shadow-lg">
           <i class="fa-solid fa-chevron-left"></i>
         </button>
-        <button type="button" onclick="stepCarousel(1)" class="absolute right-3 sm:right-5 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black/50 hover:bg-pts-accent text-white backdrop-blur-md border border-white/20 flex items-center justify-center transition shadow-lg">
+        <button type="button" onclick="stepCarousel(1)" class="absolute right-3 sm:right-5 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black/60 hover:bg-pts-accent text-white backdrop-blur-md border border-white/20 flex items-center justify-center transition shadow-lg">
           <i class="fa-solid fa-chevron-right"></i>
         </button>
 
         <!-- Bottom Caption & Controls Bar -->
-        <div class="absolute bottom-4 left-4 right-4 sm:bottom-6 sm:left-8 sm:right-8 flex flex-col sm:flex-row sm:items-end justify-between gap-3 text-white">
-          <div>
+        <div class="absolute bottom-3.5 left-4 right-4 sm:bottom-5 sm:left-8 sm:right-8 z-20 flex flex-col sm:flex-row sm:items-end justify-between gap-3 text-white">
+          <div class="min-w-0">
             <span id="carouselTag" class="bg-pts-accent text-white text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-md shadow">
               Featured Moment
             </span>
-            <h3 id="carouselCaption" class="text-lg sm:text-2xl font-black mt-1.5 drop-shadow">
+            <h3 id="carouselCaption" class="text-base sm:text-2xl font-black mt-1.5 drop-shadow truncate">
               IAM &amp; Paramount Charity 5K Fun Run/Walk
             </h3>
           </div>
-          <div class="flex items-center gap-2">
+          <div class="flex items-center gap-2 flex-shrink-0">
             <button type="button" onclick="toggleCarouselAutoplay()" id="carouselPlayBtn" class="bg-white/15 hover:bg-white/25 backdrop-blur-md text-white border border-white/25 px-3 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition">
               <i id="carouselPlayIcon" class="fa-solid fa-pause text-amber-300"></i>
               <span id="carouselPlayText">Auto-Play</span>
@@ -381,7 +388,7 @@
         </div>
       </div>
 
-      <!-- Masonry Photo Grid -->
+      <!-- Masonry Photo Grid (Naturally preserves 100% of Portrait & Landscape ratios) -->
       <div class="p-5 sm:p-8 bg-gray-50">
         <div id="photoMasonryGrid" class="masonry-grid"></div>
       </div>
@@ -806,8 +813,6 @@
     };
 
     // OPTIONAL CUSTOM CAPTIONS FOR CROWD PHOTOS:
-    // Any photo uploaded as photos/photo1.jpg ... photos/photo60.jpg will automatically appear!
-    // If you want custom captions for specific numbers, add them here:
     const CUSTOM_PHOTO_CAPTIONS = {
       1: { category: "winners", caption: "Official Starting Line Launch at North Embarcadero Marina" },
       2: { category: "crowd", caption: "Runners & Walkers Along the San Diego Bayfront Promenade" },
@@ -839,7 +844,7 @@
     }
 
     // =========================================================================
-    // 3. RENDER CHAMPIONS PODIUM (TOP 3 MEN & TOP 3 WOMEN)
+    // 3. RENDER CHAMPIONS PODIUM (ZERO-CROP ADAPTIVE THUMBNAILS)
     // =========================================================================
     function getPlaceStyles(place) {
       if (place === 1) {
@@ -875,13 +880,18 @@
         return `
           <div class="rounded-2xl border-2 ${st.cardBorder} p-3.5 sm:p-4 shadow-sm hover:shadow-md transition flex items-center justify-between gap-3.5">
             <div class="flex items-center gap-3.5 min-w-0">
-              <!-- Clickable Winner Photo with Automatic Trophy Fallback -->
-              <div class="relative w-16 h-16 sm:w-20 sm:h-20 rounded-2xl overflow-hidden flex-shrink-0 border-2 border-white shadow-md bg-pts-navy cursor-pointer group" onclick="openSinglePhotoLightbox('${w.photo}', '${safeName} (${st.label})')">
-                <img src="${w.photo}" alt="${safeName}" class="w-full h-full object-cover group-hover:scale-110 transition duration-300" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
-                <div class="hidden absolute inset-0 ${st.medalBg} flex items-center justify-center text-2xl font-black">
+              
+              <!-- ZERO-CROP WINNER PHOTO FRAME: Uses object-contain + blurred backdrop so neither Portrait nor Landscape photos ever get trimmed -->
+              <div class="relative w-20 h-24 sm:w-24 sm:h-28 rounded-2xl overflow-hidden flex-shrink-0 border-2 border-white shadow-md bg-slate-900 cursor-pointer group flex items-center justify-center" onclick="openSinglePhotoLightbox('${w.photo}', '${safeName} (${st.label})')">
+                <!-- Blurred ambient fill behind photo -->
+                <img src="${w.photo}" alt="" aria-hidden="true" class="absolute inset-0 w-full h-full object-cover blur-md scale-125 opacity-45 pointer-events-none" onerror="this.style.display='none';">
+                <!-- Full uncropped photo (object-contain) -->
+                <img src="${w.photo}" alt="${safeName}" class="relative z-10 max-w-full max-h-full w-auto h-auto object-contain group-hover:scale-105 transition duration-300" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
+                <!-- Trophy fallback if no image uploaded -->
+                <div class="hidden absolute inset-0 ${st.medalBg} flex items-center justify-center text-2xl font-black z-10">
                   <i class="fa-solid ${st.icon}"></i>
                 </div>
-                <span class="absolute bottom-1 right-1 w-6 h-6 rounded-full ${st.medalBg} text-[11px] font-black flex items-center justify-center shadow border border-white">
+                <span class="absolute bottom-1 right-1 z-20 w-6 h-6 rounded-full ${st.medalBg} text-[11px] font-black flex items-center justify-center shadow border border-white">
                   ${w.place}
                 </span>
               </div>
@@ -960,7 +970,6 @@
     function finalizeGalleryLoad(discovered) {
       discovered.sort((a, b) => a.order - b.order);
 
-      // If you haven't uploaded your JPGs to the /photos folder yet, display curated San Diego Bayfront & 5K preview placeholders so you can preview the layout immediately
       if (discovered.length === 0) {
         allGalleryPhotos = [
           {
@@ -1034,10 +1043,12 @@
       if (!filteredGalleryPhotos.length) return;
       const item = filteredGalleryPhotos[currentCarouselIdx];
       const imgEl = document.getElementById('carouselHeroImg');
+      const blurBgEl = document.getElementById('carouselBlurBg');
       const captionEl = document.getElementById('carouselCaption');
       const tagEl = document.getElementById('carouselTag');
 
       imgEl.src = item.src;
+      if (blurBgEl) blurBgEl.src = item.src;
       captionEl.innerText = item.caption;
       tagEl.innerText = item.category === 'winners' ? 'Winners & Podium' : 'Crowd & Bayfront Action';
     }
