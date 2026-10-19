@@ -1,0 +1,2263 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>IAM & PARAMOUNT Charity 5K Fun Run/Walk – Official 2026 Race Showcase</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            pts: {
+              navy: '#003366',
+              blue: '#00529B',
+              accent: '#E31837',
+              light: '#F0F4F8'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@500;600;700;800;900&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  
+  <!-- Leaflet Interactive Map CSS & JS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    h1, h2, h3, h4, .font-display {
+      font-family: 'Outfit', sans-serif;
+    }
+    .leaflet-container {
+      font-family: inherit;
+      z-index: 10;
+    }
+    @keyframes pulse-ring {
+      0% { transform: scale(0.8); opacity: 0.8; }
+      100% { transform: scale(2.2); opacity: 0; }
+    }
+    .marker-pulse::before {
+      content: '';
+      position: absolute;
+      inset: -6px;
+      border-radius: 9999px;
+      background-color: inherit;
+      animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+      z-index: -1;
+    }
+    .course-step-card.active {
+      border-color: #E31837;
+      background-color: #FFF5F5;
+      box-shadow: 0 8px 15px -3px rgba(227, 24, 55, 0.15);
+    }
+    .map-fullscreen-active {
+      position: fixed !important;
+      inset: 0 !important;
+      width: 100vw !important;
+      height: 100vh !important;
+      z-index: 999 !important;
+    }
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    * {
+      -webkit-tap-highlight-color: transparent;
+    }
+    #finisherCanvas {
+      touch-action: none;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    /* Masonry Photo Grid */
+    .masonry-grid {
+      column-count: 1;
+      column-gap: 1.25rem;
+    }
+    @media (min-width: 640px) {
+      .masonry-grid { column-count: 2; }
+    }
+    @media (min-width: 1024px) {
+      .masonry-grid { column-count: 3; }
+    }
+    .masonry-item {
+      break-inside: avoid;
+      margin-bottom: 1.25rem;
+    }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans antialiased min-h-screen flex flex-col">
+
+  <!-- ================================================================= -->
+  <!-- POST-RACE HERO HEADER                                             -->
+  <!-- ================================================================= -->
+  <header class="bg-pts-navy text-white shadow-2xl relative overflow-hidden">
+    <!-- Subtle decorative radial light -->
+    <div class="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-pts-blue/40 blur-3xl pointer-events-none"></div>
+    <div class="absolute -bottom-24 -left-24 w-96 h-96 rounded-full bg-pts-accent/20 blur-3xl pointer-events-none"></div>
+
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-6 md:py-9 relative z-10">
+      
+      <!-- Top Bar: Brand Logos & Event Completion Badge -->
+      <div class="flex flex-col md:flex-row items-center justify-between gap-4 border-b border-blue-800/60 pb-5 md:pb-6">
+        
+        <div class="bg-white px-4 py-2.5 sm:px-5 sm:py-3 rounded-2xl shadow-md grid grid-cols-[1fr_auto_1fr] items-center w-full max-w-sm">
+          <div class="flex items-center justify-center p-1">
+            <a href="https://iamovers.org/" target="_blank" rel="noopener noreferrer" class="hover:opacity-85 transition-opacity flex items-center justify-center">
+              <img src="IAM_logo(1500px).png" alt="International Association of Movers" class="h-12 sm:h-16 md:h-20 w-auto max-w-full object-contain" onError="this.onerror=null;this.src='https://iamovers.org/wp-content/uploads/2025/01/IAM-Logo.png';">
+            </a>
+          </div>
+          <div class="h-10 sm:h-16 w-px bg-gray-300 mx-2 sm:mx-3"></div>
+          <div class="flex items-center justify-center p-1">
+            <a href="https://pts-moves.com/" target="_blank" rel="noopener noreferrer" class="hover:opacity-85 transition-opacity flex items-center justify-center">
+              <img src="Paramount30thLogo.png" alt="Paramount Transportation Systems - 30th Anniversary" class="h-14 sm:h-18 md:h-24 w-auto max-w-full object-contain">
+            </a>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap items-center justify-center md:justify-end gap-3">
+          <div class="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl px-4 py-2.5 text-center sm:text-left flex items-center gap-3 shadow-md">
+            <div class="w-10 h-10 rounded-xl bg-amber-400 text-pts-navy flex items-center justify-center text-lg font-black flex-shrink-0 shadow">
+              <i class="fa-solid fa-flag-checkered"></i>
+            </div>
+            <div>
+              <span class="text-[10px] uppercase tracking-widest text-amber-300 font-extrabold block">Official Event Recap</span>
+              <span class="text-xs sm:text-sm font-bold text-white block">Friday, 23 October 2026 • San Diego Bayfront</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Hero Main Content -->
+      <div class="mt-6 md:mt-8 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+        <div class="lg:col-span-7 text-center lg:text-left">
+          <div class="inline-flex items-center gap-2 bg-amber-400/20 border border-amber-300/40 text-amber-300 px-3.5 py-1 rounded-full text-xs font-extrabold uppercase tracking-wider mb-3">
+            <i class="fa-solid fa-trophy"></i> Thank You to All Our Runners, Walkers &amp; Donors!
+          </div>
+          <h1 class="leading-tight">
+            <span class="block text-2xl sm:text-4xl lg:text-5xl font-black tracking-tight text-white">IAM &amp; PARAMOUNT</span>
+            <span class="block text-2xl sm:text-4xl lg:text-5xl font-black tracking-tight text-amber-400">Charity 5K Highlights &amp; Results</span>
+          </h1>
+          <p class="mt-3 text-xs sm:text-base text-blue-100 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+            What an incredible morning along scenic San Diego Bay! Celebrate our top finishers, browse the official race day photo gallery, and continue supporting our designated nonprofit charities below.
+          </p>
+
+          <!-- Quick Navigation Pills + Auto-Expiring Social Studio Button -->
+          <div class="mt-5 flex flex-wrap justify-center lg:justify-start gap-2.5 sm:gap-3">
+            <a href="#podiumSection" class="inline-flex items-center justify-center gap-2 bg-pts-accent hover:bg-red-700 text-white px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition shadow-lg">
+              <i class="fa-solid fa-medal text-amber-300"></i> Winners Podium
+            </a>
+            <a href="#gallerySection" class="inline-flex items-center justify-center gap-2 bg-white hover:bg-gray-100 text-pts-navy px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition shadow-lg">
+              <i class="fa-solid fa-images text-pts-blue"></i> Race Photo Showcase
+            </a>
+            <a href="#courseExplorerSection" class="inline-flex items-center justify-center gap-2 bg-white/15 hover:bg-white/25 text-white border border-white/30 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold backdrop-blur-sm transition shadow">
+              <i class="fa-solid fa-map-location-dot text-amber-300"></i> 5K Course Route
+            </a>
+
+            <!-- Finisher Social Badge Studio Button (Visible until EOD Monday 10/26/2026) -->
+            <button type="button" id="heroSocialStudioBtn" onclick="openFinisherStudioModal()" class="hidden inline-flex items-center justify-center gap-2 bg-gradient-to-r from-amber-400 via-amber-300 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-pts-navy px-4 py-2.5 rounded-xl text-xs sm:text-sm font-black transition shadow-lg animate-pulse">
+              <i class="fa-solid fa-camera-retro text-base"></i> Finisher Social Badge Studio
+            </button>
+          </div>
+        </div>
+
+        <!-- Charity Partner Logos -->
+        <div class="lg:col-span-5 flex flex-col items-center lg:items-end gap-3">
+          <div class="bg-white px-4 sm:px-5 py-3 rounded-2xl shadow-xl inline-flex items-center gap-4 sm:gap-5">
+            <div class="flex items-center justify-center h-14 sm:h-20 md:h-24">
+              <a href="https://globalmovingfoundation.org/" target="_blank" rel="noopener noreferrer" class="hover:opacity-85 transition-opacity flex items-center justify-center h-full">
+                <img src="GlobalMovingFoundationLogo.png" alt="Global Moving Foundation" class="h-full w-auto max-w-none object-contain block">
+              </a>
+            </div>
+            <div class="h-12 sm:h-18 md:h-20 w-px bg-gray-300 flex-shrink-0"></div>
+            <div class="flex items-center justify-center h-14 sm:h-20 md:h-24">
+              <a href="https://www.coastalk9gsr.org/" target="_blank" rel="noopener noreferrer" class="hover:opacity-85 transition-opacity flex items-center justify-center h-full">
+                <img src="CoastalK9Logo.png" alt="Coastal K9 German Shepherd Rescue" class="h-full w-auto max-w-none object-contain block scale-110">
+              </a>
+            </div>
+          </div>
+          <p class="text-xs sm:text-sm text-blue-100 leading-relaxed text-center lg:text-right max-w-md">
+            100% of proceeds from this year’s 5K directly benefit the <strong>Global Moving Foundation</strong> and <strong>Coastal K9 German Shepherd Rescue</strong>.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ================================================================= -->
+  <!-- GLOWING TOP CHARITY DONATION CALLOUT (KEPT ACTIVE POST-RACE)      -->
+  <!-- ================================================================= -->
+  <div id="prominentDonationBanner" class="max-w-6xl mx-auto px-4 sm:px-6 -mt-3 sm:-mt-4 relative z-30 w-full mb-3">
+    <div class="relative group">
+      <div class="absolute -inset-1 bg-gradient-to-r from-red-600 via-amber-400 to-red-600 rounded-2xl blur-md opacity-85 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-pulse"></div>
+      
+      <div class="relative bg-gradient-to-r from-pts-navy via-blue-950 to-pts-navy border-2 border-amber-400 text-white p-4 sm:p-5 rounded-2xl shadow-2xl flex flex-col md:flex-row items-center justify-between gap-4">
+        <div class="flex items-center gap-3.5 text-center md:text-left">
+          <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-tr from-amber-400 to-red-500 text-pts-navy flex items-center justify-center text-2xl sm:text-3xl flex-shrink-0 shadow-lg animate-bounce">
+            <i class="fa-solid fa-heart text-pts-navy"></i>
+          </div>
+          <div>
+            <div class="flex items-center justify-center md:justify-start gap-2">
+              <span class="bg-amber-400 text-pts-navy text-[10px] sm:text-xs font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full shadow-sm">
+                Post-Race Giving Open
+              </span>
+              <span class="text-amber-300 text-xs font-bold hidden sm:inline">• 100% Goes to Nonprofits</span>
+            </div>
+            <h3 class="text-base sm:text-xl font-black mt-1 text-white">
+              Help Us Maximize Our Charity Impact!
+            </h3>
+            <p class="text-xs sm:text-sm text-blue-100 mt-0.5">
+              Donations remain open in support of the <strong>Global Moving Foundation</strong> &amp; <strong>Coastal K9 German Shepherd Rescue</strong>.
+            </p>
+          </div>
+        </div>
+
+        <a href="https://donate.stripe.com/eVq6oz1MEdinausaBR3gk02" target="_blank" rel="noopener noreferrer" class="w-full md:w-auto bg-gradient-to-r from-amber-400 via-amber-300 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-pts-navy font-black py-3 sm:py-3.5 px-6 rounded-xl text-sm sm:text-base shadow-xl transition-all transform hover:scale-105 active:scale-95 flex items-center justify-center gap-2 whitespace-nowrap flex-shrink-0">
+          <i class="fa-solid fa-hand-holding-dollar text-pts-accent text-lg"></i> Donate Any Amount Now
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================================================================= -->
+  <!-- AUTO-EXPIRING FINISHER SOCIAL STUDIO BANNER (UNTIL EOD 10/26/2026)-->
+  <!-- ================================================================= -->
+  <div id="raceDayStudioBanner" class="hidden max-w-6xl mx-auto px-4 sm:px-6 mt-2 mb-2 w-full">
+    <div class="bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 text-pts-navy p-4 sm:p-5 rounded-2xl shadow-xl border-2 border-amber-300 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
+      <div class="flex items-center gap-3.5">
+        <span class="w-12 h-12 rounded-2xl bg-pts-navy text-amber-300 flex items-center justify-center text-xl shadow flex-shrink-0">
+          <i class="fa-solid fa-camera-retro"></i>
+        </span>
+        <div>
+          <span class="text-[11px] font-black uppercase tracking-wider text-pts-navy/80 block">Available Through Monday, October 26</span>
+          <h3 class="text-base sm:text-lg font-black leading-tight">Ran or Walked the 5K? Create Your Official Finisher Social Badge!</h3>
+          <p class="text-xs text-pts-navy/90 font-medium">Upload your race day selfie or photo and download your custom 4:5 Post or 9:16 Story card.</p>
+        </div>
+      </div>
+      <button type="button" onclick="openFinisherStudioModal()" class="w-full sm:w-auto bg-pts-navy hover:bg-pts-blue text-white font-black py-3 px-5 rounded-xl text-xs sm:text-sm shadow-md transition flex items-center justify-center gap-2 flex-shrink-0">
+        <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i> Open Social Card Studio
+      </button>
+    </div>
+  </div>
+
+  <!-- ================================================================= -->
+  <!-- CHAMPIONS PODIUM: TOP 3 MEN & TOP 3 WOMEN                         -->
+  <!-- ================================================================= -->
+  <section id="podiumSection" class="max-w-6xl mx-auto px-4 sm:px-6 mt-6 sm:mt-8 w-full">
+    <div class="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
+      
+      <div class="bg-gradient-to-r from-pts-navy via-pts-blue to-pts-navy text-white px-5 sm:px-8 py-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div class="flex items-center gap-3.5">
+          <div class="w-12 h-12 rounded-2xl bg-amber-400 text-pts-navy flex items-center justify-center text-2xl font-black shadow-lg flex-shrink-0">
+            <i class="fa-solid fa-trophy"></i>
+          </div>
+          <div>
+            <span class="text-[11px] uppercase tracking-widest text-amber-300 font-extrabold block">2026 Official Leaderboard</span>
+            <h2 class="text-xl sm:text-3xl font-black tracking-tight">Top 3 Finishers Podium</h2>
+          </div>
+        </div>
+        <button type="button" onclick="confetti({ particleCount: 90, spread: 70, origin: { y: 0.6 } })" class="self-start sm:self-auto bg-white/15 hover:bg-white/25 text-white border border-white/25 px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2">
+          <i class="fa-solid fa-champagne-glasses text-amber-300"></i> Celebrate Winners
+        </button>
+      </div>
+
+      <div class="p-5 sm:p-8 grid grid-cols-1 lg:grid-cols-2 gap-8 bg-gradient-to-b from-pts-light/60 to-white">
+        
+        <!-- Men's Top 3 Category -->
+        <div class="bg-white rounded-2xl p-5 sm:p-6 border border-gray-200 shadow-md">
+          <div class="flex items-center justify-between border-b border-gray-100 pb-3.5 mb-5">
+            <div class="flex items-center gap-2.5">
+              <span class="w-9 h-9 rounded-xl bg-pts-navy text-amber-300 flex items-center justify-center font-black text-base shadow">
+                <i class="fa-solid fa-person-running"></i>
+              </span>
+              <div>
+                <h3 class="text-lg sm:text-xl font-black text-pts-navy leading-none">Men’s Division</h3>
+                <span class="text-xs text-gray-500 font-semibold">Top Three Male Finishers</span>
+              </div>
+            </div>
+            <span class="bg-blue-50 text-pts-blue text-[11px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider border border-blue-200">5K Official</span>
+          </div>
+          <div id="menPodiumList" class="space-y-4"></div>
+        </div>
+
+        <!-- Women's Top 3 Category -->
+        <div class="bg-white rounded-2xl p-5 sm:p-6 border border-gray-200 shadow-md">
+          <div class="flex items-center justify-between border-b border-gray-100 pb-3.5 mb-5">
+            <div class="flex items-center gap-2.5">
+              <span class="w-9 h-9 rounded-xl bg-pts-accent text-white flex items-center justify-center font-black text-base shadow">
+                <i class="fa-solid fa-person-running"></i>
+              </span>
+              <div>
+                <h3 class="text-lg sm:text-xl font-black text-pts-navy leading-none">Women’s Division</h3>
+                <span class="text-xs text-gray-500 font-semibold">Top Three Female Finishers</span>
+              </div>
+            </div>
+            <span class="bg-red-50 text-pts-accent text-[11px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider border border-red-200">5K Official</span>
+          </div>
+          <div id="womenPodiumList" class="space-y-4"></div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================= -->
+  <!-- DYNAMIC RACE PHOTO SHOWCASE & INTERACTIVE GALLERY                 -->
+  <!-- ================================================================= -->
+  <section id="gallerySection" class="max-w-6xl mx-auto px-4 sm:px-6 mt-8 w-full">
+    <div class="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
+      
+      <!-- Showcase Header & Filter Controls -->
+      <div class="bg-pts-navy text-white px-5 sm:px-8 py-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <span class="text-[11px] uppercase tracking-widest text-amber-300 font-extrabold block">San Diego Bayfront Memories</span>
+          <h2 class="text-xl sm:text-3xl font-black tracking-tight flex items-center gap-2.5">
+            <span>Official Race Photo Showcase</span>
+            <span id="photoCountBadge" class="text-xs bg-white/15 text-amber-300 px-2.5 py-1 rounded-full font-extrabold"></span>
+          </h2>
+        </div>
+
+        <!-- Category Filter Pills -->
+        <div class="flex flex-wrap items-center gap-1.5 bg-white/10 p-1.5 rounded-2xl border border-white/15">
+          <button type="button" onclick="filterGallery('all')" id="filterBtn-all" class="px-3.5 py-1.5 rounded-xl text-xs font-black bg-amber-400 text-pts-navy transition shadow">
+            All Photos
+          </button>
+          <button type="button" onclick="filterGallery('winners')" id="filterBtn-winners" class="px-3.5 py-1.5 rounded-xl text-xs font-bold text-white hover:bg-white/10 transition">
+            Winners &amp; Podium
+          </button>
+          <button type="button" onclick="filterGallery('crowd')" id="filterBtn-crowd" class="px-3.5 py-1.5 rounded-xl text-xs font-bold text-white hover:bg-white/10 transition">
+            Crowd &amp; Action
+          </button>
+        </div>
+      </div>
+
+      <!-- Featured Spotlight Auto-Slideshow Banner -->
+      <div id="featuredCarouselWrapper" class="relative bg-gray-950 h-[280px] sm:h-[420px] md:h-[480px] w-full overflow-hidden group">
+        <img id="carouselHeroImg" src="" alt="Featured Race Highlight" class="w-full h-full object-cover object-center transition-all duration-700 cursor-pointer" onclick="openLightbox(currentCarouselIdx)">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent pointer-events-none"></div>
+
+        <!-- Prev / Next Controls -->
+        <button type="button" onclick="stepCarousel(-1)" class="absolute left-3 sm:left-5 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black/50 hover:bg-pts-accent text-white backdrop-blur-md border border-white/20 flex items-center justify-center transition shadow-lg">
+          <i class="fa-solid fa-chevron-left"></i>
+        </button>
+        <button type="button" onclick="stepCarousel(1)" class="absolute right-3 sm:right-5 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black/50 hover:bg-pts-accent text-white backdrop-blur-md border border-white/20 flex items-center justify-center transition shadow-lg">
+          <i class="fa-solid fa-chevron-right"></i>
+        </button>
+
+        <!-- Bottom Caption & Controls Bar -->
+        <div class="absolute bottom-4 left-4 right-4 sm:bottom-6 sm:left-8 sm:right-8 flex flex-col sm:flex-row sm:items-end justify-between gap-3 text-white">
+          <div>
+            <span id="carouselTag" class="bg-pts-accent text-white text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-md shadow">
+              Featured Moment
+            </span>
+            <h3 id="carouselCaption" class="text-lg sm:text-2xl font-black mt-1.5 drop-shadow">
+              IAM &amp; Paramount Charity 5K Fun Run/Walk
+            </h3>
+          </div>
+          <div class="flex items-center gap-2">
+            <button type="button" onclick="toggleCarouselAutoplay()" id="carouselPlayBtn" class="bg-white/15 hover:bg-white/25 backdrop-blur-md text-white border border-white/25 px-3 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition">
+              <i id="carouselPlayIcon" class="fa-solid fa-pause text-amber-300"></i>
+              <span id="carouselPlayText">Auto-Play</span>
+            </button>
+            <button type="button" onclick="openLightbox(currentCarouselIdx)" class="bg-amber-400 hover:bg-amber-300 text-pts-navy px-3.5 py-2 rounded-xl text-xs font-black flex items-center gap-1.5 transition shadow">
+              <i class="fa-solid fa-expand"></i> Full Screen
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Masonry Photo Grid -->
+      <div class="p-5 sm:p-8 bg-gray-50">
+        <div id="photoMasonryGrid" class="masonry-grid"></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================================================================= -->
+  <!-- 23 OCTOBER 2026 – IAM & PTS 5K FUN RUN/WALK MAP SECTION           -->
+  <!-- ================================================================= -->
+  <section id="courseExplorerSection" class="max-w-6xl mx-auto px-4 sm:px-6 mt-8 mb-10 w-full flex-grow">
+    <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+      
+      <div class="bg-gradient-to-r from-pts-navy via-pts-blue to-pts-navy text-white px-4 sm:px-6 py-4 flex flex-col lg:flex-row lg:items-center justify-between gap-3.5">
+        <div>
+          <h2 class="text-lg sm:text-2xl font-black tracking-tight">23 October 2026 – Official 5K Waterfront Course Map</h2>
+          <p class="text-xs sm:text-sm text-blue-100 mt-0.5">
+            Relive our 5K route along the scenic San Diego Bayfront Promenade.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-2 sm:flex sm:flex-wrap items-center gap-2">
+          <button type="button" id="simRunBtn" onclick="toggleCourseSimulation()" class="col-span-2 sm:col-span-1 bg-pts-accent active:bg-red-800 hover:bg-red-700 text-white text-xs sm:text-sm font-bold px-4 py-2.5 sm:py-2 rounded-xl shadow-md transition flex items-center justify-center gap-2">
+            <i id="simRunIcon" class="fa-solid fa-play"></i>
+            <span id="simRunText">Simulate Course Route</span>
+          </button>
+          <button type="button" onclick="toggleFullScreenMap()" class="bg-white/15 active:bg-white/30 hover:bg-white/25 text-white border border-white/25 text-xs sm:text-sm font-semibold px-3 py-2.5 sm:py-2 rounded-xl transition flex items-center justify-center gap-1.5">
+            <i class="fa-solid fa-up-right-and-down-left-from-center text-amber-300"></i> Full Screen Map
+          </button>
+          <button type="button" onclick="toggleModal('officialMapModal')" class="bg-white active:bg-gray-100 text-pts-navy hover:bg-blue-50 text-xs sm:text-sm font-bold px-3 py-2.5 sm:py-2 rounded-xl shadow transition flex items-center justify-center gap-1.5">
+            <i class="fa-regular fa-map text-pts-accent"></i> Official PDF Map
+          </button>
+        </div>
+      </div>
+
+      <div class="bg-pts-light border-b border-gray-200 px-4 sm:px-6 py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs sm:text-sm">
+        <div class="flex items-start sm:items-center gap-2.5">
+          <span class="inline-flex items-center flex-shrink-0 mt-0.5 sm:mt-0">
+            <span class="w-3.5 h-3.5 rounded-full bg-green-600 inline-block border-2 border-white shadow"></span>
+            <span class="w-3.5 h-3.5 rounded-full bg-pts-accent inline-block -ml-1.5 border-2 border-white shadow"></span>
+          </span>
+          <div>
+            <strong class="text-pts-navy uppercase tracking-wide">START/FINISH:</strong>
+            <span class="text-gray-800 font-medium">Northwest corner of the North Embarcadero Marina (marked by the green &amp; red dots on the map).</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12">
+        
+        <div id="mapWrapperContainer" class="lg:col-span-7 relative bg-blue-950 h-[370px] sm:h-[460px] lg:h-auto lg:min-h-[540px] flex flex-col transition-all overflow-hidden">
+          <div id="courseMap" class="w-full h-full flex-grow"></div>
+
+          <!-- TOP-LEFT CONTROLS: Full Screen Toggle, Full-Screen Simulation Button & Touch Pan Lock -->
+          <div class="absolute top-20 left-2.5 sm:top-3 sm:left-14 z-[400] flex flex-col sm:flex-row items-start sm:items-center gap-1.5">
+            <button type="button" id="fsToggleBtn" onclick="toggleFullScreenMap()" class="bg-pts-navy/95 hover:bg-pts-blue text-white backdrop-blur-sm px-2.5 sm:px-3 py-1.5 rounded-xl shadow-lg border border-white/20 text-[10px] sm:text-xs font-bold flex items-center gap-1.5 transition">
+              <i id="fsToggleIcon" class="fa-solid fa-expand text-amber-300"></i>
+              <span id="fsToggleText">Full Screen</span>
+            </button>
+
+            <button type="button" id="fsSimRunBtn" onclick="toggleCourseSimulation()" class="bg-pts-accent/95 hover:bg-red-700 text-white backdrop-blur-sm px-2.5 sm:px-3 py-1.5 rounded-xl shadow-lg border border-white/25 text-[10px] sm:text-xs font-bold flex items-center gap-1.5 transition">
+              <i id="fsSimRunIcon" class="fa-solid fa-play text-amber-300"></i>
+              <span id="fsSimRunText">Simulate Route</span>
+            </button>
+
+            <button type="button" id="mobileTouchLockBtn" onclick="toggleMobileMapTouch()" class="lg:hidden bg-pts-navy/90 text-white backdrop-blur-sm px-2.5 py-1.5 rounded-xl shadow-lg border border-white/20 text-[10px] font-bold flex items-center gap-1.5">
+              <i id="mobileTouchIcon" class="fa-solid fa-hand-pointer text-amber-300"></i>
+              <span id="mobileTouchText">Tap to Pan Map</span>
+            </button>
+          </div>
+
+          <!-- TOP-RIGHT CONTROLS: Map | Satellite | Reset Overview -->
+          <div class="absolute top-2.5 right-2.5 sm:top-3 sm:right-3 z-[400] bg-white/95 backdrop-blur-sm rounded-xl shadow-lg border border-gray-200 p-1 flex items-center gap-0.5 sm:gap-1 text-[11px] sm:text-xs font-bold">
+            <button type="button" id="btnMapStreet" onclick="setGoogleMapMode('streets')" class="px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-lg bg-pts-navy text-white transition flex items-center gap-1 shadow-sm">
+              <i class="fa-solid fa-map"></i> Map
+            </button>
+            <button type="button" id="btnMapSat" onclick="setGoogleMapMode('hybrid')" class="px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-lg text-gray-700 hover:bg-gray-100 transition flex items-center gap-1">
+              <i class="fa-solid fa-satellite"></i> Satellite
+            </button>
+            <button type="button" onclick="resetCourseMapView()" class="px-2 py-1 sm:py-1.5 rounded-lg text-pts-blue hover:bg-blue-50 transition flex items-center gap-1" title="Reset Map Overview">
+              <i class="fa-solid fa-arrows-to-circle"></i>
+            </button>
+          </div>
+
+          <div id="simStatusOverlay" class="hidden absolute top-14 left-3 right-3 z-[400] bg-pts-navy/95 text-white backdrop-blur-md px-3.5 py-2.5 rounded-xl shadow-xl border border-white/15">
+            <div class="flex items-center justify-between text-[11px] sm:text-xs mb-1.5">
+              <span class="font-bold flex items-center gap-1.5 truncate">
+                <span class="w-2 h-2 rounded-full bg-green-400 animate-ping flex-shrink-0"></span>
+                <span id="simStageLabel" class="truncate">North Embarcadero Marina</span>
+              </span>
+              <span id="simDistanceLabel" class="font-mono font-black text-amber-300 flex-shrink-0 ml-2">0%</span>
+            </div>
+            <div class="w-full bg-white/20 h-1.5 sm:h-2 rounded-full overflow-hidden">
+              <div id="simProgressBar" class="bg-gradient-to-r from-green-400 via-amber-400 to-pts-accent h-full transition-all duration-150" style="width: 0%"></div>
+            </div>
+          </div>
+
+          <div class="absolute bottom-2.5 left-2.5 right-2.5 sm:right-auto z-[400] bg-white/95 backdrop-blur-sm px-2.5 py-1.5 sm:p-2.5 rounded-xl shadow-lg border border-gray-200 text-[10px] sm:text-[11px] flex flex-wrap items-center justify-center sm:justify-start gap-2.5 sm:gap-3">
+            <div class="flex items-center gap-1 font-semibold text-gray-800">
+              <span class="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-green-600 inline-block border border-white shadow"></span>
+              <span class="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-pts-accent inline-block -ml-1.5 border border-white shadow"></span>
+              Start / Finish
+            </div>
+            <div class="flex items-center gap-1 font-semibold text-gray-800">
+              <span class="w-4 h-1.5 bg-pts-accent rounded-full inline-block"></span>
+              Course Route
+            </div>
+            <div class="flex items-center gap-1 font-semibold text-gray-800">
+              <span class="w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full bg-pts-accent text-white text-[8px] sm:text-[9px] font-black inline-flex items-center justify-center">1</span>
+              Mile Markers (1, 2, 3)
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-5 p-4 sm:p-6 flex flex-col justify-between bg-white border-t lg:border-t-0 lg:border-l border-gray-200">
+          <div>
+            <div class="border-b border-gray-100 pb-2.5 mb-3 flex items-center justify-between">
+              <div>
+                <span class="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-pts-blue block">COURSE ROUTE</span>
+                <h3 class="text-xs sm:text-base font-extrabold text-pts-navy mt-0.5">
+                  Scenic Waterfront Route Along San Diego Bay
+                </h3>
+              </div>
+              <span class="lg:hidden text-[10px] font-bold text-pts-blue bg-blue-50 px-2 py-1 rounded-full whitespace-nowrap flex items-center gap-1">
+                Swipe <i class="fa-solid fa-arrows-left-right"></i>
+              </span>
+            </div>
+
+            <div id="courseStepList" class="flex lg:flex-col gap-3 overflow-x-auto lg:overflow-x-visible snap-x snap-mandatory pb-2 lg:pb-0 no-scrollbar">
+              
+              <div onclick="focusCourseStage(0)" id="stage-card-0" class="course-step-card active snap-center flex-shrink-0 w-[85%] sm:w-[70%] lg:w-full cursor-pointer p-3.5 rounded-xl border border-gray-200 transition-all hover:border-pts-accent">
+                <div class="flex items-start gap-3">
+                  <div class="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-green-600 text-white font-black text-xs flex items-center justify-center flex-shrink-0 mt-0.5 shadow">
+                    1
+                  </div>
+                  <p class="text-xs text-gray-700 leading-relaxed">
+                    The course begins at the North Embarcadero Marina and follows the marina walkway counterclockwise before heading south (right turn) continuing down along the Bayfront Promenade.
+                  </p>
+                </div>
+              </div>
+
+              <div onclick="focusCourseStage(1)" id="stage-card-1" class="course-step-card snap-center flex-shrink-0 w-[85%] sm:w-[70%] lg:w-full cursor-pointer p-3.5 rounded-xl border border-gray-200 transition-all hover:border-pts-accent">
+                <div class="flex items-start gap-3">
+                  <div class="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-pts-accent text-white font-black text-xs flex items-center justify-center flex-shrink-0 mt-0.5 shadow">
+                    2
+                  </div>
+                  <p class="text-xs text-gray-700 leading-relaxed">
+                    Participants turn right and follow the loop (counterclockwise) around the South Embarcadero Marina.
+                  </p>
+                </div>
+              </div>
+
+              <div onclick="focusCourseStage(2)" id="stage-card-2" class="course-step-card snap-center flex-shrink-0 w-[85%] sm:w-[70%] lg:w-full cursor-pointer p-3.5 rounded-xl border border-gray-200 transition-all hover:border-pts-accent">
+                <div class="flex items-start gap-3">
+                  <div class="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-pts-blue text-white font-black text-xs flex items-center justify-center flex-shrink-0 mt-0.5 shadow">
+                    3
+                  </div>
+                  <p class="text-xs text-gray-700 leading-relaxed">
+                    Turn right onto the Promenade toward the Hilton and make a U-turn before the hotel.
+                  </p>
+                </div>
+              </div>
+
+              <div onclick="focusCourseStage(3)" id="stage-card-3" class="course-step-card snap-center flex-shrink-0 w-[85%] sm:w-[70%] lg:w-full cursor-pointer p-3.5 rounded-xl border border-gray-200 transition-all hover:border-pts-accent">
+                <div class="flex items-start gap-3">
+                  <div class="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-pts-navy text-white font-black text-xs flex items-center justify-center flex-shrink-0 mt-0.5 shadow">
+                    4
+                  </div>
+                  <p class="text-xs text-gray-700 leading-relaxed">
+                    The return route follows the waterfront north toward Ruocco Park, loops around the park (counterclockwise), and continues back with a right turn to the start/finish area at the North Embarcadero Marina.
+                  </p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="mt-4 bg-pts-light p-4 rounded-xl border border-blue-200 text-center">
+            <span class="text-xs font-bold uppercase tracking-wider text-pts-navy block mb-2">
+              <i class="fa-solid fa-heart text-pts-accent mr-1"></i> Support Our Event Charities
+            </span>
+            <a href="https://donate.stripe.com/eVq6oz1MEdinausaBR3gk02" target="_blank" rel="noopener noreferrer" class="inline-block w-full bg-pts-accent hover:bg-red-700 text-white font-bold py-2.5 px-4 rounded-xl text-xs sm:text-sm shadow transition">
+              Donate Any Amount to Charities
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================= -->
+  <!-- FOOTER                                                            -->
+  <!-- ================================================================= -->
+  <footer class="bg-pts-navy text-blue-200 py-6 border-t border-blue-900 text-xs text-center">
+    <div class="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <p>&copy; 2026 International Association of Movers &amp; Paramount Transportation Systems. All rights reserved.</p>
+      <p>Questions or photo submissions: <a href="mailto:convention@pts-moves.com" class="text-amber-300 font-bold hover:underline">convention@pts-moves.com</a></p>
+    </div>
+  </footer>
+
+  <!-- ================================================================= -->
+  <!-- FULL-SCREEN PHOTO LIGHTBOX MODAL                                  -->
+  <!-- ================================================================= -->
+  <div id="lightboxModal" class="fixed inset-0 bg-black/95 backdrop-blur-md hidden flex flex-col justify-between p-3 sm:p-6 z-[10000]">
+    <div class="flex items-center justify-between text-white max-w-6xl mx-auto w-full">
+      <div class="flex items-center gap-2.5">
+        <span id="lightboxCounter" class="bg-white/15 px-3 py-1 rounded-full text-xs font-mono font-bold text-amber-300">1 / 1</span>
+        <span id="lightboxCategoryBadge" class="bg-pts-accent px-2.5 py-1 rounded-md text-[10px] font-black uppercase tracking-wider">Highlight</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <a id="lightboxDownloadBtn" href="" download class="bg-white/15 hover:bg-white/25 text-white px-3.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition">
+          <i class="fa-solid fa-download text-amber-300"></i> Download Photo
+        </a>
+        <button type="button" onclick="closeLightbox()" class="bg-white/15 hover:bg-pts-accent text-white w-9 h-9 rounded-xl flex items-center justify-center text-lg transition">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="relative flex-grow flex items-center justify-center my-2 overflow-hidden">
+      <button type="button" onclick="stepLightbox(-1)" class="absolute left-2 sm:left-6 z-20 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white/15 hover:bg-pts-accent text-white flex items-center justify-center text-lg transition shadow-xl">
+        <i class="fa-solid fa-chevron-left"></i>
+      </button>
+
+      <img id="lightboxImg" src="" alt="Full Screen Race Photo" class="max-h-[78vh] max-w-[90vw] object-contain rounded-xl shadow-2xl border border-white/10">
+
+      <button type="button" onclick="stepLightbox(1)" class="absolute right-2 sm:right-6 z-20 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white/15 hover:bg-pts-accent text-white flex items-center justify-center text-lg transition shadow-xl">
+        <i class="fa-solid fa-chevron-right"></i>
+      </button>
+    </div>
+
+    <div class="text-center text-white max-w-2xl mx-auto pb-2">
+      <h4 id="lightboxCaption" class="text-sm sm:text-lg font-bold"></h4>
+    </div>
+  </div>
+
+  <!-- ================================================================= -->
+  <!-- FINISHER PHOTO SOCIAL POST STUDIO MODAL (Z-[10000] FIXED ON TOP)  -->
+  <!-- ================================================================= -->
+  <div id="finisherStudioModal" class="fixed inset-0 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-2 sm:p-4 z-[10000] overflow-y-auto">
+    <div class="bg-white rounded-3xl max-w-5xl w-full max-h-[96vh] flex flex-col shadow-2xl overflow-hidden my-auto">
+      
+      <div class="bg-gradient-to-r from-pts-navy via-pts-blue to-pts-navy text-white px-5 sm:px-6 py-3.5 flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <span class="w-9 h-9 rounded-xl bg-amber-400 text-pts-navy flex items-center justify-center font-black text-lg shadow">
+            <i class="fa-solid fa-camera-retro"></i>
+          </span>
+          <div>
+            <h3 class="text-base sm:text-xl font-black leading-tight">Official 5K Finisher Social Card Studio</h3>
+            <p class="text-[11px] sm:text-xs text-blue-200">Format for Instagram, LinkedIn &amp; Stories • 4 distinct styles</p>
+          </div>
+        </div>
+        <button type="button" onclick="toggleModal('finisherStudioModal')" class="text-white/80 hover:text-white text-2xl p-1">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="p-4 sm:p-6 overflow-y-auto grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        
+        <!-- Left Column: Interactive Card Container with Photo & Ratio Controls Built-In -->
+        <div class="lg:col-span-7 flex flex-col items-center bg-gray-950 rounded-2xl p-3.5 sm:p-5 border border-gray-800 shadow-inner">
+          
+          <div class="w-full max-w-[390px] flex flex-wrap items-center justify-between gap-2 bg-gray-900/90 border border-white/20 p-2 rounded-2xl mb-2.5">
+            <div class="flex items-center gap-1.5">
+              <label class="cursor-pointer bg-pts-accent active:bg-red-800 hover:bg-red-700 text-white font-bold py-1.5 px-3 rounded-xl text-xs shadow flex items-center gap-1.5 transition">
+                <i class="fa-solid fa-camera text-amber-300"></i> <span>Selfie</span>
+                <input type="file" accept="image/*" capture="user" class="hidden" onchange="handleFinisherPhotoUpload(event)">
+              </label>
+              <label class="cursor-pointer bg-white/20 hover:bg-white/30 text-white font-bold py-1.5 px-3 rounded-xl text-xs border border-white/30 flex items-center gap-1.5 transition">
+                <i class="fa-solid fa-image text-blue-300"></i> <span>Photo</span>
+                <input type="file" accept="image/*" class="hidden" onchange="handleFinisherPhotoUpload(event)">
+              </label>
+              <button type="button" id="resetPhotoFitBtn" onclick="resetPhotoTransform()" class="hidden text-[11px] bg-white/10 hover:bg-white/20 text-gray-300 font-bold px-2 py-1.5 rounded-xl border border-white/20 transition">
+                <i class="fa-solid fa-arrows-to-circle"></i>
+              </button>
+            </div>
+
+            <div class="flex items-center bg-black/50 rounded-xl p-1 border border-white/15 text-[11px] font-bold">
+              <button type="button" id="ratioPostBtn" onclick="setFinisherRatio('post')" class="px-2.5 py-1 rounded-lg bg-pts-navy text-amber-300 transition">
+                4:5 Post
+              </button>
+              <button type="button" id="ratioStoryBtn" onclick="setFinisherRatio('story')" class="px-2.5 py-1 rounded-lg text-gray-400 hover:text-white transition">
+                9:16 Story
+              </button>
+            </div>
+          </div>
+
+          <div class="w-full max-w-[390px] flex items-center justify-between mb-2 text-xs text-gray-300 px-1">
+            <span class="font-bold truncate text-[11px] sm:text-xs text-amber-400 flex items-center gap-1.5">
+              <i class="fa-solid fa-wand-magic-sparkles"></i>
+              <span id="activeDesignTitle">Design 1: Executive Gold Crest</span>
+            </span>
+            <button type="button" onclick="randomizeFinisherDesign()" class="bg-white/15 hover:bg-white/25 text-white font-bold px-2.5 py-1 rounded-lg transition text-[11px] flex items-center gap-1">
+              <i class="fa-solid fa-shuffle text-amber-300"></i> Next Style
+            </button>
+          </div>
+
+          <div id="canvasViewport" class="w-full max-w-[370px] rounded-2xl overflow-hidden shadow-2xl border-2 border-white/15 bg-pts-navy relative flex items-center justify-center">
+            <canvas id="finisherCanvas" width="1080" height="1350" class="w-full h-auto block cursor-grab active:cursor-grabbing"></canvas>
+          </div>
+
+          <div class="w-full max-w-[370px] mt-2.5 text-[11px] text-gray-400 flex items-center justify-between px-1">
+            <span><i class="fa-solid fa-hand-pointer text-amber-300 mr-1"></i> Drag to reposition • Pinch to zoom</span>
+            <div id="photoAdjustSliderBox" class="hidden flex items-center gap-2">
+              <span class="text-[10px] text-gray-300 font-semibold">Zoom</span>
+              <input type="range" id="photoZoomSlider" min="0.6" max="3.0" step="0.02" value="1" oninput="onSliderTransformChange()" class="w-20 accent-amber-400">
+            </div>
+          </div>
+
+          <div class="mt-3.5 grid grid-cols-2 sm:grid-cols-4 gap-2 w-full max-w-[420px]">
+            <button type="button" id="designBtn0" onclick="selectFinisherDesign(0)" class="py-1.5 px-2 rounded-xl text-[11px] font-black border transition bg-amber-400 text-pts-navy border-amber-400 shadow">
+              1. Gold Crest
+            </button>
+            <button type="button" id="designBtn1" onclick="selectFinisherDesign(1)" class="py-1.5 px-2 rounded-xl text-[11px] font-bold border transition bg-white/10 text-white border-white/20 hover:bg-white/20">
+              2. Magazine
+            </button>
+            <button type="button" id="designBtn2" onclick="selectFinisherDesign(2)" class="py-1.5 px-2 rounded-xl text-[11px] font-bold border transition bg-white/10 text-white border-white/20 hover:bg-white/20">
+              3. SD Skyline
+            </button>
+            <button type="button" id="designBtn3" onclick="selectFinisherDesign(3)" class="py-1.5 px-2 rounded-xl text-[11px] font-bold border transition bg-white/10 text-white border-white/20 hover:bg-white/20">
+              4. Proud Finisher
+            </button>
+          </div>
+        </div>
+
+        <!-- Right Column: Participant Details & Conditional Share/Save Buttons -->
+        <div class="lg:col-span-5 space-y-4">
+          
+          <div class="bg-gray-50 p-4 rounded-2xl border border-gray-200 space-y-3">
+            <h4 class="text-xs sm:text-sm font-black uppercase tracking-wider text-pts-navy flex items-center gap-2">
+              <i class="fa-solid fa-user-pen text-pts-blue"></i> Finisher Card Information
+            </h4>
+
+            <div class="space-y-3 text-xs">
+              <div>
+                <label class="font-bold text-gray-800 block mb-1">
+                  Participant Full Name <span class="text-red-500 font-bold">*</span>
+                </label>
+                <input type="text" id="cardRunnerName" placeholder="Enter Full Name (e.g. Alex Finisher)" oninput="onCardInputChange()" required class="w-full rounded-lg border border-gray-300 p-2.5 text-sm font-bold text-pts-navy focus:ring-2 focus:ring-pts-navy focus:outline-none">
+                <span id="cardNameErr" class="text-[11px] text-red-500 hidden mt-1"><i class="fa-solid fa-circle-exclamation mr-1"></i> Please enter your name for the card.</span>
+              </div>
+              <div>
+                <label class="font-bold text-gray-700 block mb-1">Company / Team Name (Optional)</label>
+                <input type="text" id="cardRunnerCompany" placeholder="e.g. Paramount Movers / Team IAM (or leave blank)" oninput="onCardInputChange()" class="w-full rounded-lg border border-gray-300 p-2.5 text-sm focus:ring-2 focus:ring-pts-navy focus:outline-none">
+              </div>
+            </div>
+          </div>
+
+          <div id="cardShareLockedNotice" class="bg-amber-50 border border-amber-200 text-amber-800 p-3 rounded-xl text-xs flex items-center gap-2.5">
+            <i class="fa-solid fa-circle-info text-amber-600 text-base flex-shrink-0"></i>
+            <span>Add your selfie/photo and enter your name above to unlock sharing and photo saving.</span>
+          </div>
+
+          <div id="cardShareUnlockedNotice" class="hidden bg-green-50 border border-green-200 text-green-800 p-3 rounded-xl text-xs flex items-center gap-2.5">
+            <i class="fa-solid fa-circle-check text-green-600 text-base flex-shrink-0"></i>
+            <span class="font-semibold">Your card is ready to share and save!</span>
+          </div>
+
+          <div class="space-y-2.5">
+            <button type="button" id="shareSocialBtn" onclick="shareFinisherCard()" disabled class="w-full bg-gray-300 text-gray-500 font-black py-3.5 px-5 rounded-xl shadow transition text-sm flex items-center justify-center gap-2 cursor-not-allowed">
+              <i class="fa-solid fa-share-nodes"></i> Share to Social Media
+            </button>
+            <button type="button" id="savePhotosBtn" onclick="saveFinisherCardToPhotos()" disabled class="w-full bg-gray-300 text-gray-500 font-bold py-3.5 px-5 rounded-xl shadow transition text-xs sm:text-sm flex items-center justify-center gap-2 cursor-not-allowed">
+              <i class="fa-solid fa-download"></i> Save to Photos
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Official PDF Map Modal -->
+  <div id="officialMapModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-2 sm:p-4 z-[10000]">
+    <div class="bg-white rounded-2xl max-w-4xl w-full max-h-[92vh] flex flex-col shadow-2xl overflow-hidden">
+      <div class="bg-pts-navy text-white px-4 sm:px-6 py-3.5 sm:py-4 flex items-center justify-between">
+        <h3 class="text-sm sm:text-lg font-bold truncate pr-2"><i class="fa-solid fa-map mr-1.5 text-amber-300"></i> 23 October 2026 – IAM &amp; PTS 5K Fun Run/Walk Map</h3>
+        <button type="button" onclick="toggleModal('officialMapModal')" class="text-white/80 hover:text-white text-xl p-1">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="p-4 sm:p-6 overflow-y-auto space-y-4 text-xs sm:text-sm text-gray-700">
+        <div class="bg-blue-50 border border-blue-200 p-3.5 sm:p-4 rounded-xl space-y-2">
+          <p><strong>START/FINISH:</strong> Northwest corner of the North Embarcadero Marina (marked by the green &amp; red dots on the map).</p>
+          <p><strong>COURSE ROUTE:</strong> Participants enjoyed a scenic waterfront route along San Diego Bay.</p>
+        </div>
+        <div class="text-center bg-gray-100 rounded-xl p-3 sm:p-4 border border-gray-200">
+          <img src="5K_Course_Map.jpg" alt="23 October 2026 – IAM & PTS 5K Fun Run/Walk Map" class="max-h-[460px] w-auto mx-auto rounded-lg shadow" onerror="this.onerror=null;this.src='5K_Course_Map.png';">
+          <div class="mt-3">
+            <a href="23 October 2026 – IAM & PTS 5K Fun Run Walk Map.pdf" target="_blank" class="inline-flex items-center gap-2 bg-pts-navy hover:bg-pts-blue text-white font-bold px-4 py-2.5 rounded-xl text-xs shadow transition">
+              <i class="fa-solid fa-download"></i> Open Official Map PDF
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // =========================================================================
+    // 1. POST-RACE CONFIGURATION: WINNERS PODIUM & PHOTO SHOWCASE
+    // =========================================================================
+    
+    // Finisher Social Badge Studio remains visible until EOD Monday, Oct 26, 2026 (11:59:59 PM PDT)
+    const STUDIO_EXPIRATION_TIMESTAMP = new Date("2026-10-26T23:59:59-07:00").getTime();
+
+    // EDIT WINNER NAMES, COMPANIES, AND TIMES HERE:
+    // Upload corresponding winner photos into the "photos/" folder (e.g. photos/men_1.jpg)
+    const RACE_WINNERS = {
+      men: [
+        { place: 1, name: "1st Place Male Winner", company: "Company / Organization", time: "18:45", photo: "photos/men_1.jpg" },
+        { place: 2, name: "2nd Place Male Winner", company: "Company / Organization", time: "19:18", photo: "photos/men_2.jpg" },
+        { place: 3, name: "3rd Place Male Winner", company: "Company / Organization", time: "19:54", photo: "photos/men_3.jpg" }
+      ],
+      women: [
+        { place: 1, name: "1st Place Female Winner", company: "Company / Organization", time: "20:12", photo: "photos/women_1.jpg" },
+        { place: 2, name: "2nd Place Female Winner", company: "Company / Organization", time: "20:55", photo: "photos/women_2.jpg" },
+        { place: 3, name: "3rd Place Female Winner", company: "Company / Organization", time: "21:30", photo: "photos/women_3.jpg" }
+      ]
+    };
+
+    // OPTIONAL CUSTOM CAPTIONS FOR CROWD PHOTOS:
+    // Any photo uploaded as photos/photo1.jpg ... photos/photo60.jpg will automatically appear!
+    // If you want custom captions for specific numbers, add them here:
+    const CUSTOM_PHOTO_CAPTIONS = {
+      1: { category: "winners", caption: "Official Starting Line Launch at North Embarcadero Marina" },
+      2: { category: "crowd", caption: "Runners & Walkers Along the San Diego Bayfront Promenade" },
+      3: { category: "winners", caption: "Awards Presentation & Podium Celebration" },
+      4: { category: "crowd", caption: "Team Spirit Supporting Global Moving Foundation & Coastal K9 Rescue" }
+    };
+
+    const MAX_AUTO_SCAN_PHOTOS = 60; // Automatically checks photos/photo1.jpg through photos/photo60.jpg
+
+    // =========================================================================
+    // 2. STUDIO EXPIRATION CHECK (ACTIVE UNTIL EOD MONDAY 10/26/2026)
+    // =========================================================================
+    function checkSocialStudioAvailability() {
+      const now = Date.now();
+      const heroBtn = document.getElementById('heroSocialStudioBtn');
+      const studioBanner = document.getElementById('raceDayStudioBanner');
+
+      if (now <= STUDIO_EXPIRATION_TIMESTAMP) {
+        if (heroBtn) heroBtn.classList.remove('hidden');
+        if (studioBanner) studioBanner.classList.remove('hidden');
+      } else {
+        if (heroBtn) heroBtn.classList.add('hidden');
+        if (studioBanner) studioBanner.classList.add('hidden');
+      }
+    }
+
+    function toggleModal(id) {
+      document.getElementById(id).classList.toggle('hidden');
+    }
+
+    // =========================================================================
+    // 3. RENDER CHAMPIONS PODIUM (TOP 3 MEN & TOP 3 WOMEN)
+    // =========================================================================
+    function getPlaceStyles(place) {
+      if (place === 1) {
+        return {
+          medalBg: "bg-gradient-to-br from-amber-300 via-amber-400 to-amber-600 text-pts-navy",
+          cardBorder: "border-amber-300 bg-gradient-to-r from-amber-50/70 to-white",
+          label: "1st Place • Gold",
+          icon: "fa-trophy"
+        };
+      } else if (place === 2) {
+        return {
+          medalBg: "bg-gradient-to-br from-slate-200 via-slate-300 to-slate-500 text-slate-900",
+          cardBorder: "border-slate-200 bg-white",
+          label: "2nd Place • Silver",
+          icon: "fa-medal"
+        };
+      }
+      return {
+        medalBg: "bg-gradient-to-br from-amber-600 via-amber-700 to-amber-900 text-white",
+        cardBorder: "border-amber-200/70 bg-white",
+        label: "3rd Place • Bronze",
+        icon: "fa-award"
+      };
+    }
+
+    function renderPodiumSide(listId, winnersArray) {
+      const container = document.getElementById(listId);
+      if (!container) return;
+
+      container.innerHTML = winnersArray.map((w) => {
+        const st = getPlaceStyles(w.place);
+        const safeName = w.name.replace(/"/g, '&quot;');
+        return `
+          <div class="rounded-2xl border-2 ${st.cardBorder} p-3.5 sm:p-4 shadow-sm hover:shadow-md transition flex items-center justify-between gap-3.5">
+            <div class="flex items-center gap-3.5 min-w-0">
+              <!-- Clickable Winner Photo with Automatic Trophy Fallback -->
+              <div class="relative w-16 h-16 sm:w-20 sm:h-20 rounded-2xl overflow-hidden flex-shrink-0 border-2 border-white shadow-md bg-pts-navy cursor-pointer group" onclick="openSinglePhotoLightbox('${w.photo}', '${safeName} (${st.label})')">
+                <img src="${w.photo}" alt="${safeName}" class="w-full h-full object-cover group-hover:scale-110 transition duration-300" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
+                <div class="hidden absolute inset-0 ${st.medalBg} flex items-center justify-center text-2xl font-black">
+                  <i class="fa-solid ${st.icon}"></i>
+                </div>
+                <span class="absolute bottom-1 right-1 w-6 h-6 rounded-full ${st.medalBg} text-[11px] font-black flex items-center justify-center shadow border border-white">
+                  ${w.place}
+                </span>
+              </div>
+
+              <div class="min-w-0">
+                <span class="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-wider text-pts-blue bg-blue-50 px-2 py-0.5 rounded-md border border-blue-100">
+                  <i class="fa-solid ${st.icon} text-amber-500"></i> ${st.label}
+                </span>
+                <h4 class="text-base sm:text-lg font-black text-pts-navy truncate mt-1">${w.name}</h4>
+                <p class="text-xs text-gray-500 font-semibold truncate">${w.company || ''}</p>
+              </div>
+            </div>
+
+            ${w.time ? `
+              <div class="text-right flex-shrink-0 bg-pts-light px-3 py-2 rounded-xl border border-blue-100">
+                <span class="text-[9px] uppercase font-bold text-gray-500 block">Finish Time</span>
+                <span class="font-mono text-sm sm:text-base font-black text-pts-navy">${w.time}</span>
+              </div>
+            ` : ''}
+          </div>
+        `;
+      }).join('');
+    }
+
+    // =========================================================================
+    // 4. DYNAMIC PHOTO GALLERY & AUTO-DISCOVERY ENGINE
+    // =========================================================================
+    let allGalleryPhotos = [];
+    let filteredGalleryPhotos = [];
+    let activeGalleryFilter = 'all';
+    let currentCarouselIdx = 0;
+    let carouselTimer = null;
+    let isCarouselPlaying = true;
+    let currentLightboxIdx = 0;
+
+    function discoverRacePhotos() {
+      const candidateList = [];
+
+      // 1. Check Winner Photos first so they also appear in the "Winners & Podium" tab
+      [...RACE_WINNERS.men, ...RACE_WINNERS.women].forEach((w) => {
+        candidateList.push({
+          src: w.photo,
+          category: 'winners',
+          caption: `${w.name} — ${w.company} (${w.place === 1 ? '1st' : w.place === 2 ? '2nd' : '3rd'} Place)`
+        });
+      });
+
+      // 2. Scan photos/photo1.jpg through photos/photo60.jpg
+      for (let i = 1; i <= MAX_AUTO_SCAN_PHOTOS; i++) {
+        const meta = CUSTOM_PHOTO_CAPTIONS[i] || {};
+        candidateList.push({
+          src: `photos/photo${i}.jpg`,
+          category: meta.category || 'crowd',
+          caption: meta.caption || `IAM & Paramount Charity 5K — Race Highlight #${i}`
+        });
+      }
+
+      let checkedCount = 0;
+      const discovered = [];
+
+      candidateList.forEach((item, orderIdx) => {
+        const probe = new Image();
+        probe.onload = () => {
+          discovered.push({ ...item, order: orderIdx });
+          checkedCount++;
+          if (checkedCount === candidateList.length) finalizeGalleryLoad(discovered);
+        };
+        probe.onerror = () => {
+          checkedCount++;
+          if (checkedCount === candidateList.length) finalizeGalleryLoad(discovered);
+        };
+        probe.src = item.src;
+      });
+    }
+
+    function finalizeGalleryLoad(discovered) {
+      discovered.sort((a, b) => a.order - b.order);
+
+      // If you haven't uploaded your JPGs to the /photos folder yet, display curated San Diego Bayfront & 5K preview placeholders so you can preview the layout immediately
+      if (discovered.length === 0) {
+        allGalleryPhotos = [
+          {
+            src: "https://images.unsplash.com/photo-1552674605-db6ffd4facb5?auto=format&fit=crop&w=1400&q=80",
+            category: "winners",
+            caption: "Morning Launch at the North Embarcadero Marina (Upload your JPGs to /photos to replace)"
+          },
+          {
+            src: "https://images.unsplash.com/photo-1452626038306-9aae5e071dd3?auto=format&fit=crop&w=1400&q=80",
+            category: "crowd",
+            caption: "IAM & Paramount 5K Runners Along the San Diego Waterfront"
+          },
+          {
+            src: "https://images.unsplash.com/photo-1513593771513-7b58b6c4af38?auto=format&fit=crop&w=1400&q=80",
+            category: "winners",
+            caption: "Finish Line Sprint & Podium Celebrations"
+          },
+          {
+            src: "https://images.unsplash.com/photo-1530549387789-4c1017266635?auto=format&fit=crop&w=1400&q=80",
+            category: "crowd",
+            caption: "Community & Colleagues Supporting Global Moving Foundation & Coastal K9 Rescue"
+          },
+          {
+            src: "https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?auto=format&fit=crop&w=1400&q=80",
+            category: "crowd",
+            caption: "Scenic Bayfront Promenade & Embarcadero Marina Loop"
+          },
+          {
+            src: "https://images.unsplash.com/photo-1502904550040-7534597429ae?auto=format&fit=crop&w=1400&q=80",
+            category: "winners",
+            caption: "Top 3 Men & Women Champions Showcase"
+          }
+        ];
+      } else {
+        allGalleryPhotos = discovered;
+      }
+
+      filterGallery('all');
+      startCarouselAutoplay();
+    }
+
+    function filterGallery(category) {
+      activeGalleryFilter = category;
+      ['all', 'winners', 'crowd'].forEach(cat => {
+        const btn = document.getElementById(`filterBtn-${cat}`);
+        if (!btn) return;
+        if (cat === category) {
+          btn.className = "px-3.5 py-1.5 rounded-xl text-xs font-black bg-amber-400 text-pts-navy transition shadow";
+        } else {
+          btn.className = "px-3.5 py-1.5 rounded-xl text-xs font-bold text-white hover:bg-white/10 transition";
+        }
+      });
+
+      if (category === 'all') {
+        filteredGalleryPhotos = [...allGalleryPhotos];
+      } else {
+        filteredGalleryPhotos = allGalleryPhotos.filter(p => p.category === category);
+      }
+
+      if (filteredGalleryPhotos.length === 0) {
+        filteredGalleryPhotos = [...allGalleryPhotos];
+      }
+
+      document.getElementById('photoCountBadge').innerText = `${filteredGalleryPhotos.length} Photos`;
+      currentCarouselIdx = 0;
+      updateCarouselView();
+      renderMasonryGrid();
+    }
+
+    function updateCarouselView() {
+      if (!filteredGalleryPhotos.length) return;
+      const item = filteredGalleryPhotos[currentCarouselIdx];
+      const imgEl = document.getElementById('carouselHeroImg');
+      const captionEl = document.getElementById('carouselCaption');
+      const tagEl = document.getElementById('carouselTag');
+
+      imgEl.src = item.src;
+      captionEl.innerText = item.caption;
+      tagEl.innerText = item.category === 'winners' ? 'Winners & Podium' : 'Crowd & Bayfront Action';
+    }
+
+    function stepCarousel(dir) {
+      if (!filteredGalleryPhotos.length) return;
+      currentCarouselIdx = (currentCarouselIdx + dir + filteredGalleryPhotos.length) % filteredGalleryPhotos.length;
+      updateCarouselView();
+    }
+
+    function startCarouselAutoplay() {
+      if (carouselTimer) clearInterval(carouselTimer);
+      carouselTimer = setInterval(() => {
+        if (isCarouselPlaying) stepCarousel(1);
+      }, 4500);
+    }
+
+    function toggleCarouselAutoplay() {
+      isCarouselPlaying = !isCarouselPlaying;
+      const icon = document.getElementById('carouselPlayIcon');
+      const text = document.getElementById('carouselPlayText');
+      if (isCarouselPlaying) {
+        icon.className = "fa-solid fa-pause text-amber-300";
+        text.innerText = "Auto-Play";
+      } else {
+        icon.className = "fa-solid fa-play text-amber-300";
+        text.innerText = "Paused";
+      }
+    }
+
+    function renderMasonryGrid() {
+      const grid = document.getElementById('photoMasonryGrid');
+      if (!grid) return;
+
+      grid.innerHTML = filteredGalleryPhotos.map((item, idx) => `
+        <div class="masonry-item group relative rounded-2xl overflow-hidden shadow-md hover:shadow-2xl border border-gray-200 bg-pts-navy cursor-pointer transition-all duration-300" onclick="openLightbox(${idx})">
+          <img src="${item.src}" alt="${item.caption.replace(/"/g, '&quot;')}" loading="lazy" class="w-full h-auto block group-hover:scale-105 transition duration-500">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex flex-col justify-end p-4">
+            <span class="text-[10px] font-black uppercase tracking-wider text-amber-300">
+              ${item.category === 'winners' ? 'Winners & Podium' : 'Race Highlight'}
+            </span>
+            <p class="text-xs sm:text-sm font-bold text-white leading-snug mt-0.5">${item.caption}</p>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function openLightbox(idx) {
+      if (!filteredGalleryPhotos.length) return;
+      currentLightboxIdx = idx;
+      updateLightboxContent();
+      document.getElementById('lightboxModal').classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function openSinglePhotoLightbox(src, caption) {
+      const foundIdx = filteredGalleryPhotos.findIndex(p => p.src === src);
+      if (foundIdx !== -1) {
+        openLightbox(foundIdx);
+        return;
+      }
+      document.getElementById('lightboxImg').src = src;
+      document.getElementById('lightboxCaption').innerText = caption;
+      document.getElementById('lightboxCounter').innerText = "Winner Spotlight";
+      document.getElementById('lightboxCategoryBadge').innerText = "Official Podium";
+      document.getElementById('lightboxDownloadBtn').href = src;
+      document.getElementById('lightboxModal').classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function updateLightboxContent() {
+      const item = filteredGalleryPhotos[currentLightboxIdx];
+      if (!item) return;
+      document.getElementById('lightboxImg').src = item.src;
+      document.getElementById('lightboxCaption').innerText = item.caption;
+      document.getElementById('lightboxCounter').innerText = `${currentLightboxIdx + 1} / ${filteredGalleryPhotos.length}`;
+      document.getElementById('lightboxCategoryBadge').innerText = item.category === 'winners' ? 'Winners & Podium' : 'Crowd & Action';
+      document.getElementById('lightboxDownloadBtn').href = item.src;
+    }
+
+    function stepLightbox(dir) {
+      if (!filteredGalleryPhotos.length) return;
+      currentLightboxIdx = (currentLightboxIdx + dir + filteredGalleryPhotos.length) % filteredGalleryPhotos.length;
+      updateLightboxContent();
+    }
+
+    function closeLightbox() {
+      document.getElementById('lightboxModal').classList.add('hidden');
+      document.body.style.overflow = '';
+    }
+
+    document.addEventListener('keydown', function(e) {
+      const lbHidden = document.getElementById('lightboxModal').classList.contains('hidden');
+      if (!lbHidden) {
+        if (e.key === 'Escape') closeLightbox();
+        if (e.key === 'ArrowRight') stepLightbox(1);
+        if (e.key === 'ArrowLeft') stepLightbox(-1);
+      } else if (e.key === 'Escape' && isMapFullScreen) {
+        toggleFullScreenMap();
+      }
+    });
+
+    // =========================================================================
+    // 5. COURSE MAP COORDINATES & LEAFLET ENGINE
+    // =========================================================================
+    const COURSE_COORDS = [
+      [32.70820, -117.17009], [32.70801, -117.17010], [32.70779, -117.17010], [32.70756, -117.17008],
+      [32.70736, -117.17005], [32.70720, -117.17000], [32.70707, -117.16985], [32.70692, -117.16964],
+      [32.70676, -117.16939], [32.70656, -117.16910], [32.70635, -117.16878], [32.70613, -117.16845],
+      [32.70594, -117.16816], [32.70582, -117.16795], [32.70578, -117.16784], [32.70580, -117.16768],
+      [32.70583, -117.16754], [32.70589, -117.16745], [32.70601, -117.16741], [32.70614, -117.16741],
+      [32.70626, -117.16746], [32.70634, -117.16759], [32.70641, -117.16781], [32.70649, -117.16801],
+      [32.70661, -117.16817], [32.70673, -117.16824], [32.70686, -117.16835], [32.70701, -117.16856],
+      [32.70718, -117.16880], [32.70736, -117.16902], [32.70752, -117.16917], [32.70768, -117.16922],
+      [32.70786, -117.16923], [32.70806, -117.16921], [32.70826, -117.16920], [32.70846, -117.16919],
+      [32.70847, -117.16880], [32.70847, -117.16837], [32.70847, -117.16794], [32.70846, -117.16757],
+      [32.70844, -117.16738], [32.70834, -117.16716], [32.70815, -117.16689], [32.70793, -117.16660],
+      [32.70782, -117.16644], [32.70752, -117.16602], [32.70714, -117.16552], [32.70676, -117.16499],
+      [32.70637, -117.16445], [32.70602, -117.16396], [32.70574, -117.16357], [32.70561, -117.16340],
+      [32.70535, -117.16365], [32.70507, -117.16396], [32.70479, -117.16426], [32.70458, -117.16449],
+      [32.70448, -117.16467], [32.70454, -117.16487], [32.70467, -117.16510], [32.70486, -117.16537],
+      [32.70502, -117.16560], [32.70510, -117.16579], [32.70510, -117.16598], [32.70501, -117.16615],
+      [32.70486, -117.16626], [32.70468, -117.16627], [32.70452, -117.16620], [32.70431, -117.16600],
+      [32.70405, -117.16571], [32.70381, -117.16541], [32.70359, -117.16503], [32.70333, -117.16464],
+      [32.70309, -117.16426], [32.70291, -117.16393], [32.70286, -117.16373], [32.70293, -117.16354],
+      [32.70302, -117.16336], [32.70331, -117.16306], [32.70358, -117.16279], [32.70373, -117.16269],
+      [32.70390, -117.16270], [32.70415, -117.16296], [32.70441, -117.16327], [32.70467, -117.16357],
+      [32.70502, -117.16319], [32.70538, -117.16282], [32.70516, -117.16250], [32.70486, -117.16208],
+      [32.70454, -117.16163], [32.70419, -117.16113], [32.70386, -117.16063], [32.70354, -117.16014],
+      [32.70331, -117.15973], [32.70354, -117.16014], [32.70386, -117.16063], [32.70419, -117.16113],
+      [32.70454, -117.16163], [32.70486, -117.16208], [32.70516, -117.16250], [32.70538, -117.16282],
+      [32.70561, -117.16315], [32.70578, -117.16340], [32.70589, -117.16357], [32.70611, -117.16396],
+      [32.70642, -117.16445], [32.70679, -117.16499], [32.70716, -117.16552], [32.70752, -117.16602],
+      [32.70782, -117.16644], [32.70793, -117.16660], [32.70815, -117.16689], [32.70834, -117.16716],
+      [32.70844, -117.16738], [32.70846, -117.16757], [32.70847, -117.16794], [32.70847, -117.16837],
+      [32.70847, -117.16880], [32.70846, -117.16919], [32.70846, -117.16964], [32.70852, -117.17015],
+      [32.70853, -117.17038], [32.70853, -117.17065], [32.70854, -117.17092], [32.70855, -117.17113],
+      [32.70859, -117.17129], [32.70867, -117.17146], [32.70877, -117.17161], [32.70890, -117.17175],
+      [32.70907, -117.17189], [32.70927, -117.17202], [32.70943, -117.17209], [32.70965, -117.17217],
+      [32.70988, -117.17224], [32.71010, -117.17232], [32.71033, -117.17240], [32.71050, -117.17251],
+      [32.71067, -117.17241], [32.71070, -117.17224], [32.71073, -117.17202], [32.71079, -117.17183],
+      [32.71089, -117.17170], [32.71101, -117.17163], [32.71114, -117.17164], [32.71124, -117.17174],
+      [32.71129, -117.17189], [32.71127, -117.17207], [32.71121, -117.17229], [32.71110, -117.17247],
+      [32.71097, -117.17255], [32.71080, -117.17256], [32.71064, -117.17255], [32.71050, -117.17251],
+      [32.71033, -117.17240], [32.71010, -117.17232], [32.70988, -117.17224], [32.70965, -117.17217],
+      [32.70943, -117.17209], [32.70927, -117.17202], [32.70907, -117.17189], [32.70890, -117.17175],
+      [32.70877, -117.17161], [32.70867, -117.17146], [32.70859, -117.17129], [32.70855, -117.17113],
+      [32.70854, -117.17092], [32.70853, -117.17065], [32.70853, -117.17038], [32.70852, -117.17015],
+      [32.70841, -117.17010], [32.70830, -117.17007], [32.70820, -117.17005]
+    ];
+
+    function buildSmoothCoursePoints(coords, stepsPerSegment = 4) {
+      const points = [];
+      for (let i = 0; i < coords.length - 1; i++) {
+        const start = coords[i], end = coords[i + 1];
+        for (let s = 0; s < stepsPerSegment; s++) {
+          const t = s / stepsPerSegment;
+          points.push([start[0] + (end[0] - start[0]) * t, start[1] + (end[1] - start[1]) * t]);
+        }
+      }
+      points.push(coords[coords.length - 1]);
+      return points;
+    }
+    const SMOOTH_COURSE_PATH = buildSmoothCoursePoints(COURSE_COORDS, 4);
+
+    const STAGE_VIEWS = [
+      { coords: [32.7070, -117.1688], zoom: 16 },
+      { coords: [32.7040, -117.1645], zoom: 16 },
+      { coords: [32.7042, -117.1614], zoom: 16 },
+      { coords: [32.7098, -117.1715], zoom: 16 }
+    ];
+
+    let courseMap, mainRouteLine, googleStreetsLayer, googleHybridLayer;
+    let stageMarkers = [], simInterval = null, runnerMarker = null, simIndex = 0;
+    let mobileMapInteractive = false, isMapFullScreen = false;
+
+    function initPageAndMap() {
+      checkSocialStudioAvailability();
+      renderPodiumSide('menPodiumList', RACE_WINNERS.men);
+      renderPodiumSide('womenPodiumList', RACE_WINNERS.women);
+      discoverRacePhotos();
+
+      const isMobile = window.innerWidth < 1024;
+      courseMap = L.map('courseMap', {
+        scrollWheelZoom: false,
+        dragging: !isMobile,
+        tap: !isMobile
+      }).setView([32.7068, -117.1662], 15);
+
+      googleStreetsLayer = L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+        maxZoom: 20, subdomains: ['mt0', 'mt1', 'mt2', 'mt3'], attribution: '&copy; Google Maps'
+      }).addTo(courseMap);
+
+      googleHybridLayer = L.tileLayer('https://{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', {
+        maxZoom: 20, subdomains: ['mt0', 'mt1', 'mt2', 'mt3'], attribution: '&copy; Google Maps Satellite'
+      });
+
+      L.polyline(COURSE_COORDS, { color: '#ffffff', weight: 8, opacity: 0.9, lineJoin: 'round' }).addTo(courseMap);
+      mainRouteLine = L.polyline(COURSE_COORDS, { color: '#E31837', weight: 5, opacity: 1, lineJoin: 'round' }).addTo(courseMap);
+      L.polyline(COURSE_COORDS, { color: '#FCA5A5', weight: 1.5, dashArray: '6, 8', opacity: 0.9 }).addTo(courseMap);
+
+      function createBadgeIcon(htmlContent, bgClass, size = 28) {
+        return L.divIcon({
+          className: 'custom-div-icon',
+          html: `<div class="${bgClass} text-white font-black rounded-full shadow-lg border-2 border-white flex items-center justify-center marker-pulse" style="width:${size}px;height:${size}px;font-size:12px;">${htmlContent}</div>`,
+          iconSize: [size, size], iconAnchor: [size / 2, size / 2], popupAnchor: [0, -size / 2]
+        });
+      }
+
+      const startMarker = L.marker([32.70820, -117.17012], { icon: createBadgeIcon('', 'bg-green-600', 22) }).addTo(courseMap).bindPopup(`<div class="text-xs p-1"><strong class="text-green-700 uppercase block">START</strong>Northwest corner of the North Embarcadero Marina</div>`);
+      const finishMarker = L.marker([32.70820, -117.16998], { icon: createBadgeIcon('', 'bg-pts-accent', 22) }).addTo(courseMap).bindPopup(`<div class="text-xs p-1"><strong class="text-pts-accent uppercase block">FINISH</strong>Northwest corner of the North Embarcadero Marina</div>`);
+      const mile1Marker = L.marker([32.70448, -117.16467], { icon: createBadgeIcon('1', 'bg-pts-accent', 26) }).addTo(courseMap).bindPopup(`<div class="text-xs p-1"><strong class="text-pts-accent">Mile 1</strong><br>South Embarcadero Marina loop</div>`);
+      const hiltonTurnMarker = L.marker([32.70331, -117.15973], { icon: createBadgeIcon('<i class="fa-solid fa-rotate-left text-[10px]"></i>', 'bg-pts-blue', 24) }).addTo(courseMap).bindPopup(`<div class="text-xs p-1"><strong class="text-pts-blue">U-Turn</strong><br>Promenade toward the Hilton (U-turn before the hotel)</div>`);
+      const mile2Marker = L.marker([32.70578, -117.16340], { icon: createBadgeIcon('2', 'bg-pts-accent', 26) }).addTo(courseMap).bindPopup(`<div class="text-xs p-1"><strong class="text-pts-accent">Mile 2</strong><br>Bayfront Promenade</div>`);
+      const mile3Marker = L.marker([32.70867, -117.17146], { icon: createBadgeIcon('3', 'bg-pts-accent', 26) }).addTo(courseMap).bindPopup(`<div class="text-xs p-1"><strong class="text-pts-accent">Mile 3</strong><br>Return route from Ruocco Park</div>`);
+
+      stageMarkers = [startMarker, mile1Marker, hiltonTurnMarker, mile3Marker];
+      courseMap.fitBounds(mainRouteLine.getBounds(), { padding: [22, 22] });
+
+      initCanvasTouchGestures();
+    }
+
+    function toggleFullScreenMap() {
+      const wrapper = document.getElementById('mapWrapperContainer');
+      const fsText = document.getElementById('fsToggleText');
+      const fsIcon = document.getElementById('fsToggleIcon');
+      const lockBtn = document.getElementById('mobileTouchLockBtn');
+
+      isMapFullScreen = !isMapFullScreen;
+
+      if (isMapFullScreen) {
+        wrapper.classList.add('map-fullscreen-active');
+        document.body.style.overflow = 'hidden';
+        fsText.innerText = "Exit Full Screen";
+        fsIcon.className = "fa-solid fa-compress text-amber-300";
+        courseMap.dragging.enable();
+        courseMap.scrollWheelZoom.enable();
+        if (lockBtn) lockBtn.classList.add('hidden');
+      } else {
+        wrapper.classList.remove('map-fullscreen-active');
+        document.body.style.overflow = '';
+        fsText.innerText = "Full Screen";
+        fsIcon.className = "fa-solid fa-expand text-amber-300";
+        courseMap.scrollWheelZoom.disable();
+        if (window.innerWidth < 1024 && !mobileMapInteractive) {
+          courseMap.dragging.disable();
+        }
+        if (lockBtn) lockBtn.classList.remove('hidden');
+      }
+
+      setTimeout(() => {
+        if (courseMap && mainRouteLine) {
+          courseMap.invalidateSize();
+          courseMap.fitBounds(mainRouteLine.getBounds(), { padding: [25, 25] });
+        }
+      }, 200);
+    }
+
+    function toggleMobileMapTouch() {
+      if (!courseMap) return;
+      mobileMapInteractive = !mobileMapInteractive;
+      const btn = document.getElementById('mobileTouchLockBtn');
+      const text = document.getElementById('mobileTouchText');
+      const icon = document.getElementById('mobileTouchIcon');
+
+      if (mobileMapInteractive) {
+        courseMap.dragging.enable();
+        text.innerText = "Lock Map to Scroll";
+        icon.className = "fa-solid fa-lock-open text-green-400";
+        btn.classList.replace('bg-pts-navy/90', 'bg-green-900/95');
+      } else {
+        courseMap.dragging.disable();
+        text.innerText = "Tap to Pan Map";
+        icon.className = "fa-solid fa-hand-pointer text-amber-300";
+        btn.classList.replace('bg-green-900/95', 'bg-pts-navy/90');
+      }
+    }
+
+    function setGoogleMapMode(mode) {
+      const btnStreet = document.getElementById('btnMapStreet');
+      const btnSat = document.getElementById('btnMapSat');
+      const activeClass = "px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-lg bg-pts-navy text-white transition flex items-center gap-1 shadow-sm";
+      const inactiveClass = "px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-lg text-gray-700 hover:bg-gray-100 transition flex items-center gap-1";
+
+      courseMap.removeLayer(googleStreetsLayer);
+      courseMap.removeLayer(googleHybridLayer);
+
+      if (mode === 'hybrid') {
+        courseMap.addLayer(googleHybridLayer);
+        btnSat.className = activeClass;
+        btnStreet.className = inactiveClass;
+      } else {
+        courseMap.addLayer(googleStreetsLayer);
+        btnStreet.className = activeClass;
+        btnSat.className = inactiveClass;
+      }
+    }
+
+    function focusCourseStage(index) {
+      highlightStepCardOnly(index);
+      const stage = STAGE_VIEWS[index];
+      if (stage && courseMap) {
+        courseMap.flyTo(stage.coords, stage.zoom, { duration: 1.0 });
+        if (stageMarkers[index]) {
+          stageMarkers[index].openPopup();
+        }
+      }
+    }
+
+    function resetCourseMapView() {
+      if (courseMap && mainRouteLine) {
+        courseMap.closePopup();
+        courseMap.fitBounds(mainRouteLine.getBounds(), { padding: [22, 22] });
+      }
+    }
+
+    function toggleCourseSimulation() {
+      const btnText = document.getElementById('simRunText');
+      const btnIcon = document.getElementById('simRunIcon');
+      const fsBtnText = document.getElementById('fsSimRunText');
+      const fsBtnIcon = document.getElementById('fsSimRunIcon');
+      const overlay = document.getElementById('simStatusOverlay');
+
+      if (simInterval) {
+        clearInterval(simInterval);
+        simInterval = null;
+        btnText.innerText = "Simulate Course Route";
+        btnIcon.className = "fa-solid fa-play";
+        if (fsBtnText) fsBtnText.innerText = "Simulate Route";
+        if (fsBtnIcon) fsBtnIcon.className = "fa-solid fa-play text-amber-300";
+
+        overlay.classList.add('hidden');
+        if (runnerMarker) {
+          courseMap.removeLayer(runnerMarker);
+          runnerMarker = null;
+        }
+        return;
+      }
+
+      overlay.classList.remove('hidden');
+      btnText.innerText = "Stop Simulation";
+      btnIcon.className = "fa-solid fa-stop";
+      if (fsBtnText) fsBtnText.innerText = "Stop";
+      if (fsBtnIcon) fsBtnIcon.className = "fa-solid fa-stop text-amber-300";
+
+      simIndex = 0;
+
+      const runnerIcon = L.divIcon({
+        className: 'runner-sim-icon',
+        html: `<div class="bg-amber-400 text-pts-navy rounded-full shadow-xl border-2 border-pts-navy flex items-center justify-center" style="width:30px;height:30px;font-size:14px;"><i class="fa-solid fa-person-running"></i></div>`,
+        iconSize: [30, 30],
+        iconAnchor: [15, 15]
+      });
+
+      runnerMarker = L.marker(SMOOTH_COURSE_PATH[0], { icon: runnerIcon, zIndexOffset: 1000 }).addTo(courseMap);
+      courseMap.panTo(SMOOTH_COURSE_PATH[0]);
+
+      simInterval = setInterval(() => {
+        simIndex++;
+        if (simIndex >= SMOOTH_COURSE_PATH.length) {
+          clearInterval(simInterval);
+          simInterval = null;
+          btnText.innerText = "Replay Course Route";
+          btnIcon.className = "fa-solid fa-rotate-right";
+          if (fsBtnText) fsBtnText.innerText = "Replay";
+          if (fsBtnIcon) fsBtnIcon.className = "fa-solid fa-rotate-right text-amber-300";
+
+          document.getElementById('simStageLabel').innerText = "Start/Finish area at the North Embarcadero Marina";
+          document.getElementById('simDistanceLabel').innerText = "100%";
+          document.getElementById('simProgressBar').style.width = "100%";
+          highlightStepCardOnly(3);
+          return;
+        }
+
+        const pt = SMOOTH_COURSE_PATH[simIndex];
+        runnerMarker.setLatLng(pt);
+
+        const pct = simIndex / (SMOOTH_COURSE_PATH.length - 1);
+        document.getElementById('simDistanceLabel').innerText = `${Math.round(pct * 100)}%`;
+        document.getElementById('simProgressBar').style.width = `${(pct * 100).toFixed(1)}%`;
+
+        let stageLabel = "North Embarcadero Marina & Bayfront Promenade";
+        if (pct > 0.62) {
+          stageLabel = "Waterfront north toward Ruocco Park & back to Start/Finish";
+          highlightStepCardOnly(3);
+        } else if (pct > 0.48) {
+          stageLabel = "Promenade toward the Hilton & U-turn before the hotel";
+          highlightStepCardOnly(2);
+        } else if (pct > 0.28) {
+          stageLabel = "Loop (counterclockwise) around the South Embarcadero Marina";
+          highlightStepCardOnly(1);
+        } else {
+          highlightStepCardOnly(0);
+        }
+        document.getElementById('simStageLabel').innerText = stageLabel;
+
+        if (simIndex % 8 === 0) {
+          courseMap.panTo(pt, { animate: true, duration: 0.35 });
+        }
+      }, 45);
+    }
+
+    function highlightStepCardOnly(index) {
+      const container = document.getElementById('courseStepList');
+      document.querySelectorAll('.course-step-card').forEach((el, idx) => {
+        const isActive = idx === index;
+        el.classList.toggle('active', isActive);
+        if (isActive && window.innerWidth < 1024 && container) {
+          const scrollLeft = el.offsetLeft - container.offsetLeft - 16;
+          container.scrollTo({ left: scrollLeft, behavior: 'smooth' });
+        }
+      });
+    }
+
+    window.addEventListener('DOMContentLoaded', initPageAndMap);
+
+    // =========================================================================
+    // 6. FINISHER SOCIAL MEDIA POST STUDIO (POST 4:5 & STORY 9:16)
+    // =========================================================================
+    const LOGO_SOURCES = {
+      iam: 'IAM_logo(1500px).png',
+      pts: 'Paramount30thLogo.png',
+      gmf: 'GlobalMovingFoundationLogo.png',
+      k9: 'CoastalK9Logo.png',
+      skyline: 'sd_skyline.png'
+    };
+
+    function prepareSkylineImage(img) {
+      try {
+        const off = document.createElement('canvas');
+        off.width = img.naturalWidth || img.width;
+        off.height = img.naturalHeight || img.height;
+        if (!off.width || !off.height) return img;
+        const octx = off.getContext('2d');
+        octx.drawImage(img, 0, 0);
+        const idata = octx.getImageData(0, 0, off.width, off.height);
+        const d = idata.data;
+        const isBlackBg = (d[0] < 25 && d[1] < 25 && d[2] < 25 && d[3] > 200);
+        if (isBlackBg) {
+          for (let i = 0; i < d.length; i += 4) {
+            if (d[i] < 25 && d[i+1] < 25 && d[i+2] < 25) {
+              d[i+3] = 0;
+            }
+          }
+          octx.putImageData(idata, 0, 0);
+          const cleanImg = new Image();
+          cleanImg.src = off.toDataURL();
+          return cleanImg;
+        }
+      } catch(e) {}
+      return img;
+    }
+
+    const loadedLogos = {};
+    Object.keys(LOGO_SOURCES).forEach(key => {
+      const img = new Image();
+      img.crossOrigin = "anonymous";
+      img.src = LOGO_SOURCES[key];
+      img.onload = () => { 
+        if (key === 'skyline') {
+          loadedLogos[key] = prepareSkylineImage(img);
+        } else {
+          loadedLogos[key] = img;
+        }
+        renderFinisherCanvas(); 
+      };
+      if (key === 'skyline') {
+        img.onerror = () => {
+          const fallbackJpg = new Image();
+          fallbackJpg.crossOrigin = "anonymous";
+          fallbackJpg.src = 'sd_skyline.jpg';
+          fallbackJpg.onload = () => {
+            loadedLogos['skyline'] = prepareSkylineImage(fallbackJpg);
+            renderFinisherCanvas();
+          };
+        };
+      }
+    });
+
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(() => renderFinisherCanvas());
+    }
+
+    let uploadedUserPhoto = null;
+    let photoState = { zoom: 1, panX: 0, panY: 0 };
+    let currentDesignIndex = 0;
+    let currentAspectMode = 'post';
+
+    const DESIGN_NAMES = [
+      "Design 1: Executive Gold Crest",
+      "Design 2: San Diego Bay Magazine Cover",
+      "Design 3: San Diego Bay & Coronado Bridge Skyline",
+      "Design 4: Proud Finisher & Supporter"
+    ];
+
+    function openFinisherStudioModal() {
+      currentDesignIndex = 0;
+      updateDesignButtonsUI();
+      validateSocialCardReady();
+      document.getElementById('finisherStudioModal').classList.remove('hidden');
+      renderFinisherCanvas();
+      confetti({ particleCount: 80, spread: 65, origin: { y: 0.55 } });
+    }
+
+    function setFinisherRatio(mode) {
+      currentAspectMode = mode;
+      const canvas = document.getElementById('finisherCanvas');
+      const btnPost = document.getElementById('ratioPostBtn');
+      const btnStory = document.getElementById('ratioStoryBtn');
+
+      if (mode === 'story') {
+        canvas.width = 1080;
+        canvas.height = 1920;
+        btnStory.className = "px-2.5 py-1 rounded-lg bg-pts-navy text-amber-300 transition";
+        btnPost.className = "px-2.5 py-1 rounded-lg text-gray-400 hover:text-white transition";
+      } else {
+        canvas.width = 1080;
+        canvas.height = 1350;
+        btnPost.className = "px-2.5 py-1 rounded-lg bg-pts-navy text-amber-300 transition";
+        btnStory.className = "px-2.5 py-1 rounded-lg text-gray-400 hover:text-white transition";
+      }
+      renderFinisherCanvas();
+    }
+
+    function randomizeFinisherDesign() {
+      currentDesignIndex = (currentDesignIndex + 1) % 4;
+      updateDesignButtonsUI();
+      renderFinisherCanvas();
+    }
+
+    function selectFinisherDesign(idx) {
+      currentDesignIndex = idx;
+      updateDesignButtonsUI();
+      renderFinisherCanvas();
+    }
+
+    function updateDesignButtonsUI() {
+      document.getElementById('activeDesignTitle').innerText = DESIGN_NAMES[currentDesignIndex];
+      [0, 1, 2, 3].forEach(i => {
+        const btn = document.getElementById(`designBtn${i}`);
+        if (i === currentDesignIndex) {
+          btn.className = "py-1.5 px-2 rounded-xl text-[11px] font-black border transition bg-amber-400 text-pts-navy border-amber-400 shadow";
+        } else {
+          btn.className = "py-1.5 px-2 rounded-xl text-[11px] font-bold border transition bg-white/10 text-white border-white/20 hover:bg-white/20";
+        }
+      });
+    }
+
+    function handleFinisherPhotoUpload(e) {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        const img = new Image();
+        img.onload = function() {
+          uploadedUserPhoto = img;
+          resetPhotoTransform();
+          document.getElementById('resetPhotoFitBtn').classList.remove('hidden');
+          document.getElementById('photoAdjustSliderBox').classList.remove('hidden');
+          validateSocialCardReady();
+          confetti({ particleCount: 50, spread: 50, origin: { y: 0.6 } });
+        };
+        img.src = evt.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function resetPhotoTransform() {
+      photoState = { zoom: 1, panX: 0, panY: 0 };
+      const slider = document.getElementById('photoZoomSlider');
+      if (slider) slider.value = 1;
+      renderFinisherCanvas();
+    }
+
+    function onSliderTransformChange() {
+      photoState.zoom = parseFloat(document.getElementById('photoZoomSlider').value || 1);
+      renderFinisherCanvas();
+    }
+
+    function onCardInputChange() {
+      validateSocialCardReady();
+      renderFinisherCanvas();
+    }
+
+    function validateSocialCardReady() {
+      const name = (document.getElementById('cardRunnerName').value || "").trim();
+      const hasPhoto = (uploadedUserPhoto !== null);
+      const isReady = hasPhoto && (name.length > 0);
+
+      const shareBtn = document.getElementById('shareSocialBtn');
+      const saveBtn = document.getElementById('savePhotosBtn');
+      const lockedNotice = document.getElementById('cardShareLockedNotice');
+      const unlockedNotice = document.getElementById('cardShareUnlockedNotice');
+      const nameErr = document.getElementById('cardNameErr');
+
+      if (!name) {
+        nameErr.classList.remove('hidden');
+      } else {
+        nameErr.classList.add('hidden');
+      }
+
+      if (isReady) {
+        shareBtn.disabled = false;
+        shareBtn.className = "w-full bg-pts-accent hover:bg-red-700 active:bg-red-800 text-white font-black py-3.5 px-5 rounded-xl shadow-lg transition text-sm flex items-center justify-center gap-2 cursor-pointer";
+        
+        saveBtn.disabled = false;
+        saveBtn.className = "w-full bg-pts-navy hover:bg-pts-blue active:bg-blue-950 text-white font-bold py-3.5 px-5 rounded-xl shadow transition text-xs sm:text-sm flex items-center justify-center gap-2 cursor-pointer";
+
+        lockedNotice.classList.add('hidden');
+        unlockedNotice.classList.remove('hidden');
+      } else {
+        shareBtn.disabled = true;
+        shareBtn.className = "w-full bg-gray-300 text-gray-500 font-black py-3.5 px-5 rounded-xl shadow transition text-sm flex items-center justify-center gap-2 cursor-not-allowed";
+
+        saveBtn.disabled = true;
+        saveBtn.className = "w-full bg-gray-300 text-gray-500 font-bold py-3.5 px-5 rounded-xl shadow transition text-xs sm:text-sm flex items-center justify-center gap-2 cursor-not-allowed";
+
+        lockedNotice.classList.remove('hidden');
+        unlockedNotice.classList.add('hidden');
+      }
+    }
+
+    function initCanvasTouchGestures() {
+      const canvas = document.getElementById('finisherCanvas');
+      if (!canvas) return;
+
+      let isDragging = false;
+      let startX = 0, startY = 0;
+      let initialPinchDist = null;
+      let initialZoom = 1;
+
+      function getCanvasScale() {
+        const rect = canvas.getBoundingClientRect();
+        return rect.width > 0 ? (canvas.width / rect.width) : 2.5;
+      }
+
+      canvas.addEventListener('mousedown', (e) => {
+        if (!uploadedUserPhoto) return;
+        isDragging = true;
+        startX = e.clientX;
+        startY = e.clientY;
+      });
+      window.addEventListener('mousemove', (e) => {
+        if (!isDragging || !uploadedUserPhoto) return;
+        const scale = getCanvasScale();
+        photoState.panX += (e.clientX - startX) * scale;
+        photoState.panY += (e.clientY - startY) * scale;
+        startX = e.clientX;
+        startY = e.clientY;
+        renderFinisherCanvas();
+      });
+      window.addEventListener('mouseup', () => { isDragging = false; });
+
+      canvas.addEventListener('wheel', (e) => {
+        if (!uploadedUserPhoto) return;
+        e.preventDefault();
+        const delta = e.deltaY < 0 ? 0.06 : -0.06;
+        photoState.zoom = Math.min(3.0, Math.max(0.6, photoState.zoom + delta));
+        document.getElementById('photoZoomSlider').value = photoState.zoom;
+        renderFinisherCanvas();
+      }, { passive: false });
+
+      canvas.addEventListener('touchstart', (e) => {
+        if (!uploadedUserPhoto) return;
+        if (e.touches.length === 1) {
+          isDragging = true;
+          startX = e.touches[0].clientX;
+          startY = e.touches[0].clientY;
+        } else if (e.touches.length === 2) {
+          isDragging = false;
+          const dx = e.touches[0].clientX - e.touches[1].clientX;
+          const dy = e.touches[0].clientY - e.touches[1].clientY;
+          initialPinchDist = Math.hypot(dx, dy);
+          initialZoom = photoState.zoom;
+        }
+      }, { passive: false });
+
+      canvas.addEventListener('touchmove', (e) => {
+        if (!uploadedUserPhoto) return;
+        e.preventDefault();
+        if (e.touches.length === 1 && isDragging) {
+          const scale = getCanvasScale();
+          photoState.panX += (e.touches[0].clientX - startX) * scale;
+          photoState.panY += (e.touches[0].clientY - startY) * scale;
+          startX = e.touches[0].clientX;
+          startY = e.touches[0].clientY;
+          renderFinisherCanvas();
+        } else if (e.touches.length === 2 && initialPinchDist) {
+          const dx = e.touches[0].clientX - e.touches[1].clientX;
+          const dy = e.touches[0].clientY - e.touches[1].clientY;
+          const dist = Math.hypot(dx, dy);
+          const ratio = dist / initialPinchDist;
+          photoState.zoom = Math.min(3.0, Math.max(0.6, initialZoom * ratio));
+          document.getElementById('photoZoomSlider').value = photoState.zoom;
+          renderFinisherCanvas();
+        }
+      }, { passive: false });
+
+      canvas.addEventListener('touchend', (e) => {
+        if (e.touches.length < 2) initialPinchDist = null;
+        if (e.touches.length === 0) isDragging = false;
+      });
+    }
+
+    function drawRoundedRect(ctx, x, y, w, h, r) {
+      ctx.beginPath();
+      ctx.moveTo(x + r, y);
+      ctx.arcTo(x + w, y, x + w, y + h, r);
+      ctx.arcTo(x + w, y + h, x, y + h, r);
+      ctx.arcTo(x, y + h, x, y, r);
+      ctx.arcTo(x, y, x + w, y, r);
+      ctx.closePath();
+    }
+
+    function drawUserPhotoInBox(ctx, x, y, w, h, radius) {
+      ctx.save();
+      drawRoundedRect(ctx, x, y, w, h, radius);
+      ctx.clip();
+
+      if (uploadedUserPhoto) {
+        const zoom = photoState.zoom;
+        const panX = photoState.panX;
+        const panY = photoState.panY;
+
+        const imgRatio = uploadedUserPhoto.width / uploadedUserPhoto.height;
+        const boxRatio = w / h;
+        let drawW, drawH;
+        if (imgRatio > boxRatio) {
+          drawH = h * zoom;
+          drawW = drawH * imgRatio;
+        } else {
+          drawW = w * zoom;
+          drawH = drawW / imgRatio;
+        }
+        const drawX = x + (w - drawW) / 2 + panX;
+        const drawY = y + (h - drawH) / 2 + panY;
+        ctx.drawImage(uploadedUserPhoto, drawX, drawY, drawW, drawH);
+      } else {
+        const grad = ctx.createLinearGradient(x, y, x + w, y + h);
+        grad.addColorStop(0, '#0B2545');
+        grad.addColorStop(0.5, '#134074');
+        grad.addColorStop(1, '#07162C');
+        ctx.fillStyle = grad;
+        ctx.fillRect(x, y, w, h);
+
+        const radGrad = ctx.createRadialGradient(x + w * 0.5, y + h * 0.45, 10, x + w * 0.5, y + h * 0.45, 260);
+        radGrad.addColorStop(0, 'rgba(245, 158, 11, 0.25)');
+        radGrad.addColorStop(1, 'rgba(245, 158, 11, 0)');
+        ctx.fillStyle = radGrad;
+        ctx.fillRect(x, y, w, h);
+
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.08)';
+        ctx.beginPath();
+        ctx.arc(x + w / 2, y + h / 2 - 40, 58, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(251, 191, 36, 0.45)';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        ctx.fillStyle = '#FBBF24';
+        ctx.font = '800 28px "Outfit", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('ADD YOUR FINISHER PHOTO', x + w / 2, y + h / 2 + 45);
+        ctx.fillStyle = '#93C5FD';
+        ctx.font = '500 21px "Inter", sans-serif';
+        ctx.fillText('Tap "Selfie" or "Photo" above to frame your picture', x + w / 2, y + h / 2 + 82);
+      }
+      ctx.restore();
+    }
+
+    function drawCourseTraceMiniMap(ctx, boxX, boxY, boxW, boxH, strokeColor, glowColor) {
+      ctx.save();
+      const lats = COURSE_COORDS.map(c => c[0]);
+      const lngs = COURSE_COORDS.map(c => c[1]);
+      const minLat = Math.min(...lats), maxLat = Math.max(...lats);
+      const minLng = Math.min(...lngs), maxLng = Math.max(...lngs);
+
+      const pad = 18;
+      const usableW = boxW - pad * 2;
+      const usableH = boxH - pad * 2;
+
+      ctx.shadowColor = glowColor;
+      ctx.shadowBlur = 10;
+      ctx.strokeStyle = strokeColor;
+      ctx.lineWidth = 5;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      ctx.beginPath();
+
+      COURSE_COORDS.forEach((pt, idx) => {
+        const nx = (pt[1] - minLng) / (maxLng - minLng);
+        const ny = 1 - (pt[0] - minLat) / (maxLat - minLat);
+        const px = boxX + pad + nx * usableW;
+        const py = boxY + pad + ny * usableH;
+        if (idx === 0) ctx.moveTo(px, py);
+        else ctx.lineTo(px, py);
+      });
+      ctx.stroke();
+
+      const startPt = COURSE_COORDS[0];
+      const sx = boxX + pad + ((startPt[1] - minLng) / (maxLng - minLng)) * usableW;
+      const sy = boxY + pad + (1 - (startPt[0] - minLat) / (maxLat - minLat)) * usableH;
+      ctx.shadowBlur = 0;
+      ctx.fillStyle = '#22C55E';
+      ctx.beginPath(); ctx.arc(sx - 4, sy, 6, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = '#E31837';
+      ctx.beginPath(); ctx.arc(sx + 4, sy, 6, 0, Math.PI * 2); ctx.fill();
+      ctx.restore();
+    }
+
+    function drawAllFourLogosBar(ctx, x, y, w, h) {
+      ctx.save();
+      drawRoundedRect(ctx, x, y, w, h, 24);
+      ctx.fillStyle = '#FFFFFF';
+      ctx.shadowColor = 'rgba(0, 15, 35, 0.25)';
+      ctx.shadowBlur = 20;
+      ctx.fill();
+      ctx.shadowBlur = 0;
+
+      const keys = ['iam', 'pts', 'gmf', 'k9'];
+      const fallbackLabels = ['IAM', 'PARAMOUNT', 'GLOBAL MOVING FDN', 'COASTAL K9 RESCUE'];
+      const slotW = w / 4;
+
+      keys.forEach((key, i) => {
+        const slotX = x + i * slotW;
+        if (i > 0) {
+          ctx.strokeStyle = '#E2E8F0';
+          ctx.lineWidth = 1.5;
+          ctx.beginPath();
+          ctx.moveTo(slotX, y + 20);
+          ctx.lineTo(slotX, y + h - 20);
+          ctx.stroke();
+        }
+        const img = loadedLogos[key];
+        if (img && img.complete && img.naturalWidth > 0) {
+          const maxW = slotW - 32;
+          const maxH = h - 26;
+          const ratio = Math.min(maxW / img.naturalWidth, maxH / img.naturalHeight);
+          const dw = img.naturalWidth * ratio;
+          const dh = img.naturalHeight * ratio;
+          ctx.drawImage(img, slotX + (slotW - dw) / 2, y + (h - dh) / 2, dw, dh);
+        } else {
+          ctx.fillStyle = '#003366';
+          ctx.font = '800 16px "Outfit", sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText(fallbackLabels[i], slotX + slotW / 2, y + h / 2 + 5);
+        }
+      });
+      ctx.restore();
+    }
+
+    function renderFinisherCanvas() {
+      const canvas = document.getElementById('finisherCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const W = canvas.width;
+      const H = canvas.height;
+      const isStory = (H > 1500);
+
+      const runnerName = (document.getElementById('cardRunnerName').value || 'YOUR NAME HERE').toUpperCase();
+      const runnerCompany = (document.getElementById('cardRunnerCompany').value || '').toUpperCase();
+
+      ctx.clearRect(0, 0, W, H);
+
+      if (currentDesignIndex === 0) {
+        const bgGrad = ctx.createLinearGradient(0, 0, W, H);
+        bgGrad.addColorStop(0, '#040D1A');
+        bgGrad.addColorStop(0.45, '#0A2246');
+        bgGrad.addColorStop(1, '#030914');
+        ctx.fillStyle = bgGrad;
+        ctx.fillRect(0, 0, W, H);
+
+        ctx.strokeStyle = 'rgba(212, 175, 55, 0.35)';
+        ctx.lineWidth = 2;
+        drawRoundedRect(ctx, 32, 32, W - 64, H - 64, 34);
+        ctx.stroke();
+
+        const topPillY = isStory ? 75 : 55;
+        drawRoundedRect(ctx, 190, topPillY, W - 380, 42, 21);
+        ctx.fillStyle = 'rgba(212, 175, 55, 0.16)';
+        ctx.fill();
+        ctx.strokeStyle = '#D4AF37';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+
+        ctx.fillStyle = '#FDE68A';
+        ctx.font = '700 18px "Outfit", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('FRIDAY, 23 OCTOBER 2026  •  SAN DIEGO BAYFRONT', W / 2, topPillY + 27);
+
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = '800 36px "Outfit", sans-serif';
+        ctx.fillText('INTERNATIONAL ASSOCIATION OF MOVERS', W / 2, topPillY + 82);
+        ctx.fillStyle = '#E2E8F0';
+        ctx.font = '600 24px "Inter", sans-serif';
+        ctx.fillText('&  PARAMOUNT TRANSPORTATION SYSTEMS', W / 2, topPillY + 116);
+
+        ctx.fillStyle = '#D4AF37';
+        ctx.font = '800 21px "Outfit", sans-serif';
+        ctx.fillText('CHARITY 5K FUN RUN & WALK FINISHER', W / 2, topPillY + 152);
+
+        const photoY = topPillY + 175;
+        const photoH = isStory ? 1080 : 640;
+        drawRoundedRect(ctx, 60, photoY, W - 120, photoH, 30);
+        ctx.fillStyle = '#D4AF37';
+        ctx.fill();
+        drawUserPhotoInBox(ctx, 64, photoY + 4, W - 128, photoH - 8, 27);
+
+        const idY = photoY + photoH + (isStory ? 28 : 20);
+        const idH = isStory ? 230 : 185;
+        drawRoundedRect(ctx, 60, idY, W - 120, idH, 26);
+        ctx.fillStyle = 'rgba(6, 18, 38, 0.94)';
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(212, 175, 55, 0.6)';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        ctx.textAlign = 'left';
+        if (runnerCompany) {
+          ctx.fillStyle = '#D4AF37';
+          ctx.font = '700 22px "Outfit", sans-serif';
+          ctx.fillText(runnerCompany, 96, idY + (isStory ? 52 : 46));
+          ctx.fillStyle = '#FFFFFF';
+          ctx.font = '900 48px "Outfit", sans-serif';
+          ctx.fillText(runnerName, 96, idY + (isStory ? 114 : 100));
+        } else {
+          ctx.fillStyle = '#FFFFFF';
+          ctx.font = '900 52px "Outfit", sans-serif';
+          ctx.fillText(runnerName, 96, idY + (isStory ? 94 : 80));
+        }
+
+        ctx.fillStyle = '#93C5FD';
+        ctx.font = '500 19px "Inter", sans-serif';
+        ctx.fillText('Supporting Global Moving Foundation & Coastal K9 Rescue', 96, idY + (runnerCompany ? (isStory ? 168 : 146) : (isStory ? 152 : 128)));
+
+        drawCourseTraceMiniMap(ctx, 835, idY + 14, 150, idH - 28, '#FDE68A', '#D4AF37');
+
+        const logoY = idY + idH + (isStory ? 26 : 18);
+        const logoH = isStory ? 200 : 155;
+        drawAllFourLogosBar(ctx, 60, logoY, W - 120, logoH);
+
+      } else if (currentDesignIndex === 1) {
+        drawUserPhotoInBox(ctx, 0, 0, W, H, 0);
+
+        const topVig = ctx.createLinearGradient(0, 0, 0, 360);
+        topVig.addColorStop(0, 'rgba(4, 13, 26, 0.94)');
+        topVig.addColorStop(0.7, 'rgba(4, 13, 26, 0.55)');
+        topVig.addColorStop(1, 'rgba(4, 13, 26, 0)');
+        ctx.fillStyle = topVig;
+        ctx.fillRect(0, 0, W, 360);
+
+        const botVigStart = isStory ? 1280 : 740;
+        const botVig = ctx.createLinearGradient(0, botVigStart, 0, H);
+        botVig.addColorStop(0, 'rgba(4, 13, 26, 0)');
+        botVig.addColorStop(0.35, 'rgba(4, 15, 32, 0.95)');
+        botVig.addColorStop(1, '#040D1A');
+        ctx.fillStyle = botVig;
+        ctx.fillRect(0, botVigStart, W, H - botVigStart);
+
+        ctx.textAlign = 'left';
+        drawRoundedRect(ctx, 60, 52, 330, 40, 20);
+        ctx.fillStyle = '#E31837';
+        ctx.fill();
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = '800 18px "Outfit", sans-serif';
+        ctx.fillText('●  OFFICIAL 2026 FINISHER', 84, 78);
+
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = '900 42px "Outfit", sans-serif';
+        ctx.fillText('INTERNATIONAL ASSOCIATION OF MOVERS', 60, 142);
+        ctx.fillStyle = '#E2E8F0';
+        ctx.font = '700 28px "Outfit", sans-serif';
+        ctx.fillText('& PARAMOUNT TRANSPORTATION SYSTEMS', 60, 182);
+
+        ctx.fillStyle = '#FBBF24';
+        ctx.font = '700 20px "Outfit", sans-serif';
+        ctx.fillText('CHARITY 5K FUN RUN & WALK  •  FRIDAY, 23 OCT 2026  •  SAN DIEGO BAY', 60, 222);
+
+        const idY = isStory ? 1420 : 880;
+        const idH = isStory ? 240 : 200;
+        drawRoundedRect(ctx, 60, idY, W - 120, idH, 28);
+        ctx.fillStyle = 'rgba(10, 30, 60, 0.88)';
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.22)';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        if (runnerCompany) {
+          ctx.fillStyle = '#38BDF8';
+          ctx.font = '700 22px "Outfit", sans-serif';
+          ctx.fillText(runnerCompany, 96, idY + (isStory ? 54 : 48));
+          ctx.fillStyle = '#FFFFFF';
+          ctx.font = '900 48px "Outfit", sans-serif';
+          ctx.fillText(runnerName, 96, idY + (isStory ? 116 : 106));
+        } else {
+          ctx.fillStyle = '#FFFFFF';
+          ctx.font = '900 52px "Outfit", sans-serif';
+          ctx.fillText(runnerName, 96, idY + (isStory ? 96 : 84));
+        }
+
+        ctx.fillStyle = '#CBD5E1';
+        ctx.font = '500 19px "Inter", sans-serif';
+        ctx.fillText('5.08 KM Waterfront Promenade • Global Moving Foundation & Coastal K9 Rescue', 96, idY + (runnerCompany ? (isStory ? 172 : 156) : (isStory ? 154 : 136)));
+
+        drawCourseTraceMiniMap(ctx, 820, idY + 14, 160, idH - 28, '#00F0FF', '#00F0FF');
+
+        const logoY = idY + idH + (isStory ? 26 : 18);
+        const logoH = isStory ? 200 : 150;
+        drawAllFourLogosBar(ctx, 60, logoY, W - 120, logoH);
+
+      } else if (currentDesignIndex === 2) {
+        const bgGrad = ctx.createLinearGradient(0, 0, W, H);
+        bgGrad.addColorStop(0, '#040d1a');
+        bgGrad.addColorStop(0.35, '#0a2342');
+        bgGrad.addColorStop(0.7, '#1b3b6f');
+        bgGrad.addColorStop(0.9, '#e07a5f');
+        bgGrad.addColorStop(1, '#f4a261');
+        ctx.fillStyle = bgGrad;
+        ctx.fillRect(0, 0, W, H);
+
+        const topPillY = isStory ? 75 : 55;
+        drawRoundedRect(ctx, 160, topPillY, W - 320, 44, 22);
+        ctx.fillStyle = 'rgba(4, 13, 26, 0.85)';
+        ctx.fill();
+        ctx.strokeStyle = '#FBBF24';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+
+        ctx.fillStyle = '#FDE68A';
+        ctx.font = '700 18px "Outfit", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('FRIDAY, 23 OCTOBER 2026  •  SAN DIEGO BAYFRONT', W / 2, topPillY + 28);
+
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = '900 38px "Outfit", sans-serif';
+        ctx.fillText('INTERNATIONAL ASSOCIATION OF MOVERS', W / 2, topPillY + 82);
+        ctx.fillStyle = '#93C5FD';
+        ctx.font = '700 25px "Outfit", sans-serif';
+        ctx.fillText('& PARAMOUNT TRANSPORTATION SYSTEMS 5K', W / 2, topPillY + 118);
+
+        ctx.fillStyle = '#FBBF24';
+        ctx.font = '800 21px "Outfit", sans-serif';
+        ctx.fillText('CORONADO BRIDGE & BAYFRONT FINISHER', W / 2, topPillY + 154);
+
+        const photoY = topPillY + 175;
+        const photoH = isStory ? 920 : 510;
+        drawRoundedRect(ctx, 60, photoY, W - 120, photoH, 30);
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.6)';
+        ctx.shadowBlur = 28;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+        drawUserPhotoInBox(ctx, 66, photoY + 6, W - 132, photoH - 12, 26);
+
+        const skyY = isStory ? (photoY + photoH + 10) : (photoY + photoH - 15);
+        const skyH = isStory ? 320 : 250;
+        const skyW = W - 80;
+        const skyX = 40;
+
+        const skylineImg = loadedLogos['skyline'];
+        if (skylineImg && skylineImg.complete && skylineImg.naturalWidth > 0) {
+          ctx.save();
+          ctx.shadowColor = 'rgba(251, 191, 36, 0.5)';
+          ctx.shadowBlur = 18;
+          ctx.drawImage(skylineImg, skyX, skyY, skyW, skyH);
+          ctx.restore();
+        }
+
+        const idY = isStory ? 1475 : 955;
+        const idH = isStory ? 215 : 185;
+        drawRoundedRect(ctx, 60, idY, W - 120, idH, 26);
+        ctx.fillStyle = 'rgba(4, 13, 26, 0.95)';
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(251, 191, 36, 0.7)';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        ctx.textAlign = 'left';
+        if (runnerCompany) {
+          ctx.fillStyle = '#38BDF8';
+          ctx.font = '800 22px "Outfit", sans-serif';
+          ctx.fillText(runnerCompany, 96, idY + (isStory ? 52 : 44));
+          ctx.fillStyle = '#FFFFFF';
+          ctx.font = '900 48px "Outfit", sans-serif';
+          ctx.fillText(runnerName, 96, idY + (isStory ? 112 : 98));
+        } else {
+          ctx.fillStyle = '#FFFFFF';
+          ctx.font = '900 52px "Outfit", sans-serif';
+          ctx.fillText(runnerName, 96, idY + (isStory ? 92 : 78));
+        }
+
+        ctx.fillStyle = '#FDE68A';
+        ctx.font = '600 18px "Inter", sans-serif';
+        ctx.fillText('San Diego Bayfront Promenade • Global Moving Foundation & Coastal K9 Rescue', 96, idY + (runnerCompany ? (isStory ? 168 : 144) : (isStory ? 150 : 126)));
+
+        drawCourseTraceMiniMap(ctx, 835, idY + 14, 150, idH - 28, '#00F0FF', '#38BDF8');
+
+        const logoY = isStory ? 1715 : 1160;
+        const logoH = isStory ? 170 : 155;
+        drawAllFourLogosBar(ctx, 60, logoY, W - 120, logoH);
+
+      } else {
+        const bgGrad = ctx.createLinearGradient(0, 0, W, H);
+        bgGrad.addColorStop(0, '#061A3A');
+        bgGrad.addColorStop(0.5, '#003B73');
+        bgGrad.addColorStop(1, '#041226');
+        ctx.fillStyle = bgGrad;
+        ctx.fillRect(0, 0, W, H);
+
+        const sunGlow = ctx.createRadialGradient(W / 2, 220, 20, W / 2, 220, 560);
+        sunGlow.addColorStop(0, 'rgba(251, 191, 36, 0.22)');
+        sunGlow.addColorStop(1, 'rgba(251, 191, 36, 0)');
+        ctx.fillStyle = sunGlow;
+        ctx.fillRect(0, 0, W, H);
+
+        const topPillY = isStory ? 70 : 48;
+        drawRoundedRect(ctx, 190, topPillY, W - 380, 44, 22);
+        ctx.fillStyle = '#E31837';
+        ctx.fill();
+        ctx.textAlign = 'center';
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = '800 19px "Outfit", sans-serif';
+        ctx.fillText('♥  OFFICIAL CHARITY 5K FINISHER  ♥', W / 2, topPillY + 29);
+
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = '900 38px "Outfit", sans-serif';
+        ctx.fillText('INTERNATIONAL ASSOCIATION OF MOVERS', W / 2, topPillY + 84);
+        ctx.fillStyle = '#FDE68A';
+        ctx.font = '700 28px "Outfit", sans-serif';
+        ctx.fillText('& PARAMOUNT TRANSPORTATION SYSTEMS', W / 2, topPillY + 124);
+
+        ctx.fillStyle = '#93C5FD';
+        ctx.font = '600 20px "Inter", sans-serif';
+        ctx.fillText('Friday, 23 October 2026  •  San Diego Bayfront Promenade', W / 2, topPillY + 160);
+
+        const photoY = topPillY + 180;
+        const photoH = isStory ? 1080 : 640;
+        drawRoundedRect(ctx, 60, photoY, W - 120, photoH, 34);
+        ctx.fillStyle = '#FFFFFF';
+        ctx.shadowColor = 'rgba(0,0,0,0.4)';
+        ctx.shadowBlur = 24;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+        drawUserPhotoInBox(ctx, 68, photoY + 8, W - 136, photoH - 16, 28);
+
+        const idY = photoY + photoH + (isStory ? 28 : 20);
+        const idH = isStory ? 230 : 185;
+        drawRoundedRect(ctx, 60, idY, W - 120, idH, 28);
+        ctx.fillStyle = 'rgba(7, 25, 54, 0.92)';
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(253, 230, 138, 0.45)';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        ctx.textAlign = 'left';
+        if (runnerCompany) {
+          ctx.fillStyle = '#FBBF24';
+          ctx.font = '800 21px "Outfit", sans-serif';
+          ctx.fillText(runnerCompany, 96, idY + (isStory ? 52 : 44));
+          ctx.fillStyle = '#FFFFFF';
+          ctx.font = '900 48px "Outfit", sans-serif';
+          ctx.fillText(runnerName, 96, idY + (isStory ? 114 : 98));
+        } else {
+          ctx.fillStyle = '#FFFFFF';
+          ctx.font = '900 52px "Outfit", sans-serif';
+          ctx.fillText(runnerName, 96, idY + (isStory ? 94 : 76));
+        }
+
+        ctx.fillStyle = '#93C5FD';
+        ctx.font = '600 20px "Inter", sans-serif';
+        ctx.fillText('Proudly supporting Global Moving Foundation & Coastal K9 Rescue', 96, idY + (runnerCompany ? (isStory ? 168 : 144) : (isStory ? 152 : 124)));
+
+        drawCourseTraceMiniMap(ctx, 835, idY + 14, 150, idH - 28, '#FDE68A', '#E31837');
+
+        const logoY = idY + idH + (isStory ? 26 : 18);
+        const logoH = isStory ? 200 : 155;
+        drawAllFourLogosBar(ctx, 60, logoY, W - 120, logoH);
+      }
+    }
+
+    async function shareFinisherCard() {
+      const name = (document.getElementById('cardRunnerName').value || "").trim();
+      if (!uploadedUserPhoto || !name) {
+        alert("Please add your selfie/photo and enter your name to share.");
+        return;
+      }
+
+      const canvas = document.getElementById('finisherCanvas');
+      canvas.toBlob(async (blob) => {
+        if (!blob) return;
+        const file = new File([blob], 'IAM_Paramount_5K_Finisher.png', { type: 'image/png' });
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+          try {
+            await navigator.share({
+              title: 'IAM & Paramount Charity 5K Finisher!',
+              text: 'Proud to finish the IAM & Paramount Charity 5K along San Diego Bay in support of Global Moving Foundation & Coastal K9 Rescue!',
+              files: [file]
+            });
+            return;
+          } catch (err) {}
+        }
+        saveFinisherCardToPhotos();
+      }, 'image/png');
+    }
+
+    function saveFinisherCardToPhotos() {
+      const name = (document.getElementById('cardRunnerName').value || "").trim();
+      if (!uploadedUserPhoto || !name) {
+        alert("Please add your selfie/photo and enter your name to save.");
+        return;
+      }
+
+      const canvas = document.getElementById('finisherCanvas');
+      const link = document.createElement('a');
+      link.download = `IAM_Paramount_5K_${name.replace(/\s+/g, '_')}_Finisher.png`;
+      link.href = canvas.toDataURL('image/png');
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  </script>
+</body>
+</html>
