@@ -161,7 +161,7 @@
               <i class="fa-solid fa-person-running"></i> Register Now
             </a>
 
-            <!-- Social Card Studio Button (Only visible when registration is closed on race day) -->
+            <!-- Social Card Studio Button (Visible indefinitely when REGISTRATION_STATUS is 'off') -->
             <button type="button" id="heroSocialStudioBtn" onclick="openFinisherStudioModal()" class="hidden inline-flex items-center justify-center gap-2 bg-gradient-to-r from-amber-400 via-amber-300 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-pts-navy px-4 py-2.5 rounded-xl text-xs sm:text-sm font-black transition shadow-lg animate-pulse">
               <i class="fa-solid fa-camera-retro text-base"></i> Finisher Social Badge Studio
             </button>
@@ -186,7 +186,7 @@
           </div>
           
           <p class="text-xs sm:text-sm text-blue-100 leading-relaxed text-center lg:text-left">
-            Proceeds from this year’s 5K will support two worthy charities: the <strong>Global Moving Foundation</strong>, an international organization, and <strong>Coastal K9 German Shepherd Rescue</strong>, a local nonprofit in San Diego.
+            Net proceeds from this year’s 5K will support two worthy charities: the <strong>Global Moving Foundation</strong>, an international organization, and <strong>Coastal K9 German Shepherd Rescue</strong>, a local nonprofit in San Diego.
           </p>
         </div>
       </div>
@@ -195,7 +195,7 @@
   </header>
 
   <!-- ================================================================= -->
-  <!-- GLOWING TOP CHARITY DONATION CALLOUT (ALWAYS VISIBLE & NOTICEABLE) -->
+  <!-- GLOWING TOP CHARITY DONATION CALLOUT (AUTO-HIDES AFTER 10/26/2026) -->
   <!-- ================================================================= -->
   <div id="prominentDonationBanner" class="max-w-6xl mx-auto px-4 sm:px-6 -mt-3 sm:-mt-4 relative z-30 w-full mb-3">
     <div class="relative group">
@@ -211,13 +211,12 @@
               <span class="bg-amber-400 text-pts-navy text-[10px] sm:text-xs font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full shadow-sm">
                 Support Our Charities
               </span>
-              <span class="text-amber-300 text-xs font-bold hidden sm:inline">• 100% Goes to Nonprofits</span>
             </div>
             <h3 class="text-base sm:text-xl font-black mt-1 text-white">
               Not Running or Walking? You Can Still Make an Impact!
             </h3>
             <p class="text-xs sm:text-sm text-blue-100 mt-0.5">
-              Proceeds directly benefit the <strong>Global Moving Foundation</strong> &amp; <strong>Coastal K9 German Shepherd Rescue</strong>.
+              Net proceeds directly benefit the <strong>Global Moving Foundation</strong> &amp; <strong>Coastal K9 German Shepherd Rescue</strong>.
             </p>
           </div>
         </div>
@@ -515,7 +514,7 @@
         <i class="fa-solid fa-lock text-red-600 text-lg flex-shrink-0 mt-0.5"></i>
         <div>
           <strong class="block text-red-800 text-sm">Online Registration is Now Closed</strong>
-          <span>We have reached capacity or closed online signups. If you require late registration assistance, please email <a href="mailto:convention@pts-moves.com" class="underline font-bold">convention@pts-moves.com</a>. You can still support our designated charities using the donation link below.</span>
+          <span>We have reached capacity or closed online signups. If you require late registration assistance, please email <a href="mailto:convention@pts-moves.com" class="underline font-bold">convention@pts-moves.com</a>.<span id="closedAlertDonationSentence"> You can still support our designated charities using the donation link below.</span></span>
         </div>
       </div>
 
@@ -733,8 +732,8 @@
             <i class="fa-solid fa-arrow-right ml-2"></i>
           </button>
 
-          <!-- Always active donation container at end of form -->
-          <div class="w-full bg-pts-light rounded-2xl p-4 border border-blue-200 text-center shadow-md">
+          <!-- Donation container at end of form (Auto-hides after midnight 10/26/2026) -->
+          <div id="bottomDonationContainer" class="w-full bg-pts-light rounded-2xl p-4 border border-blue-200 text-center shadow-md">
             <span class="text-xs sm:text-sm font-bold uppercase tracking-wider text-pts-navy block mb-2">
               <i class="fa-solid fa-heart text-pts-accent mr-1"></i> Not Running or Walking?
             </span>
@@ -773,7 +772,6 @@
         <!-- Left Column: Interactive Card Container with Photo & Ratio Controls Built-In -->
         <div class="lg:col-span-7 flex flex-col items-center bg-gray-950 rounded-2xl p-3.5 sm:p-5 border border-gray-800 shadow-inner">
           
-          <!-- In-Container Controls Bar: Directly at top of preview, eliminating scrolling -->
           <div class="w-full max-w-[390px] flex flex-wrap items-center justify-between gap-2 bg-gray-900/90 border border-white/20 p-2 rounded-2xl mb-2.5">
             <div class="flex items-center gap-1.5">
               <label class="cursor-pointer bg-pts-accent active:bg-red-800 hover:bg-red-700 text-white font-bold py-1.5 px-3 rounded-xl text-xs shadow flex items-center gap-1.5 transition">
@@ -789,7 +787,6 @@
               </button>
             </div>
 
-            <!-- Aspect Ratio Switcher -->
             <div class="flex items-center bg-black/50 rounded-xl p-1 border border-white/15 text-[11px] font-bold">
               <button type="button" id="ratioPostBtn" onclick="setFinisherRatio('post')" class="px-2.5 py-1 rounded-lg bg-pts-navy text-amber-300 transition">
                 4:5 Post
@@ -810,12 +807,10 @@
             </button>
           </div>
 
-          <!-- Canvas Preview Window -->
           <div id="canvasViewport" class="w-full max-w-[370px] rounded-2xl overflow-hidden shadow-2xl border-2 border-white/15 bg-pts-navy relative flex items-center justify-center">
             <canvas id="finisherCanvas" width="1080" height="1350" class="w-full h-auto block cursor-grab active:cursor-grabbing"></canvas>
           </div>
 
-          <!-- Gesture Tip & Zoom Slider Directly under Preview -->
           <div class="w-full max-w-[370px] mt-2.5 text-[11px] text-gray-400 flex items-center justify-between px-1">
             <span><i class="fa-solid fa-hand-pointer text-amber-300 mr-1"></i> Drag to reposition • Pinch to zoom</span>
             <div id="photoAdjustSliderBox" class="hidden flex items-center gap-2">
@@ -824,7 +819,6 @@
             </div>
           </div>
 
-          <!-- 4 Design Selector Pills -->
           <div class="mt-3.5 grid grid-cols-2 sm:grid-cols-4 gap-2 w-full max-w-[420px]">
             <button type="button" id="designBtn0" onclick="selectFinisherDesign(0)" class="py-1.5 px-2 rounded-xl text-[11px] font-black border transition bg-amber-400 text-pts-navy border-amber-400 shadow">
               1. Gold Crest
@@ -864,7 +858,6 @@
             </div>
           </div>
 
-          <!-- Sharing Status Helper -->
           <div id="cardShareLockedNotice" class="bg-amber-50 border border-amber-200 text-amber-800 p-3 rounded-xl text-xs flex items-center gap-2.5">
             <i class="fa-solid fa-circle-info text-amber-600 text-base flex-shrink-0"></i>
             <span>Add your selfie/photo and enter your name above to unlock sharing and photo saving.</span>
@@ -875,7 +868,6 @@
             <span class="font-semibold">Your card is ready to share and save!</span>
           </div>
 
-          <!-- Share & Save Buttons: Only available when Photo is added & Name entered -->
           <div class="space-y-2.5">
             <button type="button" id="shareSocialBtn" onclick="shareFinisherCard()" disabled class="w-full bg-gray-300 text-gray-500 font-black py-3.5 px-5 rounded-xl shadow transition text-sm flex items-center justify-center gap-2 cursor-not-allowed">
               <i class="fa-solid fa-share-nodes"></i> Share to Social Media
@@ -985,10 +977,11 @@
     // =========================================================================
     
     // Set to "on" to accept registrations and payments.
-    // When "on": Registration is open, and "Finisher Social Badge Studio" is hidden.
-    // Set to "off" to close registration: Disables registration fields, moves charity donation to top,
-    // and unlocks the Finisher Social Card Studio prominently for Race Day!
+    // Set to "off" to close registration and unlock the Finisher Social Badge Studio indefinitely!
     const REGISTRATION_STATUS = "on"; // "on" | "off"
+
+    // Donation links/references automatically disappear after midnight on Monday, October 26, 2026
+    const DONATION_EXPIRATION_TIMESTAMP = new Date("2026-10-26T23:59:59-07:00").getTime();
 
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwO7ItQ6sTOC3wbyGDk2hU8qEjD4voEKbNYfdOQU_t_X53AE1FjRZ6fiDDQkywQDBsU/exec";
     const STRIPE_PAYMENT_LINK = "https://buy.stripe.com/6oU14ffDuemrfOM11h3gk01";
@@ -1006,6 +999,17 @@
       }
     });
 
+    function checkDonationCutoff() {
+      if (Date.now() > DONATION_EXPIRATION_TIMESTAMP) {
+        const topBanner = document.getElementById('prominentDonationBanner');
+        const bottomBox = document.getElementById('bottomDonationContainer');
+        const closedSentence = document.getElementById('closedAlertDonationSentence');
+        if (topBanner) topBanner.classList.add('hidden');
+        if (bottomBox) bottomBox.classList.add('hidden');
+        if (closedSentence) closedSentence.classList.add('hidden');
+      }
+    }
+
     function toggleModal(id) {
       document.getElementById(id).classList.toggle('hidden');
     }
@@ -1017,6 +1021,7 @@
     function downloadICS() {
       const icsData = "BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nSUMMARY:IAM & PARAMOUNT Charity 5K Fun Run/Walk\nDESCRIPTION:IAM & Paramount Charity 5K Fun Run/Walk Event. Check-in starts at 6:30 AM.\nLOCATION:Manchester Grand Hyatt Hotel\nDTSTART:20261023T133000Z\nDTEND:20261023T160000Z\nEND:VEVENT\nEND:VCALENDAR";
       const blob = new Blob([icsData], { type: 'text/calendar;charset=utf-8' });
+      const link = document.createElement('a');
       link.href = window.URL.createObjectURL(blob);
       link.setAttribute('download', 'IAM_Paramount_5K.ics');
       document.body.appendChild(link);
@@ -1025,6 +1030,8 @@
     }
 
     function applyRegistrationState() {
+      checkDonationCutoff();
+
       const isClosed = (REGISTRATION_STATUS.toLowerCase() === "off");
       const statusText = document.getElementById('regStatusText');
       const statusIcon = document.getElementById('regStatusIcon');
@@ -1045,6 +1052,7 @@
         headerFee.classList.add('hidden');
         headerClosed.classList.remove('hidden');
 
+        // Social Card Studio remains active indefinitely when registration is closed
         heroSocialStudioBtn.classList.remove('hidden');
         raceDayStudioBanner.classList.remove('hidden');
 
@@ -1071,6 +1079,7 @@
 
     const raceDate = new Date("October 23, 2026 07:30:00").getTime();
     setInterval(function() {
+      checkDonationCutoff();
       const now = new Date().getTime();
       const distance = raceDate - now;
       if (distance > 0) {
@@ -2084,7 +2093,7 @@
           ctx.restore();
         }
 
-        // 3. Identity Bar: Pushed down completely below the skyline artwork[cite: 1, 2]
+        // 3. Identity Bar: Pushed down completely below the skyline artwork
         const idY = isStory ? 1475 : 955;
         const idH = isStory ? 215 : 185;
         drawRoundedRect(ctx, 60, idY, W - 120, idH, 26);
