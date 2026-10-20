@@ -145,30 +145,33 @@
       <div class="mt-6 md:mt-8 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
         <div class="lg:col-span-7 text-center lg:text-left">
           <div class="inline-flex items-center gap-2 bg-amber-400/20 border border-amber-300/40 text-amber-300 px-3.5 py-1 rounded-full text-xs font-extrabold uppercase tracking-wider mb-3">
-            <i class="fa-solid fa-trophy"></i> Thank You to All Our Runners, Walkers &amp; Donors!
+            <i class="fa-solid fa-trophy"></i> Thank You to All Our Runners, Walkers &amp; Supporters!
           </div>
           <h1 class="leading-tight">
             <span class="block text-2xl sm:text-4xl lg:text-5xl font-black tracking-tight text-white">IAM &amp; PARAMOUNT</span>
             <span class="block text-2xl sm:text-4xl lg:text-5xl font-black tracking-tight text-amber-400">Charity 5K Highlights &amp; Results</span>
           </h1>
           <p class="mt-3 text-xs sm:text-base text-blue-100 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
-            What an incredible morning along scenic San Diego Bay! Celebrate our top finishers, browse the official race day photo gallery, and continue supporting our designated nonprofit charities below.
+            What an incredible morning along scenic San Diego Bay! Celebrate our top finishers, browse the official race day photo gallery, share your own race photos with us<span id="heroDonationPhrase">, and support our designated nonprofit charities below</span>.
           </p>
 
-          <!-- Quick Navigation Pills + Auto-Expiring Social Studio Button -->
+          <!-- Quick Navigation Pills + Permanent Social Studio & Photo Upload Buttons -->
           <div class="mt-5 flex flex-wrap justify-center lg:justify-start gap-2.5 sm:gap-3">
-            <a href="#podiumSection" class="inline-flex items-center justify-center gap-2 bg-pts-accent hover:bg-red-700 text-white px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition shadow-lg">
-              <i class="fa-solid fa-medal text-amber-300"></i> Winners Podium
+            <a href="#winnersSection" class="inline-flex items-center justify-center gap-2 bg-pts-accent hover:bg-red-700 text-white px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition shadow-lg">
+              <i class="fa-solid fa-medal text-amber-300"></i> Top 3 Finishers
             </a>
             <a href="#gallerySection" class="inline-flex items-center justify-center gap-2 bg-white hover:bg-gray-100 text-pts-navy px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition shadow-lg">
               <i class="fa-solid fa-images text-pts-blue"></i> Race Photo Showcase
             </a>
+            <button type="button" onclick="openUploadMediaModal()" class="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-500 text-white border border-blue-400/40 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition shadow-lg">
+              <i class="fa-solid fa-cloud-arrow-up text-amber-300"></i> Share Your Race Photos
+            </button>
             <a href="#courseExplorerSection" class="inline-flex items-center justify-center gap-2 bg-white/15 hover:bg-white/25 text-white border border-white/30 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold backdrop-blur-sm transition shadow">
               <i class="fa-solid fa-map-location-dot text-amber-300"></i> 5K Course Route
             </a>
 
-            <!-- Finisher Social Badge Studio Button (Visible until EOD Monday 10/26/2026) -->
-            <button type="button" id="heroSocialStudioBtn" onclick="openFinisherStudioModal()" class="hidden inline-flex items-center justify-center gap-2 bg-gradient-to-r from-amber-400 via-amber-300 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-pts-navy px-4 py-2.5 rounded-xl text-xs sm:text-sm font-black transition shadow-lg animate-pulse">
+            <!-- Finisher Social Badge Studio Button (Active Indefinitely) -->
+            <button type="button" id="heroSocialStudioBtn" onclick="openFinisherStudioModal()" class="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-amber-400 via-amber-300 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-pts-navy px-4 py-2.5 rounded-xl text-xs sm:text-sm font-black transition shadow-lg">
               <i class="fa-solid fa-camera-retro text-base"></i> Finisher Social Badge Studio
             </button>
           </div>
@@ -190,7 +193,7 @@
             </div>
           </div>
           <p class="text-xs sm:text-sm text-blue-100 leading-relaxed text-center lg:text-right max-w-md">
-            100% of proceeds from this year’s 5K directly benefit the <strong>Global Moving Foundation</strong> and <strong>Coastal K9 German Shepherd Rescue</strong>.
+            Net proceeds from this year’s 5K directly benefit the <strong>Global Moving Foundation</strong> and <strong>Coastal K9 German Shepherd Rescue</strong>.
           </p>
         </div>
       </div>
@@ -199,7 +202,7 @@
   </header>
 
   <!-- ================================================================= -->
-  <!-- GLOWING TOP CHARITY DONATION CALLOUT (KEPT ACTIVE POST-RACE)      -->
+  <!-- GLOWING TOP CHARITY DONATION CALLOUT (AUTO-HIDES AFTER 10/26/2026) -->
   <!-- ================================================================= -->
   <div id="prominentDonationBanner" class="max-w-6xl mx-auto px-4 sm:px-6 -mt-3 sm:-mt-4 relative z-30 w-full mb-3">
     <div class="relative group">
@@ -213,15 +216,14 @@
           <div>
             <div class="flex items-center justify-center md:justify-start gap-2">
               <span class="bg-amber-400 text-pts-navy text-[10px] sm:text-xs font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full shadow-sm">
-                Post-Race Giving Open
+                Support Our Charities
               </span>
-              <span class="text-amber-300 text-xs font-bold hidden sm:inline">• 100% Goes to Nonprofits</span>
             </div>
             <h3 class="text-base sm:text-xl font-black mt-1 text-white">
               Help Us Maximize Our Charity Impact!
             </h3>
             <p class="text-xs sm:text-sm text-blue-100 mt-0.5">
-              Donations remain open in support of the <strong>Global Moving Foundation</strong> &amp; <strong>Coastal K9 German Shepherd Rescue</strong>.
+              Net proceeds directly benefit the <strong>Global Moving Foundation</strong> &amp; <strong>Coastal K9 German Shepherd Rescue</strong>.
             </p>
           </div>
         </div>
@@ -234,30 +236,48 @@
   </div>
 
   <!-- ================================================================= -->
-  <!-- AUTO-EXPIRING FINISHER SOCIAL STUDIO BANNER (UNTIL EOD 10/26/2026)-->
+  <!-- PERMANENT FINISHER SOCIAL STUDIO & PHOTO UPLOAD BANNERS           -->
   <!-- ================================================================= -->
-  <div id="raceDayStudioBanner" class="hidden max-w-6xl mx-auto px-4 sm:px-6 mt-2 mb-2 w-full">
-    <div class="bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 text-pts-navy p-4 sm:p-5 rounded-2xl shadow-xl border-2 border-amber-300 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 mt-2 mb-2 w-full grid grid-cols-1 lg:grid-cols-2 gap-4">
+    <!-- Finisher Social Card Studio Banner (Active Indefinitely) -->
+    <div id="raceDayStudioBanner" class="bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 text-pts-navy p-4 sm:p-5 rounded-2xl shadow-xl border-2 border-amber-300 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
       <div class="flex items-center gap-3.5">
         <span class="w-12 h-12 rounded-2xl bg-pts-navy text-amber-300 flex items-center justify-center text-xl shadow flex-shrink-0">
           <i class="fa-solid fa-camera-retro"></i>
         </span>
         <div>
-          <span class="text-[11px] font-black uppercase tracking-wider text-pts-navy/80 block">Available Through Monday, October 26</span>
-          <h3 class="text-base sm:text-lg font-black leading-tight">Ran or Walked the 5K? Create Your Official Finisher Social Badge!</h3>
-          <p class="text-xs text-pts-navy/90 font-medium">Upload your race day selfie or photo and download your custom 4:5 Post or 9:16 Story card.</p>
+          <span class="text-[10px] font-black uppercase tracking-wider text-pts-navy/80 block">Official Finisher Badge</span>
+          <h3 class="text-sm sm:text-base font-black leading-tight">Create Your Custom 5K Social Card!</h3>
+          <p class="text-xs text-pts-navy/90 font-medium mt-0.5">Add your race photo &amp; download in 4:5 Post or 9:16 Story format.</p>
         </div>
       </div>
-      <button type="button" onclick="openFinisherStudioModal()" class="w-full sm:w-auto bg-pts-navy hover:bg-pts-blue text-white font-black py-3 px-5 rounded-xl text-xs sm:text-sm shadow-md transition flex items-center justify-center gap-2 flex-shrink-0">
-        <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i> Open Social Card Studio
+      <button type="button" onclick="openFinisherStudioModal()" class="w-full sm:w-auto bg-pts-navy hover:bg-pts-blue text-white font-black py-2.5 px-4 rounded-xl text-xs shadow-md transition flex items-center justify-center gap-1.5 flex-shrink-0 whitespace-nowrap">
+        <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i> Social Studio
+      </button>
+    </div>
+
+    <!-- Participant Photo & Video Upload Banner -->
+    <div class="bg-gradient-to-r from-pts-navy via-pts-blue to-pts-navy text-white p-4 sm:p-5 rounded-2xl shadow-xl border-2 border-blue-400/30 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
+      <div class="flex items-center gap-3.5">
+        <span class="w-12 h-12 rounded-2xl bg-amber-400 text-pts-navy flex items-center justify-center text-xl shadow flex-shrink-0">
+          <i class="fa-solid fa-cloud-arrow-up"></i>
+        </span>
+        <div>
+          <span class="text-[10px] font-black uppercase tracking-wider text-amber-300 block">Community Memory Box</span>
+          <h3 class="text-sm sm:text-base font-black leading-tight">Took Great Photos or Clips on the Course?</h3>
+          <p class="text-xs text-blue-100 font-medium mt-0.5">Share your photos (JPG, PNG, HEIC/HEIF) &amp; short videos with our team!</p>
+        </div>
+      </div>
+      <button type="button" onclick="openUploadMediaModal()" class="w-full sm:w-auto bg-amber-400 hover:bg-amber-300 text-pts-navy font-black py-2.5 px-4 rounded-xl text-xs shadow-md transition flex items-center justify-center gap-1.5 flex-shrink-0 whitespace-nowrap">
+        <i class="fa-solid fa-upload"></i> Upload Photos
       </button>
     </div>
   </div>
 
   <!-- ================================================================= -->
-  <!-- CHAMPIONS PODIUM: TOP 3 MEN & TOP 3 WOMEN (ZERO-CROP THUMBNAILS)  -->
+  <!-- TOP 3 MEN & TOP 3 WOMEN FINISHERS (ZERO-CROP THUMBNAILS)          -->
   <!-- ================================================================= -->
-  <section id="podiumSection" class="max-w-6xl mx-auto px-4 sm:px-6 mt-6 sm:mt-8 w-full">
+  <section id="winnersSection" class="max-w-6xl mx-auto px-4 sm:px-6 mt-6 sm:mt-8 w-full">
     <div class="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
       
       <div class="bg-gradient-to-r from-pts-navy via-pts-blue to-pts-navy text-white px-5 sm:px-8 py-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
@@ -267,7 +287,7 @@
           </div>
           <div>
             <span class="text-[11px] uppercase tracking-widest text-amber-300 font-extrabold block">2026 Official Leaderboard</span>
-            <h2 class="text-xl sm:text-3xl font-black tracking-tight">Top 3 Finishers Podium</h2>
+            <h2 class="text-xl sm:text-3xl font-black tracking-tight">Top 3 Finishers</h2>
           </div>
         </div>
         <button type="button" onclick="confetti({ particleCount: 90, spread: 70, origin: { y: 0.6 } })" class="self-start sm:self-auto bg-white/15 hover:bg-white/25 text-white border border-white/25 px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2">
@@ -291,7 +311,7 @@
             </div>
             <span class="bg-blue-50 text-pts-blue text-[11px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider border border-blue-200">5K Official</span>
           </div>
-          <div id="menPodiumList" class="space-y-4"></div>
+          <div id="menWinnersList" class="space-y-4"></div>
         </div>
 
         <!-- Women's Top 3 Category -->
@@ -308,7 +328,7 @@
             </div>
             <span class="bg-red-50 text-pts-accent text-[11px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider border border-red-200">5K Official</span>
           </div>
-          <div id="womenPodiumList" class="space-y-4"></div>
+          <div id="womenWinnersList" class="space-y-4"></div>
         </div>
 
       </div>
@@ -316,7 +336,7 @@
   </section>
 
   <!-- ================================================================= -->
-  <!-- DYNAMIC RACE PHOTO SHOWCASE & INTERACTIVE GALLERY                 -->
+  <!-- DYNAMIC RACE PHOTO SHOWCASE & INTERACTIVE GALLERY (UP TO 120)     -->
   <!-- ================================================================= -->
   <section id="gallerySection" class="max-w-6xl mx-auto px-4 sm:px-6 mt-8 w-full">
     <div class="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
@@ -331,16 +351,22 @@
           </h2>
         </div>
 
-        <!-- Category Filter Pills -->
-        <div class="flex flex-wrap items-center gap-1.5 bg-white/10 p-1.5 rounded-2xl border border-white/15">
-          <button type="button" onclick="filterGallery('all')" id="filterBtn-all" class="px-3.5 py-1.5 rounded-xl text-xs font-black bg-amber-400 text-pts-navy transition shadow">
-            All Photos
-          </button>
-          <button type="button" onclick="filterGallery('winners')" id="filterBtn-winners" class="px-3.5 py-1.5 rounded-xl text-xs font-bold text-white hover:bg-white/10 transition">
-            Winners &amp; Podium
-          </button>
-          <button type="button" onclick="filterGallery('crowd')" id="filterBtn-crowd" class="px-3.5 py-1.5 rounded-xl text-xs font-bold text-white hover:bg-white/10 transition">
-            Crowd &amp; Action
+        <!-- Category Filter Pills + Share Photos CTA -->
+        <div class="flex flex-wrap items-center gap-2">
+          <div class="flex flex-wrap items-center gap-1.5 bg-white/10 p-1.5 rounded-2xl border border-white/15">
+            <button type="button" onclick="filterGallery('all')" id="filterBtn-all" class="px-3.5 py-1.5 rounded-xl text-xs font-black bg-amber-400 text-pts-navy transition shadow">
+              All Photos
+            </button>
+            <button type="button" onclick="filterGallery('winners')" id="filterBtn-winners" class="px-3.5 py-1.5 rounded-xl text-xs font-bold text-white hover:bg-white/10 transition">
+              Winners &amp; Awards
+            </button>
+            <button type="button" onclick="filterGallery('crowd')" id="filterBtn-crowd" class="px-3.5 py-1.5 rounded-xl text-xs font-bold text-white hover:bg-white/10 transition">
+              Crowd &amp; Action
+            </button>
+          </div>
+
+          <button type="button" onclick="openUploadMediaModal()" class="bg-pts-accent hover:bg-red-700 text-white px-3.5 py-2.5 rounded-2xl text-xs font-black transition shadow flex items-center gap-1.5">
+            <i class="fa-solid fa-cloud-arrow-up text-amber-300"></i> Share Your Photos
           </button>
         </div>
       </div>
@@ -566,7 +592,8 @@
             </div>
           </div>
 
-          <div class="mt-4 bg-pts-light p-4 rounded-xl border border-blue-200 text-center">
+          <!-- Donation Box inside Map Section (Auto-hides after midnight 10/26/2026) -->
+          <div id="mapDonationBox" class="mt-4 bg-pts-light p-4 rounded-xl border border-blue-200 text-center">
             <span class="text-xs font-bold uppercase tracking-wider text-pts-navy block mb-2">
               <i class="fa-solid fa-heart text-pts-accent mr-1"></i> Support Our Event Charities
             </span>
@@ -586,9 +613,93 @@
   <footer class="bg-pts-navy text-blue-200 py-6 border-t border-blue-900 text-xs text-center">
     <div class="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
       <p>&copy; 2026 International Association of Movers &amp; Paramount Transportation Systems. All rights reserved.</p>
-      <p>Questions or photo submissions: <a href="mailto:convention@pts-moves.com" class="text-amber-300 font-bold hover:underline">convention@pts-moves.com</a></p>
+      <p>Questions or inquiries: <a href="mailto:convention@pts-moves.com" class="text-amber-300 font-bold hover:underline">convention@pts-moves.com</a></p>
     </div>
   </footer>
+
+  <!-- ================================================================= -->
+  <!-- PARTICIPANT PHOTO & VIDEO UPLOAD MODAL (PRIVATE BACKEND UPLOAD)   -->
+  <!-- ================================================================= -->
+  <div id="uploadMediaModal" class="fixed inset-0 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-3 sm:p-4 z-[10000] overflow-y-auto">
+    <div class="bg-white rounded-3xl max-w-xl w-full flex flex-col shadow-2xl overflow-hidden my-auto border border-gray-100">
+      
+      <div class="bg-gradient-to-r from-pts-navy via-pts-blue to-pts-navy text-white px-5 sm:px-6 py-4 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <span class="w-10 h-10 rounded-xl bg-amber-400 text-pts-navy flex items-center justify-center font-black text-lg shadow">
+            <i class="fa-solid fa-cloud-arrow-up"></i>
+          </span>
+          <div>
+            <h3 class="text-base sm:text-lg font-black leading-tight">Share Your Race Photos &amp; Videos</h3>
+            <p class="text-[11px] text-blue-200">Supports all photo formats (including iPhone HEIC/HEIF) &amp; short clips</p>
+          </div>
+        </div>
+        <button type="button" onclick="toggleModal('uploadMediaModal')" class="text-white/80 hover:text-white text-2xl p-1">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="p-5 sm:p-6 space-y-4 text-xs sm:text-sm">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+          <div>
+            <label class="font-bold text-gray-700 block mb-1">Your Name <span class="text-gray-400 font-normal">(Optional)</span></label>
+            <input type="text" id="uploaderName" placeholder="e.g. Alex Runner" class="w-full rounded-xl border border-gray-300 p-2.5 text-sm focus:ring-2 focus:ring-pts-navy focus:outline-none">
+          </div>
+          <div>
+            <label class="font-bold text-gray-700 block mb-1">Company <span class="text-gray-400 font-normal">(Optional)</span></label>
+            <input type="text" id="uploaderCompany" placeholder="e.g. Paramount / IAM" class="w-full rounded-xl border border-gray-300 p-2.5 text-sm focus:ring-2 focus:ring-pts-navy focus:outline-none">
+          </div>
+        </div>
+
+        <!-- Drag & Drop / File Picker Zone -->
+        <label for="participantMediaInput" id="mediaDropZone" class="border-2 border-dashed border-blue-300 hover:border-pts-blue bg-pts-light/60 hover:bg-blue-50/70 transition rounded-2xl p-6 text-center cursor-pointer flex flex-col items-center justify-center gap-2">
+          <div class="w-12 h-12 rounded-2xl bg-pts-navy text-amber-300 flex items-center justify-center text-xl shadow">
+            <i class="fa-solid fa-images"></i>
+          </div>
+          <div class="font-extrabold text-pts-navy text-sm sm:text-base">
+            Tap to Select Photos or Short Videos
+          </div>
+          <p class="text-xs text-gray-500 max-w-sm">
+            Select one or multiple files from your phone or computer. Supports JPG, PNG, HEIC, HEIF, WebP, MP4 &amp; MOV.
+          </p>
+          <input type="file" id="participantMediaInput" multiple accept="image/*,video/*,.heic,.heif" class="hidden" onchange="handleSelectedUploadFiles(event)">
+        </label>
+
+        <!-- Selected Files Queue -->
+        <div id="selectedFilesContainer" class="hidden space-y-2">
+          <div class="flex items-center justify-between text-xs font-bold text-pts-navy">
+            <span id="selectedFilesCountLabel">0 files selected</span>
+            <button type="button" onclick="clearSelectedUploadFiles()" class="text-red-600 hover:underline">Clear all</button>
+          </div>
+          <div id="selectedFilesList" class="max-h-36 overflow-y-auto space-y-1.5 pr-1"></div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div id="uploadProgressWrapper" class="hidden space-y-1.5 bg-gray-50 p-3.5 rounded-xl border border-gray-200">
+          <div class="flex items-center justify-between text-xs font-bold text-pts-navy">
+            <span id="uploadProgressText">Uploading file 1 of 1...</span>
+            <span id="uploadProgressPct" class="font-mono text-pts-blue">0%</span>
+          </div>
+          <div class="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
+            <div id="uploadProgressBar" class="bg-gradient-to-r from-pts-navy via-pts-blue to-green-500 h-full transition-all duration-300" style="width: 0%"></div>
+          </div>
+        </div>
+
+        <!-- Status Message -->
+        <div id="uploadStatusMessage" class="hidden rounded-xl p-3 text-xs font-semibold text-center"></div>
+
+        <!-- Submit Button -->
+        <div class="pt-1 flex items-center justify-end gap-2.5">
+          <button type="button" onclick="toggleModal('uploadMediaModal')" class="px-4 py-2.5 rounded-xl border border-gray-300 text-gray-600 font-bold text-xs hover:bg-gray-100 transition">
+            Close
+          </button>
+          <button type="button" id="startUploadBtn" onclick="submitParticipantMedia()" disabled class="bg-gray-300 text-gray-500 font-black py-2.5 px-6 rounded-xl text-xs sm:text-sm shadow transition flex items-center gap-2 cursor-not-allowed">
+            <i class="fa-solid fa-cloud-arrow-up"></i> Upload to Event Team
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
 
   <!-- ================================================================= -->
   <!-- FULL-SCREEN PHOTO LIGHTBOX MODAL                                  -->
@@ -791,11 +902,14 @@
 
   <script>
     // =========================================================================
-    // 1. POST-RACE CONFIGURATION: WINNERS PODIUM & PHOTO SHOWCASE
+    // 1. POST-RACE CONFIGURATION: TOP 3 FINISHERS & 120-PHOTO SHOWCASE
     // =========================================================================
     
-    // Finisher Social Badge Studio remains visible until EOD Monday, Oct 26, 2026 (11:59:59 PM PDT)
-    const STUDIO_EXPIRATION_TIMESTAMP = new Date("2026-10-26T23:59:59-07:00").getTime();
+    // Apps Script Web App Endpoint (Handles private Google Drive photo/video uploads)
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwO7ItQ6sTOC3wbyGDk2hU8qEjD4voEKbNYfdOQU_t_X53AE1FjRZ6fiDDQkywQDBsU/exec";
+
+    // Donation links & references automatically disappear after midnight on Monday, Oct 26, 2026
+    const DONATION_EXPIRATION_TIMESTAMP = new Date("2026-10-26T23:59:59-07:00").getTime();
 
     // EDIT WINNER NAMES, COMPANIES, AND TIMES HERE:
     // Upload corresponding winner photos into the "photos/" folder (e.g. photos/men_1.jpg)
@@ -812,39 +926,189 @@
       ]
     };
 
-    // OPTIONAL CUSTOM CAPTIONS FOR CROWD PHOTOS:
+    // OPTIONAL CUSTOM CAPTIONS FOR CURATED SHOWCASE PHOTOS:
     const CUSTOM_PHOTO_CAPTIONS = {
       1: { category: "winners", caption: "Official Starting Line Launch at North Embarcadero Marina" },
       2: { category: "crowd", caption: "Runners & Walkers Along the San Diego Bayfront Promenade" },
-      3: { category: "winners", caption: "Awards Presentation & Podium Celebration" },
+      3: { category: "winners", caption: "Awards Presentation & Finishers Celebration" },
       4: { category: "crowd", caption: "Team Spirit Supporting Global Moving Foundation & Coastal K9 Rescue" }
     };
 
-    const MAX_AUTO_SCAN_PHOTOS = 60; // Automatically checks photos/photo1.jpg through photos/photo60.jpg
+    const MAX_AUTO_SCAN_PHOTOS = 120; // Automatically checks photos/photo1.jpg through photos/photo120.jpg
 
     // =========================================================================
-    // 2. STUDIO EXPIRATION CHECK (ACTIVE UNTIL EOD MONDAY 10/26/2026)
+    // 2. AUTOMATIC DONATION CUTOFF CHECK (MIDNIGHT MONDAY 10/26/2026)
     // =========================================================================
-    function checkSocialStudioAvailability() {
-      const now = Date.now();
-      const heroBtn = document.getElementById('heroSocialStudioBtn');
-      const studioBanner = document.getElementById('raceDayStudioBanner');
-
-      if (now <= STUDIO_EXPIRATION_TIMESTAMP) {
-        if (heroBtn) heroBtn.classList.remove('hidden');
-        if (studioBanner) studioBanner.classList.remove('hidden');
-      } else {
-        if (heroBtn) heroBtn.classList.add('hidden');
-        if (studioBanner) studioBanner.classList.add('hidden');
+    function checkDonationCutoff() {
+      if (Date.now() > DONATION_EXPIRATION_TIMESTAMP) {
+        const topBanner = document.getElementById('prominentDonationBanner');
+        const mapBox = document.getElementById('mapDonationBox');
+        const heroPhrase = document.getElementById('heroDonationPhrase');
+        if (topBanner) topBanner.classList.add('hidden');
+        if (mapBox) mapBox.classList.add('hidden');
+        if (heroPhrase) heroPhrase.classList.add('hidden');
       }
     }
+
+    setInterval(checkDonationCutoff, 5000);
 
     function toggleModal(id) {
       document.getElementById(id).classList.toggle('hidden');
     }
 
     // =========================================================================
-    // 3. RENDER CHAMPIONS PODIUM (ZERO-CROP ADAPTIVE THUMBNAILS)
+    // 3. PRIVATE PARTICIPANT PHOTO & VIDEO UPLOAD TOOL (TO GOOGLE DRIVE)
+    // =========================================================================
+    let selectedUploadFiles = [];
+
+    function openUploadMediaModal() {
+      document.getElementById('uploadStatusMessage').classList.add('hidden');
+      document.getElementById('uploadMediaModal').classList.remove('hidden');
+    }
+
+    function handleSelectedUploadFiles(e) {
+      const files = Array.from(e.target.files || []);
+      if (!files.length) return;
+      selectedUploadFiles = [...selectedUploadFiles, ...files];
+      renderSelectedUploadFiles();
+    }
+
+    function clearSelectedUploadFiles() {
+      selectedUploadFiles = [];
+      document.getElementById('participantMediaInput').value = '';
+      renderSelectedUploadFiles();
+    }
+
+    function removeSelectedUploadFile(idx) {
+      selectedUploadFiles.splice(idx, 1);
+      renderSelectedUploadFiles();
+    }
+
+    function formatFileSize(bytes) {
+      if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(0)} KB`;
+      return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+    }
+
+    function renderSelectedUploadFiles() {
+      const container = document.getElementById('selectedFilesContainer');
+      const countLabel = document.getElementById('selectedFilesCountLabel');
+      const listEl = document.getElementById('selectedFilesList');
+      const uploadBtn = document.getElementById('startUploadBtn');
+
+      if (selectedUploadFiles.length === 0) {
+        container.classList.add('hidden');
+        uploadBtn.disabled = true;
+        uploadBtn.className = "bg-gray-300 text-gray-500 font-black py-2.5 px-6 rounded-xl text-xs sm:text-sm shadow transition flex items-center gap-2 cursor-not-allowed";
+        return;
+      }
+
+      container.classList.remove('hidden');
+      countLabel.innerText = `${selectedUploadFiles.length} file${selectedUploadFiles.length > 1 ? 's' : ''} ready to upload`;
+      uploadBtn.disabled = false;
+      uploadBtn.className = "bg-pts-accent hover:bg-red-700 text-white font-black py-2.5 px-6 rounded-xl text-xs sm:text-sm shadow-lg transition flex items-center gap-2 cursor-pointer";
+
+      listEl.innerHTML = selectedUploadFiles.map((file, idx) => `
+        <div class="flex items-center justify-between bg-gray-50 border border-gray-200 px-3 py-1.5 rounded-lg text-xs">
+          <div class="flex items-center gap-2 truncate pr-2">
+            <i class="fa-solid ${file.type.startsWith('video/') ? 'fa-video text-pts-accent' : 'fa-image text-pts-blue'}"></i>
+            <span class="font-semibold text-gray-800 truncate">${file.name}</span>
+            <span class="text-gray-400 flex-shrink-0">(${formatFileSize(file.size)})</span>
+          </div>
+          <button type="button" onclick="removeSelectedUploadFile(${idx})" class="text-gray-400 hover:text-red-600 p-1">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+      `).join('');
+    }
+
+    function fileToBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const result = String(reader.result || '');
+          const base64Clean = result.includes(',') ? result.split(',')[1] : result;
+          resolve(base64Clean);
+        };
+        reader.onerror = (err) => reject(err);
+        reader.readAsDataURL(file);
+      });
+    }
+
+    async function submitParticipantMedia() {
+      if (!selectedUploadFiles.length) return;
+
+      const uploaderName = (document.getElementById('uploaderName').value || 'Anonymous').trim();
+      const uploaderCompany = (document.getElementById('uploaderCompany').value || '').trim();
+      const progressWrapper = document.getElementById('uploadProgressWrapper');
+      const progressText = document.getElementById('uploadProgressText');
+      const progressPct = document.getElementById('uploadProgressPct');
+      const progressBar = document.getElementById('uploadProgressBar');
+      const statusMsg = document.getElementById('uploadStatusMessage');
+      const uploadBtn = document.getElementById('startUploadBtn');
+
+      uploadBtn.disabled = true;
+      uploadBtn.className = "bg-gray-300 text-gray-500 font-black py-2.5 px-6 rounded-xl text-xs sm:text-sm shadow transition flex items-center gap-2 cursor-not-allowed";
+      statusMsg.classList.add('hidden');
+      progressWrapper.classList.remove('hidden');
+
+      let successCount = 0;
+      const total = selectedUploadFiles.length;
+
+      for (let i = 0; i < total; i++) {
+        const file = selectedUploadFiles[i];
+        const pct = Math.round((i / total) * 100);
+        progressText.innerText = `Uploading ${i + 1} of ${total}: ${file.name}...`;
+        progressPct.innerText = `${pct}%`;
+        progressBar.style.width = `${pct}%`;
+
+        try {
+          const b64Data = await fileToBase64(file);
+          const payload = {
+            action: 'uploadMedia',
+            fileName: file.name,
+            mimeType: file.type || 'application/octet-stream',
+            uploaderName: uploaderName,
+            uploaderCompany: uploaderCompany,
+            base64Data: b64Data
+          };
+
+          const res = await fetch(SCRIPT_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify(payload)
+          });
+          const json = await res.json();
+          if (json && json.status === 'success') {
+            successCount++;
+          }
+        } catch (err) {
+          console.error('Upload error:', err);
+        }
+      }
+
+      progressBar.style.width = '100%';
+      progressPct.innerText = '100%';
+      progressText.innerText = 'Upload complete!';
+
+      statusMsg.classList.remove('hidden');
+      if (successCount === total) {
+        statusMsg.className = "rounded-xl p-3 text-xs font-bold text-center bg-green-50 text-green-800 border border-green-200";
+        statusMsg.innerHTML = `<i class="fa-solid fa-circle-check text-green-600 mr-1"></i> Thank you! All ${successCount} file(s) were sent to our event team.`;
+        confetti({ particleCount: 70, spread: 60, origin: { y: 0.6 } });
+        clearSelectedUploadFiles();
+      } else if (successCount > 0) {
+        statusMsg.className = "rounded-xl p-3 text-xs font-bold text-center bg-amber-50 text-amber-800 border border-amber-200";
+        statusMsg.innerHTML = `<i class="fa-solid fa-circle-info mr-1"></i> Uploaded ${successCount} of ${total} files. Note: Very large videos may exceed browser limits.`;
+      } else {
+        statusMsg.className = "rounded-xl p-3 text-xs font-bold text-center bg-red-50 text-red-700 border border-red-200";
+        statusMsg.innerHTML = `<i class="fa-solid fa-triangle-exclamation mr-1"></i> Upload failed. Please check your connection or try smaller files.`;
+        uploadBtn.disabled = false;
+        uploadBtn.className = "bg-pts-accent hover:bg-red-700 text-white font-black py-2.5 px-6 rounded-xl text-xs sm:text-sm shadow-lg transition flex items-center gap-2 cursor-pointer";
+      }
+    }
+
+    // =========================================================================
+    // 4. RENDER TOP 3 MEN & TOP 3 WOMEN FINISHERS (ZERO-CROP THUMBNAILS)
     // =========================================================================
     function getPlaceStyles(place) {
       if (place === 1) {
@@ -870,7 +1134,7 @@
       };
     }
 
-    function renderPodiumSide(listId, winnersArray) {
+    function renderWinnersSide(listId, winnersArray) {
       const container = document.getElementById(listId);
       if (!container) return;
 
@@ -883,11 +1147,8 @@
               
               <!-- ZERO-CROP WINNER PHOTO FRAME: Uses object-contain + blurred backdrop so neither Portrait nor Landscape photos ever get trimmed -->
               <div class="relative w-20 h-24 sm:w-24 sm:h-28 rounded-2xl overflow-hidden flex-shrink-0 border-2 border-white shadow-md bg-slate-900 cursor-pointer group flex items-center justify-center" onclick="openSinglePhotoLightbox('${w.photo}', '${safeName} (${st.label})')">
-                <!-- Blurred ambient fill behind photo -->
                 <img src="${w.photo}" alt="" aria-hidden="true" class="absolute inset-0 w-full h-full object-cover blur-md scale-125 opacity-45 pointer-events-none" onerror="this.style.display='none';">
-                <!-- Full uncropped photo (object-contain) -->
                 <img src="${w.photo}" alt="${safeName}" class="relative z-10 max-w-full max-h-full w-auto h-auto object-contain group-hover:scale-105 transition duration-300" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
-                <!-- Trophy fallback if no image uploaded -->
                 <div class="hidden absolute inset-0 ${st.medalBg} flex items-center justify-center text-2xl font-black z-10">
                   <i class="fa-solid ${st.icon}"></i>
                 </div>
@@ -917,7 +1178,7 @@
     }
 
     // =========================================================================
-    // 4. DYNAMIC PHOTO GALLERY & AUTO-DISCOVERY ENGINE
+    // 5. DYNAMIC PHOTO GALLERY & 120-PHOTO AUTO-DISCOVERY ENGINE
     // =========================================================================
     let allGalleryPhotos = [];
     let filteredGalleryPhotos = [];
@@ -930,7 +1191,7 @@
     function discoverRacePhotos() {
       const candidateList = [];
 
-      // 1. Check Winner Photos first so they also appear in the "Winners & Podium" tab
+      // 1. Check Winner Photos first so they also appear in the "Winners & Awards" tab
       [...RACE_WINNERS.men, ...RACE_WINNERS.women].forEach((w) => {
         candidateList.push({
           src: w.photo,
@@ -939,7 +1200,7 @@
         });
       });
 
-      // 2. Scan photos/photo1.jpg through photos/photo60.jpg
+      // 2. Scan photos/photo1.jpg through photos/photo120.jpg
       for (let i = 1; i <= MAX_AUTO_SCAN_PHOTOS; i++) {
         const meta = CUSTOM_PHOTO_CAPTIONS[i] || {};
         candidateList.push({
@@ -985,7 +1246,7 @@
           {
             src: "https://images.unsplash.com/photo-1513593771513-7b58b6c4af38?auto=format&fit=crop&w=1400&q=80",
             category: "winners",
-            caption: "Finish Line Sprint & Podium Celebrations"
+            caption: "Finish Line Sprint & Top Finishers Celebrations"
           },
           {
             src: "https://images.unsplash.com/photo-1530549387789-4c1017266635?auto=format&fit=crop&w=1400&q=80",
@@ -1050,7 +1311,7 @@
       imgEl.src = item.src;
       if (blurBgEl) blurBgEl.src = item.src;
       captionEl.innerText = item.caption;
-      tagEl.innerText = item.category === 'winners' ? 'Winners & Podium' : 'Crowd & Bayfront Action';
+      tagEl.innerText = item.category === 'winners' ? 'Winners & Awards' : 'Crowd & Bayfront Action';
     }
 
     function stepCarousel(dir) {
@@ -1088,7 +1349,7 @@
           <img src="${item.src}" alt="${item.caption.replace(/"/g, '&quot;')}" loading="lazy" class="w-full h-auto block group-hover:scale-105 transition duration-500">
           <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex flex-col justify-end p-4">
             <span class="text-[10px] font-black uppercase tracking-wider text-amber-300">
-              ${item.category === 'winners' ? 'Winners & Podium' : 'Race Highlight'}
+              ${item.category === 'winners' ? 'Winners & Awards' : 'Race Highlight'}
             </span>
             <p class="text-xs sm:text-sm font-bold text-white leading-snug mt-0.5">${item.caption}</p>
           </div>
@@ -1113,7 +1374,7 @@
       document.getElementById('lightboxImg').src = src;
       document.getElementById('lightboxCaption').innerText = caption;
       document.getElementById('lightboxCounter').innerText = "Winner Spotlight";
-      document.getElementById('lightboxCategoryBadge').innerText = "Official Podium";
+      document.getElementById('lightboxCategoryBadge').innerText = "Official Winner";
       document.getElementById('lightboxDownloadBtn').href = src;
       document.getElementById('lightboxModal').classList.remove('hidden');
       document.body.style.overflow = 'hidden';
@@ -1125,7 +1386,7 @@
       document.getElementById('lightboxImg').src = item.src;
       document.getElementById('lightboxCaption').innerText = item.caption;
       document.getElementById('lightboxCounter').innerText = `${currentLightboxIdx + 1} / ${filteredGalleryPhotos.length}`;
-      document.getElementById('lightboxCategoryBadge').innerText = item.category === 'winners' ? 'Winners & Podium' : 'Crowd & Action';
+      document.getElementById('lightboxCategoryBadge').innerText = item.category === 'winners' ? 'Winners & Awards' : 'Crowd & Action';
       document.getElementById('lightboxDownloadBtn').href = item.src;
     }
 
@@ -1152,7 +1413,7 @@
     });
 
     // =========================================================================
-    // 5. COURSE MAP COORDINATES & LEAFLET ENGINE
+    // 6. COURSE MAP COORDINATES & LEAFLET ENGINE
     // =========================================================================
     const COURSE_COORDS = [
       [32.70820, -117.17009], [32.70801, -117.17010], [32.70779, -117.17010], [32.70756, -117.17008],
@@ -1226,9 +1487,9 @@
     let mobileMapInteractive = false, isMapFullScreen = false;
 
     function initPageAndMap() {
-      checkSocialStudioAvailability();
-      renderPodiumSide('menPodiumList', RACE_WINNERS.men);
-      renderPodiumSide('womenPodiumList', RACE_WINNERS.women);
+      checkDonationCutoff();
+      renderWinnersSide('menWinnersList', RACE_WINNERS.men);
+      renderWinnersSide('womenWinnersList', RACE_WINNERS.women);
       discoverRacePhotos();
 
       const isMobile = window.innerWidth < 1024;
@@ -1466,7 +1727,7 @@
     window.addEventListener('DOMContentLoaded', initPageAndMap);
 
     // =========================================================================
-    // 6. FINISHER SOCIAL MEDIA POST STUDIO (POST 4:5 & STORY 9:16)
+    // 7. FINISHER SOCIAL MEDIA POST STUDIO (POST 4:5 & STORY 9:16)
     // =========================================================================
     const LOGO_SOURCES = {
       iam: 'IAM_logo(1500px).png',
