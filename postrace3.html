@@ -401,7 +401,7 @@
 
         <img id="carouselHeroImg" src="" alt="Featured Race Highlight" class="relative z-10 max-h-full max-w-full w-auto h-full object-contain object-center transition-all duration-500 cursor-pointer drop-shadow-[0_20px_35px_rgba(0,0,0,0.75)] pb-14 pt-3 px-3 sm:px-12" onclick="openLightbox(currentCarouselIdx)">
 
-        <div class="absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-black/95 via-black/55 to-transparent z-10 pointer-events-none"></div>
+        <div class="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-black/90 via-black/40 to-transparent z-10 pointer-events-none"></div>
 
         <button type="button" onclick="stepCarousel(-1)" class="absolute left-3 sm:left-5 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black/60 hover:bg-pts-accent text-white backdrop-blur-md border border-white/20 flex items-center justify-center transition shadow-lg">
           <i class="fa-solid fa-chevron-left"></i>
@@ -410,16 +410,14 @@
           <i class="fa-solid fa-chevron-right"></i>
         </button>
 
-        <div class="absolute bottom-3.5 left-4 right-4 sm:bottom-5 sm:left-8 sm:right-8 z-20 flex flex-col sm:flex-row sm:items-end justify-between gap-3 text-white">
-          <div class="min-w-0">
-            <span id="carouselTag" class="bg-pts-accent text-white text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-md shadow">
-              Featured Moment
+        <div class="absolute bottom-3.5 left-4 right-4 sm:bottom-5 sm:left-8 sm:right-8 z-20 flex items-end justify-between gap-3 text-white">
+          <div id="carouselTextContainer" class="min-w-0">
+            <span id="carouselTag" class="hidden bg-pts-accent text-white text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-md shadow">
+              Official Winner
             </span>
-            <h3 id="carouselCaption" class="text-base sm:text-2xl font-black mt-1.5 drop-shadow truncate">
-              IAM &amp; Paramount Charity 5K Fun Run/Walk
-            </h3>
+            <h3 id="carouselCaption" class="hidden text-base sm:text-2xl font-black mt-1.5 drop-shadow truncate"></h3>
           </div>
-          <div class="flex items-center gap-2 flex-shrink-0">
+          <div class="flex items-center gap-2 flex-shrink-0 ml-auto">
             <button type="button" onclick="toggleCarouselAutoplay()" id="carouselPlayBtn" class="bg-white/15 hover:bg-white/25 backdrop-blur-md text-white border border-white/25 px-3 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition">
               <i id="carouselPlayIcon" class="fa-solid fa-pause text-amber-300"></i>
               <span id="carouselPlayText">Auto-Play</span>
@@ -669,7 +667,7 @@
       <div class="p-4 sm:p-5 bg-pts-light border-b border-gray-200 flex-shrink-0">
         <div class="relative flex items-center">
           <i class="fa-solid fa-magnifying-glass absolute left-4 text-pts-blue text-sm pointer-events-none"></i>
-          <input type="text" id="resultsSearchInput" oninput="filterOfficialResults()" placeholder="Search by First Name, Last Name, or Bib # (e.g. 119 or Tanya)..." class="w-full pl-10 pr-24 py-3 rounded-2xl border-2 border-blue-200 focus:border-pts-navy focus:ring-2 focus:ring-pts-navy/20 focus:outline-none text-xs sm:text-sm font-semibold text-pts-navy shadow-inner bg-white">
+          <input type="text" id="resultsSearchInput" oninput="filterOfficialResults()" placeholder="Search by First Name, Last Name, or Bib # (e.g. 119 or Casey)..." class="w-full pl-10 pr-24 py-3 rounded-2xl border-2 border-blue-200 focus:border-pts-navy focus:ring-2 focus:ring-pts-navy/20 focus:outline-none text-xs sm:text-sm font-semibold text-pts-navy shadow-inner bg-white">
           <button type="button" id="clearResultsSearchBtn" onclick="clearOfficialResultsSearch()" class="hidden absolute right-3 bg-gray-200 hover:bg-gray-300 text-gray-700 text-[11px] font-bold px-2.5 py-1 rounded-lg transition">
             Clear
           </button>
@@ -803,7 +801,7 @@
     <div class="flex items-center justify-between text-white max-w-6xl mx-auto w-full relative z-30">
       <div class="flex items-center gap-2">
         <span id="lightboxCounter" class="bg-white/15 px-3 py-1 rounded-full text-xs font-mono font-bold text-amber-300">1 / 1</span>
-        <span id="lightboxCategoryBadge" class="bg-pts-accent px-2.5 py-1 rounded-md text-[10px] font-black uppercase tracking-wider hidden sm:inline-block">Highlight</span>
+        <span id="lightboxCategoryBadge" class="hidden bg-pts-accent px-2.5 py-1 rounded-md text-[10px] font-black uppercase tracking-wider">Official Winner</span>
       </div>
 
       <div class="flex items-center gap-1.5 sm:gap-2">
@@ -839,10 +837,10 @@
       </button>
     </div>
 
-    <!-- Bottom Caption & Mobile Gesture Hint -->
+    <!-- Bottom Caption (Only shown for Winner Photos) & Mobile Gesture Hint -->
     <div class="text-center text-white max-w-2xl mx-auto pb-1 relative z-30">
-      <h4 id="lightboxCaption" class="text-xs sm:text-base font-bold truncate px-2"></h4>
-      <p id="lightboxHintText" class="text-[10px] text-gray-400 mt-0.5">
+      <h4 id="lightboxCaption" class="hidden text-xs sm:text-base font-bold truncate px-2 mb-0.5"></h4>
+      <p id="lightboxHintText" class="text-[10px] text-gray-400">
         <i class="fa-solid fa-hand-pointer text-amber-300 mr-1"></i> Swipe left/right to browse • Pinch or double-tap to zoom
       </p>
     </div>
@@ -1025,7 +1023,7 @@
       women: [
         { place: 1, name: "Alexandra Schmidt", company: "MEXPACK International Removals", time: "22:45", photo: "photos/women_1.jpg" },
         { place: 2, name: "Daniela Krumdiek", company: "EXPRESS TRANSPORTS S.A.", time: "22:47", photo: "photos/women_2.jpg" },
-        { place: 3, name: "Tanya Davis", company: "Paramount Transportation Systems, Inc.", time: "22:54", photo: "photos/women_3.jpg" }
+        { place: 3, name: "Casey Myers", company: "Champion Risk & Insurance Services", time: "22:50", photo: "photos/women_3.jpg" }
       ]
     };
 
@@ -1045,9 +1043,9 @@
       { place: 10, bib: 179, firstName: "Owen", lastName: "Davolt", time: "22:45" },
       { place: 11, bib: 260, firstName: "Alexandra", lastName: "Schmidt", time: "22:45" },
       { place: 12, bib: 147, firstName: "Daniela", lastName: "Krumdiek", time: "22:47" },
-      { place: 13, bib: 152, firstName: "Diego", lastName: "Periasco", time: "22:50" },
+      { place: 13, bib: 152, firstName: "Casey", lastName: "Myers", time: "22:50" },
       { place: 14, bib: 196, firstName: "Tanya", lastName: "Davis", time: "22:54" },
-      { place: 15, bib: 136, firstName: "Casey", lastName: "Myers", time: "22:59" },
+      { place: 15, bib: 136, firstName: "Diego", lastName: "Periasco", time: "22:59" },
       { place: 16, bib: 237, firstName: "Harry", lastName: "Achenbach", time: "23:09" },
       { place: 17, bib: 263, firstName: "JJ", lastName: "Andrade", time: "23:14" },
       { place: 18, bib: 246, firstName: "Marcos", lastName: "Cazares", time: "23:28" },
@@ -1155,13 +1153,6 @@
       { place: 120, bib: 252, firstName: "Gunjan", lastName: "Jain", time: "56:47" }
     ];
 
-    const CUSTOM_PHOTO_CAPTIONS = {
-      1: { category: "winners", caption: "Official Starting Line Launch at North Embarcadero Marina" },
-      2: { category: "crowd", caption: "Runners & Walkers Along the San Diego Bayfront Promenade" },
-      3: { category: "winners", caption: "Awards Presentation & Finishers Celebration" },
-      4: { category: "crowd", caption: "Team Spirit Supporting Global Moving Foundation & Coastal K9 Rescue" }
-    };
-
     const MAX_AUTO_SCAN_PHOTOS = 120;
     const PHOTOS_PER_PAGE = 18;
 
@@ -1189,7 +1180,7 @@
       151: { label: "3rd Male", cls: "bg-amber-700 text-white" },
       260: { label: "1st Female", cls: "bg-amber-400 text-pts-navy" },
       147: { label: "2nd Female", cls: "bg-slate-300 text-slate-900" },
-      196: { label: "3rd Female", cls: "bg-amber-700 text-white" }
+      152: { label: "3rd Female", cls: "bg-amber-700 text-white" }
     };
 
     function openResultsModal() {
@@ -1547,11 +1538,12 @@
       container.innerHTML = winnersArray.map((w) => {
         const st = getPlaceStyles(w.place);
         const safeName = w.name.replace(/"/g, '&quot;');
+        const winnerCaption = `${safeName} — ${w.company} (${st.label})`;
         return `
           <div class="rounded-2xl border-2 ${st.cardBorder} p-3.5 sm:p-4 shadow-sm hover:shadow-md transition flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             
             <div class="flex items-center gap-3.5 min-w-0 w-full sm:w-auto">
-              <div class="relative w-20 h-24 sm:w-24 sm:h-28 rounded-2xl overflow-hidden flex-shrink-0 border-2 border-white shadow-md bg-slate-900 cursor-pointer group flex items-center justify-center" onclick="openSinglePhotoLightbox('${w.photo}', '${safeName} (${st.label})')">
+              <div class="relative w-20 h-24 sm:w-24 sm:h-28 rounded-2xl overflow-hidden flex-shrink-0 border-2 border-white shadow-md bg-slate-900 cursor-pointer group flex items-center justify-center" onclick="openSinglePhotoLightbox('${w.photo}', '${winnerCaption.replace(/'/g, "\\'")}')">
                 <img src="${w.photo}" alt="" aria-hidden="true" class="absolute inset-0 w-full h-full object-cover blur-md scale-125 opacity-45 pointer-events-none" onerror="handleWinnerImgError(this, true)">
                 <img src="${w.photo}" alt="${safeName}" class="relative z-10 max-w-full max-h-full w-auto h-auto object-contain group-hover:scale-105 transition duration-300" onerror="handleWinnerImgError(this, false)">
                 <div class="hidden absolute inset-0 ${st.medalBg} flex items-center justify-center text-2xl font-black z-10">
@@ -1585,6 +1577,7 @@
 
     // =========================================================================
     // 4. PROGRESSIVE BATCH PHOTO DISCOVERY & PAGINATION ENGINE (18 PER PAGE)
+    //    (Captions ONLY shown for Winner photos; general gallery photos have no title)
     // =========================================================================
     let allGalleryPhotos = [];
     let filteredGalleryPhotos = [];
@@ -1619,10 +1612,11 @@
       const discovered = [];
       let firstPageRendered = false;
 
+      // 1. Winner Photos keep their official name, company & place caption
       const winnerCandidates = [...RACE_WINNERS.men, ...RACE_WINNERS.women].map((w, idx) => ({
         src: w.photo,
         category: 'winners',
-        caption: `${w.name} — ${w.company} (${w.place === 1 ? '1st' : w.place === 2 ? '2nd' : '3rd'} Place)`,
+        caption: `${w.name} — ${w.company} (${w.place === 1 ? '1st' : w.place === 2 ? '2nd' : '3rd'} Place • ${w.time})`,
         order: idx
       }));
 
@@ -1633,6 +1627,7 @@
         }
       });
 
+      // 2. General Event Photos (photo1.jpg .. photo120.jpg) have NO title/caption underneath
       let consecutiveMisses = 0;
       const BATCH_SIZE = 12;
 
@@ -1648,11 +1643,10 @@
           const resolvedSrc = batchResolvedSrcs[b];
           if (resolvedSrc) {
             consecutiveMisses = 0;
-            const meta = CUSTOM_PHOTO_CAPTIONS[num] || {};
             discovered.push({
               src: resolvedSrc,
-              category: meta.category || 'crowd',
-              caption: meta.caption || `IAM & Paramount Charity 5K — Race Highlight #${num}`,
+              category: 'crowd',
+              caption: '',
               order: 100 + num
             });
           } else {
@@ -1675,9 +1669,9 @@
 
       if (discovered.length === 0) {
         allGalleryPhotos = [
-          { src: "https://images.unsplash.com/photo-1552674605-db6ffd4facb5?auto=format&fit=crop&w=1400&q=80", category: "winners", caption: "Morning Launch at North Embarcadero Marina" },
-          { src: "https://images.unsplash.com/photo-1452626038306-9aae5e071dd3?auto=format&fit=crop&w=1400&q=80", category: "crowd", caption: "Runners Along San Diego Waterfront" },
-          { src: "https://images.unsplash.com/photo-1513593771513-7b58b6c4af38?auto=format&fit=crop&w=1400&q=80", category: "winners", caption: "Finish Line Sprint & Top Finishers" }
+          { src: "https://images.unsplash.com/photo-1552674605-db6ffd4facb5?auto=format&fit=crop&w=1400&q=80", category: "crowd", caption: "" },
+          { src: "https://images.unsplash.com/photo-1452626038306-9aae5e071dd3?auto=format&fit=crop&w=1400&q=80", category: "crowd", caption: "" },
+          { src: "https://images.unsplash.com/photo-1513593771513-7b58b6c4af38?auto=format&fit=crop&w=1400&q=80", category: "crowd", caption: "" }
         ];
         filterGallery('all', false);
         startCarouselAutoplay();
@@ -1789,15 +1783,20 @@
 
       grid.innerHTML = pageItems.map((item, localIdx) => {
         const globalIdx = startIdx + localIdx;
+        const hasWinnerCaption = Boolean(item.caption && item.caption.trim());
+        const captionOverlayHTML = hasWinnerCaption ? `
+          <div class="bg-gradient-to-t from-pts-navy via-pts-navy/95 to-pts-navy/85 px-4 py-3 border-t border-white/15">
+            <span class="text-[10px] font-black uppercase tracking-wider text-amber-300 block">
+              <i class="fa-solid fa-trophy mr-1"></i> Official Finisher Podium
+            </span>
+            <p class="text-xs sm:text-sm font-bold text-white leading-snug mt-0.5">${item.caption}</p>
+          </div>
+        ` : '';
+
         return `
           <div class="masonry-item group relative rounded-2xl overflow-hidden shadow-md hover:shadow-2xl border border-gray-200 bg-pts-navy cursor-pointer transition-all duration-300" onclick="openLightbox(${globalIdx})">
-            <img src="${item.src}" alt="${item.caption.replace(/"/g, '&quot;')}" loading="lazy" class="w-full h-auto block group-hover:scale-105 transition duration-500">
-            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex flex-col justify-end p-4">
-              <span class="text-[10px] font-black uppercase tracking-wider text-amber-300">
-                ${item.category === 'winners' ? 'Winners & Awards' : 'Race Highlight'}
-              </span>
-              <p class="text-xs sm:text-sm font-bold text-white leading-snug mt-0.5">${item.caption}</p>
-            </div>
+            <img src="${item.src}" alt="IAM & Paramount 5K Photo" loading="lazy" class="w-full h-auto block group-hover:scale-105 transition duration-500">
+            ${captionOverlayHTML}
           </div>
         `;
       }).join('');
@@ -1813,8 +1812,17 @@
 
       imgEl.src = item.src;
       if (blurBgEl) blurBgEl.src = item.src;
-      captionEl.innerText = item.caption;
-      tagEl.innerText = item.category === 'winners' ? 'Winners & Awards' : 'Crowd & Bayfront Action';
+
+      if (item.caption && item.caption.trim()) {
+        captionEl.innerText = item.caption;
+        captionEl.classList.remove('hidden');
+        tagEl.innerText = 'Official Finisher Podium';
+        tagEl.classList.remove('hidden');
+      } else {
+        captionEl.innerText = '';
+        captionEl.classList.add('hidden');
+        tagEl.classList.add('hidden');
+      }
     }
 
     function stepCarousel(dir) {
@@ -1917,9 +1925,21 @@
         }
       };
       lbImg.src = src;
-      document.getElementById('lightboxCaption').innerText = caption;
+
+      const capEl = document.getElementById('lightboxCaption');
+      const badgeEl = document.getElementById('lightboxCategoryBadge');
+      if (caption && caption.trim()) {
+        capEl.innerText = caption;
+        capEl.classList.remove('hidden');
+        badgeEl.innerText = "Official Winner";
+        badgeEl.classList.remove('hidden');
+      } else {
+        capEl.innerText = '';
+        capEl.classList.add('hidden');
+        badgeEl.classList.add('hidden');
+      }
+
       document.getElementById('lightboxCounter').innerText = "Winner Spotlight";
-      document.getElementById('lightboxCategoryBadge').innerText = "Official Winner";
       document.getElementById('lightboxDownloadBtn').href = src;
       document.getElementById('lightboxModal').classList.remove('hidden');
       document.body.style.overflow = 'hidden';
@@ -1929,9 +1949,21 @@
       const item = filteredGalleryPhotos[currentLightboxIdx];
       if (!item) return;
       document.getElementById('lightboxImg').src = item.src;
-      document.getElementById('lightboxCaption').innerText = item.caption;
+
+      const capEl = document.getElementById('lightboxCaption');
+      const badgeEl = document.getElementById('lightboxCategoryBadge');
+      if (item.caption && item.caption.trim()) {
+        capEl.innerText = item.caption;
+        capEl.classList.remove('hidden');
+        badgeEl.innerText = "Official Winner";
+        badgeEl.classList.remove('hidden');
+      } else {
+        capEl.innerText = '';
+        capEl.classList.add('hidden');
+        badgeEl.classList.add('hidden');
+      }
+
       document.getElementById('lightboxCounter').innerText = `${currentLightboxIdx + 1} / ${filteredGalleryPhotos.length}`;
-      document.getElementById('lightboxCategoryBadge').innerText = item.category === 'winners' ? 'Winners & Awards' : 'Crowd & Action';
       document.getElementById('lightboxDownloadBtn').href = item.src;
     }
 
