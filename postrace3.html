@@ -1,0 +1,3194 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>IAM & PARAMOUNT Charity 5K Fun Run/Walk – Official 2026 Race Showcase</title>
+  <meta name="description" content="Official race results, Top 3 Finishers, searchable 5K finisher times, photo gallery showcase, and custom finisher badge studio for the 2026 IAM & Paramount Charity 5K along San Diego Bay.">
+  <meta property="og:title" content="IAM & PARAMOUNT Charity 5K – Official 2026 Results & Photo Showcase">
+  <meta property="og:description" content="Celebrate our Top 3 Finishers, search all 120 official 5K finish times, browse the San Diego Bayfront photo showcase, create your Finisher Social Badge, and share your race photos!">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="Paramount30thLogo.png">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            pts: {
+              navy: '#003366',
+              blue: '#00529B',
+              accent: '#E31837',
+              light: '#F0F4F8'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@500;600;700;800;900&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  
+  <!-- Leaflet Interactive Map CSS & JS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    h1, h2, h3, h4, .font-display {
+      font-family: 'Outfit', sans-serif;
+    }
+    .leaflet-container {
+      font-family: inherit;
+      z-index: 10;
+    }
+    @keyframes pulse-ring {
+      0% { transform: scale(0.8); opacity: 0.8; }
+      100% { transform: scale(2.2); opacity: 0; }
+    }
+    .marker-pulse::before {
+      content: '';
+      position: absolute;
+      inset: -6px;
+      border-radius: 9999px;
+      background-color: inherit;
+      animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+      z-index: -1;
+    }
+    /* Flashy Donation Button Shimmer & Glow */
+    @keyframes donate-glow {
+      0%, 100% {
+        box-shadow: 0 0 15px rgba(251, 191, 36, 0.6), 0 0 30px rgba(227, 24, 55, 0.35);
+        transform: scale(1);
+      }
+      50% {
+        box-shadow: 0 0 28px rgba(251, 191, 36, 0.95), 0 0 45px rgba(227, 24, 55, 0.65);
+        transform: scale(1.03);
+      }
+    }
+    .flashy-donate-btn {
+      animation: donate-glow 2.2s infinite ease-in-out;
+    }
+    .course-step-card.active {
+      border-color: #E31837;
+      background-color: #FFF5F5;
+      box-shadow: 0 8px 15px -3px rgba(227, 24, 55, 0.15);
+    }
+    .map-fullscreen-active {
+      position: fixed !important;
+      inset: 0 !important;
+      width: 100vw !important;
+      height: 100vh !important;
+      z-index: 999 !important;
+    }
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    * {
+      -webkit-tap-highlight-color: transparent;
+    }
+    #finisherCanvas, #lightboxTouchArea {
+      touch-action: none;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    /* Masonry Photo Grid - Zero Crop Native Aspect Ratio */
+    .masonry-grid {
+      column-count: 1;
+      column-gap: 1.25rem;
+    }
+    @media (min-width: 640px) {
+      .masonry-grid { column-count: 2; }
+    }
+    @media (min-width: 1024px) {
+      .masonry-grid { column-count: 3; }
+    }
+    .masonry-item {
+      break-inside: avoid;
+      margin-bottom: 1.25rem;
+    }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans antialiased min-h-screen flex flex-col">
+
+  <!-- ================================================================= -->
+  <!-- STREAMLINED POST-RACE EXECUTIVE HERO HEADER                       -->
+  <!-- ================================================================= -->
+  <header class="bg-pts-navy text-white shadow-2xl relative overflow-hidden">
+    <div class="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-pts-blue/35 blur-3xl pointer-events-none"></div>
+    <div class="absolute -bottom-24 -left-24 w-96 h-96 rounded-full bg-pts-accent/15 blur-3xl pointer-events-none"></div>
+
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 pt-4 pb-6 md:pt-5 md:pb-8 relative z-10">
+      
+      <!-- Unified Top Partner & Event Bar (Zero Wasted Space) -->
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-3.5 items-center border-b border-blue-800/70 pb-4">
+        
+        <div class="md:col-span-4 flex justify-center md:justify-start">
+          <div class="bg-white px-3.5 py-2 rounded-2xl shadow-md inline-flex items-center gap-3 sm:gap-4">
+            <a href="https://iamovers.org/" target="_blank" rel="noopener noreferrer" class="hover:opacity-85 transition-opacity flex items-center justify-center">
+              <img src="IAM_logo(1500px).png" alt="International Association of Movers" class="h-10 sm:h-12 md:h-14 w-auto object-contain" onError="this.onerror=null;this.src='https://iamovers.org/wp-content/uploads/2025/01/IAM-Logo.png';">
+            </a>
+            <div class="h-9 sm:h-11 w-px bg-gray-300"></div>
+            <a href="https://pts-moves.com/" target="_blank" rel="noopener noreferrer" class="hover:opacity-85 transition-opacity flex items-center justify-center">
+              <img src="Paramount30thLogo.png" alt="Paramount Transportation Systems - 30th Anniversary" class="h-11 sm:h-13 md:h-16 w-auto object-contain">
+            </a>
+          </div>
+        </div>
+
+        <div class="md:col-span-4 flex justify-center">
+          <div class="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl px-4 py-2 flex items-center gap-3 shadow-md">
+            <div class="w-9 h-9 rounded-xl bg-amber-400 text-pts-navy flex items-center justify-center text-base font-black flex-shrink-0 shadow">
+              <i class="fa-solid fa-flag-checkered"></i>
+            </div>
+            <div class="text-left">
+              <span class="text-[10px] uppercase tracking-widest text-amber-300 font-extrabold block leading-tight">Official Event Recap</span>
+              <span class="text-xs sm:text-[13px] font-bold text-white block whitespace-nowrap">Friday, 23 Oct 2026 • San Diego Bay</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="md:col-span-4 flex justify-center md:justify-end">
+          <div class="bg-white px-3.5 py-2 rounded-2xl shadow-md inline-flex items-center gap-3.5 sm:gap-4">
+            <a href="https://globalmovingfoundation.org/" target="_blank" rel="noopener noreferrer" class="hover:opacity-85 transition-opacity flex items-center justify-center h-10 sm:h-12 md:h-14">
+              <img src="GlobalMovingFoundationLogo.png" alt="Global Moving Foundation" class="h-full w-auto object-contain block">
+            </a>
+            <div class="h-9 sm:h-11 w-px bg-gray-300"></div>
+            <a href="https://www.coastalk9gsr.org/" target="_blank" rel="noopener noreferrer" class="hover:opacity-85 transition-opacity flex items-center justify-center h-10 sm:h-12 md:h-14">
+              <img src="CoastalK9Logo.png" alt="Coastal K9 German Shepherd Rescue" class="h-full w-auto object-contain block scale-110">
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Compact Hero Main Content + Interactive Feature Cards -->
+      <div class="mt-5 grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-6 items-center">
+        
+        <div class="lg:col-span-7 text-center lg:text-left">
+          <div class="inline-flex items-center gap-2 bg-amber-400/20 border border-amber-300/40 text-amber-300 px-3 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-wider mb-2.5">
+            <i class="fa-solid fa-trophy"></i> Thank You to All Our Runners, Walkers &amp; Supporters!
+          </div>
+          
+          <h1 class="text-2xl sm:text-4xl lg:text-[42px] font-black tracking-tight leading-tight">
+            <span class="text-white">IAM &amp; PARAMOUNT </span>
+            <span class="text-amber-400 block sm:inline">Charity 5K Highlights &amp; Results</span>
+          </h1>
+          
+          <p class="mt-2 text-xs sm:text-sm text-blue-100 leading-relaxed max-w-2xl mx-auto lg:mx-0">
+            What an incredible morning along scenic San Diego Bay! Celebrate our top finishers, search all 120 official 5K finish times, browse the photo gallery, and share your own photos. Net proceeds from this year’s 5K directly benefit the <strong>Global Moving Foundation</strong> and <strong>Coastal K9 German Shepherd Rescue</strong>.
+          </p>
+
+          <div class="mt-4 flex flex-wrap justify-center lg:justify-start gap-2">
+            <a href="#winnersSection" class="inline-flex items-center gap-1.5 bg-pts-accent hover:bg-red-700 text-white px-3.5 py-2 rounded-xl text-xs font-bold transition shadow">
+              <i class="fa-solid fa-medal text-amber-300"></i> Top 3 Finishers
+            </a>
+            <button type="button" onclick="openResultsModal()" class="inline-flex items-center gap-1.5 bg-amber-400 hover:bg-amber-300 text-pts-navy px-3.5 py-2 rounded-xl text-xs font-black transition shadow">
+              <i class="fa-solid fa-stopwatch text-pts-navy"></i> Search All 120 Finish Times
+            </button>
+            <a href="#gallerySection" class="inline-flex items-center gap-1.5 bg-white hover:bg-gray-100 text-pts-navy px-3.5 py-2 rounded-xl text-xs font-bold transition shadow">
+              <i class="fa-solid fa-images text-pts-blue"></i> Photo Showcase
+            </a>
+            <a href="#courseExplorerSection" class="inline-flex items-center gap-1.5 bg-white/15 hover:bg-white/25 text-white border border-white/25 px-3.5 py-2 rounded-xl text-xs font-bold backdrop-blur-sm transition">
+              <i class="fa-solid fa-map-location-dot text-amber-300"></i> 5K Course Route
+            </a>
+          </div>
+        </div>
+
+        <div class="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 gap-3">
+          
+          <div onclick="openFinisherStudioModal()" class="cursor-pointer group bg-gradient-to-br from-amber-400 via-amber-300 to-amber-500 text-pts-navy p-4 rounded-2xl shadow-lg border border-amber-200 flex flex-col justify-between hover:scale-[1.02] transition-all">
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <span class="w-9 h-9 rounded-xl bg-pts-navy text-amber-300 flex items-center justify-center text-base shadow">
+                  <i class="fa-solid fa-camera-retro"></i>
+                </span>
+                <span class="text-[10px] font-black uppercase tracking-wider bg-pts-navy/10 px-2 py-0.5 rounded-full">4:5 &amp; 9:16</span>
+              </div>
+              <h3 class="text-sm font-black leading-snug">Finisher Social Badge Studio</h3>
+              <p class="text-[11px] text-pts-navy/85 font-medium mt-1 leading-snug">
+                Frame your selfie or photo on an official 5K finisher card.
+              </p>
+            </div>
+            <div class="mt-3 w-full bg-pts-navy group-hover:bg-pts-blue text-white font-black py-2 px-3 rounded-xl text-xs text-center shadow transition flex items-center justify-center gap-1.5">
+              <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i> Create Badge
+            </div>
+          </div>
+
+          <div onclick="openUploadMediaModal()" class="cursor-pointer group bg-white/10 hover:bg-white/15 backdrop-blur-md text-white p-4 rounded-2xl shadow-lg border border-white/20 flex flex-col justify-between hover:scale-[1.02] transition-all">
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <span class="w-9 h-9 rounded-xl bg-amber-400 text-pts-navy flex items-center justify-center text-base shadow">
+                  <i class="fa-solid fa-cloud-arrow-up"></i>
+                </span>
+                <span class="text-[10px] font-extrabold uppercase tracking-wider text-amber-300 bg-white/10 px-2 py-0.5 rounded-full">Photos &amp; Clips</span>
+              </div>
+              <h3 class="text-sm font-black leading-snug">Share Your Race Photos</h3>
+              <p class="text-[11px] text-blue-100 font-medium mt-1 leading-snug">
+                Upload photos (JPG, PNG, HEIC) &amp; short clips to our team.
+              </p>
+            </div>
+            <div class="mt-3 w-full bg-amber-400 group-hover:bg-amber-300 text-pts-navy font-black py-2 px-3 rounded-xl text-xs text-center shadow transition flex items-center justify-center gap-1.5">
+              <i class="fa-solid fa-upload"></i> Upload Media
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ================================================================= -->
+  <!-- FLASHY GLOWING CHARITY DONATION BANNER (ACTIVE UNTIL EOD 10/26)   -->
+  <!-- ================================================================= -->
+  <div id="prominentDonationBanner" class="max-w-6xl mx-auto px-4 sm:px-6 -mt-3.5 relative z-30 w-full mb-2">
+    <div class="relative group">
+      <!-- High-visibility pulsing ambient glow aura -->
+      <div class="absolute -inset-1 bg-gradient-to-r from-red-600 via-amber-400 to-red-600 rounded-2xl blur-md opacity-90 group-hover:opacity-100 transition duration-700 animate-pulse"></div>
+      
+      <div class="relative bg-gradient-to-r from-pts-navy via-blue-950 to-pts-navy border-2 border-amber-400 text-white p-4 sm:p-5 rounded-2xl shadow-2xl flex flex-col md:flex-row items-center justify-between gap-4">
+        <div class="flex items-center gap-3.5 text-center md:text-left">
+          <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-tr from-amber-400 to-red-500 text-pts-navy flex items-center justify-center text-2xl sm:text-3xl flex-shrink-0 shadow-lg animate-bounce">
+            <i class="fa-solid fa-heart text-pts-navy"></i>
+          </div>
+          <div>
+            <div class="flex items-center justify-center md:justify-start gap-2">
+              <span class="bg-amber-400 text-pts-navy text-[10px] sm:text-xs font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full shadow-sm">
+                Support Our Charities
+              </span>
+            </div>
+            <h3 class="text-base sm:text-xl font-black mt-1 text-white">
+              Help Us Maximize Our Charity Impact!
+            </h3>
+            <p class="text-xs sm:text-sm text-blue-100 mt-0.5">
+              Net proceeds directly benefit the <strong>Global Moving Foundation</strong> &amp; <strong>Coastal K9 German Shepherd Rescue</strong>.
+            </p>
+          </div>
+        </div>
+
+        <a href="https://donate.stripe.com/eVq6oz1MEdinausaBR3gk02" target="_blank" rel="noopener noreferrer" class="flashy-donate-btn w-full md:w-auto bg-gradient-to-r from-amber-400 via-amber-300 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-pts-navy font-black py-3 sm:py-3.5 px-6 rounded-xl text-sm sm:text-base shadow-xl transition-all transform hover:scale-105 active:scale-95 flex items-center justify-center gap-2 whitespace-nowrap flex-shrink-0">
+          <i class="fa-solid fa-hand-holding-dollar text-pts-accent text-lg animate-bounce"></i> Donate Any Amount Now
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================================================================= -->
+  <!-- TOP 3 MEN & TOP 3 WOMEN FINISHERS + FULL 120 RESULTS BUTTON       -->
+  <!-- ================================================================= -->
+  <section id="winnersSection" class="max-w-6xl mx-auto px-4 sm:px-6 mt-5 sm:mt-6 w-full">
+    <div class="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
+      
+      <div class="bg-gradient-to-r from-pts-navy via-pts-blue to-pts-navy text-white px-5 sm:px-8 py-4 sm:py-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div class="flex items-center gap-3.5">
+          <div class="w-11 h-11 rounded-2xl bg-amber-400 text-pts-navy flex items-center justify-center text-xl font-black shadow-lg flex-shrink-0">
+            <i class="fa-solid fa-trophy"></i>
+          </div>
+          <div>
+            <span class="text-[10px] uppercase tracking-widest text-amber-300 font-extrabold block">2026 Official Leaderboard</span>
+            <h2 class="text-xl sm:text-2xl font-black tracking-tight">Top 3 Finishers</h2>
+          </div>
+        </div>
+        <div class="flex flex-wrap items-center gap-2">
+          <button type="button" onclick="openResultsModal()" class="bg-amber-400 hover:bg-amber-300 text-pts-navy px-4 py-2 rounded-xl text-xs font-black transition shadow-md flex items-center gap-2">
+            <i class="fa-solid fa-magnifying-glass"></i> View &amp; Search All 120 Finisher Times
+          </button>
+          <button type="button" onclick="confetti({ particleCount: 90, spread: 70, origin: { y: 0.6 } })" class="bg-white/15 hover:bg-white/25 text-white border border-white/25 px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5">
+            <i class="fa-solid fa-champagne-glasses text-amber-300"></i> Celebrate
+          </button>
+        </div>
+      </div>
+
+      <div class="p-4 sm:p-7 grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 bg-gradient-to-b from-pts-light/60 to-white">
+        
+        <!-- Men's Top 3 Category -->
+        <div class="bg-white rounded-2xl p-4 sm:p-5 border border-gray-200 shadow-md">
+          <div class="flex items-center justify-between border-b border-gray-100 pb-3 mb-4">
+            <div class="flex items-center gap-2.5">
+              <span class="w-9 h-9 rounded-xl bg-pts-navy text-amber-300 flex items-center justify-center font-black text-base shadow">
+                <i class="fa-solid fa-person-running"></i>
+              </span>
+              <div>
+                <h3 class="text-base sm:text-lg font-black text-pts-navy leading-none">Men’s Division</h3>
+                <span class="text-xs text-gray-500 font-semibold">Top Three Male Finishers</span>
+              </div>
+            </div>
+            <span class="bg-blue-50 text-pts-blue text-[11px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider border border-blue-200">5K Official</span>
+          </div>
+          <div id="menWinnersList" class="space-y-3.5"></div>
+        </div>
+
+        <!-- Women's Top 3 Category -->
+        <div class="bg-white rounded-2xl p-4 sm:p-5 border border-gray-200 shadow-md">
+          <div class="flex items-center justify-between border-b border-gray-100 pb-3 mb-4">
+            <div class="flex items-center gap-2.5">
+              <span class="w-9 h-9 rounded-xl bg-pts-accent text-white flex items-center justify-center font-black text-base shadow">
+                <i class="fa-solid fa-person-running"></i>
+              </span>
+              <div>
+                <h3 class="text-base sm:text-lg font-black text-pts-navy leading-none">Women’s Division</h3>
+                <span class="text-xs text-gray-500 font-semibold">Top Three Female Finishers</span>
+              </div>
+            </div>
+            <span class="bg-red-50 text-pts-accent text-[11px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider border border-red-200">5K Official</span>
+          </div>
+          <div id="womenWinnersList" class="space-y-3.5"></div>
+        </div>
+
+      </div>
+
+      <!-- Bottom Callout Bar inside Leaderboard Section -->
+      <div class="bg-pts-light/90 border-t border-gray-200 px-5 py-3.5 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div class="flex items-center gap-2.5 text-xs sm:text-sm text-pts-navy font-bold text-center sm:text-left">
+          <i class="fa-solid fa-stopwatch text-pts-accent text-base"></i>
+          <span>Looking for your official 5K chip time and overall placement?</span>
+        </div>
+        <button type="button" onclick="openResultsModal()" class="w-full sm:w-auto bg-pts-navy hover:bg-pts-blue text-white font-extrabold px-5 py-2.5 rounded-xl text-xs shadow transition flex items-center justify-center gap-2">
+          <i class="fa-solid fa-list-ol text-amber-300"></i> Open Full 5K Results Directory (120 Finishers)
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================= -->
+  <!-- PAGINATED RACE PHOTO SHOWCASE & INTERACTIVE GALLERY (UP TO 120)   -->
+  <!-- ================================================================= -->
+  <section id="gallerySection" class="max-w-6xl mx-auto px-4 sm:px-6 mt-7 w-full">
+    <div class="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
+      
+      <div class="bg-pts-navy text-white px-5 sm:px-8 py-4 sm:py-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <span class="text-[10px] uppercase tracking-widest text-amber-300 font-extrabold block">San Diego Bayfront Memories</span>
+          <h2 class="text-xl sm:text-2xl font-black tracking-tight flex items-center gap-2.5">
+            <span>Official Race Photo Showcase</span>
+            <span id="photoCountBadge" class="text-xs bg-white/15 text-amber-300 px-2.5 py-1 rounded-full font-extrabold"></span>
+          </h2>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-2">
+          <div class="flex flex-wrap items-center gap-1.5 bg-white/10 p-1.5 rounded-2xl border border-white/15">
+            <button type="button" onclick="filterGallery('all')" id="filterBtn-all" class="px-3.5 py-1.5 rounded-xl text-xs font-black bg-amber-400 text-pts-navy transition shadow">
+              All Photos
+            </button>
+            <button type="button" onclick="filterGallery('winners')" id="filterBtn-winners" class="px-3.5 py-1.5 rounded-xl text-xs font-bold text-white hover:bg-white/10 transition">
+              Winners &amp; Awards
+            </button>
+            <button type="button" onclick="filterGallery('crowd')" id="filterBtn-crowd" class="px-3.5 py-1.5 rounded-xl text-xs font-bold text-white hover:bg-white/10 transition">
+              Crowd &amp; Action
+            </button>
+          </div>
+
+          <button type="button" onclick="openUploadMediaModal()" class="bg-pts-accent hover:bg-red-700 text-white px-3.5 py-2 rounded-2xl text-xs font-black transition shadow flex items-center gap-1.5">
+            <i class="fa-solid fa-cloud-arrow-up text-amber-300"></i> Share Your Photos
+          </button>
+        </div>
+      </div>
+
+      <!-- Featured Spotlight Auto-Slideshow Banner (SUPPORTS TOUCH SWIPE) -->
+      <div id="featuredCarouselWrapper" class="relative bg-slate-950 h-[360px] sm:h-[480px] md:h-[540px] w-full overflow-hidden group flex items-center justify-center select-none">
+        <img id="carouselBlurBg" src="" alt="" aria-hidden="true" class="absolute inset-0 w-full h-full object-cover object-center blur-2xl scale-110 opacity-50 transition-all duration-700 pointer-events-none select-none">
+        <div class="absolute inset-0 bg-slate-950/35 pointer-events-none"></div>
+
+        <img id="carouselHeroImg" src="" alt="Featured Race Highlight" class="relative z-10 max-h-full max-w-full w-auto h-full object-contain object-center transition-all duration-500 cursor-pointer drop-shadow-[0_20px_35px_rgba(0,0,0,0.75)] pb-14 pt-3 px-3 sm:px-12" onclick="openLightbox(currentCarouselIdx)">
+
+        <div class="absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-black/95 via-black/55 to-transparent z-10 pointer-events-none"></div>
+
+        <button type="button" onclick="stepCarousel(-1)" class="absolute left-3 sm:left-5 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black/60 hover:bg-pts-accent text-white backdrop-blur-md border border-white/20 flex items-center justify-center transition shadow-lg">
+          <i class="fa-solid fa-chevron-left"></i>
+        </button>
+        <button type="button" onclick="stepCarousel(1)" class="absolute right-3 sm:right-5 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black/60 hover:bg-pts-accent text-white backdrop-blur-md border border-white/20 flex items-center justify-center transition shadow-lg">
+          <i class="fa-solid fa-chevron-right"></i>
+        </button>
+
+        <div class="absolute bottom-3.5 left-4 right-4 sm:bottom-5 sm:left-8 sm:right-8 z-20 flex flex-col sm:flex-row sm:items-end justify-between gap-3 text-white">
+          <div class="min-w-0">
+            <span id="carouselTag" class="bg-pts-accent text-white text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-md shadow">
+              Featured Moment
+            </span>
+            <h3 id="carouselCaption" class="text-base sm:text-2xl font-black mt-1.5 drop-shadow truncate">
+              IAM &amp; Paramount Charity 5K Fun Run/Walk
+            </h3>
+          </div>
+          <div class="flex items-center gap-2 flex-shrink-0">
+            <button type="button" onclick="toggleCarouselAutoplay()" id="carouselPlayBtn" class="bg-white/15 hover:bg-white/25 backdrop-blur-md text-white border border-white/25 px-3 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition">
+              <i id="carouselPlayIcon" class="fa-solid fa-pause text-amber-300"></i>
+              <span id="carouselPlayText">Auto-Play</span>
+            </button>
+            <button type="button" onclick="openLightbox(currentCarouselIdx)" class="bg-amber-400 hover:bg-amber-300 text-pts-navy px-3.5 py-2 rounded-xl text-xs font-black flex items-center gap-1.5 transition shadow">
+              <i class="fa-solid fa-expand"></i> Full Screen
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Paginated Masonry Photo Grid (18 Photos per Page) -->
+      <div class="p-5 sm:p-8 bg-gray-50">
+        <!-- Top Pagination Bar -->
+        <div id="galleryPaginationTop" class="hidden mb-5 flex flex-col sm:flex-row items-center justify-between gap-3 border-b border-gray-200 pb-4">
+          <span id="galleryShowingRangeTop" class="text-xs sm:text-sm font-bold text-pts-navy"></span>
+          <div id="galleryPageBtnsTop" class="flex flex-wrap items-center justify-center gap-1.5"></div>
+        </div>
+
+        <div id="photoMasonryGrid" class="masonry-grid"></div>
+
+        <!-- Bottom Pagination Bar -->
+        <div id="galleryPaginationBottom" class="hidden mt-6 pt-5 border-t border-gray-200 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <span id="galleryShowingRangeBottom" class="text-xs sm:text-sm font-bold text-gray-600"></span>
+          <div id="galleryPageBtnsBottom" class="flex flex-wrap items-center justify-center gap-1.5"></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================================================================= -->
+  <!-- 23 OCTOBER 2026 – MAP SECTION                                     -->
+  <!-- ================================================================= -->
+  <section id="courseExplorerSection" class="max-w-6xl mx-auto px-4 sm:px-6 mt-7 mb-10 w-full flex-grow">
+    <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+      
+      <div class="bg-gradient-to-r from-pts-navy via-pts-blue to-pts-navy text-white px-4 sm:px-6 py-4 flex flex-col lg:flex-row lg:items-center justify-between gap-3.5">
+        <div>
+          <h2 class="text-lg sm:text-2xl font-black tracking-tight">23 October 2026 – Official 5K Waterfront Course Map</h2>
+          <p class="text-xs sm:text-sm text-blue-100 mt-0.5">
+            Relive our 5K route along the scenic San Diego Bayfront Promenade.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-2 sm:flex sm:flex-wrap items-center gap-2">
+          <button type="button" id="simRunBtn" onclick="toggleCourseSimulation()" class="col-span-2 sm:col-span-1 bg-pts-accent active:bg-red-800 hover:bg-red-700 text-white text-xs sm:text-sm font-bold px-4 py-2.5 sm:py-2 rounded-xl shadow-md transition flex items-center justify-center gap-2">
+            <i id="simRunIcon" class="fa-solid fa-play"></i>
+            <span id="simRunText">Simulate Course Route</span>
+          </button>
+          <button type="button" onclick="toggleFullScreenMap()" class="bg-white/15 active:bg-white/30 hover:bg-white/25 text-white border border-white/25 text-xs sm:text-sm font-semibold px-3 py-2.5 sm:py-2 rounded-xl transition flex items-center justify-center gap-1.5">
+            <i class="fa-solid fa-up-right-and-down-left-from-center text-amber-300"></i> Full Screen Map
+          </button>
+          <button type="button" onclick="toggleModal('officialMapModal')" class="bg-white active:bg-gray-100 text-pts-navy hover:bg-blue-50 text-xs sm:text-sm font-bold px-3 py-2.5 sm:py-2 rounded-xl shadow transition flex items-center justify-center gap-1.5">
+            <i class="fa-regular fa-map text-pts-accent"></i> Official PDF Map
+          </button>
+        </div>
+      </div>
+
+      <div class="bg-pts-light border-b border-gray-200 px-4 sm:px-6 py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs sm:text-sm">
+        <div class="flex items-start sm:items-center gap-2.5">
+          <span class="inline-flex items-center flex-shrink-0 mt-0.5 sm:mt-0">
+            <span class="w-3.5 h-3.5 rounded-full bg-green-600 inline-block border-2 border-white shadow"></span>
+            <span class="w-3.5 h-3.5 rounded-full bg-pts-accent inline-block -ml-1.5 border-2 border-white shadow"></span>
+          </span>
+          <div>
+            <strong class="text-pts-navy uppercase tracking-wide">START/FINISH:</strong>
+            <span class="text-gray-800 font-medium">Northwest corner of the North Embarcadero Marina (marked by the green &amp; red dots on the map).</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12">
+        
+        <div id="mapWrapperContainer" class="lg:col-span-7 relative bg-blue-950 h-[370px] sm:h-[460px] lg:h-auto lg:min-h-[540px] flex flex-col transition-all overflow-hidden">
+          <div id="courseMap" class="w-full h-full flex-grow"></div>
+
+          <div class="absolute top-20 left-2.5 sm:top-3 sm:left-14 z-[400] flex flex-col sm:flex-row items-start sm:items-center gap-1.5">
+            <button type="button" id="fsToggleBtn" onclick="toggleFullScreenMap()" class="bg-pts-navy/95 hover:bg-pts-blue text-white backdrop-blur-sm px-2.5 sm:px-3 py-1.5 rounded-xl shadow-lg border border-white/20 text-[10px] sm:text-xs font-bold flex items-center gap-1.5 transition">
+              <i id="fsToggleIcon" class="fa-solid fa-expand text-amber-300"></i>
+              <span id="fsToggleText">Full Screen</span>
+            </button>
+
+            <button type="button" id="fsSimRunBtn" onclick="toggleCourseSimulation()" class="bg-pts-accent/95 hover:bg-red-700 text-white backdrop-blur-sm px-2.5 sm:px-3 py-1.5 rounded-xl shadow-lg border border-white/25 text-[10px] sm:text-xs font-bold flex items-center gap-1.5 transition">
+              <i id="fsSimRunIcon" class="fa-solid fa-play text-amber-300"></i>
+              <span id="fsSimRunText">Simulate Route</span>
+            </button>
+
+            <button type="button" id="mobileTouchLockBtn" onclick="toggleMobileMapTouch()" class="lg:hidden bg-pts-navy/90 text-white backdrop-blur-sm px-2.5 py-1.5 rounded-xl shadow-lg border border-white/20 text-[10px] font-bold flex items-center gap-1.5">
+              <i id="mobileTouchIcon" class="fa-solid fa-hand-pointer text-amber-300"></i>
+              <span id="mobileTouchText">Tap to Pan Map</span>
+            </button>
+          </div>
+
+          <div class="absolute top-2.5 right-2.5 sm:top-3 sm:right-3 z-[400] bg-white/95 backdrop-blur-sm rounded-xl shadow-lg border border-gray-200 p-1 flex items-center gap-0.5 sm:gap-1 text-[11px] sm:text-xs font-bold">
+            <button type="button" id="btnMapStreet" onclick="setGoogleMapMode('streets')" class="px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-lg bg-pts-navy text-white transition flex items-center gap-1 shadow-sm">
+              <i class="fa-solid fa-map"></i> Map
+            </button>
+            <button type="button" id="btnMapSat" onclick="setGoogleMapMode('hybrid')" class="px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-lg text-gray-700 hover:bg-gray-100 transition flex items-center gap-1">
+              <i class="fa-solid fa-satellite"></i> Satellite
+            </button>
+            <button type="button" onclick="resetCourseMapView()" class="px-2 py-1 sm:py-1.5 rounded-lg text-pts-blue hover:bg-blue-50 transition flex items-center gap-1" title="Reset Map Overview">
+              <i class="fa-solid fa-arrows-to-circle"></i>
+            </button>
+          </div>
+
+          <div id="simStatusOverlay" class="hidden absolute top-14 left-3 right-3 z-[400] bg-pts-navy/95 text-white backdrop-blur-md px-3.5 py-2.5 rounded-xl shadow-xl border border-white/15">
+            <div class="flex items-center justify-between text-[11px] sm:text-xs mb-1.5">
+              <span class="font-bold flex items-center gap-1.5 truncate">
+                <span class="w-2 h-2 rounded-full bg-green-400 animate-ping flex-shrink-0"></span>
+                <span id="simStageLabel" class="truncate">North Embarcadero Marina</span>
+              </span>
+              <span id="simDistanceLabel" class="font-mono font-black text-amber-300 flex-shrink-0 ml-2">0%</span>
+            </div>
+            <div class="w-full bg-white/20 h-1.5 sm:h-2 rounded-full overflow-hidden">
+              <div id="simProgressBar" class="bg-gradient-to-r from-green-400 via-amber-400 to-pts-accent h-full transition-all duration-150" style="width: 0%"></div>
+            </div>
+          </div>
+
+          <div class="absolute bottom-2.5 left-2.5 right-2.5 sm:right-auto z-[400] bg-white/95 backdrop-blur-sm px-2.5 py-1.5 sm:p-2.5 rounded-xl shadow-lg border border-gray-200 text-[10px] sm:text-[11px] flex flex-wrap items-center justify-center sm:justify-start gap-2.5 sm:gap-3">
+            <div class="flex items-center gap-1 font-semibold text-gray-800">
+              <span class="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-green-600 inline-block border border-white shadow"></span>
+              <span class="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-pts-accent inline-block -ml-1.5 border border-white shadow"></span>
+              Start / Finish
+            </div>
+            <div class="flex items-center gap-1 font-semibold text-gray-800">
+              <span class="w-4 h-1.5 bg-pts-accent rounded-full inline-block"></span>
+              Course Route
+            </div>
+            <div class="flex items-center gap-1 font-semibold text-gray-800">
+              <span class="w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full bg-pts-accent text-white text-[8px] sm:text-[9px] font-black inline-flex items-center justify-center">1</span>
+              Mile Markers (1, 2, 3)
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-5 p-4 sm:p-6 flex flex-col justify-between bg-white border-t lg:border-t-0 lg:border-l border-gray-200">
+          <div>
+            <div class="border-b border-gray-100 pb-2.5 mb-3 flex items-center justify-between">
+              <div>
+                <span class="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-pts-blue block">COURSE ROUTE</span>
+                <h3 class="text-xs sm:text-base font-extrabold text-pts-navy mt-0.5">
+                  Scenic Waterfront Route Along San Diego Bay
+                </h3>
+              </div>
+              <span class="lg:hidden text-[10px] font-bold text-pts-blue bg-blue-50 px-2 py-1 rounded-full whitespace-nowrap flex items-center gap-1">
+                Swipe <i class="fa-solid fa-arrows-left-right"></i>
+              </span>
+            </div>
+
+            <div id="courseStepList" class="flex lg:flex-col gap-3 overflow-x-auto lg:overflow-x-visible snap-x snap-mandatory pb-2 lg:pb-0 no-scrollbar">
+              
+              <div onclick="focusCourseStage(0)" id="stage-card-0" class="course-step-card active snap-center flex-shrink-0 w-[85%] sm:w-[70%] lg:w-full cursor-pointer p-3.5 rounded-xl border border-gray-200 transition-all hover:border-pts-accent">
+                <div class="flex items-start gap-3">
+                  <div class="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-green-600 text-white font-black text-xs flex items-center justify-center flex-shrink-0 mt-0.5 shadow">
+                    1
+                  </div>
+                  <p class="text-xs text-gray-700 leading-relaxed">
+                    The course begins at the North Embarcadero Marina and follows the marina walkway counterclockwise before heading south (right turn) continuing down along the Bayfront Promenade.
+                  </p>
+                </div>
+              </div>
+
+              <div onclick="focusCourseStage(1)" id="stage-card-1" class="course-step-card snap-center flex-shrink-0 w-[85%] sm:w-[70%] lg:w-full cursor-pointer p-3.5 rounded-xl border border-gray-200 transition-all hover:border-pts-accent">
+                <div class="flex items-start gap-3">
+                  <div class="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-pts-accent text-white font-black text-xs flex items-center justify-center flex-shrink-0 mt-0.5 shadow">
+                    2
+                  </div>
+                  <p class="text-xs text-gray-700 leading-relaxed">
+                    Participants turn right and follow the loop (counterclockwise) around the South Embarcadero Marina.
+                  </p>
+                </div>
+              </div>
+
+              <div onclick="focusCourseStage(2)" id="stage-card-2" class="course-step-card snap-center flex-shrink-0 w-[85%] sm:w-[70%] lg:w-full cursor-pointer p-3.5 rounded-xl border border-gray-200 transition-all hover:border-pts-accent">
+                <div class="flex items-start gap-3">
+                  <div class="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-pts-blue text-white font-black text-xs flex items-center justify-center flex-shrink-0 mt-0.5 shadow">
+                    3
+                  </div>
+                  <p class="text-xs text-gray-700 leading-relaxed">
+                    Turn right onto the Promenade toward the Hilton and make a U-turn before the hotel.
+                  </p>
+                </div>
+              </div>
+
+              <div onclick="focusCourseStage(3)" id="stage-card-3" class="course-step-card snap-center flex-shrink-0 w-[85%] sm:w-[70%] lg:w-full cursor-pointer p-3.5 rounded-xl border border-gray-200 transition-all hover:border-pts-accent">
+                <div class="flex items-start gap-3">
+                  <div class="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-pts-navy text-white font-black text-xs flex items-center justify-center flex-shrink-0 mt-0.5 shadow">
+                    4
+                  </div>
+                  <p class="text-xs text-gray-700 leading-relaxed">
+                    The return route follows the waterfront north toward Ruocco Park, loops around the park (counterclockwise), and continues back with a right turn to the start/finish area at the North Embarcadero Marina.
+                  </p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <div id="mapDonationBox" class="mt-4 bg-pts-light p-4 rounded-xl border border-blue-200 text-center">
+            <span class="text-xs font-bold uppercase tracking-wider text-pts-navy block mb-2">
+              <i class="fa-solid fa-heart text-pts-accent mr-1"></i> Support Our Event Charities
+            </span>
+            <a href="https://donate.stripe.com/eVq6oz1MEdinausaBR3gk02" target="_blank" rel="noopener noreferrer" class="flashy-donate-btn inline-block w-full bg-pts-accent hover:bg-red-700 text-white font-bold py-2.5 px-4 rounded-xl text-xs sm:text-sm shadow transition">
+              Donate Any Amount to Charities
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================= -->
+  <!-- FOOTER                                                            -->
+  <!-- ================================================================= -->
+  <footer class="bg-pts-navy text-blue-200 py-6 border-t border-blue-900 text-xs text-center">
+    <div class="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <p>&copy; 2026 International Association of Movers &amp; Paramount Transportation Systems. All rights reserved.</p>
+      <p>Questions or inquiries: <a href="mailto:convention@pts-moves.com" class="text-amber-300 font-bold hover:underline">convention@pts-moves.com</a></p>
+    </div>
+  </footer>
+
+  <!-- ================================================================= -->
+  <!-- SEARCHABLE 120-FINISHER OFFICIAL RESULTS MODAL                    -->
+  <!-- ================================================================= -->
+  <div id="allResultsModal" class="fixed inset-0 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-2.5 sm:p-4 z-[10000] overflow-y-auto">
+    <div class="bg-white rounded-3xl max-w-3xl w-full max-h-[92vh] flex flex-col shadow-2xl overflow-hidden my-auto border border-gray-100">
+      
+      <!-- Modal Header -->
+      <div class="bg-gradient-to-r from-pts-navy via-pts-blue to-pts-navy text-white px-5 sm:px-6 py-4 flex items-center justify-between flex-shrink-0">
+        <div class="flex items-center gap-3">
+          <span class="w-10 h-10 rounded-xl bg-amber-400 text-pts-navy flex items-center justify-center font-black text-lg shadow">
+            <i class="fa-solid fa-stopwatch"></i>
+          </span>
+          <div>
+            <h3 class="text-base sm:text-xl font-black leading-tight">2026 Official 5K Finisher Results</h3>
+            <p class="text-[11px] sm:text-xs text-blue-200">120 Timed Finishers • Search by Runner Name or Bib #</p>
+          </div>
+        </div>
+        <button type="button" onclick="toggleModal('allResultsModal')" class="text-white/80 hover:text-white text-2xl p-1">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- Search & Filter Controls -->
+      <div class="p-4 sm:p-5 bg-pts-light border-b border-gray-200 flex-shrink-0">
+        <div class="relative flex items-center">
+          <i class="fa-solid fa-magnifying-glass absolute left-4 text-pts-blue text-sm pointer-events-none"></i>
+          <input type="text" id="resultsSearchInput" oninput="filterOfficialResults()" placeholder="Search by First Name, Last Name, or Bib # (e.g. 119 or Tanya)..." class="w-full pl-10 pr-24 py-3 rounded-2xl border-2 border-blue-200 focus:border-pts-navy focus:ring-2 focus:ring-pts-navy/20 focus:outline-none text-xs sm:text-sm font-semibold text-pts-navy shadow-inner bg-white">
+          <button type="button" id="clearResultsSearchBtn" onclick="clearOfficialResultsSearch()" class="hidden absolute right-3 bg-gray-200 hover:bg-gray-300 text-gray-700 text-[11px] font-bold px-2.5 py-1 rounded-lg transition">
+            Clear
+          </button>
+        </div>
+        <div class="mt-2.5 flex items-center justify-between text-[11px] sm:text-xs text-gray-600 px-1">
+          <span id="resultsCountSummary" class="font-bold text-pts-navy">Showing all 120 timed finishers</span>
+          <span class="text-gray-500"><i class="fa-solid fa-trophy text-amber-500 mr-1"></i> Official Chip Elapsed Time</span>
+        </div>
+      </div>
+
+      <!-- Scrollable Results Table -->
+      <div class="overflow-y-auto flex-grow p-3 sm:p-5 bg-gray-50">
+        <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="bg-pts-navy text-white text-[10px] sm:text-xs uppercase tracking-wider font-extrabold">
+                <th class="py-3 px-3 sm:px-4 text-center w-16 sm:w-20">Place</th>
+                <th class="py-3 px-2.5 sm:px-4 text-center w-20 sm:w-24">Bib #</th>
+                <th class="py-3 px-3 sm:px-4">Participant Name</th>
+                <th class="py-3 px-3 sm:px-5 text-right w-28 sm:w-36">Finish Time</th>
+              </tr>
+            </thead>
+            <tbody id="officialResultsTableBody" class="divide-y divide-gray-100 text-xs sm:text-sm"></tbody>
+          </table>
+          <div id="noResultsFoundBox" class="hidden py-10 px-4 text-center">
+            <div class="w-12 h-12 rounded-2xl bg-gray-100 text-gray-400 flex items-center justify-center text-xl mx-auto mb-2.5">
+              <i class="fa-solid fa-user-magnifying-glass"></i>
+            </div>
+            <p class="text-sm font-bold text-pts-navy">No matching runner or bib number found</p>
+            <p class="text-xs text-gray-500 mt-0.5">Try searching by first name, last name, or 3-digit bib number.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="bg-white border-t border-gray-200 px-5 py-3 flex items-center justify-between flex-shrink-0">
+        <span class="text-[11px] text-gray-500 font-medium">IAM &amp; Paramount Charity 5K • San Diego Bayfront</span>
+        <button type="button" onclick="toggleModal('allResultsModal')" class="bg-pts-navy hover:bg-pts-blue text-white font-bold px-5 py-2 rounded-xl text-xs shadow transition">
+          Done
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================================================================= -->
+  <!-- PARTICIPANT PHOTO & VIDEO UPLOAD MODAL (AUTO-OPTIMIZED SPEED)     -->
+  <!-- ================================================================= -->
+  <div id="uploadMediaModal" class="fixed inset-0 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-3 sm:p-4 z-[10000] overflow-y-auto">
+    <div class="bg-white rounded-3xl max-w-xl w-full flex flex-col shadow-2xl overflow-hidden my-auto border border-gray-100">
+      
+      <div class="bg-gradient-to-r from-pts-navy via-pts-blue to-pts-navy text-white px-5 sm:px-6 py-4 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <span class="w-10 h-10 rounded-xl bg-amber-400 text-pts-navy flex items-center justify-center font-black text-lg shadow">
+            <i class="fa-solid fa-cloud-arrow-up"></i>
+          </span>
+          <div>
+            <h3 class="text-base sm:text-lg font-black leading-tight">Share Your Race Photos &amp; Videos</h3>
+            <p class="text-[11px] text-blue-200">Fast smart-upload • Supports JPG, PNG, iPhone HEIC/HEIF &amp; short clips</p>
+          </div>
+        </div>
+        <button type="button" onclick="toggleModal('uploadMediaModal')" class="text-white/80 hover:text-white text-2xl p-1">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="p-5 sm:p-6 space-y-4 text-xs sm:text-sm">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+          <div>
+            <label class="font-bold text-gray-700 block mb-1">Your Name <span class="text-gray-400 font-normal">(Optional)</span></label>
+            <input type="text" id="uploaderName" placeholder="e.g. Alex Runner" class="w-full rounded-xl border border-gray-300 p-2.5 text-sm focus:ring-2 focus:ring-pts-navy focus:outline-none">
+          </div>
+          <div>
+            <label class="font-bold text-gray-700 block mb-1">Company <span class="text-gray-400 font-normal">(Optional)</span></label>
+            <input type="text" id="uploaderCompany" placeholder="e.g. Paramount / IAM" class="w-full rounded-xl border border-gray-300 p-2.5 text-sm focus:ring-2 focus:ring-pts-navy focus:outline-none">
+          </div>
+        </div>
+
+        <label for="participantMediaInput" id="mediaDropZone" class="border-2 border-dashed border-blue-300 hover:border-pts-blue bg-pts-light/60 hover:bg-blue-50/70 transition rounded-2xl p-6 text-center cursor-pointer flex flex-col items-center justify-center gap-2">
+          <div class="w-12 h-12 rounded-2xl bg-pts-navy text-amber-300 flex items-center justify-center text-xl shadow">
+            <i class="fa-solid fa-images"></i>
+          </div>
+          <div class="font-extrabold text-pts-navy text-sm sm:text-base">
+            Tap or Drag &amp; Drop Photos or Short Videos
+          </div>
+          <p class="text-xs text-gray-500 max-w-sm">
+            Select one or multiple files from your phone or computer. Supports JPG, PNG, HEIC, HEIF, WebP, MP4 &amp; MOV.
+          </p>
+          <input type="file" id="participantMediaInput" multiple accept="image/*,video/*,.heic,.heif" class="hidden" onchange="handleSelectedUploadFiles(event)">
+        </label>
+
+        <div id="selectedFilesContainer" class="hidden space-y-2">
+          <div class="flex items-center justify-between text-xs font-bold text-pts-navy">
+            <span id="selectedFilesCountLabel">0 files selected</span>
+            <button type="button" onclick="clearSelectedUploadFiles()" class="text-red-600 hover:underline">Clear all</button>
+          </div>
+          <div id="selectedFilesList" class="max-h-36 overflow-y-auto space-y-1.5 pr-1"></div>
+        </div>
+
+        <div id="uploadProgressWrapper" class="hidden space-y-1.5 bg-gray-50 p-3.5 rounded-xl border border-gray-200">
+          <div class="flex items-center justify-between text-xs font-bold text-pts-navy">
+            <span id="uploadProgressText">Uploading file 1 of 1...</span>
+            <span id="uploadProgressPct" class="font-mono text-pts-blue">0%</span>
+          </div>
+          <div class="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
+            <div id="uploadProgressBar" class="bg-gradient-to-r from-pts-navy via-pts-blue to-green-500 h-full transition-all duration-300" style="width: 0%"></div>
+          </div>
+        </div>
+
+        <div id="uploadStatusMessage" class="hidden rounded-xl p-3 text-xs font-semibold text-center"></div>
+
+        <div class="pt-1 flex items-center justify-end gap-2.5">
+          <button type="button" onclick="toggleModal('uploadMediaModal')" class="px-4 py-2.5 rounded-xl border border-gray-300 text-gray-600 font-bold text-xs hover:bg-gray-100 transition">
+            Close
+          </button>
+          <button type="button" id="startUploadBtn" onclick="submitParticipantMedia()" disabled class="bg-gray-300 text-gray-500 font-black py-2.5 px-6 rounded-xl text-xs sm:text-sm shadow transition flex items-center gap-2 cursor-not-allowed">
+            <i class="fa-solid fa-cloud-arrow-up"></i> Upload to Event Team
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================================================================= -->
+  <!-- FULL-SCREEN PHOTO LIGHTBOX MODAL (SWIPE, PINCH-ZOOM & DOUBLE-TAP) -->
+  <!-- ================================================================= -->
+  <div id="lightboxModal" class="fixed inset-0 bg-black/95 backdrop-blur-md hidden flex flex-col justify-between p-3 sm:p-6 z-[10000] select-none">
+    
+    <!-- Top Bar -->
+    <div class="flex items-center justify-between text-white max-w-6xl mx-auto w-full relative z-30">
+      <div class="flex items-center gap-2">
+        <span id="lightboxCounter" class="bg-white/15 px-3 py-1 rounded-full text-xs font-mono font-bold text-amber-300">1 / 1</span>
+        <span id="lightboxCategoryBadge" class="bg-pts-accent px-2.5 py-1 rounded-md text-[10px] font-black uppercase tracking-wider hidden sm:inline-block">Highlight</span>
+      </div>
+
+      <div class="flex items-center gap-1.5 sm:gap-2">
+        <button type="button" onclick="adjustLightboxZoom(-0.5)" class="bg-white/15 hover:bg-white/25 text-white w-8 h-8 sm:w-9 sm:h-9 rounded-xl flex items-center justify-center text-xs transition" title="Zoom Out">
+          <i class="fa-solid fa-magnifying-glass-minus"></i>
+        </button>
+        <button type="button" onclick="resetLightboxZoom()" id="lbZoomIndicatorBtn" class="bg-white/15 hover:bg-white/25 text-amber-300 px-2.5 h-8 sm:h-9 rounded-xl text-[11px] font-mono font-bold transition" title="Reset Zoom">
+          100%
+        </button>
+        <button type="button" onclick="adjustLightboxZoom(0.5)" class="bg-white/15 hover:bg-white/25 text-white w-8 h-8 sm:w-9 sm:h-9 rounded-xl flex items-center justify-center text-xs transition" title="Zoom In">
+          <i class="fa-solid fa-magnifying-glass-plus"></i>
+        </button>
+
+        <a id="lightboxDownloadBtn" href="" download class="bg-white/15 hover:bg-white/25 text-white px-3 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition ml-1">
+          <i class="fa-solid fa-download text-amber-300"></i> <span class="hidden sm:inline">Download</span>
+        </a>
+        <button type="button" onclick="closeLightbox()" class="bg-white/15 hover:bg-pts-accent text-white w-9 h-9 rounded-xl flex items-center justify-center text-lg transition ml-1">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Interactive Touch Gesture Viewport (Swipe Left/Right, Pinch-to-Zoom, Double-Tap) -->
+    <div id="lightboxTouchArea" class="relative flex-grow flex items-center justify-center my-2 overflow-hidden w-full h-full">
+      <button type="button" id="lbPrevBtn" onclick="stepLightbox(-1)" class="hidden sm:flex absolute left-4 z-30 w-12 h-12 rounded-full bg-black/50 hover:bg-pts-accent text-white border border-white/20 items-center justify-center text-lg transition shadow-xl">
+        <i class="fa-solid fa-chevron-left"></i>
+      </button>
+
+      <img id="lightboxImg" src="" alt="Full Screen Race Photo" draggable="false" class="max-h-[76vh] max-w-[92vw] object-contain rounded-xl shadow-2xl transition-transform duration-100 ease-out origin-center will-change-transform">
+
+      <button type="button" id="lbNextBtn" onclick="stepLightbox(1)" class="hidden sm:flex absolute right-4 z-30 w-12 h-12 rounded-full bg-black/50 hover:bg-pts-accent text-white border border-white/20 items-center justify-center text-lg transition shadow-xl">
+        <i class="fa-solid fa-chevron-right"></i>
+      </button>
+    </div>
+
+    <!-- Bottom Caption & Mobile Gesture Hint -->
+    <div class="text-center text-white max-w-2xl mx-auto pb-1 relative z-30">
+      <h4 id="lightboxCaption" class="text-xs sm:text-base font-bold truncate px-2"></h4>
+      <p id="lightboxHintText" class="text-[10px] text-gray-400 mt-0.5">
+        <i class="fa-solid fa-hand-pointer text-amber-300 mr-1"></i> Swipe left/right to browse • Pinch or double-tap to zoom
+      </p>
+    </div>
+  </div>
+
+  <!-- ================================================================= -->
+  <!-- FINISHER PHOTO SOCIAL POST STUDIO MODAL                           -->
+  <!-- ================================================================= -->
+  <div id="finisherStudioModal" class="fixed inset-0 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-2 sm:p-4 z-[10000] overflow-y-auto">
+    <div class="bg-white rounded-3xl max-w-5xl w-full max-h-[96vh] flex flex-col shadow-2xl overflow-hidden my-auto">
+      
+      <div class="bg-gradient-to-r from-pts-navy via-pts-blue to-pts-navy text-white px-5 sm:px-6 py-3.5 flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <span class="w-9 h-9 rounded-xl bg-amber-400 text-pts-navy flex items-center justify-center font-black text-lg shadow">
+            <i class="fa-solid fa-camera-retro"></i>
+          </span>
+          <div>
+            <h3 class="text-base sm:text-xl font-black leading-tight">Official 5K Finisher Social Card Studio</h3>
+            <p class="text-[11px] sm:text-xs text-blue-200">Format for Instagram, LinkedIn &amp; Stories • 4 distinct styles</p>
+          </div>
+        </div>
+        <button type="button" onclick="toggleModal('finisherStudioModal')" class="text-white/80 hover:text-white text-2xl p-1">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="p-4 sm:p-6 overflow-y-auto grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        
+        <div class="lg:col-span-7 flex flex-col items-center bg-gray-950 rounded-2xl p-3.5 sm:p-5 border border-gray-800 shadow-inner">
+          
+          <div class="w-full max-w-[390px] flex flex-wrap items-center justify-between gap-2 bg-gray-900/90 border border-white/20 p-2 rounded-2xl mb-2.5">
+            <div class="flex items-center gap-1.5">
+              <label class="cursor-pointer bg-pts-accent active:bg-red-800 hover:bg-red-700 text-white font-bold py-1.5 px-3 rounded-xl text-xs shadow flex items-center gap-1.5 transition">
+                <i class="fa-solid fa-camera text-amber-300"></i> <span>Selfie</span>
+                <input type="file" accept="image/*" capture="user" class="hidden" onchange="handleFinisherPhotoUpload(event)">
+              </label>
+              <label class="cursor-pointer bg-white/20 hover:bg-white/30 text-white font-bold py-1.5 px-3 rounded-xl text-xs border border-white/30 flex items-center gap-1.5 transition">
+                <i class="fa-solid fa-image text-blue-300"></i> <span>Photo</span>
+                <input type="file" accept="image/*" class="hidden" onchange="handleFinisherPhotoUpload(event)">
+              </label>
+              <button type="button" id="resetPhotoFitBtn" onclick="resetPhotoTransform()" class="hidden text-[11px] bg-white/10 hover:bg-white/20 text-gray-300 font-bold px-2 py-1.5 rounded-xl border border-white/20 transition">
+                <i class="fa-solid fa-arrows-to-circle"></i>
+              </button>
+            </div>
+
+            <div class="flex items-center bg-black/50 rounded-xl p-1 border border-white/15 text-[11px] font-bold">
+              <button type="button" id="ratioPostBtn" onclick="setFinisherRatio('post')" class="px-2.5 py-1 rounded-lg bg-pts-navy text-amber-300 transition">
+                4:5 Post
+              </button>
+              <button type="button" id="ratioStoryBtn" onclick="setFinisherRatio('story')" class="px-2.5 py-1 rounded-lg text-gray-400 hover:text-white transition">
+                9:16 Story
+              </button>
+            </div>
+          </div>
+
+          <div class="w-full max-w-[390px] flex items-center justify-between mb-2 text-xs text-gray-300 px-1">
+            <span class="font-bold truncate text-[11px] sm:text-xs text-amber-400 flex items-center gap-1.5">
+              <i class="fa-solid fa-wand-magic-sparkles"></i>
+              <span id="activeDesignTitle">Design 1: Executive Gold Crest</span>
+            </span>
+            <button type="button" onclick="randomizeFinisherDesign()" class="bg-white/15 hover:bg-white/25 text-white font-bold px-2.5 py-1 rounded-lg transition text-[11px] flex items-center gap-1">
+              <i class="fa-solid fa-shuffle text-amber-300"></i> Next Style
+            </button>
+          </div>
+
+          <div id="canvasViewport" class="w-full max-w-[370px] rounded-2xl overflow-hidden shadow-2xl border-2 border-white/15 bg-pts-navy relative flex items-center justify-center">
+            <canvas id="finisherCanvas" width="1080" height="1350" class="w-full h-auto block cursor-grab active:cursor-grabbing"></canvas>
+          </div>
+
+          <div class="w-full max-w-[370px] mt-2.5 text-[11px] text-gray-400 flex items-center justify-between px-1">
+            <span><i class="fa-solid fa-hand-pointer text-amber-300 mr-1"></i> Drag to reposition • Pinch to zoom</span>
+            <div id="photoAdjustSliderBox" class="hidden flex items-center gap-2">
+              <span class="text-[10px] text-gray-300 font-semibold">Zoom</span>
+              <input type="range" id="photoZoomSlider" min="0.6" max="3.0" step="0.02" value="1" oninput="onSliderTransformChange()" class="w-20 accent-amber-400">
+            </div>
+          </div>
+
+          <div class="mt-3.5 grid grid-cols-2 sm:grid-cols-4 gap-2 w-full max-w-[420px]">
+            <button type="button" id="designBtn0" onclick="selectFinisherDesign(0)" class="py-1.5 px-2 rounded-xl text-[11px] font-black border transition bg-amber-400 text-pts-navy border-amber-400 shadow">
+              1. Gold Crest
+            </button>
+            <button type="button" id="designBtn1" onclick="selectFinisherDesign(1)" class="py-1.5 px-2 rounded-xl text-[11px] font-bold border transition bg-white/10 text-white border-white/20 hover:bg-white/20">
+              2. Magazine
+            </button>
+            <button type="button" id="designBtn2" onclick="selectFinisherDesign(2)" class="py-1.5 px-2 rounded-xl text-[11px] font-bold border transition bg-white/10 text-white border-white/20 hover:bg-white/20">
+              3. SD Skyline
+            </button>
+            <button type="button" id="designBtn3" onclick="selectFinisherDesign(3)" class="py-1.5 px-2 rounded-xl text-[11px] font-bold border transition bg-white/10 text-white border-white/20 hover:bg-white/20">
+              4. Proud Finisher
+            </button>
+          </div>
+        </div>
+
+        <div class="lg:col-span-5 space-y-4">
+          
+          <div class="bg-gray-50 p-4 rounded-2xl border border-gray-200 space-y-3">
+            <h4 class="text-xs sm:text-sm font-black uppercase tracking-wider text-pts-navy flex items-center gap-2">
+              <i class="fa-solid fa-user-pen text-pts-blue"></i> Finisher Card Information
+            </h4>
+
+            <div class="space-y-3 text-xs">
+              <div>
+                <label class="font-bold text-gray-800 block mb-1">
+                  Participant Full Name <span class="text-red-500 font-bold">*</span>
+                </label>
+                <input type="text" id="cardRunnerName" placeholder="Enter Full Name (e.g. Alex Finisher)" oninput="onCardInputChange()" required class="w-full rounded-lg border border-gray-300 p-2.5 text-sm font-bold text-pts-navy focus:ring-2 focus:ring-pts-navy focus:outline-none">
+                <span id="cardNameErr" class="text-[11px] text-red-500 hidden mt-1"><i class="fa-solid fa-circle-exclamation mr-1"></i> Please enter your name for the card.</span>
+              </div>
+              <div>
+                <label class="font-bold text-gray-700 block mb-1">Company / Team Name (Optional)</label>
+                <input type="text" id="cardRunnerCompany" placeholder="e.g. Paramount Movers / Team IAM (or leave blank)" oninput="onCardInputChange()" class="w-full rounded-lg border border-gray-300 p-2.5 text-sm focus:ring-2 focus:ring-pts-navy focus:outline-none">
+              </div>
+            </div>
+          </div>
+
+          <div id="cardShareLockedNotice" class="bg-amber-50 border border-amber-200 text-amber-800 p-3 rounded-xl text-xs flex items-center gap-2.5">
+            <i class="fa-solid fa-circle-info text-amber-600 text-base flex-shrink-0"></i>
+            <span>Add your selfie/photo and enter your name above to unlock sharing and photo saving.</span>
+          </div>
+
+          <div id="cardShareUnlockedNotice" class="hidden bg-green-50 border border-green-200 text-green-800 p-3 rounded-xl text-xs flex items-center gap-2.5">
+            <i class="fa-solid fa-circle-check text-green-600 text-base flex-shrink-0"></i>
+            <span class="font-semibold">Your card is ready to share and save!</span>
+          </div>
+
+          <div class="space-y-2.5">
+            <button type="button" id="shareSocialBtn" onclick="shareFinisherCard()" disabled class="w-full bg-gray-300 text-gray-500 font-black py-3.5 px-5 rounded-xl shadow transition text-sm flex items-center justify-center gap-2 cursor-not-allowed">
+              <i class="fa-solid fa-share-nodes"></i> Share to Social Media
+            </button>
+            <button type="button" id="savePhotosBtn" onclick="saveFinisherCardToPhotos()" disabled class="w-full bg-gray-300 text-gray-500 font-bold py-3.5 px-5 rounded-xl shadow transition text-xs sm:text-sm flex items-center justify-center gap-2 cursor-not-allowed">
+              <i class="fa-solid fa-download"></i> Save to Photos
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Official PDF Map Modal -->
+  <div id="officialMapModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-2 sm:p-4 z-[10000]">
+    <div class="bg-white rounded-2xl max-w-4xl w-full max-h-[92vh] flex flex-col shadow-2xl overflow-hidden">
+      <div class="bg-pts-navy text-white px-4 sm:px-6 py-3.5 sm:py-4 flex items-center justify-between">
+        <h3 class="text-sm sm:text-lg font-bold truncate pr-2"><i class="fa-solid fa-map mr-1.5 text-amber-300"></i> 23 October 2026 – IAM &amp; PTS 5K Fun Run/Walk Map</h3>
+        <button type="button" onclick="toggleModal('officialMapModal')" class="text-white/80 hover:text-white text-xl p-1">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="p-4 sm:p-6 overflow-y-auto space-y-4 text-xs sm:text-sm text-gray-700">
+        <div class="bg-blue-50 border border-blue-200 p-3.5 sm:p-4 rounded-xl space-y-2">
+          <p><strong>START/FINISH:</strong> Northwest corner of the North Embarcadero Marina (marked by the green &amp; red dots on the map).</p>
+          <p><strong>COURSE ROUTE:</strong> Participants enjoyed a scenic waterfront route along San Diego Bay.</p>
+        </div>
+        <div class="text-center bg-gray-100 rounded-xl p-3 sm:p-4 border border-gray-200">
+          <img src="5K_Course_Map.jpg" alt="23 October 2026 – IAM & PTS 5K Fun Run/Walk Map" class="max-h-[460px] w-auto mx-auto rounded-lg shadow" onerror="this.onerror=null;this.src='5K_Course_Map.png';">
+          <div class="mt-3">
+            <a href="23 October 2026 – IAM & PTS 5K Fun Run Walk Map.pdf" target="_blank" class="inline-flex items-center gap-2 bg-pts-navy hover:bg-pts-blue text-white font-bold px-4 py-2.5 rounded-xl text-xs shadow transition">
+              <i class="fa-solid fa-download"></i> Open Official Map PDF
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // =========================================================================
+    // 1. POST-RACE CONFIGURATION: TOP 3 FINISHERS & OFFICIAL 120 RESULTS LIST
+    // =========================================================================
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwO7ItQ6sTOC3wbyGDk2hU8qEjD4voEKbNYfdOQU_t_X53AE1FjRZ6fiDDQkywQDBsU/exec";
+    const DONATION_EXPIRATION_TIMESTAMP = new Date("2026-10-26T23:59:59-07:00").getTime();
+
+    const RACE_WINNERS = {
+      men: [
+        { place: 1, name: "Adrian Ottens", company: "Nolan Transportation Group (NTG)", time: "19:01", photo: "photos/men_1.jpg" },
+        { place: 2, name: "Ryan Woods", company: "Marsh Agency", time: "19:20", photo: "photos/men_2.jpg" },
+        { place: 3, name: "Diego Novaro", company: "Zust & Bachmeier SA", time: "20:13", photo: "photos/men_3.jpg" }
+      ],
+      women: [
+        { place: 1, name: "Alexandra Schmidt", company: "MEXPACK International Removals", time: "22:45", photo: "photos/women_1.jpg" },
+        { place: 2, name: "Daniela Krumdiek", company: "EXPRESS TRANSPORTS S.A.", time: "22:47", photo: "photos/women_2.jpg" },
+        { place: 3, name: "Tanya Davis", company: "Paramount Transportation Systems, Inc.", time: "22:54", photo: "photos/women_3.jpg" }
+      ]
+    };
+
+    // =========================================================================
+    // FULL DIRECTORY OF 120 TIMED FINISHERS (EDIT ANY MISSING NAMES BELOW)
+    // =========================================================================
+    const ALL_RACE_FINISHERS = [
+      { place: 1, bib: 119, firstName: "Adrian", lastName: "Ottens", time: "19:01" },
+      { place: 2, bib: 189, firstName: "Ryan", lastName: "Woods", time: "19:20" },
+      { place: 3, bib: 151, firstName: "Diego", lastName: "Novaro", time: "20:13" },
+      { place: 4, bib: 261, firstName: "Lorne", lastName: "Dixon", time: "21:27" },
+      { place: 5, bib: 167, firstName: "Jose Joaquin", lastName: "Pena", time: "21:32" },
+      { place: 6, bib: 170, firstName: "Kenneth", lastName: "Cheong", time: "21:33" },
+      { place: 7, bib: 228, firstName: "Allen", lastName: "Fei Lyu", time: "21:34" },
+      { place: 8, bib: 269, firstName: "William", lastName: "", time: "21:46" }, // <-- UPDATE: Add William's last name inside ""
+      { place: 9, bib: 205, firstName: "Whitney", lastName: "Coffer", time: "22:03" },
+      { place: 10, bib: 179, firstName: "Owen", lastName: "Davolt", time: "22:45" },
+      { place: 11, bib: 260, firstName: "Alexandra", lastName: "Schmidt", time: "22:45" },
+      { place: 12, bib: 147, firstName: "Daniela", lastName: "Krumdiek", time: "22:47" },
+      { place: 13, bib: 152, firstName: "Diego", lastName: "Periasco", time: "22:50" },
+      { place: 14, bib: 196, firstName: "Tanya", lastName: "Davis", time: "22:54" },
+      { place: 15, bib: 136, firstName: "Casey", lastName: "Myers", time: "22:59" },
+      { place: 16, bib: 237, firstName: "Harry", lastName: "Achenbach", time: "23:09" },
+      { place: 17, bib: 263, firstName: "JJ", lastName: "Andrade", time: "23:14" },
+      { place: 18, bib: 246, firstName: "Marcos", lastName: "Cazares", time: "23:28" },
+      { place: 19, bib: 132, firstName: "Brian", lastName: "Goldstein", time: "23:30" },
+      { place: 20, bib: 154, firstName: "Ebru", lastName: "Demirel", time: "23:38" },
+      { place: 21, bib: 177, firstName: "Lukasz", lastName: "Olasek", time: "23:55" },
+      { place: 22, bib: 112, firstName: "Pierre", lastName: "Bucao", time: "24:09" },
+      { place: 23, bib: 168, firstName: "Justin", lastName: "Hart", time: "24:11" },
+      { place: 24, bib: 121, firstName: "Alex", lastName: "Stapley", time: "24:16" },
+      { place: 25, bib: 235, firstName: "Diana", lastName: "Estupinan", time: "24:50" },
+      { place: 26, bib: 110, firstName: "Sam", lastName: "Mergui", time: "24:59" },
+      { place: 27, bib: 243, firstName: "Patrick", lastName: "Makurat", time: "25:01" },
+      { place: 28, bib: 202, firstName: "Tomomi", lastName: "Fujita", time: "25:10" },
+      { place: 29, bib: 162, firstName: "Ilan", lastName: "Rebibo", time: "25:11" },
+      { place: 30, bib: 156, firstName: "Enrique", lastName: "López", time: "25:16" },
+      { place: 31, bib: 158, firstName: "Filip", lastName: "Baranowski", time: "25:23" },
+      { place: 32, bib: 203, firstName: "Valerio", lastName: "Margheri", time: "25:30" },
+      { place: 33, bib: 204, firstName: "Vlad", lastName: "Piskla", time: "25:49" },
+      { place: 34, bib: 206, firstName: "Wiebe", lastName: "Van Bockel", time: "25:57" },
+      { place: 35, bib: 145, firstName: "Colin", lastName: "LaBrie", time: "26:01" },
+      { place: 36, bib: 137, firstName: "Charlotte", lastName: "Cambriel", time: "26:15" },
+      { place: 37, bib: 173, firstName: "Lasse", lastName: "Hansen", time: "26:22" },
+      { place: 38, bib: 198, firstName: "Thomas", lastName: "Hoste", time: "26:25" },
+      { place: 39, bib: 181, firstName: "Patrick", lastName: "Hazeleger", time: "26:59" },
+      { place: 40, bib: 120, firstName: "Aidan", lastName: "MacInnis", time: "27:08" },
+      { place: 41, bib: 268, firstName: "Unknown", lastName: "Runner", time: "27:14" }, // <-- UPDATE: Replace "Unknown" and "Runner"
+      { place: 42, bib: 118, firstName: "Denis", lastName: "Sevilla", time: "27:14" },
+      { place: 43, bib: 257, firstName: "Wendy", lastName: "Rodricks", time: "27:27" },
+      { place: 44, bib: 210, firstName: "Andrew", lastName: "Pearlstein", time: "27:38" },
+      { place: 45, bib: 229, firstName: "Oscar", lastName: "Amante", time: "27:45" },
+      { place: 46, bib: 139, firstName: "Chris", lastName: "Luna", time: "27:47" },
+      { place: 47, bib: 216, firstName: "Carolina", lastName: "Trallero", time: "27:48" },
+      { place: 48, bib: 114, firstName: "Lisa", lastName: "Symes", time: "27:48" },
+      { place: 49, bib: 102, firstName: "Mike", lastName: "Keller", time: "28:22" },
+      { place: 50, bib: 242, firstName: "Timothy", lastName: "Trout", time: "28:38" },
+      { place: 51, bib: 201, firstName: "Tim", lastName: "Helenthal", time: "28:43" },
+      { place: 52, bib: 185, firstName: "Reyhan", lastName: "Narula", time: "29:01" },
+      { place: 53, bib: 193, firstName: "Shai", lastName: "Rahat", time: "29:01" },
+      { place: 54, bib: 187, firstName: "Robert", lastName: "Cormier", time: "29:10" },
+      { place: 55, bib: 221, firstName: "Kamram", lastName: "Shahzad", time: "29:11" },
+      { place: 56, bib: 247, firstName: "Claudia", lastName: "Matche", time: "29:14" },
+      { place: 57, bib: 234, firstName: "Ian", lastName: "Yoo", time: "29:19" },
+      { place: 58, bib: 155, firstName: "Elisa", lastName: "Vo", time: "29:22" },
+      { place: 59, bib: 146, firstName: "Daniel", lastName: "Ortiz Mateus", time: "29:30" },
+      { place: 60, bib: 149, firstName: "David", lastName: "Dance", time: "29:51" },
+      { place: 61, bib: 184, firstName: "Rachael", lastName: "Fischer Lyons", time: "29:51" },
+      { place: 62, bib: 232, firstName: "Uttkarsh", lastName: "Purohit", time: "29:57" },
+      { place: 63, bib: 241, firstName: "Edwin", lastName: "Obando", time: "30:01" },
+      { place: 64, bib: 107, firstName: "Nicholas", lastName: "Lara", time: "30:04" },
+      { place: 65, bib: 104, firstName: "Nico", lastName: "Lara", time: "30:06" },
+      { place: 66, bib: 105, firstName: "Nixon", lastName: "Lara", time: "30:08" },
+      { place: 67, bib: 153, firstName: "Dirk", lastName: "Ellermann", time: "30:22" },
+      { place: 68, bib: 190, firstName: "Ryan", lastName: "Melanson", time: "30:24" },
+      { place: 69, bib: 255, firstName: "Samuel", lastName: "Griffiths", time: "30:28" },
+      { place: 70, bib: 253, firstName: "Janeth Emilia", lastName: "Ortiz Bandy", time: "30:39" },
+      { place: 71, bib: 122, firstName: "Alex", lastName: "Rivera", time: "30:45" },
+      { place: 72, bib: 183, firstName: "Pilar", lastName: "Lopez Perez", time: "31:12" },
+      { place: 73, bib: 267, firstName: "Marina", lastName: "", time: "31:29" }, // <-- UPDATE: Add Marina's last name inside ""
+      { place: 74, bib: 129, firstName: "Anthony", lastName: "Frangione", time: "31:36" },
+      { place: 75, bib: 188, firstName: "Rasa", lastName: "Ellermann", time: "31:39" },
+      { place: 76, bib: 106, firstName: "Kristi", lastName: "Keller", time: "31:40" },
+      { place: 77, bib: 172, firstName: "Larissa", lastName: "Saporito", time: "31:58" },
+      { place: 78, bib: 239, firstName: "Marvin", lastName: "Salazar", time: "32:05" },
+      { place: 79, bib: 213, firstName: "Alex", lastName: "Talbot", time: "32:07" },
+      { place: 80, bib: 128, firstName: "Annina", lastName: "Gentile", time: "32:12" },
+      { place: 81, bib: 182, firstName: "Peter", lastName: "Karlsson", time: "33:38" },
+      { place: 82, bib: 131, firstName: "Bill", lastName: "Lloyd", time: "33:39" },
+      { place: 83, bib: 215, firstName: "Myka", lastName: "Crucillo-Nguyen", time: "34:01" },
+      { place: 84, bib: 214, firstName: "Chris", lastName: "Nguyen", time: "34:03" },
+      { place: 85, bib: 249, firstName: "Ian", lastName: "McCarthy", time: "34:21" },
+      { place: 86, bib: 123, firstName: "Aline", lastName: "Gerson", time: "34:25" },
+      { place: 87, bib: 163, firstName: "Jacob", lastName: "Dolan", time: "38:04" },
+      { place: 88, bib: 208, firstName: "Alamgir", lastName: "Shah", time: "39:32" },
+      { place: 89, bib: 227, firstName: "Nelson", lastName: "Romero", time: "39:41" },
+      { place: 90, bib: 277, firstName: "Nelson", lastName: "", time: "39:47" }, // <-- UPDATE: Add Nelson's last name inside ""
+      { place: 91, bib: 157, firstName: "Falko", lastName: "Loos", time: "40:18" },
+      { place: 92, bib: 209, firstName: "Salza", lastName: "Durefalak", time: "40:35" },
+      { place: 93, bib: 125, firstName: "Amanda", lastName: "Johnstone", time: "40:43" },
+      { place: 94, bib: 108, firstName: "Thomas", lastName: "Bishar", time: "41:59" },
+      { place: 95, bib: 143, firstName: "Chris", lastName: "Scala", time: "42:01" },
+      { place: 96, bib: 219, firstName: "Tateki", lastName: "Mori", time: "42:15" },
+      { place: 97, bib: 233, firstName: "Andy", lastName: "Wells", time: "42:28" },
+      { place: 98, bib: 103, firstName: "Angelica", lastName: "Lara", time: "42:47" },
+      { place: 99, bib: 164, firstName: "Jay", lastName: "Patel", time: "42:54" },
+      { place: 100, bib: 212, firstName: "Rob", lastName: "Gilbert", time: "43:58" },
+      { place: 101, bib: 244, firstName: "Elizabeth", lastName: "Vance", time: "45:25" },
+      { place: 102, bib: 254, firstName: "Gene", lastName: "Ota", time: "46:11" },
+      { place: 103, bib: 130, firstName: "Barbara", lastName: "Gaines", time: "47:05" },
+      { place: 104, bib: 236, firstName: "Andria", lastName: "Skiff", time: "47:14" },
+      { place: 105, bib: 258, firstName: "David", lastName: "Emery", time: "47:16" },
+      { place: 106, bib: 117, firstName: "Courtney", lastName: "Ferguson", time: "47:46" },
+      { place: 107, bib: 248, firstName: "Eunice", lastName: "Flores", time: "47:54" },
+      { place: 108, bib: 266, firstName: "Eynel", lastName: "", time: "48:34" }, // <-- UPDATE: Add Eynel's last name inside ""
+      { place: 109, bib: 240, firstName: "Marco", lastName: "Llanos", time: "48:35" },
+      { place: 110, bib: 211, firstName: "George", lastName: "Camacho", time: "48:36" },
+      { place: 111, bib: 165, firstName: "Jessica", lastName: "Kline", time: "49:31" },
+      { place: 112, bib: 178, firstName: "Meisa", lastName: "Brown", time: "49:33" },
+      { place: 113, bib: 126, firstName: "Amanda", lastName: "Argo", time: "49:40" },
+      { place: 114, bib: 133, firstName: "Brian", lastName: "Limperopulos", time: "49:40" },
+      { place: 115, bib: 251, firstName: "Rajeev", lastName: "Vain", time: "50:05" },
+      { place: 116, bib: 265, firstName: "Unknown", lastName: "Runner", time: "53:37" }, // <-- UPDATE: Replace "Unknown" and "Runner"
+      { place: 117, bib: 175, firstName: "Loretta", lastName: "Horton -Rodriguez", time: "53:59" },
+      { place: 118, bib: 207, firstName: "Wilfredo", lastName: "Rodriguez", time: "54:00" },
+      { place: 119, bib: 250, firstName: "Nichole", lastName: "Wicks", time: "56:26" },
+      { place: 120, bib: 252, firstName: "Gunjan", lastName: "Jain", time: "56:47" }
+    ];
+
+    const CUSTOM_PHOTO_CAPTIONS = {
+      1: { category: "winners", caption: "Official Starting Line Launch at North Embarcadero Marina" },
+      2: { category: "crowd", caption: "Runners & Walkers Along the San Diego Bayfront Promenade" },
+      3: { category: "winners", caption: "Awards Presentation & Finishers Celebration" },
+      4: { category: "crowd", caption: "Team Spirit Supporting Global Moving Foundation & Coastal K9 Rescue" }
+    };
+
+    const MAX_AUTO_SCAN_PHOTOS = 120;
+    const PHOTOS_PER_PAGE = 18;
+
+    function checkDonationCutoff() {
+      if (Date.now() > DONATION_EXPIRATION_TIMESTAMP) {
+        const topBanner = document.getElementById('prominentDonationBanner');
+        const mapBox = document.getElementById('mapDonationBox');
+        if (topBanner) topBanner.classList.add('hidden');
+        if (mapBox) mapBox.classList.add('hidden');
+      }
+    }
+
+    setInterval(checkDonationCutoff, 5000);
+
+    function toggleModal(id) {
+      document.getElementById(id).classList.toggle('hidden');
+    }
+
+    // =========================================================================
+    // 1B. SEARCHABLE 120-FINISHER OFFICIAL RESULTS MODAL LOGIC
+    // =========================================================================
+    const PODIUM_BIB_BADGES = {
+      119: { label: "1st Male", cls: "bg-amber-400 text-pts-navy" },
+      189: { label: "2nd Male", cls: "bg-slate-300 text-slate-900" },
+      151: { label: "3rd Male", cls: "bg-amber-700 text-white" },
+      260: { label: "1st Female", cls: "bg-amber-400 text-pts-navy" },
+      147: { label: "2nd Female", cls: "bg-slate-300 text-slate-900" },
+      196: { label: "3rd Female", cls: "bg-amber-700 text-white" }
+    };
+
+    function openResultsModal() {
+      const searchInput = document.getElementById('resultsSearchInput');
+      if (searchInput) searchInput.value = '';
+      filterOfficialResults();
+      document.getElementById('allResultsModal').classList.remove('hidden');
+      setTimeout(() => {
+        if (searchInput) searchInput.focus();
+      }, 100);
+    }
+
+    function clearOfficialResultsSearch() {
+      const searchInput = document.getElementById('resultsSearchInput');
+      if (searchInput) {
+        searchInput.value = '';
+        filterOfficialResults();
+        searchInput.focus();
+      }
+    }
+
+    function filterOfficialResults() {
+      const inputEl = document.getElementById('resultsSearchInput');
+      const clearBtn = document.getElementById('clearResultsSearchBtn');
+      const countEl = document.getElementById('resultsCountSummary');
+      const tbody = document.getElementById('officialResultsTableBody');
+      const emptyBox = document.getElementById('noResultsFoundBox');
+
+      const q = (inputEl ? inputEl.value : '').trim().toLowerCase();
+      if (clearBtn) {
+        clearBtn.classList.toggle('hidden', q.length === 0);
+      }
+
+      const matches = ALL_RACE_FINISHERS.filter(r => {
+        if (!q) return true;
+        const fullName = `${r.firstName} ${r.lastName}`.trim().toLowerCase();
+        const bibStr = String(r.bib);
+        return fullName.includes(q) || bibStr.includes(q);
+      });
+
+      if (countEl) {
+        countEl.innerText = q
+          ? `Found ${matches.length} matching finisher${matches.length === 1 ? '' : 's'}`
+          : `Showing all ${ALL_RACE_FINISHERS.length} timed finishers`;
+      }
+
+      if (matches.length === 0) {
+        tbody.innerHTML = '';
+        emptyBox.classList.remove('hidden');
+        return;
+      }
+
+      emptyBox.classList.add('hidden');
+      tbody.innerHTML = matches.map(r => {
+        const fullName = `${r.firstName} ${r.lastName}`.trim();
+        const podium = PODIUM_BIB_BADGES[r.bib];
+        const rowHighlight = podium ? 'bg-amber-50/70 font-bold' : 'hover:bg-blue-50/50';
+        const badgeHTML = podium
+          ? `<span class="ml-2 inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider ${podium.cls} shadow-sm"><i class="fa-solid fa-medal"></i> ${podium.label}</span>`
+          : '';
+
+        return `
+          <tr class="${rowHighlight} transition">
+            <td class="py-2.5 px-3 sm:px-4 text-center font-mono font-bold text-gray-500">#${r.place}</td>
+            <td class="py-2.5 px-2.5 sm:px-4 text-center">
+              <span class="inline-block bg-pts-light text-pts-navy border border-blue-200 font-mono font-black text-xs px-2.5 py-0.5 rounded-lg">#${r.bib}</span>
+            </td>
+            <td class="py-2.5 px-3 sm:px-4 font-bold text-pts-navy">
+              <span>${fullName}</span>
+              ${badgeHTML}
+            </td>
+            <td class="py-2.5 px-3 sm:px-5 text-right font-mono font-black text-pts-navy text-xs sm:text-sm">${r.time}</td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    // =========================================================================
+    // 2. PRIVATE PARTICIPANT PHOTO & VIDEO UPLOAD TOOL (WITH AUTO-COMPRESSION)
+    // =========================================================================
+    let selectedUploadFiles = [];
+
+    function openUploadMediaModal() {
+      document.getElementById('uploadStatusMessage').classList.add('hidden');
+      document.getElementById('uploadMediaModal').classList.remove('hidden');
+    }
+
+    function handleSelectedUploadFiles(e) {
+      const files = Array.from(e.target.files || []);
+      if (!files.length) return;
+      selectedUploadFiles = [...selectedUploadFiles, ...files];
+      renderSelectedUploadFiles();
+    }
+
+    function initMediaDropZoneDragAndDrop() {
+      const dropZone = document.getElementById('mediaDropZone');
+      if (!dropZone) return;
+
+      ['dragenter', 'dragover'].forEach(evtName => {
+        dropZone.addEventListener(evtName, (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          dropZone.classList.add('border-pts-accent', 'bg-blue-50');
+        });
+      });
+
+      ['dragleave', 'drop'].forEach(evtName => {
+        dropZone.addEventListener(evtName, (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          dropZone.classList.remove('border-pts-accent', 'bg-blue-50');
+        });
+      });
+
+      dropZone.addEventListener('drop', (e) => {
+        const droppedFiles = Array.from(e.dataTransfer ? e.dataTransfer.files : []);
+        if (droppedFiles.length) {
+          selectedUploadFiles = [...selectedUploadFiles, ...droppedFiles];
+          renderSelectedUploadFiles();
+        }
+      });
+    }
+
+    function clearSelectedUploadFiles() {
+      selectedUploadFiles = [];
+      document.getElementById('participantMediaInput').value = '';
+      renderSelectedUploadFiles();
+    }
+
+    function removeSelectedUploadFile(idx) {
+      selectedUploadFiles.splice(idx, 1);
+      renderSelectedUploadFiles();
+    }
+
+    function formatFileSize(bytes) {
+      if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(0)} KB`;
+      return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+    }
+
+    function renderSelectedUploadFiles() {
+      const container = document.getElementById('selectedFilesContainer');
+      const countLabel = document.getElementById('selectedFilesCountLabel');
+      const listEl = document.getElementById('selectedFilesList');
+      const uploadBtn = document.getElementById('startUploadBtn');
+
+      if (selectedUploadFiles.length === 0) {
+        container.classList.add('hidden');
+        uploadBtn.disabled = true;
+        uploadBtn.className = "bg-gray-300 text-gray-500 font-black py-2.5 px-6 rounded-xl text-xs sm:text-sm shadow transition flex items-center gap-2 cursor-not-allowed";
+        return;
+      }
+
+      container.classList.remove('hidden');
+      countLabel.innerText = `${selectedUploadFiles.length} file${selectedUploadFiles.length > 1 ? 's' : ''} ready to upload`;
+      uploadBtn.disabled = false;
+      uploadBtn.className = "bg-pts-accent hover:bg-red-700 text-white font-black py-2.5 px-6 rounded-xl text-xs sm:text-sm shadow-lg transition flex items-center gap-2 cursor-pointer";
+
+      listEl.innerHTML = selectedUploadFiles.map((file, idx) => `
+        <div class="flex items-center justify-between bg-gray-50 border border-gray-200 px-3 py-1.5 rounded-lg text-xs">
+          <div class="flex items-center gap-2 truncate pr-2">
+            <i class="fa-solid ${file.type.startsWith('video/') ? 'fa-video text-pts-accent' : 'fa-image text-pts-blue'}"></i>
+            <span class="font-semibold text-gray-800 truncate">${file.name}</span>
+            <span class="text-gray-400 flex-shrink-0">(${formatFileSize(file.size)})</span>
+          </div>
+          <button type="button" onclick="removeSelectedUploadFile(${idx})" class="text-gray-400 hover:text-red-600 p-1">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+      `).join('');
+    }
+
+    function rawFileToBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const result = String(reader.result || '');
+          const base64Clean = result.includes(',') ? result.split(',')[1] : result;
+          resolve({
+            base64Data: base64Clean,
+            mimeType: file.type || 'application/octet-stream',
+            fileName: file.name
+          });
+        };
+        reader.onerror = (err) => reject(err);
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function prepareOptimizedMediaPayload(file) {
+      const lowerName = (file.name || '').toLowerCase();
+      const isStandardImage = file.type.startsWith('image/') && !lowerName.endsWith('.heic') && !lowerName.endsWith('.heif') && !lowerName.endsWith('.gif');
+
+      if (!isStandardImage || file.size < 1.2 * 1024 * 1024) {
+        return rawFileToBase64(file);
+      }
+
+      return new Promise((resolve) => {
+        const url = URL.createObjectURL(file);
+        const img = new Image();
+        img.onload = () => {
+          URL.revokeObjectURL(url);
+          const MAX_DIM = 2048;
+          let w = img.naturalWidth || img.width;
+          let h = img.naturalHeight || img.height;
+
+          if (w > MAX_DIM || h > MAX_DIM) {
+            if (w > h) {
+              h = Math.round((h * MAX_DIM) / w);
+              w = MAX_DIM;
+            } else {
+              w = Math.round((w * MAX_DIM) / h);
+              h = MAX_DIM;
+            }
+          }
+
+          const canvas = document.createElement('canvas');
+          canvas.width = w;
+          canvas.height = h;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, w, h);
+
+          const dataUrl = canvas.toDataURL('image/jpeg', 0.84);
+          const base64Clean = dataUrl.split(',')[1];
+          const cleanName = file.name.replace(/\.[^/.]+$/, "") + ".jpg";
+          resolve({
+            base64Data: base64Clean,
+            mimeType: 'image/jpeg',
+            fileName: cleanName
+          });
+        };
+        img.onerror = () => {
+          URL.revokeObjectURL(url);
+          rawFileToBase64(file).then(resolve);
+        };
+        img.src = url;
+      });
+    }
+
+    async function submitParticipantMedia() {
+      if (!selectedUploadFiles.length) return;
+
+      const uploaderName = (document.getElementById('uploaderName').value || 'Anonymous').trim();
+      const uploaderCompany = (document.getElementById('uploaderCompany').value || '').trim();
+      const progressWrapper = document.getElementById('uploadProgressWrapper');
+      const progressText = document.getElementById('uploadProgressText');
+      const progressPct = document.getElementById('uploadProgressPct');
+      const progressBar = document.getElementById('uploadProgressBar');
+      const statusMsg = document.getElementById('uploadStatusMessage');
+      const uploadBtn = document.getElementById('startUploadBtn');
+
+      uploadBtn.disabled = true;
+      uploadBtn.className = "bg-gray-300 text-gray-500 font-black py-2.5 px-6 rounded-xl text-xs sm:text-sm shadow transition flex items-center gap-2 cursor-not-allowed";
+      statusMsg.classList.add('hidden');
+      progressWrapper.classList.remove('hidden');
+
+      let successCount = 0;
+      const total = selectedUploadFiles.length;
+
+      for (let i = 0; i < total; i++) {
+        const file = selectedUploadFiles[i];
+        const pct = Math.round((i / total) * 100);
+        progressText.innerText = `Optimizing & Uploading ${i + 1} of ${total}: ${file.name}...`;
+        progressPct.innerText = `${pct}%`;
+        progressBar.style.width = `${pct}%`;
+
+        try {
+          const mediaData = await prepareOptimizedMediaPayload(file);
+          const payload = {
+            action: 'uploadMedia',
+            fileName: mediaData.fileName,
+            mimeType: mediaData.mimeType,
+            uploaderName: uploaderName,
+            uploaderCompany: uploaderCompany,
+            base64Data: mediaData.base64Data
+          };
+
+          const res = await fetch(SCRIPT_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify(payload)
+          });
+          const json = await res.json();
+          if (json && json.status === 'success') {
+            successCount++;
+          }
+        } catch (err) {
+          console.error('Upload error:', err);
+        }
+      }
+
+      progressBar.style.width = '100%';
+      progressPct.innerText = '100%';
+      progressText.innerText = 'Upload complete!';
+
+      statusMsg.classList.remove('hidden');
+      if (successCount === total) {
+        statusMsg.className = "rounded-xl p-3 text-xs font-bold text-center bg-green-50 text-green-800 border border-green-200";
+        statusMsg.innerHTML = `<i class="fa-solid fa-circle-check text-green-600 mr-1"></i> Thank you! All ${successCount} file(s) were sent to our event team.`;
+        confetti({ particleCount: 70, spread: 60, origin: { y: 0.6 } });
+        clearSelectedUploadFiles();
+      } else if (successCount > 0) {
+        statusMsg.className = "rounded-xl p-3 text-xs font-bold text-center bg-amber-50 text-amber-800 border border-amber-200";
+        statusMsg.innerHTML = `<i class="fa-solid fa-circle-info mr-1"></i> Uploaded ${successCount} of ${total} files. Note: Very large videos may exceed browser limits.`;
+      } else {
+        statusMsg.className = "rounded-xl p-3 text-xs font-bold text-center bg-red-50 text-red-700 border border-red-200";
+        statusMsg.innerHTML = `<i class="fa-solid fa-triangle-exclamation mr-1"></i> Upload failed. Please check your connection or try smaller files.`;
+        uploadBtn.disabled = false;
+        uploadBtn.className = "bg-pts-accent hover:bg-red-700 text-white font-black py-2.5 px-6 rounded-xl text-xs sm:text-sm shadow-lg transition flex items-center gap-2 cursor-pointer";
+      }
+    }
+
+    // =========================================================================
+    // 3. RENDER TOP 3 FINISHERS (IPHONE STACKED RESPONSIVE LAYOUT)
+    // =========================================================================
+    function getPlaceStyles(place) {
+      if (place === 1) {
+        return {
+          medalBg: "bg-gradient-to-br from-amber-300 via-amber-400 to-amber-600 text-pts-navy",
+          cardBorder: "border-amber-300 bg-gradient-to-r from-amber-50/70 to-white",
+          label: "1st Place • Gold",
+          icon: "fa-trophy"
+        };
+      } else if (place === 2) {
+        return {
+          medalBg: "bg-gradient-to-br from-slate-200 via-slate-300 to-slate-500 text-slate-900",
+          cardBorder: "border-slate-200 bg-white",
+          label: "2nd Place • Silver",
+          icon: "fa-medal"
+        };
+      }
+      return {
+        medalBg: "bg-gradient-to-br from-amber-600 via-amber-700 to-amber-900 text-white",
+        cardBorder: "border-amber-200/70 bg-white",
+        label: "3rd Place • Bronze",
+        icon: "fa-award"
+      };
+    }
+
+    function handleWinnerImgError(imgEl, isBlurBg) {
+      const currentSrc = imgEl.getAttribute('src') || '';
+      if (currentSrc.endsWith('.jpg')) {
+        imgEl.src = currentSrc.slice(0, -4) + '.JPG';
+        return;
+      }
+      imgEl.style.display = 'none';
+      if (!isBlurBg && imgEl.nextElementSibling) {
+        imgEl.nextElementSibling.classList.remove('hidden');
+      }
+    }
+
+    function renderWinnersSide(listId, winnersArray) {
+      const container = document.getElementById(listId);
+      if (!container) return;
+
+      container.innerHTML = winnersArray.map((w) => {
+        const st = getPlaceStyles(w.place);
+        const safeName = w.name.replace(/"/g, '&quot;');
+        return `
+          <div class="rounded-2xl border-2 ${st.cardBorder} p-3.5 sm:p-4 shadow-sm hover:shadow-md transition flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            
+            <div class="flex items-center gap-3.5 min-w-0 w-full sm:w-auto">
+              <div class="relative w-20 h-24 sm:w-24 sm:h-28 rounded-2xl overflow-hidden flex-shrink-0 border-2 border-white shadow-md bg-slate-900 cursor-pointer group flex items-center justify-center" onclick="openSinglePhotoLightbox('${w.photo}', '${safeName} (${st.label})')">
+                <img src="${w.photo}" alt="" aria-hidden="true" class="absolute inset-0 w-full h-full object-cover blur-md scale-125 opacity-45 pointer-events-none" onerror="handleWinnerImgError(this, true)">
+                <img src="${w.photo}" alt="${safeName}" class="relative z-10 max-w-full max-h-full w-auto h-auto object-contain group-hover:scale-105 transition duration-300" onerror="handleWinnerImgError(this, false)">
+                <div class="hidden absolute inset-0 ${st.medalBg} flex items-center justify-center text-2xl font-black z-10">
+                  <i class="fa-solid ${st.icon}"></i>
+                </div>
+                <span class="absolute bottom-1 right-1 z-20 w-6 h-6 rounded-full ${st.medalBg} text-[11px] font-black flex items-center justify-center shadow border border-white">
+                  ${w.place}
+                </span>
+              </div>
+
+              <div class="min-w-0 flex-grow">
+                <span class="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-wider text-pts-blue bg-blue-50 px-2 py-0.5 rounded-md border border-blue-100">
+                  <i class="fa-solid ${st.icon} text-amber-500"></i> ${st.label}
+                </span>
+                <h4 class="text-sm sm:text-lg font-black text-pts-navy truncate mt-1">${w.name}</h4>
+                <p class="text-xs text-gray-500 font-semibold truncate">${w.company || ''}</p>
+              </div>
+            </div>
+
+            ${w.time ? `
+              <div class="flex sm:flex-col items-center sm:items-end justify-between sm:justify-center flex-shrink-0 bg-pts-light px-3.5 py-2 rounded-xl border border-blue-100 w-full sm:w-auto">
+                <span class="text-[9px] uppercase font-bold text-gray-500">Finish Time</span>
+                <span class="font-mono text-sm sm:text-base font-black text-pts-navy">${w.time}</span>
+              </div>
+            ` : ''}
+
+          </div>
+        `;
+      }).join('');
+    }
+
+    // =========================================================================
+    // 4. PROGRESSIVE BATCH PHOTO DISCOVERY & PAGINATION ENGINE (18 PER PAGE)
+    // =========================================================================
+    let allGalleryPhotos = [];
+    let filteredGalleryPhotos = [];
+    let activeGalleryFilter = 'all';
+    let currentGalleryPage = 1;
+    let currentCarouselIdx = 0;
+    let carouselTimer = null;
+    let isCarouselPlaying = true;
+    let currentLightboxIdx = 0;
+    let isSingleLightboxMode = false;
+
+    function probeImageWithCaseFallback(baseSrc) {
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.onload = () => resolve(baseSrc);
+        img.onerror = () => {
+          if (baseSrc.endsWith('.jpg')) {
+            const upperSrc = baseSrc.slice(0, -4) + '.JPG';
+            const img2 = new Image();
+            img2.onload = () => resolve(upperSrc);
+            img2.onerror = () => resolve(null);
+            img2.src = upperSrc;
+          } else {
+            resolve(null);
+          }
+        };
+        img.src = baseSrc;
+      });
+    }
+
+    async function discoverRacePhotos() {
+      const discovered = [];
+      let firstPageRendered = false;
+
+      const winnerCandidates = [...RACE_WINNERS.men, ...RACE_WINNERS.women].map((w, idx) => ({
+        src: w.photo,
+        category: 'winners',
+        caption: `${w.name} — ${w.company} (${w.place === 1 ? '1st' : w.place === 2 ? '2nd' : '3rd'} Place)`,
+        order: idx
+      }));
+
+      const winnerResolvedSrcs = await Promise.all(winnerCandidates.map(c => probeImageWithCaseFallback(c.src)));
+      winnerCandidates.forEach((c, idx) => {
+        if (winnerResolvedSrcs[idx]) {
+          discovered.push({ ...c, src: winnerResolvedSrcs[idx] });
+        }
+      });
+
+      let consecutiveMisses = 0;
+      const BATCH_SIZE = 12;
+
+      for (let start = 1; start <= MAX_AUTO_SCAN_PHOTOS; start += BATCH_SIZE) {
+        const end = Math.min(MAX_AUTO_SCAN_PHOTOS, start + BATCH_SIZE - 1);
+        const batchNums = [];
+        for (let i = start; i <= end; i++) batchNums.push(i);
+
+        const batchResolvedSrcs = await Promise.all(batchNums.map(n => probeImageWithCaseFallback(`photos/photo${n}.jpg`)));
+
+        for (let b = 0; b < batchNums.length; b++) {
+          const num = batchNums[b];
+          const resolvedSrc = batchResolvedSrcs[b];
+          if (resolvedSrc) {
+            consecutiveMisses = 0;
+            const meta = CUSTOM_PHOTO_CAPTIONS[num] || {};
+            discovered.push({
+              src: resolvedSrc,
+              category: meta.category || 'crowd',
+              caption: meta.caption || `IAM & Paramount Charity 5K — Race Highlight #${num}`,
+              order: 100 + num
+            });
+          } else {
+            consecutiveMisses++;
+          }
+        }
+
+        if (!firstPageRendered && discovered.length > 0) {
+          firstPageRendered = true;
+          allGalleryPhotos = [...discovered];
+          filterGallery(activeGalleryFilter, false);
+          startCarouselAutoplay();
+        } else if (firstPageRendered) {
+          allGalleryPhotos = [...discovered];
+          updateFilteredPhotosMaintainingPage();
+        }
+
+        if (consecutiveMisses >= 6) break;
+      }
+
+      if (discovered.length === 0) {
+        allGalleryPhotos = [
+          { src: "https://images.unsplash.com/photo-1552674605-db6ffd4facb5?auto=format&fit=crop&w=1400&q=80", category: "winners", caption: "Morning Launch at North Embarcadero Marina" },
+          { src: "https://images.unsplash.com/photo-1452626038306-9aae5e071dd3?auto=format&fit=crop&w=1400&q=80", category: "crowd", caption: "Runners Along San Diego Waterfront" },
+          { src: "https://images.unsplash.com/photo-1513593771513-7b58b6c4af38?auto=format&fit=crop&w=1400&q=80", category: "winners", caption: "Finish Line Sprint & Top Finishers" }
+        ];
+        filterGallery('all', false);
+        startCarouselAutoplay();
+      }
+    }
+
+    function updateFilteredPhotosMaintainingPage() {
+      if (activeGalleryFilter === 'all') {
+        filteredGalleryPhotos = [...allGalleryPhotos];
+      } else {
+        filteredGalleryPhotos = allGalleryPhotos.filter(p => p.category === activeGalleryFilter);
+        if (filteredGalleryPhotos.length === 0) filteredGalleryPhotos = [...allGalleryPhotos];
+      }
+      document.getElementById('photoCountBadge').innerText = `${filteredGalleryPhotos.length} Photos`;
+      renderMasonryGrid();
+    }
+
+    function filterGallery(category, shouldScroll = false) {
+      activeGalleryFilter = category;
+      ['all', 'winners', 'crowd'].forEach(cat => {
+        const btn = document.getElementById(`filterBtn-${cat}`);
+        if (!btn) return;
+        if (cat === category) {
+          btn.className = "px-3.5 py-1.5 rounded-xl text-xs font-black bg-amber-400 text-pts-navy transition shadow";
+        } else {
+          btn.className = "px-3.5 py-1.5 rounded-xl text-xs font-bold text-white hover:bg-white/10 transition";
+        }
+      });
+
+      if (category === 'all') {
+        filteredGalleryPhotos = [...allGalleryPhotos];
+      } else {
+        filteredGalleryPhotos = allGalleryPhotos.filter(p => p.category === category);
+      }
+
+      if (filteredGalleryPhotos.length === 0) {
+        filteredGalleryPhotos = [...allGalleryPhotos];
+      }
+
+      document.getElementById('photoCountBadge').innerText = `${filteredGalleryPhotos.length} Photos`;
+      currentGalleryPage = 1;
+      currentCarouselIdx = 0;
+      updateCarouselView();
+      renderMasonryGrid();
+
+      if (shouldScroll) {
+        document.getElementById('gallerySection').scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    function changeGalleryPage(newPage) {
+      const totalPages = Math.max(1, Math.ceil(filteredGalleryPhotos.length / PHOTOS_PER_PAGE));
+      if (newPage < 1 || newPage > totalPages) return;
+      currentGalleryPage = newPage;
+      renderMasonryGrid();
+      document.getElementById('galleryPaginationTop').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function buildPaginationButtonsHTML(currentPage, totalPages) {
+      let html = `
+        <button type="button" onclick="changeGalleryPage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''} class="px-3 py-1.5 rounded-xl text-xs font-bold border transition ${currentPage === 1 ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed' : 'bg-white text-pts-navy border-gray-300 hover:bg-pts-light'}">
+          <i class="fa-solid fa-chevron-left mr-1"></i> Prev
+        </button>
+      `;
+
+      for (let p = 1; p <= totalPages; p++) {
+        if (p === currentPage) {
+          html += `<button type="button" class="w-8 h-8 rounded-xl text-xs font-black bg-pts-navy text-amber-300 shadow">${p}</button>`;
+        } else {
+          html += `<button type="button" onclick="changeGalleryPage(${p})" class="w-8 h-8 rounded-xl text-xs font-bold bg-white text-gray-700 border border-gray-300 hover:bg-pts-light transition">${p}</button>`;
+        }
+      }
+
+      html += `
+        <button type="button" onclick="changeGalleryPage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''} class="px-3 py-1.5 rounded-xl text-xs font-bold border transition ${currentPage === totalPages ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed' : 'bg-white text-pts-navy border-gray-300 hover:bg-pts-light'}">
+          Next <i class="fa-solid fa-chevron-right ml-1"></i>
+        </button>
+      `;
+      return html;
+    }
+
+    function renderMasonryGrid() {
+      const grid = document.getElementById('photoMasonryGrid');
+      if (!grid) return;
+
+      const total = filteredGalleryPhotos.length;
+      const totalPages = Math.max(1, Math.ceil(total / PHOTOS_PER_PAGE));
+      if (currentGalleryPage > totalPages) currentGalleryPage = totalPages;
+
+      const startIdx = (currentGalleryPage - 1) * PHOTOS_PER_PAGE;
+      const endIdx = Math.min(total, startIdx + PHOTOS_PER_PAGE);
+      const pageItems = filteredGalleryPhotos.slice(startIdx, endIdx);
+
+      const topBar = document.getElementById('galleryPaginationTop');
+      const botBar = document.getElementById('galleryPaginationBottom');
+      if (total > PHOTOS_PER_PAGE) {
+        topBar.classList.remove('hidden');
+        botBar.classList.remove('hidden');
+        const rangeText = `Showing ${startIdx + 1}–${endIdx} of ${total} Photos (Page ${currentGalleryPage} of ${totalPages})`;
+        document.getElementById('galleryShowingRangeTop').innerText = rangeText;
+        document.getElementById('galleryShowingRangeBottom').innerText = rangeText;
+        const btnsHTML = buildPaginationButtonsHTML(currentGalleryPage, totalPages);
+        document.getElementById('galleryPageBtnsTop').innerHTML = btnsHTML;
+        document.getElementById('galleryPageBtnsBottom').innerHTML = btnsHTML;
+      } else {
+        topBar.classList.add('hidden');
+        botBar.classList.add('hidden');
+      }
+
+      grid.innerHTML = pageItems.map((item, localIdx) => {
+        const globalIdx = startIdx + localIdx;
+        return `
+          <div class="masonry-item group relative rounded-2xl overflow-hidden shadow-md hover:shadow-2xl border border-gray-200 bg-pts-navy cursor-pointer transition-all duration-300" onclick="openLightbox(${globalIdx})">
+            <img src="${item.src}" alt="${item.caption.replace(/"/g, '&quot;')}" loading="lazy" class="w-full h-auto block group-hover:scale-105 transition duration-500">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex flex-col justify-end p-4">
+              <span class="text-[10px] font-black uppercase tracking-wider text-amber-300">
+                ${item.category === 'winners' ? 'Winners & Awards' : 'Race Highlight'}
+              </span>
+              <p class="text-xs sm:text-sm font-bold text-white leading-snug mt-0.5">${item.caption}</p>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function updateCarouselView() {
+      if (!filteredGalleryPhotos.length) return;
+      const item = filteredGalleryPhotos[currentCarouselIdx];
+      const imgEl = document.getElementById('carouselHeroImg');
+      const blurBgEl = document.getElementById('carouselBlurBg');
+      const captionEl = document.getElementById('carouselCaption');
+      const tagEl = document.getElementById('carouselTag');
+
+      imgEl.src = item.src;
+      if (blurBgEl) blurBgEl.src = item.src;
+      captionEl.innerText = item.caption;
+      tagEl.innerText = item.category === 'winners' ? 'Winners & Awards' : 'Crowd & Bayfront Action';
+    }
+
+    function stepCarousel(dir) {
+      if (!filteredGalleryPhotos.length) return;
+      currentCarouselIdx = (currentCarouselIdx + dir + filteredGalleryPhotos.length) % filteredGalleryPhotos.length;
+      updateCarouselView();
+    }
+
+    function startCarouselAutoplay() {
+      if (carouselTimer) clearInterval(carouselTimer);
+      carouselTimer = setInterval(() => {
+        if (isCarouselPlaying) stepCarousel(1);
+      }, 4500);
+    }
+
+    function toggleCarouselAutoplay() {
+      isCarouselPlaying = !isCarouselPlaying;
+      const icon = document.getElementById('carouselPlayIcon');
+      const text = document.getElementById('carouselPlayText');
+      if (isCarouselPlaying) {
+        icon.className = "fa-solid fa-pause text-amber-300";
+        text.innerText = "Auto-Play";
+      } else {
+        icon.className = "fa-solid fa-play text-amber-300";
+        text.innerText = "Paused";
+      }
+    }
+
+    // =========================================================================
+    // 5. FULL-SCREEN LIGHTBOX WITH MOBILE SWIPE, PINCH-ZOOM & DOUBLE-TAP
+    // =========================================================================
+    let lbScale = 1;
+    let lbPanX = 0;
+    let lbPanY = 0;
+
+    function applyLightboxTransform() {
+      const img = document.getElementById('lightboxImg');
+      const ind = document.getElementById('lbZoomIndicatorBtn');
+      if (img) {
+        img.style.transform = `translate3d(${lbPanX}px, ${lbPanY}px, 0) scale(${lbScale})`;
+      }
+      if (ind) {
+        ind.innerText = `${Math.round(lbScale * 100)}%`;
+      }
+    }
+
+    function resetLightboxZoom() {
+      lbScale = 1;
+      lbPanX = 0;
+      lbPanY = 0;
+      applyLightboxTransform();
+    }
+
+    function adjustLightboxZoom(delta) {
+      lbScale = Math.min(4, Math.max(1, lbScale + delta));
+      if (lbScale === 1) {
+        lbPanX = 0;
+        lbPanY = 0;
+      }
+      applyLightboxTransform();
+    }
+
+    function setLightboxNavigationVisibility(showArrows) {
+      const prevBtn = document.getElementById('lbPrevBtn');
+      const nextBtn = document.getElementById('lbNextBtn');
+      const hintText = document.getElementById('lightboxHintText');
+      if (prevBtn) prevBtn.style.display = showArrows ? '' : 'none';
+      if (nextBtn) nextBtn.style.display = showArrows ? '' : 'none';
+      if (hintText) {
+        hintText.innerHTML = showArrows
+          ? '<i class="fa-solid fa-hand-pointer text-amber-300 mr-1"></i> Swipe left/right to browse • Pinch or double-tap to zoom'
+          : '<i class="fa-solid fa-hand-pointer text-amber-300 mr-1"></i> Pinch or double-tap to zoom';
+      }
+    }
+
+    function openLightbox(idx) {
+      if (!filteredGalleryPhotos.length) return;
+      isSingleLightboxMode = false;
+      currentLightboxIdx = idx;
+      resetLightboxZoom();
+      setLightboxNavigationVisibility(true);
+      updateLightboxContent();
+      document.getElementById('lightboxModal').classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function openSinglePhotoLightbox(src, caption) {
+      const foundIdx = filteredGalleryPhotos.findIndex(p => p.src.toLowerCase() === src.toLowerCase());
+      if (foundIdx !== -1) {
+        openLightbox(foundIdx);
+        return;
+      }
+      isSingleLightboxMode = true;
+      resetLightboxZoom();
+      setLightboxNavigationVisibility(false);
+      const lbImg = document.getElementById('lightboxImg');
+      lbImg.onerror = function() {
+        if (this.src.endsWith('.jpg')) {
+          this.src = this.src.slice(0, -4) + '.JPG';
+        }
+      };
+      lbImg.src = src;
+      document.getElementById('lightboxCaption').innerText = caption;
+      document.getElementById('lightboxCounter').innerText = "Winner Spotlight";
+      document.getElementById('lightboxCategoryBadge').innerText = "Official Winner";
+      document.getElementById('lightboxDownloadBtn').href = src;
+      document.getElementById('lightboxModal').classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function updateLightboxContent() {
+      const item = filteredGalleryPhotos[currentLightboxIdx];
+      if (!item) return;
+      document.getElementById('lightboxImg').src = item.src;
+      document.getElementById('lightboxCaption').innerText = item.caption;
+      document.getElementById('lightboxCounter').innerText = `${currentLightboxIdx + 1} / ${filteredGalleryPhotos.length}`;
+      document.getElementById('lightboxCategoryBadge').innerText = item.category === 'winners' ? 'Winners & Awards' : 'Crowd & Action';
+      document.getElementById('lightboxDownloadBtn').href = item.src;
+    }
+
+    function stepLightbox(dir) {
+      if (isSingleLightboxMode || !filteredGalleryPhotos.length) return;
+      resetLightboxZoom();
+      currentLightboxIdx = (currentLightboxIdx + dir + filteredGalleryPhotos.length) % filteredGalleryPhotos.length;
+      updateLightboxContent();
+    }
+
+    function closeLightbox() {
+      document.getElementById('lightboxModal').classList.add('hidden');
+      document.body.style.overflow = '';
+      resetLightboxZoom();
+    }
+
+    function initLightboxAndCarouselGestures() {
+      const carouselEl = document.getElementById('featuredCarouselWrapper');
+      if (carouselEl) {
+        let cStartX = 0, cStartY = 0;
+        carouselEl.addEventListener('touchstart', (e) => {
+          if (e.touches.length === 1) {
+            cStartX = e.touches[0].clientX;
+            cStartY = e.touches[0].clientY;
+          }
+        }, { passive: true });
+
+        carouselEl.addEventListener('touchend', (e) => {
+          if (e.changedTouches.length === 1) {
+            const dx = e.changedTouches[0].clientX - cStartX;
+            const dy = e.changedTouches[0].clientY - cStartY;
+            if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy)) {
+              stepCarousel(dx < 0 ? 1 : -1);
+            }
+          }
+        }, { passive: true });
+      }
+
+      const lbArea = document.getElementById('lightboxTouchArea');
+      if (!lbArea) return;
+
+      let touchStartX = 0, touchStartY = 0;
+      let lastPanX = 0, lastPanY = 0;
+      let initialPinchDist = null;
+      let initialScale = 1;
+      let isPinching = false;
+      let lastTapTime = 0;
+
+      lbArea.addEventListener('click', (e) => {
+        if (e.target === lbArea && lbScale <= 1.05) {
+          closeLightbox();
+        }
+      });
+
+      lbArea.addEventListener('touchstart', (e) => {
+        if (e.touches.length === 1) {
+          isPinching = false;
+          touchStartX = e.touches[0].clientX;
+          touchStartY = e.touches[0].clientY;
+          lastPanX = lbPanX;
+          lastPanY = lbPanY;
+
+          const now = Date.now();
+          if (now - lastTapTime < 280) {
+            if (lbScale > 1.1) {
+              resetLightboxZoom();
+            } else {
+              lbScale = 2.5;
+              lbPanX = 0;
+              lbPanY = 0;
+              applyLightboxTransform();
+            }
+            lastTapTime = 0;
+          } else {
+            lastTapTime = now;
+          }
+        } else if (e.touches.length === 2) {
+          isPinching = true;
+          const dx = e.touches[0].clientX - e.touches[1].clientX;
+          const dy = e.touches[0].clientY - e.touches[1].clientY;
+          initialPinchDist = Math.hypot(dx, dy);
+          initialScale = lbScale;
+        }
+      }, { passive: false });
+
+      lbArea.addEventListener('touchmove', (e) => {
+        e.preventDefault();
+        if (e.touches.length === 2 && initialPinchDist) {
+          const dx = e.touches[0].clientX - e.touches[1].clientX;
+          const dy = e.touches[0].clientY - e.touches[1].clientY;
+          const dist = Math.hypot(dx, dy);
+          lbScale = Math.min(4, Math.max(1, initialScale * (dist / initialPinchDist)));
+          if (lbScale === 1) {
+            lbPanX = 0;
+            lbPanY = 0;
+          }
+          applyLightboxTransform();
+        } else if (e.touches.length === 1 && !isPinching && lbScale > 1.05) {
+          lbPanX = lastPanX + (e.touches[0].clientX - touchStartX);
+          lbPanY = lastPanY + (e.touches[0].clientY - touchStartY);
+          applyLightboxTransform();
+        }
+      }, { passive: false });
+
+      lbArea.addEventListener('touchend', (e) => {
+        if (e.touches.length < 2) {
+          initialPinchDist = null;
+        }
+        if (!isSingleLightboxMode && !isPinching && lbScale <= 1.05 && e.changedTouches.length === 1) {
+          const dx = e.changedTouches[0].clientX - touchStartX;
+          const dy = e.changedTouches[0].clientY - touchStartY;
+          if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) {
+            stepLightbox(dx < 0 ? 1 : -1);
+          }
+        }
+      }, { passive: true });
+
+      lbArea.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        const delta = e.deltaY < 0 ? 0.25 : -0.25;
+        adjustLightboxZoom(delta);
+      }, { passive: false });
+    }
+
+    document.addEventListener('keydown', function(e) {
+      const lbHidden = document.getElementById('lightboxModal').classList.contains('hidden');
+      const resHidden = document.getElementById('allResultsModal').classList.contains('hidden');
+      if (!lbHidden) {
+        if (e.key === 'Escape') closeLightbox();
+        if (e.key === 'ArrowRight') stepLightbox(1);
+        if (e.key === 'ArrowLeft') stepLightbox(-1);
+      } else if (!resHidden && e.key === 'Escape') {
+        toggleModal('allResultsModal');
+      } else if (e.key === 'Escape' && isMapFullScreen) {
+        toggleFullScreenMap();
+      }
+    });
+
+    // =========================================================================
+    // 6. COURSE MAP COORDINATES & LEAFLET ENGINE
+    // =========================================================================
+    const COURSE_COORDS = [
+      [32.70820, -117.17009], [32.70801, -117.17010], [32.70779, -117.17010], [32.70756, -117.17008],
+      [32.70736, -117.17005], [32.70720, -117.17000], [32.70707, -117.16985], [32.70692, -117.16964],
+      [32.70676, -117.16939], [32.70656, -117.16910], [32.70635, -117.16878], [32.70613, -117.16845],
+      [32.70594, -117.16816], [32.70582, -117.16795], [32.70578, -117.16784], [32.70580, -117.16768],
+      [32.70583, -117.16754], [32.70589, -117.16745], [32.70601, -117.16741], [32.70614, -117.16741],
+      [32.70626, -117.16746], [32.70634, -117.16759], [32.70641, -117.16781], [32.70649, -117.16801],
+      [32.70661, -117.16817], [32.70673, -117.16824], [32.70686, -117.16835], [32.70701, -117.16856],
+      [32.70718, -117.16880], [32.70736, -117.16902], [32.70752, -117.16917], [32.70768, -117.16922],
+      [32.70786, -117.16923], [32.70806, -117.16921], [32.70826, -117.16920], [32.70846, -117.16919],
+      [32.70847, -117.16880], [32.70847, -117.16837], [32.70847, -117.16794], [32.70846, -117.16757],
+      [32.70844, -117.16738], [32.70834, -117.16716], [32.70815, -117.16689], [32.70793, -117.16660],
+      [32.70782, -117.16644], [32.70752, -117.16602], [32.70714, -117.16552], [32.70676, -117.16499],
+      [32.70637, -117.16445], [32.70602, -117.16396], [32.70574, -117.16357], [32.70561, -117.16340],
+      [32.70535, -117.16365], [32.70507, -117.16396], [32.70479, -117.16426], [32.70458, -117.16449],
+      [32.70448, -117.16467], [32.70454, -117.16487], [32.70467, -117.16510], [32.70486, -117.16537],
+      [32.70502, -117.16560], [32.70510, -117.16579], [32.70510, -117.16598], [32.70501, -117.16615],
+      [32.70486, -117.16626], [32.70468, -117.16627], [32.70452, -117.16620], [32.70431, -117.16600],
+      [32.70405, -117.16571], [32.70381, -117.16541], [32.70359, -117.16503], [32.70333, -117.16464],
+      [32.70309, -117.16426], [32.70291, -117.16393], [32.70286, -117.16373], [32.70293, -117.16354],
+      [32.70302, -117.16336], [32.70331, -117.16306], [32.70358, -117.16279], [32.70373, -117.16269],
+      [32.70390, -117.16270], [32.70415, -117.16296], [32.70441, -117.16327], [32.70467, -117.16357],
+      [32.70502, -117.16319], [32.70538, -117.16282], [32.70516, -117.16250], [32.70486, -117.16208],
+      [32.70454, -117.16163], [32.70419, -117.16113], [32.70386, -117.16063], [32.70354, -117.16014],
+      [32.70331, -117.15973], [32.70354, -117.16014], [32.70386, -117.16063], [32.70419, -117.16113],
+      [32.70454, -117.16163], [32.70486, -117.16208], [32.70516, -117.16250], [32.70538, -117.16282],
+      [32.70561, -117.16315], [32.70578, -117.16340], [32.70589, -117.16357], [32.70611, -117.16396],
+      [32.70642, -117.16445], [32.70679, -117.16499], [32.70716, -117.16552], [32.70752, -117.16602],
+      [32.70782, -117.16644], [32.70793, -117.16660], [32.70815, -117.16689], [32.70834, -117.16716],
+      [32.70844, -117.16738], [32.70846, -117.16757], [32.70847, -117.16794], [32.70847, -117.16837],
+      [32.70847, -117.16880], [32.70846, -117.16919], [32.70846, -117.16964], [32.70852, -117.17015],
+      [32.70853, -117.17038], [32.70853, -117.17065], [32.70854, -117.17092], [32.70855, -117.17113],
+      [32.70859, -117.17129], [32.70867, -117.17146], [32.70877, -117.17161], [32.70890, -117.17175],
+      [32.70907, -117.17189], [32.70927, -117.17202], [32.70943, -117.17209], [32.70965, -117.17217],
+      [32.70988, -117.17224], [32.71010, -117.17232], [32.71033, -117.17240], [32.71050, -117.17251],
+      [32.71067, -117.17241], [32.71070, -117.17224], [32.71073, -117.17202], [32.71079, -117.17183],
+      [32.71089, -117.17170], [32.71101, -117.17163], [32.71114, -117.17164], [32.71124, -117.17174],
+      [32.71129, -117.17189], [32.71127, -117.17207], [32.71121, -117.17229], [32.71110, -117.17247],
+      [32.71097, -117.17255], [32.71080, -117.17256], [32.71064, -117.17255], [32.71050, -117.17251],
+      [32.71033, -117.17240], [32.71010, -117.17232], [32.70988, -117.17224], [32.70965, -117.17217],
+      [32.70943, -117.17209], [32.70927, -117.17202], [32.70907, -117.17189], [32.70890, -117.17175],
+      [32.70877, -117.17161], [32.70867, -117.17146], [32.70859, -117.17129], [32.70855, -117.17113],
+      [32.70854, -117.17092], [32.70853, -117.17065], [32.70853, -117.17038], [32.70852, -117.17015],
+      [32.70841, -117.17010], [32.70830, -117.17007], [32.70820, -117.17005]
+    ];
+
+    function buildSmoothCoursePoints(coords, stepsPerSegment = 4) {
+      const points = [];
+      for (let i = 0; i < coords.length - 1; i++) {
+        const start = coords[i], end = coords[i + 1];
+        for (let s = 0; s < stepsPerSegment; s++) {
+          const t = s / stepsPerSegment;
+          points.push([start[0] + (end[0] - start[0]) * t, start[1] + (end[1] - start[1]) * t]);
+        }
+      }
+      points.push(coords[coords.length - 1]);
+      return points;
+    }
+    const SMOOTH_COURSE_PATH = buildSmoothCoursePoints(COURSE_COORDS, 4);
+
+    const STAGE_VIEWS = [
+      { coords: [32.7070, -117.1688], zoom: 16 },
+      { coords: [32.7040, -117.1645], zoom: 16 },
+      { coords: [32.7042, -117.1614], zoom: 16 },
+      { coords: [32.7098, -117.1715], zoom: 16 }
+    ];
+
+    let courseMap, mainRouteLine, googleStreetsLayer, googleHybridLayer;
+    let stageMarkers = [], simInterval = null, runnerMarker = null, simIndex = 0;
+    let mobileMapInteractive = false, isMapFullScreen = false;
+
+    function initPageAndMap() {
+      checkDonationCutoff();
+      renderWinnersSide('menWinnersList', RACE_WINNERS.men);
+      renderWinnersSide('womenWinnersList', RACE_WINNERS.women);
+      filterOfficialResults();
+      discoverRacePhotos();
+      initLightboxAndCarouselGestures();
+      initCanvasTouchGestures();
+      initMediaDropZoneDragAndDrop();
+
+      const isMobile = window.innerWidth < 1024;
+      courseMap = L.map('courseMap', {
+        scrollWheelZoom: false,
+        dragging: !isMobile,
+        tap: !isMobile
+      }).setView([32.7068, -117.1662], 15);
+
+      googleStreetsLayer = L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+        maxZoom: 20, subdomains: ['mt0', 'mt1', 'mt2', 'mt3'], attribution: '&copy; Google Maps'
+      }).addTo(courseMap);
+
+      googleHybridLayer = L.tileLayer('https://{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', {
+        maxZoom: 20, subdomains: ['mt0', 'mt1', 'mt2', 'mt3'], attribution: '&copy; Google Maps Satellite'
+      });
+
+      L.polyline(COURSE_COORDS, { color: '#ffffff', weight: 8, opacity: 0.9, lineJoin: 'round' }).addTo(courseMap);
+      mainRouteLine = L.polyline(COURSE_COORDS, { color: '#E31837', weight: 5, opacity: 1, lineJoin: 'round' }).addTo(courseMap);
+      L.polyline(COURSE_COORDS, { color: '#FCA5A5', weight: 1.5, dashArray: '6, 8', opacity: 0.9 }).addTo(courseMap);
+
+      function createBadgeIcon(htmlContent, bgClass, size = 28) {
+        return L.divIcon({
+          className: 'custom-div-icon',
+          html: `<div class="${bgClass} text-white font-black rounded-full shadow-lg border-2 border-white flex items-center justify-center marker-pulse" style="width:${size}px;height:${size}px;font-size:12px;">${htmlContent}</div>`,
+          iconSize: [size, size], iconAnchor: [size / 2, size / 2], popupAnchor: [0, -size / 2]
+        });
+      }
+
+      const startMarker = L.marker([32.70820, -117.17012], { icon: createBadgeIcon('', 'bg-green-600', 22) }).addTo(courseMap).bindPopup(`<div class="text-xs p-1"><strong class="text-green-700 uppercase block">START</strong>Northwest corner of the North Embarcadero Marina</div>`);
+      const finishMarker = L.marker([32.70820, -117.16998], { icon: createBadgeIcon('', 'bg-pts-accent', 22) }).addTo(courseMap).bindPopup(`<div class="text-xs p-1"><strong class="text-pts-accent uppercase block">FINISH</strong>Northwest corner of the North Embarcadero Marina</div>`);
+      const mile1Marker = L.marker([32.70448, -117.16467], { icon: createBadgeIcon('1', 'bg-pts-accent', 26) }).addTo(courseMap).bindPopup(`<div class="text-xs p-1"><strong class="text-pts-accent">Mile 1</strong><br>South Embarcadero Marina loop</div>`);
+      const hiltonTurnMarker = L.marker([32.70331, -117.15973], { icon: createBadgeIcon('<i class="fa-solid fa-rotate-left text-[10px]"></i>', 'bg-pts-blue', 24) }).addTo(courseMap).bindPopup(`<div class="text-xs p-1"><strong class="text-pts-blue">U-Turn</strong><br>Promenade toward the Hilton (U-turn before the hotel)</div>`);
+      const mile2Marker = L.marker([32.70578, -117.16340], { icon: createBadgeIcon('2', 'bg-pts-accent', 26) }).addTo(courseMap).bindPopup(`<div class="text-xs p-1"><strong class="text-pts-accent">Mile 2</strong><br>Bayfront Promenade</div>`);
+      const mile3Marker = L.marker([32.70867, -117.17146], { icon: createBadgeIcon('3', 'bg-pts-accent', 26) }).addTo(courseMap).bindPopup(`<div class="text-xs p-1"><strong class="text-pts-accent">Mile 3</strong><br>Return route from Ruocco Park</div>`);
+
+      stageMarkers = [startMarker, mile1Marker, hiltonTurnMarker, mile3Marker];
+      courseMap.fitBounds(mainRouteLine.getBounds(), { padding: [22, 22] });
+    }
+
+    function toggleFullScreenMap() {
+      const wrapper = document.getElementById('mapWrapperContainer');
+      const fsText = document.getElementById('fsToggleText');
+      const fsIcon = document.getElementById('fsToggleIcon');
+      const lockBtn = document.getElementById('mobileTouchLockBtn');
+
+      isMapFullScreen = !isMapFullScreen;
+
+      if (isMapFullScreen) {
+        wrapper.classList.add('map-fullscreen-active');
+        document.body.style.overflow = 'hidden';
+        fsText.innerText = "Exit Full Screen";
+        fsIcon.className = "fa-solid fa-compress text-amber-300";
+        courseMap.dragging.enable();
+        courseMap.scrollWheelZoom.enable();
+        if (lockBtn) lockBtn.classList.add('hidden');
+      } else {
+        wrapper.classList.remove('map-fullscreen-active');
+        document.body.style.overflow = '';
+        fsText.innerText = "Full Screen";
+        fsIcon.className = "fa-solid fa-expand text-amber-300";
+        courseMap.scrollWheelZoom.disable();
+        if (window.innerWidth < 1024 && !mobileMapInteractive) {
+          courseMap.dragging.disable();
+        }
+        if (lockBtn) lockBtn.classList.remove('hidden');
+      }
+
+      setTimeout(() => {
+        if (courseMap && mainRouteLine) {
+          courseMap.invalidateSize();
+          courseMap.fitBounds(mainRouteLine.getBounds(), { padding: [25, 25] });
+        }
+      }, 200);
+    }
+
+    function toggleMobileMapTouch() {
+      if (!courseMap) return;
+      mobileMapInteractive = !mobileMapInteractive;
+      const btn = document.getElementById('mobileTouchLockBtn');
+      const text = document.getElementById('mobileTouchText');
+      const icon = document.getElementById('mobileTouchIcon');
+
+      if (mobileMapInteractive) {
+        courseMap.dragging.enable();
+        text.innerText = "Lock Map to Scroll";
+        icon.className = "fa-solid fa-lock-open text-green-400";
+        btn.classList.replace('bg-pts-navy/90', 'bg-green-900/95');
+      } else {
+        courseMap.dragging.disable();
+        text.innerText = "Tap to Pan Map";
+        icon.className = "fa-solid fa-hand-pointer text-amber-300";
+        btn.classList.replace('bg-green-900/95', 'bg-pts-navy/90');
+      }
+    }
+
+    function setGoogleMapMode(mode) {
+      const btnStreet = document.getElementById('btnMapStreet');
+      const btnSat = document.getElementById('btnMapSat');
+      const activeClass = "px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-lg bg-pts-navy text-white transition flex items-center gap-1 shadow-sm";
+      const inactiveClass = "px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-lg text-gray-700 hover:bg-gray-100 transition flex items-center gap-1";
+
+      courseMap.removeLayer(googleStreetsLayer);
+      courseMap.removeLayer(googleHybridLayer);
+
+      if (mode === 'hybrid') {
+        courseMap.addLayer(googleHybridLayer);
+        btnSat.className = activeClass;
+        btnStreet.className = inactiveClass;
+      } else {
+        courseMap.addLayer(googleStreetsLayer);
+        btnStreet.className = activeClass;
+        btnSat.className = inactiveClass;
+      }
+    }
+
+    function focusCourseStage(index) {
+      highlightStepCardOnly(index);
+      const stage = STAGE_VIEWS[index];
+      if (stage && courseMap) {
+        courseMap.flyTo(stage.coords, stage.zoom, { duration: 1.0 });
+        if (stageMarkers[index]) {
+          stageMarkers[index].openPopup();
+        }
+      }
+    }
+
+    function resetCourseMapView() {
+      if (courseMap && mainRouteLine) {
+        courseMap.closePopup();
+        courseMap.fitBounds(mainRouteLine.getBounds(), { padding: [22, 22] });
+      }
+    }
+
+    function toggleCourseSimulation() {
+      const btnText = document.getElementById('simRunText');
+      const btnIcon = document.getElementById('simRunIcon');
+      const fsBtnText = document.getElementById('fsSimRunText');
+      const fsBtnIcon = document.getElementById('fsSimRunIcon');
+      const overlay = document.getElementById('simStatusOverlay');
+
+      if (simInterval) {
+        clearInterval(simInterval);
+        simInterval = null;
+        btnText.innerText = "Simulate Course Route";
+        btnIcon.className = "fa-solid fa-play";
+        if (fsBtnText) fsBtnText.innerText = "Simulate Route";
+        if (fsBtnIcon) fsBtnIcon.className = "fa-solid fa-play text-amber-300";
+
+        overlay.classList.add('hidden');
+        if (runnerMarker) {
+          courseMap.removeLayer(runnerMarker);
+          runnerMarker = null;
+        }
+        return;
+      }
+
+      overlay.classList.remove('hidden');
+      btnText.innerText = "Stop Simulation";
+      btnIcon.className = "fa-solid fa-stop";
+      if (fsBtnText) fsBtnText.innerText = "Stop";
+      if (fsBtnIcon) fsBtnIcon.className = "fa-solid fa-stop text-amber-300";
+
+      simIndex = 0;
+
+      const runnerIcon = L.divIcon({
+        className: 'runner-sim-icon',
+        html: `<div class="bg-amber-400 text-pts-navy rounded-full shadow-xl border-2 border-pts-navy flex items-center justify-center" style="width:30px;height:30px;font-size:14px;"><i class="fa-solid fa-person-running"></i></div>`,
+        iconSize: [30, 30],
+        iconAnchor: [15, 15]
+      });
+
+      runnerMarker = L.marker(SMOOTH_COURSE_PATH[0], { icon: runnerIcon, zIndexOffset: 1000 }).addTo(courseMap);
+      courseMap.panTo(SMOOTH_COURSE_PATH[0]);
+
+      simInterval = setInterval(() => {
+        simIndex++;
+        if (simIndex >= SMOOTH_COURSE_PATH.length) {
+          clearInterval(simInterval);
+          simInterval = null;
+          btnText.innerText = "Replay Course Route";
+          btnIcon.className = "fa-solid fa-rotate-right";
+          if (fsBtnText) fsBtnText.innerText = "Replay";
+          if (fsBtnIcon) fsBtnIcon.className = "fa-solid fa-rotate-right text-amber-300";
+
+          document.getElementById('simStageLabel').innerText = "Start/Finish area at the North Embarcadero Marina";
+          document.getElementById('simDistanceLabel').innerText = "100%";
+          document.getElementById('simProgressBar').style.width = "100%";
+          highlightStepCardOnly(3);
+          return;
+        }
+
+        const pt = SMOOTH_COURSE_PATH[simIndex];
+        runnerMarker.setLatLng(pt);
+
+        const pct = simIndex / (SMOOTH_COURSE_PATH.length - 1);
+        document.getElementById('simDistanceLabel').innerText = `${Math.round(pct * 100)}%`;
+        document.getElementById('simProgressBar').style.width = `${(pct * 100).toFixed(1)}%`;
+
+        let stageLabel = "North Embarcadero Marina & Bayfront Promenade";
+        if (pct > 0.62) {
+          stageLabel = "Waterfront north toward Ruocco Park & back to Start/Finish";
+          highlightStepCardOnly(3);
+        } else if (pct > 0.48) {
+          stageLabel = "Promenade toward the Hilton & U-turn before the hotel";
+          highlightStepCardOnly(2);
+        } else if (pct > 0.28) {
+          stageLabel = "Loop (counterclockwise) around the South Embarcadero Marina";
+          highlightStepCardOnly(1);
+        } else {
+          highlightStepCardOnly(0);
+        }
+        document.getElementById('simStageLabel').innerText = stageLabel;
+
+        if (simIndex % 8 === 0) {
+          courseMap.panTo(pt, { animate: true, duration: 0.35 });
+        }
+      }, 45);
+    }
+
+    function highlightStepCardOnly(index) {
+      const container = document.getElementById('courseStepList');
+      document.querySelectorAll('.course-step-card').forEach((el, idx) => {
+        const isActive = idx === index;
+        el.classList.toggle('active', isActive);
+        if (isActive && window.innerWidth < 1024 && container) {
+          const scrollLeft = el.offsetLeft - container.offsetLeft - 16;
+          container.scrollTo({ left: scrollLeft, behavior: 'smooth' });
+        }
+      });
+    }
+
+    window.addEventListener('DOMContentLoaded', initPageAndMap);
+
+    // =========================================================================
+    // 7. FINISHER SOCIAL MEDIA POST STUDIO (POST 4:5 & STORY 9:16)
+    // =========================================================================
+    const LOGO_SOURCES = {
+      iam: 'IAM_logo(1500px).png',
+      pts: 'Paramount30thLogo.png',
+      gmf: 'GlobalMovingFoundationLogo.png',
+      k9: 'CoastalK9Logo.png',
+      skyline: 'sd_skyline.png'
+    };
+
+    function prepareSkylineImage(img) {
+      try {
+        const off = document.createElement('canvas');
+        off.width = img.naturalWidth || img.width;
+        off.height = img.naturalHeight || img.height;
+        if (!off.width || !off.height) return img;
+        const octx = off.getContext('2d');
+        octx.drawImage(img, 0, 0);
+        const idata = octx.getImageData(0, 0, off.width, off.height);
+        const d = idata.data;
+        const isBlackBg = (d[0] < 25 && d[1] < 25 && d[2] < 25 && d[3] > 200);
+        if (isBlackBg) {
+          for (let i = 0; i < d.length; i += 4) {
+            if (d[i] < 25 && d[i+1] < 25 && d[i+2] < 25) {
+              d[i+3] = 0;
+            }
+          }
+          octx.putImageData(idata, 0, 0);
+          const cleanImg = new Image();
+          cleanImg.src = off.toDataURL();
+          return cleanImg;
+        }
+      } catch(e) {}
+      return img;
+    }
+
+    const loadedLogos = {};
+    Object.keys(LOGO_SOURCES).forEach(key => {
+      const img = new Image();
+      img.crossOrigin = "anonymous";
+      img.src = LOGO_SOURCES[key];
+      img.onload = () => { 
+        if (key === 'skyline') {
+          loadedLogos[key] = prepareSkylineImage(img);
+        } else {
+          loadedLogos[key] = img;
+        }
+        renderFinisherCanvas(); 
+      };
+      if (key === 'skyline') {
+        img.onerror = () => {
+          const fallbackJpg = new Image();
+          fallbackJpg.crossOrigin = "anonymous";
+          fallbackJpg.src = 'sd_skyline.jpg';
+          fallbackJpg.onload = () => {
+            loadedLogos['skyline'] = prepareSkylineImage(fallbackJpg);
+            renderFinisherCanvas();
+          };
+        };
+      }
+    });
+
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(() => renderFinisherCanvas());
+    }
+
+    let uploadedUserPhoto = null;
+    let photoState = { zoom: 1, panX: 0, panY: 0 };
+    let currentDesignIndex = 0;
+    let currentAspectMode = 'post';
+
+    const DESIGN_NAMES = [
+      "Design 1: Executive Gold Crest",
+      "Design 2: San Diego Bay Magazine Cover",
+      "Design 3: San Diego Bay & Coronado Bridge Skyline",
+      "Design 4: Proud Finisher & Supporter"
+    ];
+
+    function openFinisherStudioModal() {
+      currentDesignIndex = 0;
+      updateDesignButtonsUI();
+      validateSocialCardReady();
+      document.getElementById('finisherStudioModal').classList.remove('hidden');
+      renderFinisherCanvas();
+      confetti({ particleCount: 80, spread: 65, origin: { y: 0.55 } });
+    }
+
+    function setFinisherRatio(mode) {
+      currentAspectMode = mode;
+      const canvas = document.getElementById('finisherCanvas');
+      const btnPost = document.getElementById('ratioPostBtn');
+      const btnStory = document.getElementById('ratioStoryBtn');
+
+      if (mode === 'story') {
+        canvas.width = 1080;
+        canvas.height = 1920;
+        btnStory.className = "px-2.5 py-1 rounded-lg bg-pts-navy text-amber-300 transition";
+        btnPost.className = "px-2.5 py-1 rounded-lg text-gray-400 hover:text-white transition";
+      } else {
+        canvas.width = 1080;
+        canvas.height = 1350;
+        btnPost.className = "px-2.5 py-1 rounded-lg bg-pts-navy text-amber-300 transition";
+        btnStory.className = "px-2.5 py-1 rounded-lg text-gray-400 hover:text-white transition";
+      }
+      renderFinisherCanvas();
+    }
+
+    function randomizeFinisherDesign() {
+      currentDesignIndex = (currentDesignIndex + 1) % 4;
+      updateDesignButtonsUI();
+      renderFinisherCanvas();
+    }
+
+    function selectFinisherDesign(idx) {
+      currentDesignIndex = idx;
+      updateDesignButtonsUI();
+      renderFinisherCanvas();
+    }
+
+    function updateDesignButtonsUI() {
+      document.getElementById('activeDesignTitle').innerText = DESIGN_NAMES[currentDesignIndex];
+      [0, 1, 2, 3].forEach(i => {
+        const btn = document.getElementById(`designBtn${i}`);
+        if (i === currentDesignIndex) {
+          btn.className = "py-1.5 px-2 rounded-xl text-[11px] font-black border transition bg-amber-400 text-pts-navy border-amber-400 shadow";
+        } else {
+          btn.className = "py-1.5 px-2 rounded-xl text-[11px] font-bold border transition bg-white/10 text-white border-white/20 hover:bg-white/20";
+        }
+      });
+    }
+
+    function handleFinisherPhotoUpload(e) {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        const img = new Image();
+        img.onload = function() {
+          uploadedUserPhoto = img;
+          resetPhotoTransform();
+          document.getElementById('resetPhotoFitBtn').classList.remove('hidden');
+          document.getElementById('photoAdjustSliderBox').classList.remove('hidden');
+          validateSocialCardReady();
+          confetti({ particleCount: 50, spread: 50, origin: { y: 0.6 } });
+        };
+        img.src = evt.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function resetPhotoTransform() {
+      photoState = { zoom: 1, panX: 0, panY: 0 };
+      const slider = document.getElementById('photoZoomSlider');
+      if (slider) slider.value = 1;
+      renderFinisherCanvas();
+    }
+
+    function onSliderTransformChange() {
+      photoState.zoom = parseFloat(document.getElementById('photoZoomSlider').value || 1);
+      renderFinisherCanvas();
+    }
+
+    function onCardInputChange() {
+      validateSocialCardReady();
+      renderFinisherCanvas();
+    }
+
+    function validateSocialCardReady() {
+      const name = (document.getElementById('cardRunnerName').value || "").trim();
+      const hasPhoto = (uploadedUserPhoto !== null);
+      const isReady = hasPhoto && (name.length > 0);
+
+      const shareBtn = document.getElementById('shareSocialBtn');
+      const saveBtn = document.getElementById('savePhotosBtn');
+      const lockedNotice = document.getElementById('cardShareLockedNotice');
+      const unlockedNotice = document.getElementById('cardShareUnlockedNotice');
+      const nameErr = document.getElementById('cardNameErr');
+
+      if (!name) {
+        nameErr.classList.remove('hidden');
+      } else {
+        nameErr.classList.add('hidden');
+      }
+
+      if (isReady) {
+        shareBtn.disabled = false;
+        shareBtn.className = "w-full bg-pts-accent hover:bg-red-700 active:bg-red-800 text-white font-black py-3.5 px-5 rounded-xl shadow-lg transition text-sm flex items-center justify-center gap-2 cursor-pointer";
+        
+        saveBtn.disabled = false;
+        saveBtn.className = "w-full bg-pts-navy hover:bg-pts-blue active:bg-blue-950 text-white font-bold py-3.5 px-5 rounded-xl shadow transition text-xs sm:text-sm flex items-center justify-center gap-2 cursor-pointer";
+
+        lockedNotice.classList.add('hidden');
+        unlockedNotice.classList.remove('hidden');
+      } else {
+        shareBtn.disabled = true;
+        shareBtn.className = "w-full bg-gray-300 text-gray-500 font-black py-3.5 px-5 rounded-xl shadow transition text-sm flex items-center justify-center gap-2 cursor-not-allowed";
+
+        saveBtn.disabled = true;
+        saveBtn.className = "w-full bg-gray-300 text-gray-500 font-bold py-3.5 px-5 rounded-xl shadow transition text-xs sm:text-sm flex items-center justify-center gap-2 cursor-not-allowed";
+
+        lockedNotice.classList.remove('hidden');
+        unlockedNotice.classList.add('hidden');
+      }
+    }
+
+    function initCanvasTouchGestures() {
+      const canvas = document.getElementById('finisherCanvas');
+      if (!canvas) return;
+
+      let isDragging = false;
+      let startX = 0, startY = 0;
+      let initialPinchDist = null;
+      let initialZoom = 1;
+
+      function getCanvasScale() {
+        const rect = canvas.getBoundingClientRect();
+        return rect.width > 0 ? (canvas.width / rect.width) : 2.5;
+      }
+
+      canvas.addEventListener('mousedown', (e) => {
+        if (!uploadedUserPhoto) return;
+        isDragging = true;
+        startX = e.clientX;
+        startY = e.clientY;
+      });
+      window.addEventListener('mousemove', (e) => {
+        if (!isDragging || !uploadedUserPhoto) return;
+        const scale = getCanvasScale();
+        photoState.panX += (e.clientX - startX) * scale;
+        photoState.panY += (e.clientY - startY) * scale;
+        startX = e.clientX;
+        startY = e.clientY;
+        renderFinisherCanvas();
+      });
+      window.addEventListener('mouseup', () => { isDragging = false; });
+
+      canvas.addEventListener('wheel', (e) => {
+        if (!uploadedUserPhoto) return;
+        e.preventDefault();
+        const delta = e.deltaY < 0 ? 0.06 : -0.06;
+        photoState.zoom = Math.min(3.0, Math.max(0.6, photoState.zoom + delta));
+        document.getElementById('photoZoomSlider').value = photoState.zoom;
+        renderFinisherCanvas();
+      }, { passive: false });
+
+      canvas.addEventListener('touchstart', (e) => {
+        if (!uploadedUserPhoto) return;
+        if (e.touches.length === 1) {
+          isDragging = true;
+          startX = e.touches[0].clientX;
+          startY = e.touches[0].clientY;
+        } else if (e.touches.length === 2) {
+          isDragging = false;
+          const dx = e.touches[0].clientX - e.touches[1].clientX;
+          const dy = e.touches[0].clientY - e.touches[1].clientY;
+          initialPinchDist = Math.hypot(dx, dy);
+          initialZoom = photoState.zoom;
+        }
+      }, { passive: false });
+
+      canvas.addEventListener('touchmove', (e) => {
+        if (!uploadedUserPhoto) return;
+        e.preventDefault();
+        if (e.touches.length === 1 && isDragging) {
+          const scale = getCanvasScale();
+          photoState.panX += (e.touches[0].clientX - startX) * scale;
+          photoState.panY += (e.touches[0].clientY - startY) * scale;
+          startX = e.touches[0].clientX;
+          startY = e.touches[0].clientY;
+          renderFinisherCanvas();
+        } else if (e.touches.length === 2 && initialPinchDist) {
+          const dx = e.touches[0].clientX - e.touches[1].clientX;
+          const dy = e.touches[0].clientY - e.touches[1].clientY;
+          const dist = Math.hypot(dx, dy);
+          const ratio = dist / initialPinchDist;
+          photoState.zoom = Math.min(3.0, Math.max(0.6, initialZoom * ratio));
+          document.getElementById('photoZoomSlider').value = photoState.zoom;
+          renderFinisherCanvas();
+        }
+      }, { passive: false });
+
+      canvas.addEventListener('touchend', (e) => {
+        if (e.touches.length < 2) initialPinchDist = null;
+        if (e.touches.length === 0) isDragging = false;
+      });
+    }
+
+    function drawRoundedRect(ctx, x, y, w, h, r) {
+      ctx.beginPath();
+      ctx.moveTo(x + r, y);
+      ctx.arcTo(x + w, y, x + w, y + h, r);
+      ctx.arcTo(x + w, y + h, x, y + h, r);
+      ctx.arcTo(x, y + h, x, y, r);
+      ctx.arcTo(x, y, x + w, y, r);
+      ctx.closePath();
+    }
+
+    function drawFittedText(ctx, text, x, y, maxWidth, initialSize, weight = '900', family = '"Outfit", sans-serif') {
+      let size = initialSize;
+      ctx.font = `${weight} ${size}px ${family}`;
+      while (ctx.measureText(text).width > maxWidth && size > 20) {
+        size -= 2;
+        ctx.font = `${weight} ${size}px ${family}`;
+      }
+      ctx.fillText(text, x, y, maxWidth);
+    }
+
+    function drawUserPhotoInBox(ctx, x, y, w, h, radius) {
+      ctx.save();
+      drawRoundedRect(ctx, x, y, w, h, radius);
+      ctx.clip();
+
+      if (uploadedUserPhoto) {
+        const zoom = photoState.zoom;
+        const panX = photoState.panX;
+        const panY = photoState.panY;
+
+        const imgRatio = uploadedUserPhoto.width / uploadedUserPhoto.height;
+        const boxRatio = w / h;
+        let drawW, drawH;
+        if (imgRatio > boxRatio) {
+          drawH = h * zoom;
+          drawW = drawH * imgRatio;
+        } else {
+          drawW = w * zoom;
+          drawH = drawW / imgRatio;
+        }
+        const drawX = x + (w - drawW) / 2 + panX;
+        const drawY = y + (h - drawH) / 2 + panY;
+        ctx.drawImage(uploadedUserPhoto, drawX, drawY, drawW, drawH);
+      } else {
+        const grad = ctx.createLinearGradient(x, y, x + w, y + h);
+        grad.addColorStop(0, '#0B2545');
+        grad.addColorStop(0.5, '#134074');
+        grad.addColorStop(1, '#07162C');
+        ctx.fillStyle = grad;
+        ctx.fillRect(x, y, w, h);
+
+        const radGrad = ctx.createRadialGradient(x + w * 0.5, y + h * 0.45, 10, x + w * 0.5, y + h * 0.45, 260);
+        radGrad.addColorStop(0, 'rgba(245, 158, 11, 0.25)');
+        radGrad.addColorStop(1, 'rgba(245, 158, 11, 0)');
+        ctx.fillStyle = radGrad;
+        ctx.fillRect(x, y, w, h);
+
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.08)';
+        ctx.beginPath();
+        ctx.arc(x + w / 2, y + h / 2 - 40, 58, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(251, 191, 36, 0.45)';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        ctx.fillStyle = '#FBBF24';
+        ctx.font = '800 28px "Outfit", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('ADD YOUR FINISHER PHOTO', x + w / 2, y + h / 2 + 45);
+        ctx.fillStyle = '#93C5FD';
+        ctx.font = '500 21px "Inter", sans-serif';
+        ctx.fillText('Tap "Selfie" or "Photo" above to frame your picture', x + w / 2, y + h / 2 + 82);
+      }
+      ctx.restore();
+    }
+
+    function drawCourseTraceMiniMap(ctx, boxX, boxY, boxW, boxH, strokeColor, glowColor) {
+      ctx.save();
+      const lats = COURSE_COORDS.map(c => c[0]);
+      const lngs = COURSE_COORDS.map(c => c[1]);
+      const minLat = Math.min(...lats), maxLat = Math.max(...lats);
+      const minLng = Math.min(...lngs), maxLng = Math.max(...lngs);
+
+      const pad = 18;
+      const usableW = boxW - pad * 2;
+      const usableH = boxH - pad * 2;
+
+      ctx.shadowColor = glowColor;
+      ctx.shadowBlur = 10;
+      ctx.strokeStyle = strokeColor;
+      ctx.lineWidth = 5;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      ctx.beginPath();
+
+      COURSE_COORDS.forEach((pt, idx) => {
+        const nx = (pt[1] - minLng) / (maxLng - minLng);
+        const ny = 1 - (pt[0] - minLat) / (maxLat - minLat);
+        const px = boxX + pad + nx * usableW;
+        const py = boxY + pad + ny * usableH;
+        if (idx === 0) ctx.moveTo(px, py);
+        else ctx.lineTo(px, py);
+      });
+      ctx.stroke();
+
+      const startPt = COURSE_COORDS[0];
+      const sx = boxX + pad + ((startPt[1] - minLng) / (maxLng - minLng)) * usableW;
+      const sy = boxY + pad + (1 - (startPt[0] - minLat) / (maxLat - minLat)) * usableH;
+      ctx.shadowBlur = 0;
+      ctx.fillStyle = '#22C55E';
+      ctx.beginPath(); ctx.arc(sx - 4, sy, 6, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = '#E31837';
+      ctx.beginPath(); ctx.arc(sx + 4, sy, 6, 0, Math.PI * 2); ctx.fill();
+      ctx.restore();
+    }
+
+    function drawAllFourLogosBar(ctx, x, y, w, h) {
+      ctx.save();
+      drawRoundedRect(ctx, x, y, w, h, 24);
+      ctx.fillStyle = '#FFFFFF';
+      ctx.shadowColor = 'rgba(0, 15, 35, 0.25)';
+      ctx.shadowBlur = 20;
+      ctx.fill();
+      ctx.shadowBlur = 0;
+
+      const keys = ['iam', 'pts', 'gmf', 'k9'];
+      const fallbackLabels = ['IAM', 'PARAMOUNT', 'GLOBAL MOVING FDN', 'COASTAL K9 RESCUE'];
+      const slotW = w / 4;
+
+      keys.forEach((key, i) => {
+        const slotX = x + i * slotW;
+        if (i > 0) {
+          ctx.strokeStyle = '#E2E8F0';
+          ctx.lineWidth = 1.5;
+          ctx.beginPath();
+          ctx.moveTo(slotX, y + 20);
+          ctx.lineTo(slotX, y + h - 20);
+          ctx.stroke();
+        }
+        const img = loadedLogos[key];
+        if (img && img.complete && img.naturalWidth > 0) {
+          const maxW = slotW - 32;
+          const maxH = h - 26;
+          const ratio = Math.min(maxW / img.naturalWidth, maxH / img.naturalHeight);
+          const dw = img.naturalWidth * ratio;
+          const dh = img.naturalHeight * ratio;
+          ctx.drawImage(img, slotX + (slotW - dw) / 2, y + (h - dh) / 2, dw, dh);
+        } else {
+          ctx.fillStyle = '#003366';
+          ctx.font = '800 16px "Outfit", sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText(fallbackLabels[i], slotX + slotW / 2, y + h / 2 + 5);
+        }
+      });
+      ctx.restore();
+    }
+
+    function renderFinisherCanvas() {
+      const canvas = document.getElementById('finisherCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const W = canvas.width;
+      const H = canvas.height;
+      const isStory = (H > 1500);
+
+      const runnerName = (document.getElementById('cardRunnerName').value || 'YOUR NAME HERE').toUpperCase();
+      const runnerCompany = (document.getElementById('cardRunnerCompany').value || '').toUpperCase();
+      const maxTextW = 715;
+
+      ctx.clearRect(0, 0, W, H);
+
+      if (currentDesignIndex === 0) {
+        const bgGrad = ctx.createLinearGradient(0, 0, W, H);
+        bgGrad.addColorStop(0, '#040D1A');
+        bgGrad.addColorStop(0.45, '#0A2246');
+        bgGrad.addColorStop(1, '#030914');
+        ctx.fillStyle = bgGrad;
+        ctx.fillRect(0, 0, W, H);
+
+        ctx.strokeStyle = 'rgba(212, 175, 55, 0.35)';
+        ctx.lineWidth = 2;
+        drawRoundedRect(ctx, 32, 32, W - 64, H - 64, 34);
+        ctx.stroke();
+
+        const topPillY = isStory ? 75 : 55;
+        drawRoundedRect(ctx, 190, topPillY, W - 380, 42, 21);
+        ctx.fillStyle = 'rgba(212, 175, 55, 0.16)';
+        ctx.fill();
+        ctx.strokeStyle = '#D4AF37';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+
+        ctx.fillStyle = '#FDE68A';
+        ctx.font = '700 18px "Outfit", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('FRIDAY, 23 OCTOBER 2026  •  SAN DIEGO BAYFRONT', W / 2, topPillY + 27);
+
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = '800 36px "Outfit", sans-serif';
+        ctx.fillText('INTERNATIONAL ASSOCIATION OF MOVERS', W / 2, topPillY + 82);
+        ctx.fillStyle = '#E2E8F0';
+        ctx.font = '600 24px "Inter", sans-serif';
+        ctx.fillText('&  PARAMOUNT TRANSPORTATION SYSTEMS', W / 2, topPillY + 116);
+
+        ctx.fillStyle = '#D4AF37';
+        ctx.font = '800 21px "Outfit", sans-serif';
+        ctx.fillText('CHARITY 5K FUN RUN & WALK FINISHER', W / 2, topPillY + 152);
+
+        const photoY = topPillY + 175;
+        const photoH = isStory ? 1080 : 640;
+        drawRoundedRect(ctx, 60, photoY, W - 120, photoH, 30);
+        ctx.fillStyle = '#D4AF37';
+        ctx.fill();
+        drawUserPhotoInBox(ctx, 64, photoY + 4, W - 128, photoH - 8, 27);
+
+        const idY = photoY + photoH + (isStory ? 28 : 20);
+        const idH = isStory ? 230 : 185;
+        drawRoundedRect(ctx, 60, idY, W - 120, idH, 26);
+        ctx.fillStyle = 'rgba(6, 18, 38, 0.94)';
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(212, 175, 55, 0.6)';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        ctx.textAlign = 'left';
+        if (runnerCompany) {
+          ctx.fillStyle = '#D4AF37';
+          drawFittedText(ctx, runnerCompany, 96, idY + (isStory ? 52 : 46), maxTextW, 22, '700');
+          ctx.fillStyle = '#FFFFFF';
+          drawFittedText(ctx, runnerName, 96, idY + (isStory ? 114 : 100), maxTextW, 48, '900');
+        } else {
+          ctx.fillStyle = '#FFFFFF';
+          drawFittedText(ctx, runnerName, 96, idY + (isStory ? 94 : 80), maxTextW, 52, '900');
+        }
+
+        ctx.fillStyle = '#93C5FD';
+        ctx.font = '500 19px "Inter", sans-serif';
+        ctx.fillText('Supporting Global Moving Foundation & Coastal K9 Rescue', 96, idY + (runnerCompany ? (isStory ? 168 : 146) : (isStory ? 152 : 128)), maxTextW);
+
+        drawCourseTraceMiniMap(ctx, 835, idY + 14, 150, idH - 28, '#FDE68A', '#D4AF37');
+
+        const logoY = idY + idH + (isStory ? 26 : 18);
+        const logoH = isStory ? 200 : 155;
+        drawAllFourLogosBar(ctx, 60, logoY, W - 120, logoH);
+
+      } else if (currentDesignIndex === 1) {
+        drawUserPhotoInBox(ctx, 0, 0, W, H, 0);
+
+        const topVig = ctx.createLinearGradient(0, 0, 0, 360);
+        topVig.addColorStop(0, 'rgba(4, 13, 26, 0.94)');
+        topVig.addColorStop(0.7, 'rgba(4, 13, 26, 0.55)');
+        topVig.addColorStop(1, 'rgba(4, 13, 26, 0)');
+        ctx.fillStyle = topVig;
+        ctx.fillRect(0, 0, W, 360);
+
+        const botVigStart = isStory ? 1280 : 740;
+        const botVig = ctx.createLinearGradient(0, botVigStart, 0, H);
+        botVig.addColorStop(0, 'rgba(4, 13, 26, 0)');
+        botVig.addColorStop(0.35, 'rgba(4, 15, 32, 0.95)');
+        botVig.addColorStop(1, '#040D1A');
+        ctx.fillStyle = botVig;
+        ctx.fillRect(0, botVigStart, W, H - botVigStart);
+
+        ctx.textAlign = 'left';
+        drawRoundedRect(ctx, 60, 52, 330, 40, 20);
+        ctx.fillStyle = '#E31837';
+        ctx.fill();
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = '800 18px "Outfit", sans-serif';
+        ctx.fillText('●  OFFICIAL 2026 FINISHER', 84, 78);
+
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = '900 42px "Outfit", sans-serif';
+        ctx.fillText('INTERNATIONAL ASSOCIATION OF MOVERS', 60, 142);
+        ctx.fillStyle = '#E2E8F0';
+        ctx.font = '700 28px "Outfit", sans-serif';
+        ctx.fillText('& PARAMOUNT TRANSPORTATION SYSTEMS', 60, 182);
+
+        ctx.fillStyle = '#FBBF24';
+        ctx.font = '700 20px "Outfit", sans-serif';
+        ctx.fillText('CHARITY 5K FUN RUN & WALK  •  FRIDAY, 23 OCT 2026  •  SAN DIEGO BAY', 60, 222);
+
+        const idY = isStory ? 1420 : 880;
+        const idH = isStory ? 240 : 200;
+        drawRoundedRect(ctx, 60, idY, W - 120, idH, 28);
+        ctx.fillStyle = 'rgba(10, 30, 60, 0.88)';
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.22)';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        if (runnerCompany) {
+          ctx.fillStyle = '#38BDF8';
+          drawFittedText(ctx, runnerCompany, 96, idY + (isStory ? 54 : 48), maxTextW, 22, '700');
+          ctx.fillStyle = '#FFFFFF';
+          drawFittedText(ctx, runnerName, 96, idY + (isStory ? 116 : 106), maxTextW, 48, '900');
+        } else {
+          ctx.fillStyle = '#FFFFFF';
+          drawFittedText(ctx, runnerName, 96, idY + (isStory ? 96 : 84), maxTextW, 52, '900');
+        }
+
+        ctx.fillStyle = '#CBD5E1';
+        ctx.font = '500 19px "Inter", sans-serif';
+        ctx.fillText('5.08 KM Waterfront Promenade • Global Moving Foundation & Coastal K9 Rescue', 96, idY + (runnerCompany ? (isStory ? 172 : 156) : (isStory ? 154 : 136)), maxTextW);
+
+        drawCourseTraceMiniMap(ctx, 820, idY + 14, 160, idH - 28, '#00F0FF', '#00F0FF');
+
+        const logoY = idY + idH + (isStory ? 26 : 18);
+        const logoH = isStory ? 200 : 150;
+        drawAllFourLogosBar(ctx, 60, logoY, W - 120, logoH);
+
+      } else if (currentDesignIndex === 2) {
+        const bgGrad = ctx.createLinearGradient(0, 0, W, H);
+        bgGrad.addColorStop(0, '#040d1a');
+        bgGrad.addColorStop(0.35, '#0a2342');
+        bgGrad.addColorStop(0.7, '#1b3b6f');
+        bgGrad.addColorStop(0.9, '#e07a5f');
+        bgGrad.addColorStop(1, '#f4a261');
+        ctx.fillStyle = bgGrad;
+        ctx.fillRect(0, 0, W, H);
+
+        const topPillY = isStory ? 75 : 55;
+        drawRoundedRect(ctx, 160, topPillY, W - 320, 44, 22);
+        ctx.fillStyle = 'rgba(4, 13, 26, 0.85)';
+        ctx.fill();
+        ctx.strokeStyle = '#FBBF24';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+
+        ctx.fillStyle = '#FDE68A';
+        ctx.font = '700 18px "Outfit", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('FRIDAY, 23 OCTOBER 2026  •  SAN DIEGO BAYFRONT', W / 2, topPillY + 28);
+
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = '900 38px "Outfit", sans-serif';
+        ctx.fillText('INTERNATIONAL ASSOCIATION OF MOVERS', W / 2, topPillY + 82);
+        ctx.fillStyle = '#93C5FD';
+        ctx.font = '700 25px "Outfit", sans-serif';
+        ctx.fillText('& PARAMOUNT TRANSPORTATION SYSTEMS 5K', W / 2, topPillY + 118);
+
+        ctx.fillStyle = '#FBBF24';
+        ctx.font = '800 21px "Outfit", sans-serif';
+        ctx.fillText('CORONADO BRIDGE & BAYFRONT FINISHER', W / 2, topPillY + 154);
+
+        const photoY = topPillY + 175;
+        const photoH = isStory ? 920 : 510;
+        drawRoundedRect(ctx, 60, photoY, W - 120, photoH, 30);
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.6)';
+        ctx.shadowBlur = 28;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+        drawUserPhotoInBox(ctx, 66, photoY + 6, W - 132, photoH - 12, 26);
+
+        const skyY = isStory ? (photoY + photoH + 10) : (photoY + photoH - 15);
+        const skyH = isStory ? 320 : 250;
+        const skyW = W - 80;
+        const skyX = 40;
+
+        const skylineImg = loadedLogos['skyline'];
+        if (skylineImg && skylineImg.complete && skylineImg.naturalWidth > 0) {
+          ctx.save();
+          ctx.shadowColor = 'rgba(251, 191, 36, 0.5)';
+          ctx.shadowBlur = 18;
+          ctx.drawImage(skylineImg, skyX, skyY, skyW, skyH);
+          ctx.restore();
+        }
+
+        const idY = isStory ? 1475 : 955;
+        const idH = isStory ? 215 : 185;
+        drawRoundedRect(ctx, 60, idY, W - 120, idH, 26);
+        ctx.fillStyle = 'rgba(4, 13, 26, 0.95)';
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(251, 191, 36, 0.7)';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        ctx.textAlign = 'left';
+        if (runnerCompany) {
+          ctx.fillStyle = '#38BDF8';
+          drawFittedText(ctx, runnerCompany, 96, idY + (isStory ? 52 : 44), maxTextW, 22, '800');
+          ctx.fillStyle = '#FFFFFF';
+          drawFittedText(ctx, runnerName, 96, idY + (isStory ? 112 : 98), maxTextW, 48, '900');
+        } else {
+          ctx.fillStyle = '#FFFFFF';
+          drawFittedText(ctx, runnerName, 96, idY + (isStory ? 92 : 78), maxTextW, 52, '900');
+        }
+
+        ctx.fillStyle = '#FDE68A';
+        ctx.font = '600 18px "Inter", sans-serif';
+        ctx.fillText('San Diego Bayfront Promenade • Global Moving Foundation & Coastal K9 Rescue', 96, idY + (runnerCompany ? (isStory ? 168 : 144) : (isStory ? 150 : 126)), maxTextW);
+
+        drawCourseTraceMiniMap(ctx, 835, idY + 14, 150, idH - 28, '#00F0FF', '#38BDF8');
+
+        const logoY = isStory ? 1715 : 1160;
+        const logoH = isStory ? 170 : 155;
+        drawAllFourLogosBar(ctx, 60, logoY, W - 120, logoH);
+
+      } else {
+        const bgGrad = ctx.createLinearGradient(0, 0, W, H);
+        bgGrad.addColorStop(0, '#061A3A');
+        bgGrad.addColorStop(0.5, '#003B73');
+        bgGrad.addColorStop(1, '#041226');
+        ctx.fillStyle = bgGrad;
+        ctx.fillRect(0, 0, W, H);
+
+        const sunGlow = ctx.createRadialGradient(W / 2, 220, 20, W / 2, 220, 560);
+        sunGlow.addColorStop(0, 'rgba(251, 191, 36, 0.22)');
+        sunGlow.addColorStop(1, 'rgba(251, 191, 36, 0)');
+        ctx.fillStyle = sunGlow;
+        ctx.fillRect(0, 0, W, H);
+
+        const topPillY = isStory ? 70 : 48;
+        drawRoundedRect(ctx, 190, topPillY, W - 380, 44, 22);
+        ctx.fillStyle = '#E31837';
+        ctx.fill();
+        ctx.textAlign = 'center';
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = '800 19px "Outfit", sans-serif';
+        ctx.fillText('♥  OFFICIAL CHARITY 5K FINISHER  ♥', W / 2, topPillY + 29);
+
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = '900 38px "Outfit", sans-serif';
+        ctx.fillText('INTERNATIONAL ASSOCIATION OF MOVERS', W / 2, topPillY + 84);
+        ctx.fillStyle = '#FDE68A';
+        ctx.font = '700 28px "Outfit", sans-serif';
+        ctx.fillText('& PARAMOUNT TRANSPORTATION SYSTEMS', W / 2, topPillY + 124);
+
+        ctx.fillStyle = '#93C5FD';
+        ctx.font = '600 20px "Inter", sans-serif';
+        ctx.fillText('Friday, 23 October 2026  •  San Diego Bayfront Promenade', W / 2, topPillY + 160);
+
+        const photoY = topPillY + 180;
+        const photoH = isStory ? 1080 : 640;
+        drawRoundedRect(ctx, 60, photoY, W - 120, photoH, 34);
+        ctx.fillStyle = '#FFFFFF';
+        ctx.shadowColor = 'rgba(0,0,0,0.4)';
+        ctx.shadowBlur = 24;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+        drawUserPhotoInBox(ctx, 68, photoY + 8, W - 136, photoH - 16, 28);
+
+        const idY = photoY + photoH + (isStory ? 28 : 20);
+        const idH = isStory ? 230 : 185;
+        drawRoundedRect(ctx, 60, idY, W - 120, idH, 28);
+        ctx.fillStyle = 'rgba(7, 25, 54, 0.92)';
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(253, 230, 138, 0.45)';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        ctx.textAlign = 'left';
+        if (runnerCompany) {
+          ctx.fillStyle = '#FBBF24';
+          drawFittedText(ctx, runnerCompany, 96, idY + (isStory ? 52 : 44), maxTextW, 21, '800');
+          ctx.fillStyle = '#FFFFFF';
+          drawFittedText(ctx, runnerName, 96, idY + (isStory ? 114 : 98), maxTextW, 48, '900');
+        } else {
+          ctx.fillStyle = '#FFFFFF';
+          drawFittedText(ctx, runnerName, 96, idY + (isStory ? 94 : 76), maxTextW, 52, '900');
+        }
+
+        ctx.fillStyle = '#93C5FD';
+        ctx.font = '600 20px "Inter", sans-serif';
+        ctx.fillText('Proudly supporting Global Moving Foundation & Coastal K9 Rescue', 96, idY + (runnerCompany ? (isStory ? 168 : 144) : (isStory ? 152 : 124)), maxTextW);
+
+        drawCourseTraceMiniMap(ctx, 835, idY + 14, 150, idH - 28, '#FDE68A', '#E31837');
+
+        const logoY = idY + idH + (isStory ? 26 : 18);
+        const logoH = isStory ? 200 : 155;
+        drawAllFourLogosBar(ctx, 60, logoY, W - 120, logoH);
+      }
+    }
+
+    async function shareFinisherCard() {
+      const name = (document.getElementById('cardRunnerName').value || "").trim();
+      if (!uploadedUserPhoto || !name) {
+        alert("Please add your selfie/photo and enter your name to share.");
+        return;
+      }
+
+      const canvas = document.getElementById('finisherCanvas');
+      canvas.toBlob(async (blob) => {
+        if (!blob) return;
+        const file = new File([blob], 'IAM_Paramount_5K_Finisher.png', { type: 'image/png' });
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+          try {
+            await navigator.share({
+              title: 'IAM & Paramount Charity 5K Finisher!',
+              text: 'Proud to finish the IAM & Paramount Charity 5K along San Diego Bay in support of Global Moving Foundation & Coastal K9 Rescue!',
+              files: [file]
+            });
+            return;
+          } catch (err) {}
+        }
+        saveFinisherCardToPhotos();
+      }, 'image/png');
+    }
+
+    function saveFinisherCardToPhotos() {
+      const name = (document.getElementById('cardRunnerName').value || "").trim();
+      if (!uploadedUserPhoto || !name) {
+        alert("Please add your selfie/photo and enter your name to save.");
+        return;
+      }
+
+      const canvas = document.getElementById('finisherCanvas');
+      const link = document.createElement('a');
+      link.download = `IAM_Paramount_5K_${name.replace(/\s+/g, '_')}_Finisher.png`;
+      link.href = canvas.toDataURL('image/png');
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  </script>
+</body>
+</html>
