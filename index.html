@@ -159,7 +159,7 @@
       <!-- Compact Hero Main Content + Interactive Feature Cards -->
       <div class="mt-5 grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-6 items-center">
         
-        <div class="lg:col-span-7 text-center lg:text-left">
+        <div id="heroMainCol" class="lg:col-span-12 text-center lg:text-left">
           <div class="inline-flex items-center gap-2 bg-amber-400/20 border border-amber-300/40 text-amber-300 px-3 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-wider mb-2.5">
             <i class="fa-solid fa-trophy"></i> Thank You to All Our Runners, Walkers &amp; Supporters!
           </div>
@@ -169,8 +169,8 @@
             <span class="text-amber-400 block sm:inline">Charity 5K Highlights &amp; Results</span>
           </h1>
           
-          <p class="mt-2 text-xs sm:text-sm text-blue-100 leading-relaxed max-w-2xl mx-auto lg:mx-0">
-            What an incredible morning along scenic San Diego Bay! Celebrate our top finishers, search all 118 official 5K finish times by Bib #, and share your favorite race photos with us. Net proceeds from this year’s 5K directly benefit the <strong>Global Moving Foundation</strong> and <strong>Coastal K9 German Shepherd Rescue</strong>.
+          <p class="mt-2 text-xs sm:text-sm text-blue-100 leading-relaxed max-w-3xl mx-auto lg:mx-0">
+            What an incredible morning along scenic San Diego Bay! Celebrate our top finishers, search all 118 official 5K finish times by Bib #, and explore the course memories. Net proceeds from this year’s 5K directly benefit the <strong>Global Moving Foundation</strong> and <strong>Coastal K9 German Shepherd Rescue</strong>.
           </p>
 
           <div class="mt-4 flex flex-wrap justify-center lg:justify-start gap-2">
@@ -190,9 +190,11 @@
           </div>
         </div>
 
-        <div class="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <!-- Optional Feature Cards Container (Controlled by BADGE_STUDIO_STATUS and PHOTO_UPLOADER_STATUS) -->
+        <div id="heroFeatureCardsWrapper" class="hidden lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 gap-3">
           
-          <div onclick="openFinisherStudioModal()" class="cursor-pointer group bg-gradient-to-br from-amber-400 via-amber-300 to-amber-500 text-pts-navy p-4 rounded-2xl shadow-lg border border-amber-200 flex flex-col justify-between hover:scale-[1.02] transition-all">
+          <!-- Finisher Badge Studio Card -->
+          <div id="heroBadgeStudioCard" onclick="openFinisherStudioModal()" class="hidden cursor-pointer group bg-gradient-to-br from-amber-400 via-amber-300 to-amber-500 text-pts-navy p-4 rounded-2xl shadow-lg border border-amber-200 flex flex-col justify-between hover:scale-[1.02] transition-all">
             <div>
               <div class="flex items-center justify-between mb-2">
                 <span class="w-9 h-9 rounded-xl bg-pts-navy text-amber-300 flex items-center justify-center text-base shadow">
@@ -210,7 +212,8 @@
             </div>
           </div>
 
-          <div onclick="openUploadMediaModal()" class="cursor-pointer group bg-white/10 hover:bg-white/15 backdrop-blur-md text-white p-4 rounded-2xl shadow-lg border border-white/20 flex flex-col justify-between hover:scale-[1.02] transition-all">
+          <!-- Share Photos Card -->
+          <div id="heroPhotoUploadCard" onclick="openUploadMediaModal()" class="hidden cursor-pointer group bg-white/10 hover:bg-white/15 backdrop-blur-md text-white p-4 rounded-2xl shadow-lg border border-white/20 flex flex-col justify-between hover:scale-[1.02] transition-all">
             <div>
               <div class="flex items-center justify-between mb-2">
                 <span class="w-9 h-9 rounded-xl bg-amber-400 text-pts-navy flex items-center justify-center text-base shadow">
@@ -346,7 +349,7 @@
             </button>
           </div>
 
-          <button type="button" onclick="openUploadMediaModal()" class="bg-pts-accent hover:bg-red-700 text-white px-3.5 py-2 rounded-2xl text-xs font-black transition shadow flex items-center gap-1.5">
+          <button id="galleryUploadBtn" type="button" onclick="openUploadMediaModal()" class="hidden bg-pts-accent hover:bg-red-700 text-white px-3.5 py-2 rounded-2xl text-xs font-black transition shadow flex items-center gap-1.5">
             <i class="fa-solid fa-cloud-arrow-up text-amber-300"></i> Share Your Photos
           </button>
         </div>
@@ -964,15 +967,14 @@
 
   <script>
     // =========================================================================
-    // 1. POST-RACE CONFIGURATION: GALLERY VISIBILITY, TOP 3 & 118 RESULTS LIST
+    // 1. POST-RACE CONFIGURATION: SWITCHES, TOP 3 & 118 RESULTS LIST
     // =========================================================================
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwO7ItQ6sTOC3wbyGDk2hU8qEjD4voEKbNYfdOQU_t_X53AE1FjRZ6fiDDQkywQDBsU/exec";
 
-    // MASTER GALLERY SWITCH:
-    // - "auto" (default): Gallery stays hidden until `photos/photo1.jpg` (or `.JPG`) is uploaded to the server
-    // - "off": Force-hides the photo gallery section even if photos exist
-    // - "on": Force-shows the photo gallery section
-    const GALLERY_STATUS = "auto"; // "auto" | "on" | "off"
+    // MASTER FEATURE SWITCHES (Toggle on/off as needed):
+    const BADGE_STUDIO_STATUS = "off";   // "on" | "off" (default: "off") - Finisher Social Badge Studio
+    const PHOTO_UPLOADER_STATUS = "off"; // "on" | "off" (default: "off") - "Share Your Photos" Uploader
+    const GALLERY_STATUS = "auto";        // "auto" (default: auto-shows when photos/photo1.jpg exists) | "on" | "off"
 
     const RACE_WINNERS = {
       men: [
@@ -1119,6 +1121,48 @@
     }
 
     // =========================================================================
+    // FEATURE TOGGLES MANAGER (BADGE STUDIO & PHOTO UPLOADER)
+    // =========================================================================
+    function applyFeatureSwitches() {
+      const showBadgeStudio = (BADGE_STUDIO_STATUS === "on");
+      const showPhotoUploader = (PHOTO_UPLOADER_STATUS === "on");
+
+      const badgeCard = document.getElementById('heroBadgeStudioCard');
+      const uploadCard = document.getElementById('heroPhotoUploadCard');
+      const cardsWrapper = document.getElementById('heroFeatureCardsWrapper');
+      const heroMainCol = document.getElementById('heroMainCol');
+      const galleryUploadBtn = document.getElementById('galleryUploadBtn');
+      const finisherModal = document.getElementById('finisherStudioModal');
+      const uploadModal = document.getElementById('uploadMediaModal');
+
+      if (badgeCard) badgeCard.classList.toggle('hidden', !showBadgeStudio);
+      if (uploadCard) uploadCard.classList.toggle('hidden', !showPhotoUploader);
+      if (galleryUploadBtn) {
+        galleryUploadBtn.classList.toggle('hidden', !showPhotoUploader);
+        if (showPhotoUploader) galleryUploadBtn.classList.add('flex');
+        else galleryUploadBtn.classList.remove('flex');
+      }
+      if (finisherModal && !showBadgeStudio) finisherModal.classList.add('hidden');
+      if (uploadModal && !showPhotoUploader) uploadModal.classList.add('hidden');
+
+      if (cardsWrapper && heroMainCol) {
+        if (!showBadgeStudio && !showPhotoUploader) {
+          cardsWrapper.classList.add('hidden');
+          heroMainCol.className = "lg:col-span-12 text-center lg:text-left";
+        } else if (showBadgeStudio && showPhotoUploader) {
+          cardsWrapper.classList.remove('hidden');
+          cardsWrapper.className = "lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 gap-3";
+          heroMainCol.className = "lg:col-span-7 text-center lg:text-left";
+        } else {
+          // Exactly one is active: single column clean card
+          cardsWrapper.classList.remove('hidden');
+          cardsWrapper.className = "lg:col-span-5 grid grid-cols-1 gap-3 max-w-sm mx-auto lg:mx-0 w-full";
+          heroMainCol.className = "lg:col-span-7 text-center lg:text-left";
+        }
+      }
+    }
+
+    // =========================================================================
     // 1B. SEARCHABLE 118-FINISHER OFFICIAL RESULTS MODAL LOGIC
     // =========================================================================
     const PODIUM_BIB_BADGES = {
@@ -1210,6 +1254,7 @@
     let selectedUploadFiles = [];
 
     function openUploadMediaModal() {
+      if (PHOTO_UPLOADER_STATUS !== "on") return;
       document.getElementById('uploadStatusMessage').classList.add('hidden');
       document.getElementById('uploadMediaModal').classList.remove('hidden');
     }
@@ -1577,28 +1622,22 @@
     }
 
     async function discoverRacePhotos() {
-      // 1. Respect manual GALLERY_STATUS = "off"
       if (GALLERY_STATUS === "off") {
         setGallerySectionVisibility(false);
         return;
       }
 
-      // 2. In "auto" mode, check if photos/photo1.jpg (or .JPG) exists first.
-      //    If photo1.jpg is NOT uploaded yet, keep the entire gallery section hidden
-      //    (winner photos in the Top 3 section above still work independently!).
       const photo1Resolved = await probeImageWithCaseFallback('photos/photo1.jpg');
       if (GALLERY_STATUS === "auto" && !photo1Resolved) {
         setGallerySectionVisibility(false);
         return;
       }
 
-      // 3. photo1.jpg exists (or GALLERY_STATUS === "on") -> Unhide the Gallery Section & Nav Button!
       setGallerySectionVisibility(true);
 
       const discovered = [];
       let firstPageRendered = false;
 
-      // Include Winner Photos in the gallery with their official name, company & place caption
       const winnerCandidates = [...RACE_WINNERS.men, ...RACE_WINNERS.women].map((w, idx) => ({
         src: w.photo,
         category: 'winners',
@@ -1613,7 +1652,6 @@
         }
       });
 
-      // Scan General Event Photos (photo1.jpg .. photo120.jpg) in fast batches of 12
       let consecutiveMisses = 0;
       const BATCH_SIZE = 12;
 
@@ -2160,6 +2198,7 @@
     let mobileMapInteractive = false, isMapFullScreen = false;
 
     function initPageAndMap() {
+      applyFeatureSwitches();
       renderWinnersSide('menWinnersList', RACE_WINNERS.men);
       renderWinnersSide('womenWinnersList', RACE_WINNERS.women);
       filterOfficialResults();
@@ -2480,6 +2519,7 @@
     ];
 
     function openFinisherStudioModal() {
+      if (BADGE_STUDIO_STATUS !== "on") return;
       currentDesignIndex = 0;
       updateDesignButtonsUI();
       validateSocialCardReady();
@@ -3164,6 +3204,7 @@
     }
 
     async function shareFinisherCard() {
+      if (BADGE_STUDIO_STATUS !== "on") return;
       const name = (document.getElementById('cardRunnerName').value || "").trim();
       if (!uploadedUserPhoto || !name) {
         alert("Please add your selfie/photo and enter your name to share.");
@@ -3189,6 +3230,7 @@
     }
 
     function saveFinisherCardToPhotos() {
+      if (BADGE_STUDIO_STATUS !== "on") return;
       const name = (document.getElementById('cardRunnerName').value || "").trim();
       if (!uploadedUserPhoto || !name) {
         alert("Please add your selfie/photo and enter your name to save.");
